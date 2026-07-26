@@ -1,14 +1,15 @@
 @page "/"
+@inject AppDbContext Db
 
-<div class="homepage" data-signals="{ splashText: '' }"
-     data-init="@@get('/api/jokes/random')">
+<div class="homepage">
     <div class="homepage-hero">
         <h1 class="homepage-title">
             Welcome to MadNess
         </h1>
-        <span data-show="splashText"
-              data-bind-splashText
-              class="splash-text"></span>
+        @if (_splashText is not null)
+        {
+            <span class="splash-text">@_splashText</span>
+        }
     </div>
     <p class="homepage-subtitle">Bear Hunt Alliance Tool</p>
 
@@ -31,3 +32,19 @@
         </a>
     </div>
 </div>
+
+@code {
+    private string? _splashText;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Random.Shared.Next(3) != 0) return;
+
+        var count = await Db.Jokes.CountAsync();
+        if (count == 0) return;
+
+        var skip = Random.Shared.Next(count);
+        var joke = await Db.Jokes.OrderBy(j => j.Id).Skip(skip).FirstAsync();
+        _splashText = joke.Text;
+    }
+}

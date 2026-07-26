@@ -1,7 +1,8 @@
 namespace BearHunt;
 
 using BearHunt.Models;
-
+using BearHunt.Data;
+using Microsoft.EntityFrameworkCore;
 public static class Templates
 {
     public static string E(string? s) => System.Net.WebUtility.HtmlEncode(s ?? "");
@@ -241,5 +242,20 @@ public static class Templates
         }
         sb.Append("""</tbody></table>""");
         return sb.ToString();
+    }
+
+    public static async Task ReRenderTrapRoster(IDatastarService sse, AppDbContext db,
+        string trap, bool isAdmin = false)
+    {
+        var cycle = await db.Cycles.FindAsync(1);
+        if (cycle is null) return;
+
+        var trapTime = trap == "1" ? cycle.Trap1Time : cycle.Trap2Time;
+        var prefs = await db.Preferences
+            .Where(p => p.SelectedTrap == trap || p.SelectedTrap == "either")
+            .ToListAsync();
+        var members = await db.Members.ToDictionaryAsync(m => m.Username);
+
+        await sse.PatchElementsAsync(TrapRosterSection(trap, trapTime, prefs, members, isAdmin));
     }
 }

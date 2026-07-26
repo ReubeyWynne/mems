@@ -1,10 +1,11 @@
 using BearHunt.Data;
+using BearHunt.Components.Fragments;
 using BearHunt.Helpers;
 using BearHunt.Models;
+using BearHunt.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using StarFederation.Datastar;
-using StarFederation.Datastar.DependencyInjection;
 
 namespace BearHunt.Endpoints;
 
@@ -13,17 +14,23 @@ public static class CyclesEndpoints
     public static void Map(WebApplication app)
     {
         app.MapPost("/api/cycles/upsert", async (IDatastarService sse, AppDbContext db,
-            HttpContext httpContext, IDataProtectionProvider protection) =>
+            HttpContext httpContext, IDataProtectionProvider protection, RazorRenderer renderer) =>
         {
             if (!AuthHelper.IsAdminAuthenticated(httpContext.Request, protection))
             {
                 httpContext.Response.StatusCode = 401;
                 return;
             }
-            var signals = await sse.ReadSignalsAsync<CycleSignals>();
-            if (signals?.date == default)
+            var form = await httpContext.Request.ReadFormAsync();
+            var dateStr = form["date"].FirstOrDefault();
+            if (string.IsNullOrEmpty(dateStr) || !DateTime.TryParse(dateStr, out var parsedDate))
             {
-                await sse.PatchElementsAsync(Templates.Feedback("error", "Date is required."));
+                var fb = await renderer.RenderAsync<Feedback>(parms =>
+                {
+                    parms[nameof(Feedback.Type)] = "error";
+                    parms[nameof(Feedback.Message)] = "Date is required.";
+                });
+                await sse.PatchElementsAsync(fb);
                 return;
             }
             var cycle = await db.Cycles.FindAsync(1);
@@ -32,17 +39,26 @@ public static class CyclesEndpoints
                 cycle = new Cycle { Id = 1 };
                 db.Cycles.Add(cycle);
             }
-            cycle.StartDate = signals!.date;
-            cycle.Trap1Time = TimeOnly.Parse(signals.trap1Time);
-            cycle.Trap2Time = TimeOnly.Parse(signals.trap2Time);
+            cycle.StartDate = parsedDate;
+            cycle.Trap1Time = TimeOnly.Parse(form["trap1Time"].FirstOrDefault() ?? "00:00");
+            cycle.Trap2Time = TimeOnly.Parse(form["trap2Time"].FirstOrDefault() ?? "00:00");
             await db.SaveChangesAsync();
-            await sse.PatchElementsAsync(Templates.Feedback("success", "Cycle updated!"));
+            var fbOk = await renderer.RenderAsync<Feedback>(parms =>
+            {
+                parms[nameof(Feedback.Type)] = "success";
+                parms[nameof(Feedback.Message)] = "Cycle updated!";
+            });
+            await sse.PatchElementsAsync(fbOk);
         });
 
-        app.MapGet("/api/cycles/responses", async (IDatastarService sse, AppDbContext db) =>
+        app.MapGet("/api/cycles/responses", async (IDatastarService sse, AppDbContext db, RazorRenderer renderer) =>
         {
             var prefs = await db.Preferences.ToListAsync();
-            await sse.PatchElementsAsync(Templates.ResponsesTable(prefs));
+            var html = await renderer.RenderAsync<ResponsesTable>(parms =>
+            {
+                parms[nameof(ResponsesTable.Prefs)] = prefs;
+            });
+            await sse.PatchElementsAsync(html);
         });
     }
 }

@@ -1,3 +1,4 @@
+using StarFederation.Datastar;
 using BearHunt.Data;
 using BearHunt.Models;
 using BearHunt.Helpers;
@@ -8,13 +9,13 @@ public static class MembersEndpoints
 {
     public static void Map(WebApplication app)
     {
-        app.MapPost("/api/members/upsert", async (HttpRequest request, HttpResponse response, AppDbContext db) =>
+        app.MapPost("/api/members/upsert", async (IDatastarService sse, HttpRequest request, AppDbContext db) =>
         {
             var username = AuthHelper.GetUsername(request);
 
             if (string.IsNullOrEmpty(username))
             {
-                response.Redirect("/bear-hunt/profile?error=Set+a+username+first");
+                await sse.PatchElementsAsync("""<div id="feedback" class="feedback-error">Set a username first.</div>""");
                 return;
             }
 
@@ -33,6 +34,7 @@ public static class MembersEndpoints
             member.WidgetLevel = Math.Clamp(Parsing.ParseInt(form["widgetLevel"], 3), 1, 5);
             member.RallySize = Parsing.ParseInt(form["rallySize"]);
             member.SoloMarchSize = Parsing.ParseInt(form["soloMarchSize"]);
+            member.RallyJoinerCap = Parsing.ParseInt(form["rallyJoinerCap"]);
             member.PreferredBearWindow = form["preferredBearWindow"].FirstOrDefault() ?? "";
             member.InfantryAtkPct = Parsing.ParseNullableInt(form["infantryAtkPct"]);
             member.InfantryLethalityPct = Parsing.ParseNullableInt(form["infantryLethalityPct"]);
@@ -44,7 +46,7 @@ public static class MembersEndpoints
             member.UpdatedAt = DateTime.UtcNow;
 
             await db.SaveChangesAsync();
-            response.Redirect("/bear-hunt/profile?saved=1");
+            await sse.PatchElementsAsync("""<div id="feedback" class="feedback-success">Profile saved!</div>""");
         }).DisableAntiforgery();
     }
 }

@@ -9,3 +9,5 @@ cookies.txt
 cookies2.txt
 .git
 .github
+**/node_modules
+**/wwwroot/styles.css

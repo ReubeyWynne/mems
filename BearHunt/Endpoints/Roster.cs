@@ -1,4 +1,6 @@
 using BearHunt.Data;
+using BearHunt.Components.Fragments;
+using BearHunt.Services;
 using Microsoft.EntityFrameworkCore;
 using StarFederation.Datastar;
 
@@ -8,11 +10,14 @@ public static class RosterEndpoints
 {
     public static void Map(WebApplication app)
     {
-        app.MapGet("/api/roster", async (IDatastarService sse, AppDbContext db) =>
+        app.MapGet("/api/roster", async (IDatastarService sse, AppDbContext db, RazorRenderer renderer) =>
         {
             var members = await db.Members.OrderBy(m => m.Username).ToListAsync();
-            var rows = string.Concat(members.Select(Templates.MemberRow));
-            await sse.PatchElementsAsync($"""<tbody id="roster-rows">{rows}</tbody>""");
+            var html = await renderer.RenderAsync<MemberRows>(parms =>
+            {
+                parms[nameof(MemberRows.Members)] = members;
+            });
+            await sse.PatchElementsAsync($"""<tbody id="roster-rows">{html}</tbody>""");
         });
     }
 }

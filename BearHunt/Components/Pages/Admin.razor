@@ -9,45 +9,50 @@
 {
     <h1>Admin</h1>
 
-    <div data-signals="{ date: '', trap1Time: '', trap2Time: '' }">
+    <form data-on:submit="@@post('/api/cycles/upsert')">
         <fieldset>
             <legend>Cycle Configuration</legend>
             <div class="form-group">
                 <label>Date</label>
-                <input type="date" data-bind:date />
+                <input type="date" name="date" />
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Trap 1 Time</label>
-                    <input type="time" data-bind:trap1Time />
+                    <input type="time" name="trap1Time" />
                 </div>
                 <div class="form-group">
                     <label>Trap 2 Time</label>
-                    <input type="time" data-bind:trap2Time />
+                    <input type="time" name="trap2Time" />
                 </div>
             </div>
-            <button data-on:click="&#64;post('/api/cycles/upsert')">Save Configuration</button>
+            <button type="submit">Save Configuration</button>
         </fieldset>
-    </div>
+    </form>
 
     <fieldset>
         <legend>Homepage Secrets</legend>
-        <div data-signals="{ text: '' }">
+        <form data-on:submit="@@post('/api/jokes')">
             <div class="form-row">
                 <div class="form-group" style="flex:1">
-                    <input type="text" data-bind:text placeholder="New secret string..." style="width:100%" />
+                    <input type="text" name="text" placeholder="New secret string..." style="width:100%" />
                 </div>
                 <div class="form-group">
-                    <button data-on:click="&#64;post('/api/jokes')">Add</button>
+                    <button type="submit">Add</button>
                 </div>
             </div>
-        </div>
+        </form>
         <div id="joke-list"
              data-init="&#64;get('/api/jokes')">
             <p>Loading...</p>
         </div>
     </fieldset>
 
+
+    <fieldset>
+        <legend>Database</legend>
+        <a href="/api/admin/export-db" class="btn-export">Download Backup</a>
+    </fieldset>
     <div id="feedback"></div>
 
     <form method="post" action="/api/admin/logout" style="margin-top:2rem">

@@ -1,6 +1,8 @@
 using BearHunt.Data;
+using BearHunt.Components.Fragments;
 using BearHunt.Helpers;
 using BearHunt.Models;
+using BearHunt.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using StarFederation.Datastar;
@@ -11,36 +13,56 @@ public static class JokesEndpoints
 {
     public static void Map(WebApplication app)
     {
-
-        app.MapGet("/api/jokes", async (AppDbContext db, HttpRequest request, IDataProtectionProvider protection) =>
+        app.MapGet("/api/jokes", async (AppDbContext db, HttpRequest request,
+            IDataProtectionProvider protection, RazorRenderer renderer) =>
         {
             if (!AuthHelper.IsAdminAuthenticated(request, protection))
                 return Results.Unauthorized();
             var jokes = await db.Jokes.OrderByDescending(j => j.Id).ToListAsync();
-            return Results.Content(Templates.JokeList(jokes), "text/html");
+            var html = await renderer.RenderAsync<JokeList>(parms =>
+            {
+                parms[nameof(JokeList.Jokes)] = jokes;
+            });
+            return Results.Content(html, "text/html");
         });
 
-        app.MapPost("/api/jokes", async (IDatastarService sse, AppDbContext db, HttpRequest request, IDataProtectionProvider protection) =>
+        app.MapPost("/api/jokes", async (IDatastarService sse, AppDbContext db, HttpRequest request,
+            IDataProtectionProvider protection, RazorRenderer renderer) =>
         {
             if (!AuthHelper.IsAdminAuthenticated(request, protection))
             {
-                await sse.PatchElementsAsync(Templates.Feedback("error", "Unauthorized."));
+                var fb = await renderer.RenderAsync<Feedback>(parms =>
+                {
+                    parms[nameof(Feedback.Type)] = "error";
+                    parms[nameof(Feedback.Message)] = "Unauthorized.";
+                });
+                await sse.PatchElementsAsync(fb);
                 return;
             }
-            var signals = await sse.ReadSignalsAsync<JokeSignals>();
-            var text = signals?.text?.Trim();
+            var form = await request.ReadFormAsync();
+            var text = form["text"].FirstOrDefault()?.Trim();
             if (string.IsNullOrWhiteSpace(text))
             {
-                await sse.PatchElementsAsync(Templates.Feedback("error", "Text is required."));
+                var fb = await renderer.RenderAsync<Feedback>(parms =>
+                {
+                    parms[nameof(Feedback.Type)] = "error";
+                    parms[nameof(Feedback.Message)] = "Text is required.";
+                });
+                await sse.PatchElementsAsync(fb);
                 return;
             }
             db.Jokes.Add(new Joke { Text = text, CreatedAt = DateTime.UtcNow });
             await db.SaveChangesAsync();
             var jokes = await db.Jokes.OrderByDescending(j => j.Id).ToListAsync();
-            await sse.PatchElementsAsync($"""<div id="joke-list">{Templates.JokeList(jokes)}</div>""");
+            var jl = await renderer.RenderAsync<JokeList>(parms =>
+            {
+                parms[nameof(JokeList.Jokes)] = jokes;
+            });
+            await sse.PatchElementsAsync($"""<div id="joke-list">{jl}</div>""");
         });
 
-        app.MapDelete("/api/jokes/{id:int}", async (int id, IDatastarService sse, AppDbContext db, HttpRequest request, IDataProtectionProvider protection) =>
+        app.MapDelete("/api/jokes/{id:int}", async (int id, IDatastarService sse, AppDbContext db,
+            HttpRequest request, IDataProtectionProvider protection, RazorRenderer renderer) =>
         {
             if (!AuthHelper.IsAdminAuthenticated(request, protection))
                 return;
@@ -51,7 +73,11 @@ public static class JokesEndpoints
                 await db.SaveChangesAsync();
             }
             var jokes = await db.Jokes.OrderByDescending(j => j.Id).ToListAsync();
-            await sse.PatchElementsAsync($"""<div id="joke-list">{Templates.JokeList(jokes)}</div>""");
+            var jl = await renderer.RenderAsync<JokeList>(parms =>
+            {
+                parms[nameof(JokeList.Jokes)] = jokes;
+            });
+            await sse.PatchElementsAsync($"""<div id="joke-list">{jl}</div>""");
         });
     }
 }

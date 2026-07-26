@@ -2,10 +2,7 @@
 @inject AppDbContext Db
 @inject IHttpContextAccessor HttpContext
 
-@if (_saved)
-{
-    <div id="feedback" class="feedback-success">Profile saved!</div>
-}
+<div id="feedback"></div>
 @if (_error is not null)
 {
     <div class="feedback-error">@_error</div>
@@ -24,10 +21,9 @@
         </form>
     </div>
 
-    <form method="post" action="/api/members/upsert">
+    <form data-on:submit="@@post('/api/members/upsert')">
     <div class="profile-body">
         <div class="profile-section">
-            <div class="section-header">Troop Counts</div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Infantry</label>
@@ -74,6 +70,10 @@
                 <div class="form-group">
                     <label>Solo March Size</label>
                     <input type="number" name="soloMarchSize" value="@_member?.SoloMarchSize" placeholder="0" />
+                </div>
+                <div class="form-group">
+                    <label>Rally Joiner Cap</label>
+                    <input type="number" name="rallyJoinerCap" value="@_member?.RallyJoinerCap" placeholder="0" />
                 </div>
             </div>
         </div>
@@ -141,7 +141,6 @@
 @code {
     private Member? _member;
     private string _username = "";
-    private bool _saved;
     private string? _error;
 
     protected override async Task OnInitializedAsync()
@@ -151,8 +150,6 @@
         if (!string.IsNullOrEmpty(_username))
             _member = await Db.Members.FindAsync(_username);
 
-        if (ctx.Request.Query.TryGetValue("saved", out _))
-            _saved = true;
         if (ctx.Request.Query.TryGetValue("error", out var err))
             _error = err;
     }

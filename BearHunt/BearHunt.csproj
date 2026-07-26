@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10" />
   </ItemGroup>
 
+  <Target Name="ProcessCss" BeforeTargets="BeforeBuild">
+    <Exec Command="npx lightningcss --bundle --minify --nesting wwwroot/styles.src.css -o wwwroot/styles.css"
+          WorkingDirectory="$(ProjectDir)" />
+  </Target>
 </Project>

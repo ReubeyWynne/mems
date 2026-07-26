@@ -1,0 +1,71 @@
+<tr id="pref-@Preference.Id" class="trap-row@(Preference.IsRallyLead ? " rally-lead" : "")">
+    <td>
+        @E(Preference.Username)
+        @if (Preference.IsRallyLead)
+        {
+            <span class="rally-badge" title="Rally Lead">&#9733;</span>
+        }
+    </td>
+    <td class="troops-col">@((MarkupString)Troops)</td>
+    <td class="march-col">@((MarkupString)March)</td>
+    <td class="hero-col">@((MarkupString)Hero)</td>
+    @if (IsAdmin)
+    {
+        <td class="wave-col">
+            <div class="admin-controls">
+                <select data-on:change="@($"@post('/api/admin/assign-wave/{Preference.Id}', {{ payload: {{ wave: evt.target.value }} }})")" class="wave-select">
+                    <option value="" selected="@(string.IsNullOrEmpty(Preference.Wave))">--</option>
+                    <option value="0" selected="@(Preference.Wave == "0")">W0</option>
+                    <option value="1" selected="@(Preference.Wave == "1")">W1</option>
+                    <option value="2" selected="@(Preference.Wave == "2")">W2</option>
+                    <option value="3" selected="@(Preference.Wave == "3")">W3</option>
+                    <option value="reserves" selected="@(Preference.Wave == "reserves")">Reserves</option>
+                </select>
+                <button data-on:click="@($"@post('/api/admin/toggle-rally-lead/{Preference.Id}')")"
+                        class="rl-toggle@(Preference.IsRallyLead ? " active" : "")"
+                        title="Toggle Rally Lead">RL</button>
+            </div>
+        </td>
+    }
+</tr>
+
+@code {
+    [Parameter, EditorRequired] public Preference Preference { get; set; } = null!;
+    [Parameter] public Member? Member { get; set; }
+    [Parameter] public bool IsAdmin { get; set; }
+
+    string Troops
+    {
+        get
+        {
+            if (Member is null) return "\u2014";
+            var total = Member.Infantry + Member.Cavalry + Member.Archers;
+            if (total == 0) return "\u2014";
+            var i = Member.Infantry * 100 / total;
+            var c = Member.Cavalry * 100 / total;
+            var a = Member.Archers * 100 / total;
+            return $"{FmtK(Member.Infantry)}/{FmtK(Member.Cavalry)}/{FmtK(Member.Archers)} <span class=\"formation\">({i}/{c}/{a})</span>";
+        }
+    }
+
+    string March
+    {
+        get
+        {
+            if (Member is null) return "\u2014";
+            if (Member.RallySize > 0) return FmtK(Member.RallySize);
+            if (Member.SoloMarchSize > 0) return $"{FmtK(Member.SoloMarchSize)}s";
+            return "\u2014";
+        }
+    }
+
+    string Hero
+    {
+        get
+        {
+            if (Member is null) return "\u2014";
+            if (string.IsNullOrEmpty(Member.RallyLeadHero)) return "\u2014";
+            return $"{E(Member.RallyLeadHero)} <span class=\"hero-lv\">Lv{Member.WidgetLevel}</span>";
+        }
+    }
+}

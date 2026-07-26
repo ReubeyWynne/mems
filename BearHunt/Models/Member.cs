@@ -10,6 +10,7 @@ public class Member
     public int WidgetLevel { get; set; }
     public int RallySize { get; set; }
     public int SoloMarchSize { get; set; }
+    public int RallyJoinerCap { get; set; }
     public string JoinerHero1 { get; set; } = "";
     public string PreferredBearWindow { get; set; } = "";
     public int? InfantryAtkPct { get; set; }

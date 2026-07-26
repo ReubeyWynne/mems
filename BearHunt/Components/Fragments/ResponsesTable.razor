@@ -1,0 +1,28 @@
+<div id="responses">
+    @if (!Prefs.Any())
+    {
+        <p>No responses yet.</p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr><th>Member</th><th>Trap</th><th>Time</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Prefs)
+                {
+                    <tr>
+                        <td>@E(p.Username)</td>
+                        <td>@E(p.SelectedTrap)</td>
+                        <td>@E(p.Notes)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public IEnumerable<Preference> Prefs { get; set; } = null!;
+}

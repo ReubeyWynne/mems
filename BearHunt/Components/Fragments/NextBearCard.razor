@@ -13,7 +13,7 @@
         <TrapRosterSection Trap="2" TrapTime="@Cycle.Trap2Time" NextDate="@NextDate" Prefs="@Trap2Prefs" Members="@Members" IsAdmin="@IsAdmin" />
     </div>
     @* action="#" prevents StaticHtmlRenderer from calling uninitialized NavigationManager when rendered server-side for SSE patches *@
-    <form class="bear-signup" data-on:submit="@@post('/api/preferences/upsert')" action="#">
+    <form class="bear-signup" data-on:submit="@@post('/api/preferences/upsert', {contentType: 'form'})" action="#">
         <div class="signup-row">
             <select name="selectedTrap">
                 <option value="either" selected="@(MyPref?.SelectedTrap == null || MyPref?.SelectedTrap == "either")">Either trap</option>

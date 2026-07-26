@@ -17,17 +17,17 @@ public static class AdminEndpoints
             HttpRequest request, IDataProtectionProvider protection, RazorRenderer renderer) =>
         {
             if (!AuthHelper.IsAdminAuthenticated(request, protection)) return;
-            var signals = await sse.ReadSignalsAsync<WaveAssignSignals>();
-            if (signals is null) return;
+            var form = await request.ReadFormAsync();
+            var wave = form["wave"].FirstOrDefault();
 
             var pref = await db.Preferences.FindAsync(prefId);
             if (pref is null) return;
 
-            pref.Wave = string.IsNullOrEmpty(signals.wave) ? null : signals.wave;
+            pref.Wave = string.IsNullOrEmpty(wave) ? null : wave;
             await db.SaveChangesAsync();
 
             await ReRenderTrapRoster(sse, db, renderer, pref.SelectedTrap, true);
-        });
+        }).DisableAntiforgery();
 
         app.MapPost("/api/admin/toggle-rally-lead/{prefId:int}", async (int prefId, IDatastarService sse, AppDbContext db,
             HttpRequest request, IDataProtectionProvider protection, RazorRenderer renderer) =>
@@ -41,7 +41,7 @@ public static class AdminEndpoints
             await db.SaveChangesAsync();
 
             await ReRenderTrapRoster(sse, db, renderer, pref.SelectedTrap, true);
-        });
+        }).DisableAntiforgery();
 
         // Export database backup
         app.MapGet("/api/admin/export-db", (HttpRequest request, IDataProtectionProvider protection) =>

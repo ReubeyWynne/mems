@@ -14,23 +14,19 @@ public static class CyclesEndpoints
     public static void Map(WebApplication app)
     {
         app.MapPost("/api/cycles/upsert", async (IDatastarService sse, AppDbContext db,
-            HttpContext httpContext, IDataProtectionProvider protection, RazorRenderer renderer) =>
+            HttpRequest request, IDataProtectionProvider protection) =>
         {
-            if (!AuthHelper.IsAdminAuthenticated(httpContext.Request, protection))
+            if (!AuthHelper.IsAdminAuthenticated(request, protection))
             {
-                httpContext.Response.StatusCode = 401;
+                request.HttpContext.Response.StatusCode = 401;
                 return;
             }
-            var form = await httpContext.Request.ReadFormAsync();
+            var form = await request.ReadFormAsync();
             var dateStr = form["date"].FirstOrDefault();
-            if (string.IsNullOrEmpty(dateStr) || !DateTime.TryParse(dateStr, out var parsedDate))
+            if (string.IsNullOrWhiteSpace(dateStr) || !DateTime.TryParse(dateStr, out var date))
             {
-                var fb = await renderer.RenderAsync<Feedback>(parms =>
-                {
-                    parms[nameof(Feedback.Type)] = "error";
-                    parms[nameof(Feedback.Message)] = "Date is required.";
-                });
-                await sse.PatchElementsAsync(fb);
+                await sse.PatchElementsAsync(
+                    """<div id="feedback" class="feedback-error">Date is required.</div>""");
                 return;
             }
             var cycle = await db.Cycles.FindAsync(1);
@@ -39,17 +35,17 @@ public static class CyclesEndpoints
                 cycle = new Cycle { Id = 1 };
                 db.Cycles.Add(cycle);
             }
-            cycle.StartDate = parsedDate;
-            cycle.Trap1Time = TimeOnly.Parse(form["trap1Time"].FirstOrDefault() ?? "00:00");
-            cycle.Trap2Time = TimeOnly.Parse(form["trap2Time"].FirstOrDefault() ?? "00:00");
+            cycle.StartDate = date;
+            var trap1Str = form["trap1Time"].FirstOrDefault();
+            var trap2Str = form["trap2Time"].FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(trap1Str) && TimeOnly.TryParse(trap1Str, out var t1))
+                cycle.Trap1Time = t1;
+            if (!string.IsNullOrWhiteSpace(trap2Str) && TimeOnly.TryParse(trap2Str, out var t2))
+                cycle.Trap2Time = t2;
             await db.SaveChangesAsync();
-            var fbOk = await renderer.RenderAsync<Feedback>(parms =>
-            {
-                parms[nameof(Feedback.Type)] = "success";
-                parms[nameof(Feedback.Message)] = "Cycle updated!";
-            });
-            await sse.PatchElementsAsync(fbOk);
-        });
+            await sse.PatchElementsAsync(
+                """<div id="feedback" class="feedback-success">Cycle updated!</div>""");
+        }).DisableAntiforgery();
 
         app.MapGet("/api/cycles/responses", async (IDatastarService sse, AppDbContext db, RazorRenderer renderer) =>
         {

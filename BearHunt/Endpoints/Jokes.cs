@@ -59,7 +59,7 @@ public static class JokesEndpoints
                 parms[nameof(JokeList.Jokes)] = jokes;
             });
             await sse.PatchElementsAsync($"""<div id="joke-list">{jl}</div>""");
-        });
+        }).DisableAntiforgery();
 
         app.MapDelete("/api/jokes/{id:int}", async (int id, IDatastarService sse, AppDbContext db,
             HttpRequest request, IDataProtectionProvider protection, RazorRenderer renderer) =>
@@ -78,6 +78,6 @@ public static class JokesEndpoints
                 parms[nameof(JokeList.Jokes)] = jokes;
             });
             await sse.PatchElementsAsync($"""<div id="joke-list">{jl}</div>""");
-        });
+        }).DisableAntiforgery();
     }
 }

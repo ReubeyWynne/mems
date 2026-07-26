@@ -21,7 +21,7 @@
         </form>
     </div>
 
-    <form data-on:submit="@@post('/api/members/upsert')">
+    <form data-on:submit="@@post('/api/members/upsert', {contentType: 'form'})">
     <div class="profile-body">
         <div class="profile-section">
             <div class="form-row">

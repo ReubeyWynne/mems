@@ -13,14 +13,16 @@
     {
         <td class="wave-col">
             <div class="admin-controls">
-                <select data-on:change="@($"@post('/api/admin/assign-wave/{Preference.Id}', {{ payload: {{ wave: evt.target.value }} }})")" class="wave-select">
-                    <option value="" selected="@(string.IsNullOrEmpty(Preference.Wave))">--</option>
-                    <option value="0" selected="@(Preference.Wave == "0")">W0</option>
-                    <option value="1" selected="@(Preference.Wave == "1")">W1</option>
-                    <option value="2" selected="@(Preference.Wave == "2")">W2</option>
-                    <option value="3" selected="@(Preference.Wave == "3")">W3</option>
-                    <option value="reserves" selected="@(Preference.Wave == "reserves")">Reserves</option>
-                </select>
+                <form data-on:submit="@($"@post('/api/admin/assign-wave/{Preference.Id}', {{contentType: 'form'}})")" action="#">
+                    <select name="wave" class="wave-select" onchange="this.form.requestSubmit()">
+                        <option value="" selected="@(string.IsNullOrEmpty(Preference.Wave))">--</option>
+                        <option value="0" selected="@(Preference.Wave == "0")">W0</option>
+                        <option value="1" selected="@(Preference.Wave == "1")">W1</option>
+                        <option value="2" selected="@(Preference.Wave == "2")">W2</option>
+                        <option value="3" selected="@(Preference.Wave == "3")">W3</option>
+                        <option value="reserves" selected="@(Preference.Wave == "reserves")">Reserves</option>
+                    </select>
+                </form>
                 <button data-on:click="@($"@post('/api/admin/toggle-rally-lead/{Preference.Id}')")"
                         class="rl-toggle@(Preference.IsRallyLead ? " active" : "")"
                         title="Toggle Rally Lead">RL</button>

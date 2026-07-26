@@ -46,7 +46,7 @@ public static class PreferencesEndpoints
 
             await ReRenderTrapRoster(sse, db, renderer, "1");
             await ReRenderTrapRoster(sse, db, renderer, "2");
-        });
+        }).DisableAntiforgery();
 
         app.MapPost("/api/preferences/remove", async (IDatastarService sse, AppDbContext db,
             HttpRequest request, RazorRenderer renderer) =>
@@ -65,7 +65,7 @@ public static class PreferencesEndpoints
 
             await ReRenderTrapRoster(sse, db, renderer, "1");
             await ReRenderTrapRoster(sse, db, renderer, "2");
-        });
+        }).DisableAntiforgery();
     }
 
     static async Task ReRenderTrapRoster(IDatastarService sse, AppDbContext db,

@@ -9,21 +9,21 @@
 {
     <h1>Admin</h1>
 
-    <form data-on:submit="@@post('/api/cycles/upsert')">
+    <form data-on:submit="@@post('/api/cycles/upsert', {contentType: 'form'})">
         <fieldset>
             <legend>Cycle Configuration</legend>
             <div class="form-group">
                 <label>Date</label>
-                <input type="date" name="date" />
+                <input type="date" name="date" value="@_cycle?.StartDate.ToString("yyyy-MM-dd")" />
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label>Trap 1 Time</label>
-                    <input type="time" name="trap1Time" />
+                    <input type="time" name="trap1Time" value="@_cycle?.Trap1Time.ToString("HH:mm")" />
                 </div>
                 <div class="form-group">
                     <label>Trap 2 Time</label>
-                    <input type="time" name="trap2Time" />
+                    <input type="time" name="trap2Time" value="@_cycle?.Trap2Time.ToString("HH:mm")" />
                 </div>
             </div>
             <button type="submit">Save Configuration</button>
@@ -32,7 +32,7 @@
 
     <fieldset>
         <legend>Homepage Secrets</legend>
-        <form data-on:submit="@@post('/api/jokes')">
+        <form data-on:submit="@@post('/api/jokes', {contentType: 'form'})">
             <div class="form-row">
                 <div class="form-group" style="flex:1">
                     <input type="text" name="text" placeholder="New secret string..." style="width:100%" />
@@ -78,8 +78,9 @@ else
 @code {
     private bool _isAuthenticated;
     private string? _error;
+    private Cycle? _cycle;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         var ctx = HttpContextAccessor.HttpContext!;
         _isAuthenticated = CookieIsValid(ctx.Request);
@@ -88,6 +89,11 @@ else
         if (ctx.Request.Query.TryGetValue("error", out var err))
         {
             _error = err;
+        }
+
+        if (_isAuthenticated)
+        {
+            _cycle = await Db.Cycles.FindAsync(1);
         }
     }
 

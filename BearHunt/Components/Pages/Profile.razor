@@ -1,0 +1,160 @@
+@page "/bear-hunt/profile"
+@inject AppDbContext Db
+@inject IHttpContextAccessor HttpContext
+
+@if (_saved)
+{
+    <div id="feedback" class="feedback-success">Profile saved!</div>
+}
+@if (_error is not null)
+{
+    <div class="feedback-error">@_error</div>
+}
+
+<div class="profile-card">
+
+    <div class="profile-banner">
+        <div class="profile-title-block">
+            <span class="profile-label">YOUR PROFILE</span>
+            <span class="profile-username"><input type="text" value="@_username" readonly placeholder="Set a username" /></span>
+        </div>
+        <form method="post" action="/api/profile/username" class="username-form">
+            <input type="text" name="username" placeholder="Change username" required />
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+    <form method="post" action="/api/members/upsert">
+    <div class="profile-body">
+        <div class="profile-section">
+            <div class="section-header">Troop Counts</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Infantry</label>
+                    <input type="number" name="infantry" value="@_member?.Infantry" placeholder="0" />
+                </div>
+                <div class="form-group">
+                    <label>Cavalry</label>
+                    <input type="number" name="cavalry" value="@_member?.Cavalry" placeholder="0" />
+                </div>
+                <div class="form-group">
+                    <label>Archers</label>
+                    <input type="number" name="archers" value="@_member?.Archers" placeholder="0" />
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">Rally Lead</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Lead Hero</label>
+                    <select name="rallyLeadHero">
+                        <option value="">Select hero...</option>
+                        @foreach (var hero in new[] { "Amadeus", "Helga", "Chenko", "Other" })
+                        {
+                            <option value="@hero" selected="@(hero == _member?.RallyLeadHero)">@hero</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Star Level (1-5)</label>
+                    <input type="number" name="widgetLevel" value="@(_member?.WidgetLevel ?? 3)" min="1" max="5" />
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">March Sizes</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Rally Size (host)</label>
+                    <input type="number" name="rallySize" value="@_member?.RallySize" placeholder="0" />
+                </div>
+                <div class="form-group">
+                    <label>Solo March Size</label>
+                    <input type="number" name="soloMarchSize" value="@_member?.SoloMarchSize" placeholder="0" />
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">Rally Leader Stats</div>
+            <details class="section-hint">
+                <summary>How to enter these stats (recommend Option 1)</summary>
+                <p><strong>Option 1 — Terror rally:</strong> Run a terror rally with your heroes and gear, then enter the stats from the battle report. Those stats already include widget effects, so <em>leave widget level at 0</em> in the Rally Lead section above.</p>
+                <p><strong>Option 2 — Beast attack:</strong> Attack a beast with your heroes and gear, then enter the stats from the battle report. Beast reports don't include widget bonuses, so enter your rally widget's ATK and LET values below as usual.</p>
+            </details>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Infantry Atk %</label>
+                    <input type="number" name="infantryAtkPct" value="@_member?.InfantryAtkPct" placeholder="0" />
+                </div>
+                <div class="form-group">
+                    <label>Infantry Let %</label>
+                    <input type="number" name="infantryLethalityPct" value="@_member?.InfantryLethalityPct" placeholder="0" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cavalry Atk %</label>
+                    <input type="number" name="cavalryAtkPct" value="@_member?.CavalryAtkPct" placeholder="0" />
+                </div>
+                <div class="form-group">
+                    <label>Cavalry Let %</label>
+                    <input type="number" name="cavalryLethalityPct" value="@_member?.CavalryLethalityPct" placeholder="0" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Archer Atk %</label>
+                    <input type="number" name="archerAtkPct" value="@_member?.ArcherAtkPct" placeholder="0" />
+                </div>
+                <div class="form-group">
+                    <label>Archer Let %</label>
+                    <input type="number" name="archerLethalityPct" value="@_member?.ArcherLethalityPct" placeholder="0" />
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="section-header">Other</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Preferred Bear Window (UTC)</label>
+                    <input type="text" name="preferredBearWindow" value="@_member?.PreferredBearWindow" placeholder="e.g. 18:00-22:00" />
+                </div>
+                <div class="form-group">
+                    <label>March Count</label>
+                    <input type="number" name="marchCount" value="@_member?.MarchCount" min="0" max="8" placeholder="0" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-save">
+        <button type="submit">Save Profile</button>
+    </div>
+    </form>
+
+</div>
+
+@code {
+    private Member? _member;
+    private string _username = "";
+    private bool _saved;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var ctx = HttpContext.HttpContext!;
+        _username = ctx.Request.Cookies.TryGetValue("kh_username", out var u) ? u : "";
+        if (!string.IsNullOrEmpty(_username))
+            _member = await Db.Members.FindAsync(_username);
+
+        if (ctx.Request.Query.TryGetValue("saved", out _))
+            _saved = true;
+        if (ctx.Request.Query.TryGetValue("error", out var err))
+            _error = err;
+    }
+}

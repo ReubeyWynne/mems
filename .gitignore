@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.db
+*.db-shm
+*.db-wal
+cookies.txt
+cookies2.txt

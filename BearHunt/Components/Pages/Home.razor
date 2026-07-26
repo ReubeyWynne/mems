@@ -1,0 +1,33 @@
+@page "/"
+
+<div class="homepage" data-signals="{ splashText: '' }"
+     data-init="@@get('/api/jokes/random')">
+    <div class="homepage-hero">
+        <h1 class="homepage-title">
+            Welcome to MadNess
+        </h1>
+        <span data-show="splashText"
+              data-bind-splashText
+              class="splash-text"></span>
+    </div>
+    <p class="homepage-subtitle">Bear Hunt Alliance Tool</p>
+
+    <div class="hub-cards">
+        <a href="/bear-hunt" class="hub-card">
+            <h3>Bear Hunt Hub</h3>
+            <p>Schedule, signups, and trap rosters</p>
+        </a>
+        <a href="/bear-hunt/profile" class="hub-card">
+            <h3>Profile</h3>
+            <p>Set your troop counts, heroes, and march sizes</p>
+        </a>
+        <a href="/bear-hunt/roster" class="hub-card">
+            <h3>Roster</h3>
+            <p>View all alliance members and their loadouts</p>
+        </a>
+        <a href="/bear-hunt/schedule" class="hub-card">
+            <h3>Schedule</h3>
+            <p>Next bear day countdown and trap signups</p>
+        </a>
+    </div>
+</div>

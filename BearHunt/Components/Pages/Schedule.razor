@@ -1,0 +1,10 @@
+@page "/bear-hunt/schedule"
+@inject AppDbContext Db
+@inject NavigationManager Nav
+
+<h1>Schedule</h1>
+<div id="schedule" data-init="@@get('/api/schedule')">
+    <div id="schedule-cards">
+        <p>Loading cycles...</p>
+    </div>
+</div>

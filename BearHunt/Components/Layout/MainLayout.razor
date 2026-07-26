@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bear Hunt Alliance Tool</title>
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+    <nav>
+        <a href="/">🏠 Home</a>
+        <a href="/bear-hunt">🐻 Bear Hunt</a>
+        <a href="/bear-hunt/profile">👤 Profile</a>
+        <a href="/bear-hunt/roster">📋 Roster</a>
+        <a href="/bear-hunt/schedule">&#x1F4C5; Schedule</a>
+        <a href="/bear-hunt/admin" class="nav-right">&#x2699;&#xFE0F; Admin</a>
+    </nav>
+    <main>
+        @Body
+    </main>
+    <script src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.2/bundles/datastar.js" type="module"></script>
+</body>
+</html>
+
+@code {
+    [Parameter] public RenderFragment? Body { get; set; }
+}

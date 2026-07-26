@@ -1,0 +1,22 @@
+@page "/bear-hunt/roster"
+@inject AppDbContext Db
+@inject NavigationManager Nav
+
+<h1>Roster</h1>
+<div data-init="@@get('/api/roster')">
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Troops (I/C/A)</th>
+                <th>Rally Lead</th>
+                <th>Rally Size</th>
+                <th>Solo March</th>
+                <th>Joiner Hero</th>
+            </tr>
+        </thead>
+        <tbody id="roster-rows">
+            <tr><td colspan="6">Loading...</td></tr>
+        </tbody>
+    </table>
+</div>

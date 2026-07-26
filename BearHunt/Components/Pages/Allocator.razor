@@ -1,0 +1,56 @@
+@page "/bear-hunt/admin/allocator"
+@inject AppDbContext Db
+@inject IConfiguration Config
+@inject IDataProtectionProvider DataProtectionProvider
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (_isAuthenticated)
+{
+    <h1>Allocator</h1>
+
+    <div id="allocator-results" data-init="@@get('/api/admin/allocator')">
+        <p>Loading...</p>
+    </div>
+}
+else
+{
+    <h1>Admin Login</h1>
+    <form method="post" action="/api/admin/login">
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" autofocus />
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    @if (_error is not null)
+    {
+        <div id="feedback" class="feedback-error">@_error</div>
+    }
+}
+
+@code {
+    private bool _isAuthenticated;
+    private string? _error;
+
+    protected override void OnInitialized()
+    {
+        var ctx = HttpContextAccessor.HttpContext!;
+        _isAuthenticated = CookieIsValid(ctx.Request);
+        if (ctx.Request.Query.TryGetValue("error", out var err))
+            _error = err;
+    }
+
+    private bool CookieIsValid(HttpRequest request)
+    {
+        if (!request.Cookies.TryGetValue("bh_admin", out var cookie))
+            return false;
+        try
+        {
+            var protector = DataProtectionProvider.CreateProtector("bh-admin-auth")
+                .ToTimeLimitedDataProtector();
+            protector.Unprotect(cookie);
+            return true;
+        }
+        catch { return false; }
+    }
+}

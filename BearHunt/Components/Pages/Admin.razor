@@ -1,0 +1,105 @@
+@page "/bear-hunt/admin"
+@inject AppDbContext Db
+@inject NavigationManager Nav
+@inject IConfiguration Config
+@inject IDataProtectionProvider DataProtectionProvider
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (_isAuthenticated)
+{
+    <h1>Admin</h1>
+
+    <div data-signals="{ date: '', trap1Time: '', trap2Time: '' }">
+        <fieldset>
+            <legend>Cycle Configuration</legend>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" data-bind:date />
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Trap 1 Time</label>
+                    <input type="time" data-bind:trap1Time />
+                </div>
+                <div class="form-group">
+                    <label>Trap 2 Time</label>
+                    <input type="time" data-bind:trap2Time />
+                </div>
+            </div>
+            <button data-on:click="&#64;post('/api/cycles/upsert')">Save Configuration</button>
+        </fieldset>
+    </div>
+
+    <fieldset>
+        <legend>Homepage Secrets</legend>
+        <div data-signals="{ text: '' }">
+            <div class="form-row">
+                <div class="form-group" style="flex:1">
+                    <input type="text" data-bind:text placeholder="New secret string..." style="width:100%" />
+                </div>
+                <div class="form-group">
+                    <button data-on:click="&#64;post('/api/jokes')">Add</button>
+                </div>
+            </div>
+        </div>
+        <div id="joke-list"
+             data-init="&#64;get('/api/jokes')">
+            <p>Loading...</p>
+        </div>
+    </fieldset>
+
+    <div id="feedback"></div>
+
+    <form method="post" action="/api/admin/logout" style="margin-top:2rem">
+        <button type="submit">Logout</button>
+    </form>
+}
+else
+{
+    <h1>Admin Login</h1>
+    <form method="post" action="/api/admin/login">
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" autofocus />
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    @if (_error is not null)
+    {
+        <div id="feedback" class="feedback-error">@_error</div>
+    }
+}
+
+@code {
+    private bool _isAuthenticated;
+    private string? _error;
+
+    protected override void OnInitialized()
+    {
+        var ctx = HttpContextAccessor.HttpContext!;
+        _isAuthenticated = CookieIsValid(ctx.Request);
+
+        // Show error if redirected back from failed login
+        if (ctx.Request.Query.TryGetValue("error", out var err))
+        {
+            _error = err;
+        }
+    }
+
+    private bool CookieIsValid(HttpRequest request)
+    {
+        if (!request.Cookies.TryGetValue("bh_admin", out var cookie))
+            return false;
+        try
+        {
+            var protector = DataProtectionProvider.CreateProtector("bh-admin-auth")
+                .ToTimeLimitedDataProtector();
+            protector.Unprotect(cookie);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+}

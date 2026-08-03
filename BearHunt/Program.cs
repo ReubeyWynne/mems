@@ -54,6 +54,7 @@ PreferencesEndpoints.Map(app);
 CyclesEndpoints.Map(app);
 AdminEndpoints.Map(app);
 WavePlannerEndpoints.Map(app);
+AcademyEndpoints.Map(app);
 AuthEndpoints.Map(app);
 ProfileEndpoints.Map(app);
 JokesEndpoints.Map(app);

@@ -23,6 +23,7 @@
             <span class="strat-legend-item"><span class="strat-swatch strat-swatch-ffa"></span>Free for all &mdash; the cost of no plan</span>
         </div>
 
+        <div class="timeline-wrap">
         <div class="timeline">
             @for (int m = 0; m <= 11; m++)
             {
@@ -49,83 +50,87 @@
             </div>
             <div class="fight-marker" style="@(Window(10.5, 11, 20, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
 
-            <div class="rally-bar" style="@(Bar(1, 6, 46, 11))">
+            <div class="rally-bar" style="@(Bar(1, 6, 52, 11))">
                 <span class="rally-bar-label">Group 2 &mdash; launch 1:00 &middot; join now</span>
             </div>
-            <div class="fight-marker" style="@(Window(6, 6.5, 46, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
-            <div class="rally-bar bar-next" style="@(Bar(6.5, 11.5, 46, 11))">
+            <div class="fight-marker" style="@(Window(6, 6.5, 52, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
+            <div class="rally-bar bar-next" style="@(Bar(6.5, 11.5, 52, 11))">
                 <span class="rally-bar-label">relaunch &mdash; fires 11:30</span>
             </div>
 
-            <div class="rally-bar" style="@(Bar(2, 7, 72, 11))">
+            <div class="rally-bar" style="@(Bar(2, 7, 84, 11))">
                 <span class="rally-bar-label">Group 3 &mdash; launch 2:00</span>
             </div>
-            <span class="rally-player empty" style="@(PlayerChip(4.3, 72, 11))">empty until ~5:30</span>
-            <div class="join-window" style="@(Window(6, 7, 72, 11))" title="Join 6:00&ndash;7:00"><span>join 6:00&ndash;7:00</span></div>
-            <div class="fight-marker" style="@(Window(7, 7.5, 72, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
-            <div class="rally-bar bar-next" style="@(Bar(7.5, 12.5, 72, 11))">
+            <span class="rally-player empty" style="@(PlayerChip(4.3, 84, 11))">empty until ~5:30</span>
+            <div class="join-window" style="@(Window(6, 7, 84, 11))" title="Join 6:00&ndash;7:00"><span>join 6:00&ndash;7:00</span></div>
+            <div class="fight-marker" style="@(Window(7, 7.5, 84, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
+            <div class="rally-bar bar-next" style="@(Bar(7.5, 12.5, 84, 11))">
                 <span class="rally-bar-label">relaunch &mdash; fires 12:30</span>
             </div>
 
-            <div class="rally-bar" style="@(Bar(3, 8, 98, 11))">
+            <div class="rally-bar" style="@(Bar(3, 8, 116, 11))">
                 <span class="rally-bar-label">Group 4 &mdash; launch 3:00</span>
             </div>
-            <span class="rally-player empty" style="@(PlayerChip(5.4, 98, 11))">empty until ~6:30</span>
-            <div class="join-window" style="@(Window(7, 8, 98, 11))" title="Join 7:00&ndash;8:00"><span>join 7:00&ndash;8:00</span></div>
-            <div class="fight-marker" style="@(Window(8, 8.5, 98, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
-            <div class="rally-bar bar-next" style="@(Bar(8.5, 13.5, 98, 11))">
+            <span class="rally-player empty" style="@(PlayerChip(5.4, 116, 11))">empty until ~6:30</span>
+            <div class="join-window" style="@(Window(7, 8, 116, 11))" title="Join 7:00&ndash;8:00"><span>join 7:00&ndash;8:00</span></div>
+            <div class="fight-marker" style="@(Window(8, 8.5, 116, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
+            <div class="rally-bar bar-next" style="@(Bar(8.5, 13.5, 116, 11))">
                 <span class="rally-bar-label">relaunch &mdash; fires 13:30</span>
             </div>
 
-            <span class="rally-player join-player" style="@(PlayerChip(5.5, 124, 11))">Group 1 return</span>
-            <span class="rally-player join-player" style="@(PlayerChip(6.5, 124, 11))">Group 2 return</span>
-            <span class="rally-player join-player" style="@(PlayerChip(7.5, 124, 11))">Group 3 return</span>
-            <span class="rally-player join-player" style="@(PlayerChip(8.5, 124, 11))">Group 4 return</span>
+            <span class="rally-player join-player" style="@(PlayerChip(5.5, 148, 11))">Group 1 return</span>
+            <span class="rally-player join-player" style="@(PlayerChip(6.5, 148, 11))">Group 2 return</span>
+            <span class="rally-player join-player" style="@(PlayerChip(7.5, 148, 11))">Group 3 return</span>
+            <span class="rally-player join-player" style="@(PlayerChip(8.5, 148, 11))">Group 4 return</span>
 
-            <div class="rally-bar bar-next" style="@(Bar(4, 9, 150, 11))">
+            <div class="rally-bar bar-next" style="@(Bar(4, 9, 180, 11))">
                 <span class="rally-bar-label">Group 5 (optional) &mdash; launch 4:00 &middot; fires 9:00</span>
             </div>
-            <div class="fight-marker" style="@(Window(9, 9.5, 150, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
+            <div class="fight-marker" style="@(Window(9, 9.5, 180, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
 
             <div class="strat-sep"><span>Free for all</span></div>
 
-            <span class="rally-player parked" style="@(PlayerChip(0.3, 210, 11))">waits 4+ mins</span>
+            <span class="rally-player parked" style="@(PlayerChip(0.3, 240, 11))">waits 4+ mins</span>
             @foreach (var (from, to, launch) in FfaBands(11))
             {
                 if (launch)
                 {
-                    <div class="phase-band phase-launch" style="@(Band(from, to, 210, 11))">
+                    <div class="phase-band phase-launch" style="@(Band(from, to, 240, 11))">
                         <span>@(from < 1.5 ? "everyone launches" : "launching")</span>
                     </div>
                 }
                 else
                 {
-                    <div class="phase-band phase-wait" style="@(Band(from, to, 210, 11))"><span>waiting</span></div>
+                    <div class="phase-band phase-wait" style="@(Band(from, to, 240, 11))"><span>waiting</span></div>
                 }
             }
-            <div class="fight-marker" style="@(Band(5, 5.5, 210, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
-            <div class="fight-marker" style="@(Band(10.5, 11, 210, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
+            <div class="fight-marker" style="@(Band(5, 5.5, 240, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
+            <div class="fight-marker" style="@(Band(10.5, 11, 240, 11))" title="Fight + travel home (~30s)"><span>fight</span></div>
+        </div>
         </div>
 
         <p class="scenario-caption">
-            <strong>Staggered:</strong> your strongest, most reliable leads split into 4 groups &mdash; launching at 0:00, 1:00, 2:00 and 3:00 &mdash; with reserve leads ready to pick up slack. Joiners pile into groups 1 and 2 the moment they launch, so nobody is left over and groups 3 and 4 stay empty until group 1's joiners are home (~5:30&ndash;6:00) and rush over. Every group keeps relaunching the same way all event; an optional 5th group can launch at 4:00 to smooth things further, but those leads only get 4 launches, not the full 5.<br />
-            <strong>Free for all:</strong> no assigned leads means a glut of launches at 0:00, everything fires at 5:00, then a dead 4&frac12;-minute gap, a 1-minute burst, another gap &mdash; all event. Players join by the lead's <strong>power</strong>, not the next rally to fire, so most sit parked 4+ minutes at a stretch.
+            <strong>Staggered:</strong> Pick your 4 most reliable leads. Group 1 launches at 0:00, group 2 at 1:00, group 3 at 2:00, group 4 at 3:00 &mdash; one per minute. Joiners flood groups 1 and 2, so those rallies are full immediately. Groups 3 and 4 stay empty until the group 1 troops finish fighting and come home around 5:30 &mdash; then they pile into group 3. The cycle repeats all event: every group relaunches the moment its troops return. Need even smoother coverage? A 5th group at 4:00 helps, but those leads only get 4 launches total.<br />
+            <strong>Free for all:</strong> Everyone launches at once. All rallies fire together at 5:00 &mdash; then nothing. 4&frac12; minutes of silence. A 1-minute scramble. Another gap. Repeat for 30 minutes. And because players join by leader <strong>strength</strong> rather than the next available rally, most troops sit parked for 4+ minutes at a time.
         </p>
     </div>
 
-    <div class="lesson-fact">Same joiners, same troops: staggering keeps a rally firing every minute from 5:00 on &mdash; the free-for-all parks your best troops 4+ minutes at a time.</div>
+    <div class="lesson-fact">Same joiners, same troops. Staggering delivers a rally every minute from 5:00 onward. Free-for-all leaves your best troops parked for 4+ minutes at a time.</div>
 </section>
 
 <!-- ══════════════ Split Your Troops ══════════════ -->
 <section id="split" class="lesson lesson-section">
     <h2>&#9986;&#65039; Split Your Troops</h2>
-    <p class="academy-intro">One giant march wastes damage: a march twice as big only hits about <strong>40% harder</strong> &mdash; because every troop you add deals a little less than the one before it. Same troops, spread across <strong>simultaneous</strong> marches &mdash; and you deal more damage for free. <strong>Use every march slot, every wave.</strong></p>
+    <p class="academy-intro">One big march leaves damage on the table. Double the troops only adds about <strong>40%</strong> more damage &mdash; every extra troop hits a little softer than the last. Spread those same troops across <strong>simultaneous</strong> marches instead, and you deal more damage without spending anything extra. <strong>Use every march slot, every wave.</strong></p>
 
     <div class="lesson diminish">
         <h3>The bigger the rally, the less each troop adds</h3>
         <figure class="diminish-chart">
             <svg viewBox="0 0 380 170" role="img" aria-label="Damage grows with troop count but slows down: doubling troops adds only about 40 percent damage. The dashed line shows what one-for-one growth would look like.">
                 <line class="diminish-linear" x1="34" y1="99.5" x2="368" y2="-328" />
+                <!-- axes -->
+                <line class="diminish-axis" x1="34" y1="14" x2="34" y2="160" />
+                <line class="diminish-axis" x1="34" y1="160" x2="368" y2="160" />
                 <polyline class="diminish-curve" points="34,99.5 56.5,87.7 78.75,78.6 101,71 145.5,58.2 190,47.4 279,29.3 368,14" />
                 <circle class="diminish-dot" cx="34" cy="99.5" r="3.5" />
                 <circle class="diminish-dot" cx="56.5" cy="87.7" r="3.5" />
@@ -145,23 +150,23 @@
             </svg>
             <figcaption>Troops &rarr; &middot; doubling troops adds only ~40% damage &middot; dashed line = 1:1 growth</figcaption>
         </figure>
-        <p class="scenario-caption">Every troop you add deals a little less than the one before it. The first 10k troops hit hardest; the next 20k add only about a third as much per troop, and the 40k after that less than a quarter. The bigger the march, the smaller each new troop's share &mdash; so the fastest way to more damage isn't a bigger march, it's more marches.</p>
+        <p class="scenario-caption">The first 10k troops hit hardest. The next 20k add only about a third as much per troop. The 40k after that? Less than a quarter. Every troop you send is worth a little less than the one before it &mdash; so the fastest way to more damage isn't a bigger march, it's more marches.</p>
     </div>
 
-    <div class="split-slider">
+    <div class="split-slider" data-signals='{ "q": @_q }'>
         <h3>Same troops, more simultaneous rallies</h3>
         <label class="q-slider">
             Simultaneous rallies
-            <input type="range" id="q-slider" min="1" max="6" value="@_q" />
-            <span id="q-value">@_q</span>
+            <input type="range" id="q-slider" min="1" max="6" value="@_q" data-bind:q />
+            <span id="q-value" data-text="$q">@_q</span>
         </label>
-        <div class="split-live">That's <strong><span id="split-ratio">@_gainRatio.ToString("0.0", CultureInfo.InvariantCulture)</span>&times;</strong> the damage of one big march &mdash; same troops, nothing extra spent.</div>
+        <div class="split-live">That's <strong><span id="split-ratio" data-computed:ratio="Math.sqrt($q).toFixed(1)" data-text="$ratio">@_gainRatio.ToString("0.0", CultureInfo.InvariantCulture)</span>&times;</strong> the damage of one big march &mdash; same troops, nothing extra spent.</div>
         <p class="split-note">6 is the most simultaneous rallies any player can field &mdash; aim for all 6, every wave.</p>
     </div>
 
     <div class="lesson-box">
         <h3>Why everyone stacks on the whale &mdash; and why it hurts</h3>
-        <p>Whales have far better stats, so it's tempting to pile every march onto theirs. But a rally only holds so many slots: stack everyone on the whale and most players' troops just <strong>queue up, parked 4+ minutes between hits</strong> &mdash; the same dead time as the free-for-all. And the whale's stats only reach the few who fit inside the rally &mdash; the more players pile on, the <em>fewer</em> actually benefit.</p>
+        <p>It's tempting to stack every march on the strongest player &mdash; their stats are better, so their rallies hit harder. But a rally has limited slots, and the same diminishing returns apply: more troops in one rally adds less and less. Most just <strong>queue up, parked 4+ minutes between hits</strong> &mdash; the same dead time as the free-for-all. The whale's stats only help the few who fit inside. Spread out: more rallies beats one big one, every time.</p>
     </div>
 
     <div class="lesson-box">
@@ -182,11 +187,12 @@
     <h2>&#9876;&#65039; Your Formation</h2>
     <p class="academy-intro">Every leader likes a specific troop mix &mdash; usually <strong>heavy on archers</strong>, because archers hit hardest per troop. Match it and your damage jumps. Pick a leader and plug in your numbers:</p>
 
-    <form method="get" action="" id="formation-form" class="lesson lesson-form">
+    <form method="get" action="" id="formation-form" class="lesson lesson-form"
+          data-on:submit="@@get('/api/academy/formation', {contentType: 'form'})">
         <div class="form-row">
             <div class="form-group">
                 <label>Leader</label>
-                <select name="leader">
+                <select name="leader" data-bind:leader>
                     <option value="custom" selected="@(_leader == "custom")">Custom stats</option>
                     @foreach (var l in _leaders)
                     {
@@ -197,7 +203,7 @@
             </div>
         </div>
 
-        <details id="custom-stats" class="section-hint" open="@(_leader == "custom")">
+        <details id="custom-stats" class="section-hint" open="@(_leader == "custom")" data-attr:open="$leader === 'custom'">
             <summary>Custom stats &mdash; use your own numbers</summary>
             <div class="form-row">
                 <div class="form-group">
@@ -259,33 +265,11 @@
     </form>
 
     <div class="lesson lesson-output" id="formation-output">
-        <h3>Your leader's preferred mix</h3>
-        <p class="lesson-math"><strong>@_rInf.ToString("0.0%", CultureInfo.InvariantCulture) infantry / @_rCav.ToString("0.0%", CultureInfo.InvariantCulture) cavalry / @_rArc.ToString("0.0%", CultureInfo.InvariantCulture) archers</strong></p>
-        <p>Archers hit hardest per troop, so they always get the biggest share.</p>
-
-        <div class="lesson-fact">
-            @if (_archerScarce)
-            {
-                <text>You don't have enough archers for that mix &mdash; so send all your archers, 5k infantry, and fill the rest with cavalry.</text>
-            }
-            else
-            {
-                <text>Your troops fit the mix &mdash; scale each type to match the leader's share.</text>
-            }
-        </div>
-
-        <h3>Send this per march</h3>
-        <p class="lesson-math"><strong>@FmtK(_recInf) infantry / @FmtK(_recCav) cavalry / @FmtK(_recArc) archers</strong>
-            &nbsp;(cap @(_cap <= 0 ? "uncapped" : FmtK(_cap)), @_q simultaneous rallies)</p>
-        <p>Each march scores about @_perMarchDmg.ToString("N0", CultureInfo.InvariantCulture);
-            all @_q simultaneous rallies together &asymp; <strong>@_totalDmg.ToString("N0", CultureInfo.InvariantCulture)</strong>.
-            (Scores are for comparing setups &mdash; not real damage numbers.)</p>
+        @((MarkupString)AcademyFormation.RenderHtml(_formation))
     </div>
 </section>
 
 @code {
-    const double ExampleA = 9.205; // balanced sample leader: (1 + 250/100)(1 + 163/100)
-
     sealed record LeaderPick(string Username, double K);
 
     // formation
@@ -293,10 +277,7 @@
     private string _leader = "custom";
     private int _inf = 600000, _cav = 400000, _arc = 100000, _q = 6, _cap = 25000;
     private int? _infAtk, _infLet, _cavAtk, _cavLet, _arcAtk, _arcLet;
-    private double _aInf, _aCav, _aArc, _rInf, _rCav, _rArc;
-    private int _recInf, _recCav, _recArc;
-    private double _perMarchDmg, _totalDmg;
-    private bool _archerScarce;
+    private AcademyFormation.Result _formation = null!;
 
     // split (motivation only, no per-player numbers): Q simultaneous rallies, √ rule
     private double _gainRatio;
@@ -318,74 +299,18 @@
         }
         _leaders.Sort((a, b) => b.K.CompareTo(a.K));
 
-        var q = ctx.Request.Query;
-        _leader = q["leader"].FirstOrDefault() ?? "custom";
-        _infAtk = ParseQ(q, "infAtk");
-        _infLet = ParseQ(q, "infLet");
-        _cavAtk = ParseQ(q, "cavAtk");
-        _cavLet = ParseQ(q, "cavLet");
-        _arcAtk = ParseQ(q, "arcAtk");
-        _arcLet = ParseQ(q, "arcLet");
-        _cap = ParseQ(q, "cap") ?? _cap;
-
-        if (viewer is not null)
-        {
-            _q = ParseQ(q, "q") ?? (viewer.MarchCount > 0 ? viewer.MarchCount : _q);
-            _inf = ParseQ(q, "inf") ?? (viewer.Infantry > 0 ? viewer.Infantry : _inf);
-            _cav = ParseQ(q, "cav") ?? (viewer.Cavalry > 0 ? viewer.Cavalry : _cav);
-            _arc = ParseQ(q, "arc") ?? (viewer.Archers > 0 ? viewer.Archers : _arc);
-        }
-        else
-        {
-            _q = ParseQ(q, "q") ?? _q;
-            _inf = ParseQ(q, "inf") ?? _inf;
-            _cav = ParseQ(q, "cav") ?? _cav;
-            _arc = ParseQ(q, "arc") ?? _arc;
-        }
-        if (_q < 1) _q = 1; else if (_q > 6) _q = 6; // 6 = max simultaneous rallies (MarchCount)
+        var inputs = AcademyFormation.Parse(ctx.Request.Query, viewer);
+        _leader = inputs.Leader;
+        _infAtk = inputs.InfAtk; _infLet = inputs.InfLet;
+        _cavAtk = inputs.CavAtk; _cavLet = inputs.CavLet;
+        _arcAtk = inputs.ArcAtk; _arcLet = inputs.ArcLet;
+        _inf = inputs.Inf; _cav = inputs.Cav; _arc = inputs.Arc;
+        _q = inputs.Q; _cap = inputs.Cap;
 
         // split motivation: Q equal simultaneous rallies deal √Q × one big march
         _gainRatio = Math.Sqrt(_q);
 
-        // formation: custom stats apply only when the Custom stats leader is selected
-        bool customFilled = _leader == "custom"
-                         && (_infAtk.HasValue || _infLet.HasValue || _cavAtk.HasValue
-                          || _cavLet.HasValue || _arcAtk.HasValue || _arcLet.HasValue);
-
-        double aInf, aCav, aArc;
-        if (customFilled)
-        {
-            aInf = DamageCalc.AttackFactor(_infAtk, _infLet);
-            aCav = DamageCalc.AttackFactor(_cavAtk, _cavLet);
-            aArc = DamageCalc.AttackFactor(_arcAtk, _arcLet);
-            if (aInf + aCav + aArc == 0) aInf = aCav = aArc = ExampleA; // placeholders only, no real stats yet
-        }
-        else
-        {
-            var pick = _leaders.FirstOrDefault(l => l.Username == _leader);
-            if (pick is not null)
-            {
-                var lm = members.First(m => m.Username == pick.Username);
-                aInf = DamageCalc.AttackFactor(lm.InfantryAtkPct, lm.InfantryLethalityPct);
-                aCav = DamageCalc.AttackFactor(lm.CavalryAtkPct, lm.CavalryLethalityPct);
-                aArc = DamageCalc.AttackFactor(lm.ArcherAtkPct, lm.ArcherLethalityPct);
-            }
-            else
-            {
-                aInf = aCav = aArc = ExampleA;
-            }
-        }
-
-        _aInf = aInf;
-        _aCav = aCav;
-        _aArc = aArc;
-        (_rInf, _rCav, _rArc) = DamageCalc.TargetRatio(aInf, aCav, aArc);
-        (_recInf, _recCav, _recArc) = DamageCalc.RecommendMarch(_inf, _cav, _arc, _q, _cap, _rInf, _rCav, _rArc);
-        _perMarchDmg = DamageCalc.MarchDamage(aInf, aCav, aArc, _recInf, _recCav, _recArc);
-        _totalDmg = _perMarchDmg * _q;
-
-        int aI = _inf / _q, aC = _cav / _q, aA = _arc / _q;
-        _archerScarce = aA < _rArc * (aI + aC + aA);
+        _formation = AcademyFormation.Compute(inputs, members);
     }
 
     static bool CompleteStats(Member m) =>
@@ -393,20 +318,17 @@
         && m.CavalryAtkPct.HasValue && m.CavalryLethalityPct.HasValue
         && m.ArcherAtkPct.HasValue && m.ArcherLethalityPct.HasValue;
 
-    static int? ParseQ(Microsoft.AspNetCore.Http.IQueryCollection q, string key) =>
-        int.TryParse(q[key].FirstOrDefault(), out var n) ? n : null;
-
     // Timeline position helpers: horizontal axis spans 0..axis minutes
     static string Tick(int m, double axis) => $"left:{m / axis * 100:F1}%";
     static string Marker(double min, double axis) => $"left:{min / axis * 100:F1}%";
     static string Bar(double from, double to, double top, double axis) =>
-        $"left:{from / axis * 100:F1}%;width:{(to - from) / axis * 100:F1}%;top:{top:0}px";
+        $"left:{from / axis * 100:F1}%;width:{(to - from) / axis * 100:F1}%;top:{top / 300 * 100:F1}%";
     static string Window(double from, double to, double top, double axis) =>
-        $"left:{from / axis * 100:F1}%;width:{(to - from) / axis * 100:F1}%;top:{top:0}px";
+        $"left:{from / axis * 100:F1}%;width:{(to - from) / axis * 100:F1}%;top:{top / 300 * 100:F1}%";
     static string PlayerChip(double min, double top, double axis) =>
-        $"left:{min / axis * 100:F1}%;top:{top:0}px";
+        $"left:{min / axis * 100:F1}%;top:{top / 300 * 100:F1}%";
     static string Band(double from, double to, double top, double axis) =>
-        $"left:{from / axis * 100:F1}%;width:{(to - from) / axis * 100:F1}%;top:{top:0}px";
+        $"left:{from / axis * 100:F1}%;width:{(to - from) / axis * 100:F1}%;top:{top / 300 * 100:F1}%";
 
     // Free-for-all rhythm: 1 minute of launches, then 4:30 of waiting, repeated
     static List<(double From, double To, bool Launch)> FfaBands(double axis)

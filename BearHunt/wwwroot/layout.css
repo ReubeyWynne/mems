@@ -12,6 +12,9 @@ main {
 
 /* ─── Nav ─────────────────────────────────────────── */
 nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   background: var(--color-nav-bg);
   padding: var(--space-xs) var(--space-s);
   display: flex;
@@ -68,8 +71,22 @@ nav a { min-height: 36px; }
     scrollbar-width: none;
     gap: var(--space-xs);
     padding: var(--space-xs) 0.75rem;
+    position: relative;
 
     &::-webkit-scrollbar { display: none; }
+
+    &::after {
+      content: '';
+      position: sticky;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 2rem;
+      flex-shrink: 0;
+      margin-left: -2rem;
+      background: linear-gradient(to right, transparent, var(--color-nav-bg));
+      pointer-events: none;
+    }
 
     & a {
       white-space: nowrap;
@@ -78,7 +95,6 @@ nav a { min-height: 36px; }
       padding: 0.35rem 0.6rem;
     }
   }
-
   button { width: 100%; }
 
   input, select { padding: 0.6rem 0.75rem; }

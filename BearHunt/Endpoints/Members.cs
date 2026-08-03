@@ -43,6 +43,7 @@ public static class MembersEndpoints
             member.ArcherAtkPct = Parsing.ParseNullableInt(form["archerAtkPct"]);
             member.ArcherLethalityPct = Parsing.ParseNullableInt(form["archerLethalityPct"]);
             member.MarchCount = Parsing.ParseInt(form["marchCount"]);
+            member.TroopTier = Parsing.ParseInt(form["troopTier"]);
             member.UpdatedAt = DateTime.UtcNow;
 
             await db.SaveChangesAsync();

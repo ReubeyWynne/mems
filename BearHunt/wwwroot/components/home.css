@@ -1,0 +1,52 @@
+/* ═══════════════════════════════════════════════════════
+   Bear Hunt — Homepage
+   Hero, title, subtitle, splash text.
+   ═══════════════════════════════════════════════════════ */
+
+.homepage { text-align: center; }
+
+.homepage-hero {
+  position: relative;
+  display: inline-block;
+}
+
+.homepage-title {
+  font-size: var(--step-5);
+  color: var(--color-heading);
+  text-shadow: 0 0 30px rgba(240, 192, 64, 0.3);
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: 0;
+}
+
+.homepage-subtitle {
+  font-size: 1.2rem;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-l);
+}
+
+/* ─── Splash text ─────────────────────────────────── */
+.splash-text {
+  position: absolute;
+  top: 0.5rem;
+  right: -1rem;
+  color: var(--color-splash);
+  font-size: 0.95rem;
+  font-weight: bold;
+  transform: rotate(-18deg);
+  white-space: nowrap;
+  text-shadow: 0 0 8px var(--color-splash-glow);
+  opacity: 0;
+  animation: splashIn 0.6s ease-out forwards,
+             splashFloat 2s 0.6s ease-in-out infinite;
+}
+
+@media (max-width: 640px) {
+  .homepage-title { font-size: clamp(2.2rem, 14vw, 4rem); }
+  .homepage-subtitle { font-size: 1rem; margin-bottom: 1.25rem; }
+
+  .splash-text {
+    font-size: 0.8rem;
+    right: -0.5rem;
+    top: 0.25rem;
+  }
+}

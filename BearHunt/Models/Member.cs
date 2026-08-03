@@ -20,6 +20,7 @@ public class Member
     public int? ArcherAtkPct { get; set; }
     public int? ArcherLethalityPct { get; set; }
     public int MarchCount { get; set; }
+    public int TroopTier { get; set; } // display-only in v1; no math effect until TG3+ archer bonus lands
     public string Role { get; set; } = "member";
     public DateTime UpdatedAt { get; set; }
 }

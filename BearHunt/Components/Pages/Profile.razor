@@ -5,12 +5,12 @@
 <div id="feedback"></div>
 @if (_error is not null)
 {
-    <div class="feedback-error">@_error</div>
+    <div class="feedback feedback--error">@_error</div>
 }
 
-<div class="profile-card">
+<div class="card profile-card">
 
-    <div class="profile-banner">
+    <div class="banner flex-between profile-banner">
         <div class="profile-title-block">
             <span class="profile-label">YOUR PROFILE</span>
             <span class="profile-username"><input type="text" value="@_username" readonly placeholder="Set a username" /></span>
@@ -126,6 +126,10 @@
                 <div class="form-group">
                     <label>March Count</label>
                     <input type="number" name="marchCount" value="@_member?.MarchCount" min="0" max="8" placeholder="0" />
+                </div>
+                <div class="form-group">
+                    <label>Troop Tier (highest tier you send)</label>
+                    <input type="number" name="troopTier" value="@_member?.TroopTier" min="1" max="10" placeholder="0" />
                 </div>
             </div>
         </div>

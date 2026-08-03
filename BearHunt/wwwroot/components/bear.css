@@ -1,0 +1,344 @@
+/* ═══════════════════════════════════════════════════════
+   Bear Hunt — Next Bear Card
+   Countdown banner, trap rosters, signup form.
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Card shell ──────────────────────────────────── */
+.next-bear-card {
+  margin-top: var(--space-m);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+
+/* ─── Banner ──────────────────────────────────────── */
+.bear-banner {
+  padding: var(--space-l) 2.5rem;
+}
+
+.bear-date-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.bear-label {
+  font-size: 0.85rem;
+  letter-spacing: var(--tracking-label);
+}
+
+.bear-date {
+  font-size: var(--step-4);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.bear-countdown {
+  font-size: var(--step-3);
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-label {
+  font-size: var(--step-0);
+  font-weight: 400;
+  color: #888;
+}
+
+.countdown-live {
+  color: var(--color-danger);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ─── Times bar ───────────────────────────────────── */
+.bear-times-bar {
+  display: flex;
+  border-top: var(--border-thin) solid var(--color-border);
+  border-bottom: var(--border-thin) solid var(--color-border);
+}
+
+.bear-trap-time {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  padding: var(--space-xs);
+}
+
+.trap2-accent { background: var(--color-trap2-bg); }
+
+.trap-num {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.trap1-accent .trap-num { color: var(--color-trap1); }
+.trap2-accent .trap-num { color: var(--color-trap2); }
+
+.trap-clock {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Rosters ─────────────────────────────────────── */
+.bear-rosters {
+  display: flex;
+  flex-direction: column;
+}
+
+.trap-roster {
+  overflow-x: auto;
+
+  &.trap-1 {
+    & .trap-header { border-color: var(--color-trap1-border); }
+    & .trap-label { color: var(--color-trap1); }
+  }
+
+  &.trap-2 {
+    & .trap-header { border-color: var(--color-trap2-border); }
+    & .trap-label { color: var(--color-trap2); }
+    background: var(--color-trap2-bg);
+  }
+}
+
+.trap-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: var(--space-xs);
+  padding-bottom: 0.4rem;
+  border-bottom: var(--border-medium) solid;
+
+  & .trap-time {
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+  }
+
+  & .trap-count {
+    margin-left: auto;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-success);
+    background: var(--color-success-dim);
+    padding: 0.1rem var(--space-xs);
+    border-radius: var(--radius-md);
+    min-width: 1.5em;
+    text-align: center;
+  }
+}
+
+.trap-label {
+  font-size: 0.95rem;
+  letter-spacing: var(--tracking-wider);
+}
+
+.trap-empty {
+  font-size: 0.85rem;
+  color: var(--color-text-empty);
+  margin: 0.4rem 0;
+  font-style: italic;
+}
+
+/* ─── Trap roster table ───────────────────────────── */
+.trap-table {
+  font-size: 0.9rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  & th {
+    text-align: left;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-normal);
+    border-bottom: var(--border-thin) solid var(--color-table-border);
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:first-child { width: auto; }
+    &:nth-child(2) { width: 28%; }
+    &:nth-child(3) { width: 14%; }
+    &:nth-child(4) { width: 22%; }
+    &:nth-child(5) { width: 115px; }
+  }
+
+  & td {
+    padding: 0.3rem 0.4rem;
+    border-bottom: var(--border-thin) solid var(--color-table-cell-border);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.trap-row {
+  &:hover { background: var(--color-row-hover); }
+  &.rally-lead { background: var(--color-rally-bg); }
+}
+
+.troops-col { font-variant-numeric: tabular-nums; }
+.formation { color: var(--color-text-muted); font-size: 0.75rem; }
+.hero-lv { color: var(--color-text-faint); font-size: 0.75rem; }
+.hero-col { max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+.march-col { font-variant-numeric: tabular-nums; }
+.wave-col { overflow: visible; }
+
+.rally-badge {
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  vertical-align: super;
+}
+
+/* ─── Admin controls ──────────────────────────────── */
+.admin-controls {
+  display: flex;
+  gap: var(--space-3xs);
+  align-items: center;
+}
+
+.wave-select {
+  padding: 0.12rem 0.25rem;
+  font-size: 0.7rem;
+  background: var(--color-bg);
+  color: var(--color-text-subtle);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  width: 70px;
+}
+
+.rl-toggle {
+  padding: 0.12rem 0.4rem;
+  font-size: 0.65rem;
+  background: var(--color-bg);
+  color: var(--color-text-subtle);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+
+  &.active {
+    background: var(--color-primary);
+    color: var(--color-bg);
+    border-color: var(--color-primary);
+  }
+}
+
+/* ─── Signup row ──────────────────────────────────── */
+.bear-signup {
+  border-top: var(--border-thin) solid var(--color-border);
+  padding: 0.85rem 1.25rem;
+  background: var(--color-surface-alt);
+}
+
+.signup-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+
+  & select,
+  & input {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  & button {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+}
+
+.btn-remove {
+  background: transparent !important;
+  color: var(--color-danger) !important;
+  border: var(--border-thin) solid var(--color-danger) !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.85rem !important;
+
+  &:hover {
+    background: var(--color-danger-dim) !important;
+  }
+}
+
+/* ─── Intl time conversion ────────────────────────── */
+.intl-converted {
+  border-bottom: 1px dashed rgba(240, 192, 64, 0.4);
+  transition: background var(--transition-base) ease;
+
+  &:hover { background: rgba(240, 192, 64, 0.08); }
+}
+
+.intl-showing-utc {
+  border-bottom-style: dotted;
+  border-bottom-color: rgba(136, 136, 170, 0.5);
+  color: #9999bb;
+}
+
+/* ─── Mobile ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bear-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding: 1.25rem 1rem;
+  }
+
+  .bear-date { font-size: 1.8rem; }
+
+  .bear-countdown {
+    font-size: 1.6rem;
+    text-align: left;
+  }
+
+  .countdown-label { font-size: 0.9rem; }
+
+  .bear-times-bar { flex-direction: column; }
+
+  .trap-roster {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .trap-table {
+    table-layout: auto;
+    min-width: 520px;
+    font-size: 0.82rem;
+
+    & th { font-size: 0.68rem; padding: 0.25rem 0.3rem; }
+    & td { padding: 0.25rem 0.3rem; font-size: 0.78rem; }
+
+    & th:nth-child(2) { width: auto; }
+    & th:nth-child(3) { width: auto; }
+    & th:nth-child(4) { width: auto; }
+    & th:nth-child(5) { width: auto; min-width: 100px; }
+  }
+
+  .signup-row {
+    flex-direction: column;
+    align-items: stretch;
+
+    & select,
+    & input { width: 100%; }
+  }
+
+  .bear-signup { padding: 0.75rem 0.75rem; }
+
+  .wave-select {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.75rem;
+  }
+
+  .rl-toggle {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+  }
+}

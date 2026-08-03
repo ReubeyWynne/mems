@@ -1,0 +1,67 @@
+/* ═══════════════════════════════════════════════════════
+   Bear Hunt — Utility Composition Layer
+   Shared patterns composed via multiple classes in markup.
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Card ──────────────────────────────────────────
+   Base for any card-like container.
+   Compose with component-specific classes for radius, padding, etc. */
+.card {
+  background: var(--color-card-bg);
+  border: var(--border-thin) solid var(--color-card-border);
+}
+
+/* ─── Banner ────────────────────────────────────────
+   Gradient header strip with thick accent border. */
+.banner {
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-gradient-end) 100%);
+  border-bottom: var(--border-thick) solid var(--color-primary);
+}
+
+/* ─── Feedback boxes ──────────────────────────────── */
+.feedback {
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: var(--border-thin) solid;
+}
+
+.feedback--success {
+  background: var(--color-success-bg);
+  border-color: var(--color-success);
+  color: var(--color-success-text);
+}
+
+.feedback--error {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger-text);
+}
+
+/* ─── Layout primitives ───────────────────────────── */
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.grid-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-s);
+}
+
+/* ─── Info callout (border-left accent) ───────────── */
+.callout {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  background: var(--color-alloc-info-bg);
+  border-left: var(--border-thick) solid var(--color-alloc-info-border);
+}
+
+/* ─── Uppercase label base ────────────────────────── */
+.uppercase-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}

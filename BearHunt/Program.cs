@@ -35,6 +35,7 @@ using (var scope = app.Services.CreateScope())
     try { db.Database.ExecuteSqlRaw("ALTER TABLE Members ADD COLUMN ArcherAtkPct INTEGER NULL"); } catch { }
     try { db.Database.ExecuteSqlRaw("ALTER TABLE Members ADD COLUMN ArcherLethalityPct INTEGER NULL"); } catch { }
     try { db.Database.ExecuteSqlRaw("ALTER TABLE Members ADD COLUMN MarchCount INTEGER NOT NULL DEFAULT 0"); } catch { }
+    try { db.Database.ExecuteSqlRaw("ALTER TABLE Members ADD COLUMN TroopTier INTEGER NOT NULL DEFAULT 0"); } catch { }
     try { db.Database.ExecuteSqlRaw("ALTER TABLE Members ADD COLUMN RallyJoinerCap INTEGER NOT NULL DEFAULT 0"); } catch { }
     try { db.Database.ExecuteSqlRaw("CREATE TABLE IF NOT EXISTS Jokes (Id INTEGER PRIMARY KEY AUTOINCREMENT, Text TEXT NOT NULL, CreatedAt TEXT NOT NULL)"); } catch { }
 }
@@ -52,7 +53,7 @@ ScheduleEndpoints.Map(app);
 PreferencesEndpoints.Map(app);
 CyclesEndpoints.Map(app);
 AdminEndpoints.Map(app);
-AllocatorEndpoints.Map(app);
+WavePlannerEndpoints.Map(app);
 AuthEndpoints.Map(app);
 ProfileEndpoints.Map(app);
 JokesEndpoints.Map(app);

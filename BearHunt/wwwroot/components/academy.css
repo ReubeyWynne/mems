@@ -1,0 +1,415 @@
+/* ═══════════════════════════════════════════════════════
+   Bear Hunt — Academy
+   Academy nav, lessons, timeline, split calculator.
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Shell ───────────────────────────────────────── */
+.academy { }
+
+.academy-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin: 0 0 var(--space-m);
+
+  & a {
+    padding: 0.4rem 0.9rem;
+    background: var(--color-card-bg);
+    border: var(--border-thin) solid var(--color-card-border);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 0.9rem;
+
+    &:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+  }
+}
+
+.lesson-section {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-m);
+  border-top: var(--border-thin) solid var(--color-border);
+
+  & h2 { color: var(--color-heading); font-size: var(--step-2); margin-bottom: var(--space-xs); }
+}
+
+.academy-intro {
+  max-width: 720px;
+  color: var(--color-text-dim);
+  font-size: 0.95rem;
+  margin: 0 0 var(--space-m);
+}
+
+/* ─── Lesson content ──────────────────────────────── */
+.lesson { margin-top: var(--space-m); }
+
+.lesson-fact {
+  max-width: 720px;
+  margin: var(--space-s) 0;
+  border-left-color: var(--color-primary);
+
+  & strong { color: var(--color-primary); }
+}
+
+.lesson-box {
+  max-width: 720px;
+  margin: var(--space-s) 0;
+  padding: 0.75rem 1rem;
+  background: var(--color-card-bg);
+  border: var(--border-thin) solid var(--color-card-border);
+  border-radius: var(--radius-xl);
+
+  & h3 { margin: 0 0 var(--space-xs); color: var(--color-heading); font-size: 1rem; }
+  & p { margin: 0 0 var(--space-2xs); font-size: 0.9rem; color: var(--color-text-dim); }
+}
+
+.lesson-math {
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+
+  & strong { color: var(--color-primary); }
+}
+
+.lesson-output {
+  max-width: 720px;
+
+  & h3 { color: var(--color-heading); }
+  & p { color: var(--color-text-dim); font-size: 0.9rem; }
+  & strong { color: var(--color-text); }
+}
+
+/* ─── Wave lesson timeline ────────────────────────── */
+.timeline {
+  position: relative;
+  height: 240px;
+  margin: var(--space-s) 0;
+  background: var(--color-surface-deep);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-border);
+
+  & .tick-label {
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    font-size: 0.6rem;
+    color: var(--color-text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.wave-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-primary);
+  opacity: 0.6;
+
+  & span {
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    white-space: nowrap;
+  }
+}
+
+.rally-bar {
+  position: absolute;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--color-border-light) 0%, var(--color-trap1) 100%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  & .rally-bar-label {
+    font-size: 0.6rem;
+    color: #fff;
+    padding: 0 4px;
+    white-space: nowrap;
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.bar-slow { background: linear-gradient(90deg, var(--color-danger) 0%, var(--color-danger-alt) 100%); }
+.bar-60 { background: linear-gradient(90deg, var(--color-border-light) 0%, var(--color-trap2) 100%); }
+.bar-next {
+  background: rgba(136, 136, 170, 0.08);
+  border: 1px dashed var(--color-text-faint);
+
+  & .rally-bar-label {
+    background: transparent;
+    color: var(--color-text-dim);
+  }
+}
+
+.rally-player {
+  position: absolute;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 1px 4px;
+  white-space: nowrap;
+
+  &.parked { background: var(--color-danger); }
+  &.empty { background: rgba(136, 136, 170, 0.55); }
+}
+
+.join-window {
+  position: absolute;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(240, 192, 64, 0.65);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+
+  & span {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--color-bg);
+    white-space: nowrap;
+  }
+}
+
+.join-player { background: var(--color-success); }
+
+.scenario { margin-top: var(--space-s); }
+.scenario + .scenario { margin-top: var(--space-l); }
+
+/* ─── FFA phase bands ─────────────────────────────── */
+.phase-band {
+  position: absolute;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.phase-launch {
+  background: linear-gradient(90deg, var(--color-danger) 0%, var(--color-danger-alt) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & span {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+  }
+}
+
+.phase-wait {
+  background: var(--color-surface-hover);
+  border: 1px dashed var(--color-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & span {
+    font-size: 0.6rem;
+    color: var(--color-text-faint);
+    white-space: nowrap;
+  }
+}
+
+/* ─── Strategy legend + separator ─────────────────── */
+.strat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  margin: var(--space-s) 0 var(--space-2xs);
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+}
+
+.strat-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.strat-swatch {
+  display: inline-block;
+  width: 26px;
+  height: 10px;
+  border-radius: var(--radius-sm);
+}
+
+.strat-swatch-staggered {
+  background: linear-gradient(90deg, var(--color-border-light), var(--color-trap1));
+}
+
+.strat-swatch-ffa {
+  background: linear-gradient(90deg, var(--color-danger), var(--color-danger-alt));
+  border: 1px dashed var(--color-text-faint);
+}
+
+.strat-sep {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 176px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border-top: 1px dashed var(--color-border-light);
+  border-bottom: 1px dashed var(--color-border-light);
+
+  & span {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--color-text-dim);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+}
+
+/* ─── Fight + travel marker ───────────────────────── */
+.fight-marker {
+  position: absolute;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(45deg, rgba(230, 57, 70, 0.3) 0 4px, rgba(230, 57, 70, 0.55) 4px 8px);
+  border-left: 2px solid var(--color-danger);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+
+  & span {
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  }
+}
+
+.scenario-caption {
+  max-width: 720px;
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+
+  & strong { color: var(--color-text); }
+}
+
+/* ─── Split lesson ────────────────────────────────── */
+.diminish { max-width: 720px; }
+
+.diminish h3 { margin: 0 0 var(--space-2xs); color: var(--color-heading); font-size: 1rem; }
+
+.diminish-chart {
+  margin: var(--space-xs) 0 0;
+
+  & svg {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    display: block;
+  }
+
+  & text { font-family: inherit; }
+
+  & figcaption {
+    margin-top: var(--space-2xs);
+    font-size: 0.78rem;
+    color: var(--color-text-faint);
+  }
+}
+
+.diminish-curve {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.diminish-linear {
+  stroke: var(--color-text-faint);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.diminish-dot { fill: var(--color-primary); }
+
+.diminish-dmg {
+  fill: var(--color-text);
+  font-size: 10px;
+  font-weight: 700;
+  text-anchor: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.diminish-troop {
+  fill: var(--color-text-dim);
+  font-size: 9.5px;
+  text-anchor: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.split-slider {
+  max-width: 720px;
+  margin: var(--space-m) 0;
+  padding: 0.75rem 1rem;
+  background: var(--color-card-bg);
+  border: var(--border-thin) solid var(--color-card-border);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+
+  & h3 { margin: 0 0 var(--space-2xs); color: var(--color-heading); font-size: 1rem; }
+}
+
+.q-slider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  font-size: 0.9rem;
+  color: var(--color-text-dim);
+
+  & input[type="range"] { flex: 1; width: auto; }
+  & #q-value { font-weight: 700; color: var(--color-primary); min-width: 1.5em; text-align: center; }
+}
+
+.split-live {
+  font-size: 0.9rem;
+  color: var(--color-text-dim);
+
+  & strong { color: var(--color-primary); }
+}
+
+.split-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-text-faint);
+}
+
+.lesson-form {
+  max-width: 720px;
+  padding: var(--space-s);
+  background: var(--color-card-bg);
+  border: var(--border-thin) solid var(--color-card-border);
+  border-radius: var(--radius-xl);
+}

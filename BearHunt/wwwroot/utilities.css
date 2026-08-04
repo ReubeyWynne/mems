@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Utility Composition Layer
+   Bear Hunt: Utility Composition Layer
    Shared patterns composed via multiple classes in markup.
    ═══════════════════════════════════════════════════════ */
 
@@ -9,6 +9,19 @@
 .card {
   background: var(--color-card-bg);
   border: var(--border-thin) solid var(--color-card-border);
+}
+
+.card--rounded {
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+
+.card-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--color-text-dim);
 }
 
 /* ─── Banner ────────────────────────────────────────
@@ -48,20 +61,4 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: var(--space-s);
-}
-
-/* ─── Info callout (border-left accent) ───────────── */
-.callout {
-  padding: 0.75rem 1rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  background: var(--color-alloc-info-bg);
-  border-left: var(--border-thick) solid var(--color-alloc-info-border);
-}
-
-/* ─── Uppercase label base ────────────────────────── */
-.uppercase-label {
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-text-dim);
 }

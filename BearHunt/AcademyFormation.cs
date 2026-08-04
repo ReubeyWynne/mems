@@ -99,13 +99,13 @@ public static class AcademyFormation
         sb.Append("""<p>Archers hit hardest per troop, so they always get the biggest share.</p>""");
         sb.Append("""<div class="lesson-fact">""");
         sb.Append(r.ArcherScarce
-            ? """You don't have enough archers for that mix &mdash; so send all your archers, 5k infantry, and fill the rest with cavalry."""
-            : """Your troops fit the mix &mdash; scale each type to match the leader's share.""");
+            ? """You don't have enough archers for that mix. Send all your archers, 5k infantry, and fill the rest with cavalry."""
+            : """Your troops fit the mix. Scale each type to match the leader's share.""");
         sb.Append("""</div>""");
         sb.Append("""<h3>Send this per march</h3>""");
         sb.Append($"""<p class="lesson-math"><strong>{Templates.FmtK(r.RecInf)} infantry / {Templates.FmtK(r.RecCav)} cavalry / {Templates.FmtK(r.RecArc)} archers</strong>""");
         sb.Append($"""&nbsp;(cap {(r.Cap <= 0 ? "uncapped" : Templates.FmtK(r.Cap))}, {r.Q} simultaneous rallies)</p>""");
-        sb.Append($"""<p>Each march scores about {r.PerMarchDmg.ToString("N0", inv)}; all {r.Q} simultaneous rallies together &asymp; <strong>{r.TotalDmg.ToString("N0", inv)}</strong>. (Scores are for comparing setups &mdash; not real damage numbers.)</p>""");
+        sb.Append($"""<p>Each march scores about {r.PerMarchDmg.ToString("N0", inv)}; all {r.Q} simultaneous rallies together &asymp; <strong>{r.TotalDmg.ToString("N0", inv)}</strong>. (Scores are for comparing setups. Not real damage numbers.)</p>""");
         return sb.ToString();
     }
 

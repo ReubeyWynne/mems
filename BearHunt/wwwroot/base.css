@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Base Styles
+   Bear Hunt: Base Styles
    Reset, typography, forms, scrollbars, keyframes
    ═══════════════════════════════════════════════════════ */
 
@@ -7,6 +7,8 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-bg);
+  scrollbar-width: thin;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: var(--color-tap-highlight);
@@ -23,9 +25,31 @@ body {
 a { color: var(--color-link); }
 
 h1 {
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: var(--step-3);
   color: var(--color-heading);
   margin-bottom: var(--space-s);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--step-2);
+  color: var(--color-heading);
+  margin: var(--space-m) 0 var(--space-s);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--step-1);
+  color: var(--color-heading);
+  margin: var(--space-s) 0 var(--space-xs);
 }
 
 ::selection {
@@ -73,8 +97,9 @@ input, select, button {
   padding: var(--space-xs) 0.75rem;
   border-radius: var(--radius-md);
   font-size: 0.95rem;
-  width: 100%;
 }
+
+input[type="text"], input[type="email"], input[type="password"], input[type="url"], select, textarea { width: 100%; }
 
 input:focus, select:focus {
   outline: none;
@@ -82,17 +107,25 @@ input:focus, select:focus {
 }
 
 button {
-  background: var(--color-button-bg);
-  color: var(--color-button-text);
+  background: var(--color-input-bg);
+  color: var(--color-text);
+  border: var(--border-thin) solid var(--color-input-border);
   font-weight: bold;
   cursor: pointer;
-  border: none;
   padding: 0.6rem 1.5rem;
   width: auto;
   transition: background var(--transition-base);
 }
 
-button:hover { background: var(--color-button-hover-bg); }
+.btn--primary {
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  border-color: var(--color-button-bg);
+}
+.btn--primary:hover { background: var(--color-button-hover-bg); }
+
+
+button:disabled, input:disabled, select:disabled { opacity: 0.45; cursor: not-allowed; }
 
 fieldset {
   border: var(--border-thin) solid var(--color-fieldset-border);
@@ -100,7 +133,7 @@ fieldset {
   padding: var(--space-s);
   margin-bottom: var(--space-m);
 }
-
+button:hover { background: var(--color-surface-hover); }
 legend {
   color: var(--color-legend-text);
   font-weight: bold;
@@ -122,4 +155,26 @@ legend {
 @keyframes splashFloat {
   0%, 100% { transform: rotate(-18deg) translateY(0); }
   50%      { transform: rotate(-18deg) translateY(-3px); }
+}
+
+/* ─── Accessibility ───────────────────────────────── */
+.sr-only { clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+
+/* ─── Focus ring ──────────────────────────────────── */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.hub-card:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ─── Reduced motion ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

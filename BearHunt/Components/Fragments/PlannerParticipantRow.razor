@@ -1,0 +1,38 @@
+@using BearHunt.Data
+@using BearHunt.Models
+
+<tr class="plan-row@(IsLead ? " rally-lead" : "")">
+    <td class="plan-player">@(IsLead ? "★ " : "")@E(Username)</td>
+    <td class="plan-num">@FmtK(Pool)</td>
+    <td class="plan-num">@Q</td>
+    @for (int w = 0; w < WavePlanner.WaveCount; w++)
+    {
+        var assigns = Assignments.Where(a => a.Wave == w).ToList();
+        if (assigns.Count == 0)
+        {
+            <td class="plan-miss">missed</td>
+        }
+        else
+        {
+            <td class="plan-assign">
+                @foreach (var a in assigns)
+                {
+                    <span class="plan-wassign">@E(a.Lead) @FmtK(a.Inf)/@FmtK(a.Cav)/@FmtK(a.Arc)</span>
+                }
+            </td>
+        }
+    }
+    <td class="plan-dmg">@((EstDamage / 1_000_000).ToString("0.0"))M <span class="plan-illustrative">(illustrative)</span></td>
+    <td class="plan-band bracket-@Bracket">@BandLabel</td>
+</tr>
+
+@code {
+    [Parameter, EditorRequired] public string Username { get; set; } = "";
+    [Parameter, EditorRequired] public bool IsLead { get; set; }
+    [Parameter, EditorRequired] public int Pool { get; set; }
+    [Parameter, EditorRequired] public int Q { get; set; }
+    [Parameter, EditorRequired] public List<(int Wave, string Lead, int Inf, int Cav, int Arc)> Assignments { get; set; } = new();
+    [Parameter, EditorRequired] public double EstDamage { get; set; }
+    [Parameter, EditorRequired] public int Bracket { get; set; }
+    [Parameter, EditorRequired] public string BandLabel { get; set; } = "";
+}

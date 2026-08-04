@@ -1,4 +1,4 @@
-<div id="next-bear" class="card next-bear-card">
+<div id="next-bear" class="card card--rounded next-bear-card">
     <div class="banner flex-between bear-banner">
         <div class="bear-date-block">
             <span class="bear-label">NEXT BEAR HUNT</span>
@@ -15,13 +15,13 @@
     @* action="#" prevents StaticHtmlRenderer from calling uninitialized NavigationManager when rendered server-side for SSE patches *@
     <form class="bear-signup" data-on:submit="@@post('/api/preferences/upsert', {contentType: 'form'})" action="#">
         <div class="signup-row">
-            <select name="selectedTrap">
+            <label>Trap<select name="selectedTrap">
                 <option value="either" selected="@(MyPref?.SelectedTrap == null || MyPref?.SelectedTrap == "either")">Either trap</option>
                 <option value="1" selected="@(MyPref?.SelectedTrap == "1")">Trap 1</option>
                 <option value="2" selected="@(MyPref?.SelectedTrap == "2")">Trap 2</option>
-            </select>
-            <input type="text" name="notes" value="@(MyPref?.Notes ?? "")" placeholder="Notes (optional)" />
-            <button type="submit">@ButtonText</button>
+            </select></label>
+            <label>Notes<input type="text" name="notes" value="@(MyPref?.Notes ?? "")" placeholder="Notes (optional)" /></label>
+            <button type="submit" class="btn--primary">@ButtonText</button>
             @if (MyPref != null)
             {
                 <button data-on:click="@@post('/api/preferences/remove')" class="btn-remove" type="button">Remove</button>

@@ -1,10 +1,9 @@
 @page "/bear-hunt/roster"
-@inject AppDbContext Db
-@inject NavigationManager Nav
+<PageTitle>Roster &middot; Bear Hunt</PageTitle>
 
 <h1>Roster</h1>
 
-<div class="card roster-card">
+<div class="card card--rounded roster-card">
     <div class="banner roster-header">
         <span class="roster-label">ALLIANCE MEMBERS</span>
     </div>
@@ -12,11 +11,11 @@
         <table class="roster-table">
             <thead>
                 <tr>
-                    <th>Username</th>
-                    <th>Troops (I/C/A)</th>
-                    <th>Rally Lead</th>
-                    <th>Rally Size</th>
-                    <th>Solo March</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Troops (I/C/A)</th>
+                    <th scope="col">Rally Lead</th>
+                    <th scope="col">Rally Size</th>
+                    <th scope="col">Solo March</th>
                 </tr>
             </thead>
             <tbody id="roster-rows">

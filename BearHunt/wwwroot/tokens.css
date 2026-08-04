@@ -1,24 +1,28 @@
 /* ═══════════════════════════════════════════════════════
-   Design Tokens — Bear Hunt
+   Design Tokens: Bear Hunt
    ═══════════════════════════════════════════════════════ */
 
+@custom-media --mobile (width <= 640px);
+
 :root {
+  color-scheme: dark;
+
   /* ─── Palette (core colors) ─────────────────────────── */
   --color-bg: #1a1a2e;
   --color-surface: #16213e;
   --color-surface-alt: #121a2e;
+  --color-gradient-end: #1e3a5c;
   --color-surface-deep: #0f1629;
   --color-surface-hover: #1e2d4a;
-  --color-gradient-end: #1e3050;
   --color-border: #0f3460;
   --color-border-light: #1a3a6a;
   --color-border-dark: #111;
   --color-text: #e0e0e0;
-  --color-text-dim: #8888aa;
-  --color-text-muted: #555;
-  --color-text-faint: #666;
+  --color-text-dim: #9aa0c0;
+  --color-text-muted: #7a7f9a;
+  --color-text-faint: #8a90b8;
   --color-text-subtle: #ccc;
-  --color-text-empty: #444;
+  --color-text-empty: #6a7090;
   --color-primary: #f0c040;
   --color-primary-hover: #ffd866;
   --color-trap1: #f0a060;
@@ -50,7 +54,6 @@
   --color-fieldset-border: var(--color-border);
   --color-legend-text: var(--color-primary);
   --color-row-hover: var(--color-surface-hover);
-  --color-banner-gradient-end: var(--color-gradient-end);
 
   /* ─── Feedback/semantic derived tokens ──────────────── */
   --color-success-bg: #1b4332;
@@ -113,23 +116,9 @@
   --space-2xl: clamp(4rem, 3.6522rem + 1.7391vw, 5rem);
   --space-3xl: clamp(6rem, 5.4783rem + 2.6087vw, 7.5rem);
 
-  /* ─── Utopia fluid space one-up pairs ───────────────── */
-  --space-3xs-2xs: clamp(0.25rem, 0.1196rem + 0.6522vw, 0.625rem);
-  --space-2xs-xs: clamp(0.5rem, 0.3478rem + 0.7609vw, 0.9375rem);
-  --space-xs-s: clamp(0.75rem, 0.5761rem + 0.8696vw, 1.25rem);
-  --space-s-m: clamp(1rem, 0.6957rem + 1.5217vw, 1.875rem);
-  --space-m-l: clamp(1.5rem, 1.1522rem + 1.7391vw, 2.5rem);
-  --space-l-xl: clamp(2rem, 1.3913rem + 3.0435vw, 3.75rem);
-  --space-xl-2xl: clamp(3rem, 2.3043rem + 3.4783vw, 5rem);
-  --space-2xl-3xl: clamp(4rem, 2.7826rem + 6.087vw, 7.5rem);
-  --space-s-l: clamp(1rem, 0.4783rem + 2.6087vw, 2.5rem);
-
-  /* ─── Utopia grid ───────────────────────────────────── */
-  --grid-max-width: 77.50rem;
-  --grid-gutter: var(--space-s-l);
-  --grid-columns: 12;
 
   /* ─── Typography ────────────────────────────────────── */
+  --font-heading: 'Rajdhani', sans-serif;
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --line-height: 1.6;
   --tracking-tight: 0.03em;
@@ -151,6 +140,12 @@
   --border-thin: 1px;
   --border-medium: 2px;
   --border-thick: 3px;
+
+  /* ─── Shadows ───────────────────────────────────────── */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+  --shadow-glow: 0 0 20px rgba(240,192,64,0.15);
 
   /* ─── Transitions ───────────────────────────────────── */
   --transition-fast: 0.15s;

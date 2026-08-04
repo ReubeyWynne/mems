@@ -1,9 +1,13 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Layout
+   Bear Hunt: Layout
    Page shell, nav, tap targets
    ═══════════════════════════════════════════════════════ */
 
 /* ─── Page shell ──────────────────────────────────── */
+body {
+  scrollbar-gutter: stable;
+}
+
 main {
   max-width: 1100px;
   margin: 0 auto;
@@ -20,7 +24,8 @@ nav {
   display: flex;
   gap: var(--space-s);
   flex-wrap: wrap;
-  border-bottom: var(--border-thin) solid var(--color-border);
+  border-bottom: var(--border-thin) solid var(--color-primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 
   & a {
     color: var(--color-nav-link);
@@ -28,13 +33,108 @@ nav {
     padding: var(--space-3xs) var(--space-xs);
     border-radius: var(--radius-md);
     font-size: 0.95rem;
-    min-height: 36px;
+    font-family: var(--font-heading);
+    gap: 0.35rem;
+    transition: background var(--transition-fast), color var(--transition-fast);
 
     &:hover {
       background: var(--color-nav-link-hover-bg);
       color: var(--color-nav-link-hover-text);
     }
   }
+}
+
+/* ─── Skip link ────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transform: translateY(-100%);
+  background: var(--color-primary);
+  color: var(--color-bg);
+  padding: var(--space-xs) var(--space-s);
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ─── Nav brand ─────────────────────────────────────*/
+.nav-brand {
+  font-weight: 900;
+  font-family: var(--font-heading);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.nav-brand-wordmark {
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  background: rgba(240,192,64,0.1);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(240,192,64,0.3);
+}
+
+.nav-brand-sub {
+  font-size: 0.7rem;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ─── Nav hamburger ─────────────────────────────────*/
+.nav-toggle { display: none; }
+.nav-hamburger { display: none; }
+.nav-links { display: contents; }
+
+@media (max-width: 640px) {
+  .nav-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    min-height: 44px;
+    min-width: 44px;
+    color: var(--color-text);
+    cursor: pointer;
+    border-radius: var(--radius-md);
+  }
+  .nav-hamburger:hover { background: var(--color-nav-link-hover-bg); }
+  .nav-links { display: none; }
+  #nav-toggle:checked ~ .nav-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: var(--space-2xs);
+    border-top: var(--border-thin) solid var(--color-border);
+    gap: var(--space-3xs);
+  }
+  #nav-toggle:checked ~ .nav-links a {
+    width: 100%;
+    padding: var(--space-xs) var(--space-s);
+    border-radius: var(--radius-md);
+  }
+
+
+/* ─── Nav active state ──────────────────────────────*/
+.nav-link.active {
+  background: rgba(240,192,64,0.12);
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+/* ─── Nav right ─────────────────────────────────────*/
+.nav-right {
+  margin-left: auto;
 }
 
 /* ─── Touch-friendly tap targets ──────────────────── */
@@ -50,7 +150,6 @@ button,
 }
 
 button, .btn-delete, .btn-remove { justify-content: center; }
-nav a { min-height: 36px; }
 
 /* ═══════════════════════════════════════════════════════
    Mobile: 640px and below
@@ -65,34 +164,13 @@ nav a { min-height: 36px; }
   }
 
   nav {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: var(--space-xs);
+    flex-wrap: wrap;
+    gap: 0;
     padding: var(--space-xs) 0.75rem;
-    position: relative;
-
-    &::-webkit-scrollbar { display: none; }
-
-    &::after {
-      content: '';
-      position: sticky;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 2rem;
-      flex-shrink: 0;
-      margin-left: -2rem;
-      background: linear-gradient(to right, transparent, var(--color-nav-bg));
-      pointer-events: none;
-    }
+    position: sticky;
 
     & a {
-      white-space: nowrap;
-      flex-shrink: 0;
-      font-size: 0.85rem;
-      padding: 0.35rem 0.6rem;
+      font-size: 0.9rem;
     }
   }
   button { width: 100%; }

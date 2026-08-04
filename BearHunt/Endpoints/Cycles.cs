@@ -26,7 +26,7 @@ public static class CyclesEndpoints
             if (string.IsNullOrWhiteSpace(dateStr) || !DateTime.TryParse(dateStr, out var date))
             {
                 await sse.PatchElementsAsync(
-                    """<div id="feedback" class="feedback-error">Date is required.</div>""");
+                    """<div id="feedback" class="feedback feedback--error">Date is required.</div>""");
                 return;
             }
             var cycle = await db.Cycles.FindAsync(1);
@@ -44,7 +44,7 @@ public static class CyclesEndpoints
                 cycle.Trap2Time = t2;
             await db.SaveChangesAsync();
             await sse.PatchElementsAsync(
-                """<div id="feedback" class="feedback-success">Cycle updated!</div>""");
+                """<div id="feedback" class="feedback feedback--success">Cycle updated!</div>""");
         }).DisableAntiforgery();
 
         app.MapGet("/api/cycles/responses", async (IDatastarService sse, AppDbContext db, RazorRenderer renderer) =>

@@ -15,7 +15,7 @@ public static class MembersEndpoints
 
             if (string.IsNullOrEmpty(username))
             {
-                await sse.PatchElementsAsync("""<div id="feedback" class="feedback-error">Set a username first.</div>""");
+                await sse.PatchElementsAsync("""<div id="feedback" class="feedback feedback--error">Set a username first.</div>""");
                 return;
             }
 
@@ -47,7 +47,7 @@ public static class MembersEndpoints
             member.UpdatedAt = DateTime.UtcNow;
 
             await db.SaveChangesAsync();
-            await sse.PatchElementsAsync("""<div id="feedback" class="feedback-success">Profile saved!</div>""");
+            await sse.PatchElementsAsync("""<div id="feedback" class="feedback feedback--success">Profile saved!</div>""");
         }).DisableAntiforgery();
     }
 }

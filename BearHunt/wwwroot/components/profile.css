@@ -1,13 +1,11 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Profile
+   Bear Hunt: Profile
    Profile card, troop sections, username, allocator.
    ═══════════════════════════════════════════════════════ */
 
 /* ─── Card shell ──────────────────────────────────── */
 .profile-card {
   margin-top: var(--space-m);
-  border-radius: var(--radius-2xl);
-  overflow: hidden;
 }
 
 /* ─── Banner ──────────────────────────────────────── */
@@ -136,7 +134,6 @@
 }
 
 .alloc-col { font-variant-numeric: tabular-nums; font-size: 0.85rem; }
-.nav-right { margin-left: auto !important; }
 .fieldset-hint { font-size: 0.85rem; opacity: 0.7; margin: 0 0 var(--space-xs) 0; }
 
 #feedback { margin-top: var(--space-s); }

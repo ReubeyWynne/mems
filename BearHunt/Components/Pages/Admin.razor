@@ -4,6 +4,7 @@
 @inject IConfiguration Config
 @inject IDataProtectionProvider DataProtectionProvider
 @inject IHttpContextAccessor HttpContextAccessor
+<PageTitle>Admin &middot; Bear Hunt</PageTitle>
 
 @if (_isAuthenticated)
 {
@@ -13,20 +14,17 @@
         <fieldset>
             <legend>Cycle Configuration</legend>
             <div class="form-group">
-                <label>Date</label>
-                <input type="date" name="date" value="@_cycle?.StartDate.ToString("yyyy-MM-dd")" />
+                <label>Date<input type="date" name="date" value="@_cycle?.StartDate.ToString("yyyy-MM-dd")" /></label>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Trap 1 Time</label>
-                    <input type="time" name="trap1Time" value="@_cycle?.Trap1Time.ToString("HH:mm")" />
+                    <label>Trap 1 Time<input type="time" name="trap1Time" value="@_cycle?.Trap1Time.ToString("HH:mm")" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Trap 2 Time</label>
-                    <input type="time" name="trap2Time" value="@_cycle?.Trap2Time.ToString("HH:mm")" />
+                    <label>Trap 2 Time<input type="time" name="trap2Time" value="@_cycle?.Trap2Time.ToString("HH:mm")" /></label>
                 </div>
             </div>
-            <button type="submit">Save Configuration</button>
+            <button type="submit" class="btn--primary">Save Configuration</button>
         </fieldset>
     </form>
 
@@ -35,15 +33,15 @@
         <form data-on:submit="@@post('/api/jokes', {contentType: 'form'})">
             <div class="form-row">
                 <div class="form-group" style="flex:1">
-                    <input type="text" name="text" placeholder="New secret string..." style="width:100%" />
+                    <label>Joke text<input type="text" name="text" placeholder="New secret string..." style="width:100%" /></label>
                 </div>
                 <div class="form-group">
-                    <button type="submit">Add</button>
+                    <button type="submit" class="btn--primary">Add</button>
                 </div>
             </div>
         </form>
         <div id="joke-list"
-             data-init="&#64;get('/api/jokes')">
+             data-init="@@get('/api/jokes')">
             <p>Loading...</p>
         </div>
     </fieldset>
@@ -62,13 +60,7 @@
 else
 {
     <h1>Admin Login</h1>
-    <form method="post" action="/api/admin/login">
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" name="password" autofocus />
-        </div>
-        <button type="submit">Login</button>
-    </form>
+    <LoginForm />
     @if (_error is not null)
     {
         <div id="feedback" class="feedback feedback--error">@_error</div>

@@ -1,13 +1,13 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Stylesheet Manifest
+   Bear Hunt: Stylesheet Manifest
    Lightning CSS resolves @import with --bundle.
    Layer assignment via layer() on each import.
    ═══════════════════════════════════════════════════════ */
 
 @import url('tokens.css') layer(tokens);
 @import url('base.css') layer(base);
-@import url('layout.css') layer(components);
-@import url('utilities.css') layer(components);
+@import url('layout.css') layer(layout);
+@import url('utilities.css') layer(utilities);
 @import url('components/hub.css') layer(components);
 @import url('components/bear.css') layer(components);
 @import url('components/profile.css') layer(components);

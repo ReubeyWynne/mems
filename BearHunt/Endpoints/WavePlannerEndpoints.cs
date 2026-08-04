@@ -3,6 +3,8 @@ using BearHunt.Helpers;
 using BearHunt.Models;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+using BearHunt.Components.Fragments;
+using BearHunt.Services;
 using StarFederation.Datastar;
 
 namespace BearHunt.Endpoints;
@@ -13,10 +15,9 @@ public static class WavePlannerEndpoints
     {
         app.MapGet("/api/admin/planner", async (
             IDatastarService sse, AppDbContext db, HttpRequest request,
-            IDataProtectionProvider protection, IConfiguration config) =>
+            IDataProtectionProvider protection, IConfiguration config, RazorRenderer renderer) =>
         {
             if (!AuthHelper.IsAdminAuthenticated(request, protection)) return;
-
             var cycle = await db.Cycles.FindAsync(1);
             if (cycle == null)
             {
@@ -30,16 +31,17 @@ public static class WavePlannerEndpoints
 
             var sb = new System.Text.StringBuilder();
             sb.Append("""<div class="planner-stack">""");
-            sb.Append(BuildTrapSection("1", cycle.Trap1Time, members, prefs, calibration));
-            sb.Append(BuildTrapSection("2", cycle.Trap2Time, members, prefs, calibration));
+            sb.Append(await BuildTrapSection("1", cycle.Trap1Time, members, prefs, calibration, renderer));
+            sb.Append(await BuildTrapSection("2", cycle.Trap2Time, members, prefs, calibration, renderer));
             sb.Append("""</div>""");
 
             await sse.PatchElementsAsync($"""<div id="planner-results">{sb}</div>""");
         });
     }
 
-    static string BuildTrapSection(string trap, TimeOnly trapTime,
-        Dictionary<string, Member> members, List<Preference> prefs, double calibration)
+    static async Task<string> BuildTrapSection(string trap, TimeOnly trapTime,
+        Dictionary<string, Member> members, List<Preference> prefs, double calibration,
+        RazorRenderer renderer)
     {
         var plan = WavePlanner.BuildPlan(trap, trapTime, members, prefs, calibration);
         var sb = new System.Text.StringBuilder();
@@ -54,7 +56,7 @@ public static class WavePlannerEndpoints
 
         if (plan.Slots.Count == 0)
         {
-            sb.Append("""<div class="plan-note">No rally leads with stats — add one on their profile (all six atk/let fields), then toggle &#9733; on the schedule.</div>""");
+            sb.Append("""<div class="plan-note">No rally leads with stats. Add one on their profile (all six atk/let fields), then toggle &#9733; on the schedule.</div>""");
         }
         else
         {
@@ -98,22 +100,19 @@ public static class WavePlannerEndpoints
 
         foreach (var p in plan.Participants)
         {
-            var badge = p.IsLead ? "&#9733; " : "";
-            sb.Append($"""<tr class="plan-row{(p.IsLead ? " rally-lead" : "")}"><td class="plan-player">{badge}{Templates.E(p.Username)}</td><td class="plan-num">{Templates.FmtK(p.Pool)}</td><td class="plan-num">{p.Q}</td>""");
-            for (int w = 0; w < WavePlanner.WaveCount; w++)
+            var assigns = p.Assignments.Select(a => (a.Wave, a.Lead, a.Inf, a.Cav, a.Arc)).ToList();
+            var rowHtml = await renderer.RenderAsync<PlannerParticipantRow>(parms =>
             {
-                var rowAssigns = p.Assignments.Where(a => a.Wave == w).ToList();
-                if (rowAssigns.Count == 0)
-                {
-                    sb.Append("""<td class="plan-miss">missed</td>""");
-                    continue;
-                }
-                var parts = rowAssigns.Select(a =>
-                    $"""<span class="plan-wassign">{Templates.E(a.Lead)} {Templates.FmtK(a.Inf)}/{Templates.FmtK(a.Cav)}/{Templates.FmtK(a.Arc)}</span>""");
-                sb.Append($"""<td class="plan-assign">{string.Join(" ", parts)}</td>""");
-            }
-            sb.Append($"""<td class="plan-dmg">{p.EstDamage / 1_000_000:0.0}M <span class="plan-illustrative">(illustrative)</span></td>""");
-            sb.Append($"""<td class="plan-band bracket-{p.Bracket}">{BandLabel(p.Bracket)}</td></tr>""");
+                parms["Username"] = p.Username;
+                parms["IsLead"] = p.IsLead;
+                parms["Pool"] = p.Pool;
+                parms["Q"] = p.Q;
+                parms["Assignments"] = assigns;
+                parms["EstDamage"] = p.EstDamage;
+                parms["Bracket"] = p.Bracket;
+                parms["BandLabel"] = BandLabel(p.Bracket);
+            });
+            sb.Append(rowHtml);
         }
         sb.Append("""</tbody></table>""");
 

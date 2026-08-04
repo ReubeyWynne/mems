@@ -1,13 +1,17 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Homepage
+   Bear Hunt: Homepage
    Hero, title, subtitle, splash text.
    ═══════════════════════════════════════════════════════ */
 
-.homepage { text-align: center; }
+.homepage { background: radial-gradient(ellipse at center, rgba(240,192,64,0.06) 0%, transparent 70%); }
 
+
+.homepage-eyebrow { font-size: var(--step--1); text-transform: uppercase; letter-spacing: var(--tracking-label); color: var(--color-text-dim); margin-bottom: var(--space-xs); }
 .homepage-hero {
   position: relative;
   display: inline-block;
+  text-align: center;
+  padding-block: var(--space-2xl);
 }
 
 .homepage-title {
@@ -21,6 +25,7 @@
 .homepage-subtitle {
   font-size: 1.2rem;
   color: var(--color-text-dim);
+  text-align: center;
   margin-bottom: var(--space-l);
 }
 
@@ -36,6 +41,9 @@
   white-space: nowrap;
   text-shadow: 0 0 8px var(--color-splash-glow);
   opacity: 0;
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
   animation: splashIn 0.6s ease-out forwards,
              splashFloat 2s 0.6s ease-in-out infinite;
 }
@@ -48,5 +56,12 @@
     font-size: 0.8rem;
     right: -0.5rem;
     top: 0.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-text {
+    animation: none;
+    opacity: 1;
   }
 }

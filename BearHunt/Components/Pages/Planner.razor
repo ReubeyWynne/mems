@@ -3,6 +3,7 @@
 @inject IConfiguration Config
 @inject IDataProtectionProvider DataProtectionProvider
 @inject IHttpContextAccessor HttpContextAccessor
+<PageTitle>Wave Planner &middot; Bear Hunt</PageTitle>
 
 @if (_isAuthenticated)
 {
@@ -15,13 +16,7 @@
 else
 {
     <h1>Admin Login</h1>
-    <form method="post" action="/api/admin/login">
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" name="password" autofocus />
-        </div>
-        <button type="submit">Login</button>
-    </form>
+    <LoginForm />
     @if (_error is not null)
     {
         <div id="feedback" class="feedback feedback--error">@_error</div>

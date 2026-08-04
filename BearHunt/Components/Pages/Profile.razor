@@ -1,6 +1,7 @@
 @page "/bear-hunt/profile"
 @inject AppDbContext Db
 @inject IHttpContextAccessor HttpContext
+<PageTitle>Profile &middot; Bear Hunt</PageTitle>
 
 <div id="feedback"></div>
 @if (_error is not null)
@@ -8,7 +9,7 @@
     <div class="feedback feedback--error">@_error</div>
 }
 
-<div class="card profile-card">
+<div class="card card--rounded profile-card">
 
     <div class="banner flex-between profile-banner">
         <div class="profile-title-block">
@@ -17,7 +18,7 @@
         </div>
         <form method="post" action="/api/profile/username" class="username-form">
             <input type="text" name="username" placeholder="Change username" required />
-            <button type="submit">Save</button>
+            <button type="submit" class="btn--primary">Save</button>
         </form>
     </div>
 
@@ -26,117 +27,100 @@
         <div class="profile-section">
             <div class="form-row">
                 <div class="form-group">
-                    <label>Infantry</label>
-                    <input type="number" name="infantry" value="@_member?.Infantry" placeholder="0" />
+                    <label>Infantry<input type="number" name="infantry" value="@_member?.Infantry" placeholder="0" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Cavalry</label>
-                    <input type="number" name="cavalry" value="@_member?.Cavalry" placeholder="0" />
+                    <label>Cavalry<input type="number" name="cavalry" value="@_member?.Cavalry" placeholder="0" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Archers</label>
-                    <input type="number" name="archers" value="@_member?.Archers" placeholder="0" />
+                    <label>Archers<input type="number" name="archers" value="@_member?.Archers" placeholder="0" /></label>
                 </div>
             </div>
         </div>
 
         <div class="profile-section">
-            <div class="section-header">Rally Lead</div>
+            <h3 class="section-header">Rally Lead</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Lead Hero</label>
-                    <select name="rallyLeadHero">
+                    <label>Lead Hero<select name="rallyLeadHero">
                         <option value="">Select hero...</option>
                         @foreach (var hero in new[] { "Amadeus", "Helga", "Chenko", "Other" })
                         {
                             <option value="@hero" selected="@(hero == _member?.RallyLeadHero)">@hero</option>
                         }
-                    </select>
+                    </select></label>
                 </div>
                 <div class="form-group">
-                    <label>Star Level (1-5)</label>
-                    <input type="number" name="widgetLevel" value="@(_member?.WidgetLevel ?? 3)" min="1" max="5" />
+                    <label>Star Level (1-5)<input type="number" name="widgetLevel" value="@(_member?.WidgetLevel ?? 3)" min="1" max="5" /></label>
                 </div>
             </div>
         </div>
 
         <div class="profile-section">
-            <div class="section-header">March Sizes</div>
+            <h3 class="section-header">March Sizes</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Rally Size (host)</label>
-                    <input type="number" name="rallySize" value="@_member?.RallySize" placeholder="0" />
+                    <label>Rally Size (host)<input type="number" name="rallySize" value="@_member?.RallySize" placeholder="0" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Solo March Size</label>
-                    <input type="number" name="soloMarchSize" value="@_member?.SoloMarchSize" placeholder="0" />
+                    <label>Solo March Size<input type="number" name="soloMarchSize" value="@_member?.SoloMarchSize" placeholder="0" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Rally Joiner Cap</label>
-                    <input type="number" name="rallyJoinerCap" value="@_member?.RallyJoinerCap" placeholder="0" />
+                    <label>Rally Joiner Cap<input type="number" name="rallyJoinerCap" value="@_member?.RallyJoinerCap" placeholder="0" /></label>
                 </div>
             </div>
         </div>
 
         <div class="profile-section">
-            <div class="section-header">Rally Leader Stats</div>
+            <h3 class="section-header">Rally Leader Stats</h3>
             <details class="section-hint">
                 <summary>How to enter these stats</summary>
                 <p>Launch a <strong>terror rally</strong> with your full bear-hunting team (heroes and gear equipped), then copy the Attack and Lethality percentages from the battle report into the fields below.</p>
             </details>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Infantry Atk %</label>
-                    <input type="number" name="infantryAtkPct" value="@_member?.InfantryAtkPct" placeholder="0" />
+                    <label>Infantry Atk %<input type="number" name="infantryAtkPct" value="@_member?.InfantryAtkPct" placeholder="0" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Infantry Let %</label>
-                    <input type="number" name="infantryLethalityPct" value="@_member?.InfantryLethalityPct" placeholder="0" />
+                    <label>Infantry Let %<input type="number" name="infantryLethalityPct" value="@_member?.InfantryLethalityPct" placeholder="0" /></label>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Cavalry Atk %</label>
-                    <input type="number" name="cavalryAtkPct" value="@_member?.CavalryAtkPct" placeholder="0" />
+                    <label>Cavalry Atk %<input type="number" name="cavalryAtkPct" value="@_member?.CavalryAtkPct" placeholder="0" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Cavalry Let %</label>
-                    <input type="number" name="cavalryLethalityPct" value="@_member?.CavalryLethalityPct" placeholder="0" />
+                    <label>Cavalry Let %<input type="number" name="cavalryLethalityPct" value="@_member?.CavalryLethalityPct" placeholder="0" /></label>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Archer Atk %</label>
-                    <input type="number" name="archerAtkPct" value="@_member?.ArcherAtkPct" placeholder="0" />
+                    <label>Archer Atk %<input type="number" name="archerAtkPct" value="@_member?.ArcherAtkPct" placeholder="0" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Archer Let %</label>
-                    <input type="number" name="archerLethalityPct" value="@_member?.ArcherLethalityPct" placeholder="0" />
+                    <label>Archer Let %<input type="number" name="archerLethalityPct" value="@_member?.ArcherLethalityPct" placeholder="0" /></label>
                 </div>
             </div>
         </div>
 
         <div class="profile-section">
-            <div class="section-header">Other</div>
+            <h3 class="section-header">Other</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Preferred Bear Window (UTC)</label>
-                    <input type="text" name="preferredBearWindow" value="@_member?.PreferredBearWindow" placeholder="e.g. 18:00-22:00" />
+                    <label>Preferred Bear Window (UTC)<input type="text" name="preferredBearWindow" value="@_member?.PreferredBearWindow" placeholder="e.g. 18:00-22:00" /></label>
                 </div>
                 <div class="form-group">
-                    <label>March Count</label>
-                    <input type="number" name="marchCount" value="@_member?.MarchCount" min="0" max="8" placeholder="0" />
+                    <label>March Count<input type="number" name="marchCount" value="@_member?.MarchCount" min="0" max="8" placeholder="0" /></label>
                 </div>
                 <div class="form-group">
-                    <label>Troop Tier (highest tier you send)</label>
-                    <input type="number" name="troopTier" value="@_member?.TroopTier" min="1" max="10" placeholder="0" />
+                    <label>Troop Tier (highest tier you send)<input type="number" name="troopTier" value="@_member?.TroopTier" min="1" max="10" placeholder="0" /></label>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="profile-save">
-        <button type="submit">Save Profile</button>
+        <button type="submit" class="btn--primary">Save Profile</button>
     </div>
     </form>
 

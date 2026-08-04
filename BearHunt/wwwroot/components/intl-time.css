@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Intl Time
+   Bear Hunt: Intl Time
    UTC time conversion hover indicators.
    ═══════════════════════════════════════════════════════ */
 
@@ -13,5 +13,5 @@
 .intl-showing-utc {
   border-bottom-style: dotted;
   border-bottom-color: rgba(136, 136, 170, 0.5);
-  color: #9999bb;
+  color: var(--color-text-dim);
 }

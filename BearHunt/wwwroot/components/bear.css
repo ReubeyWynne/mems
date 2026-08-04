@@ -1,13 +1,11 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Next Bear Card
+   Bear Hunt: Next Bear Card
    Countdown banner, trap rosters, signup form.
    ═══════════════════════════════════════════════════════ */
 
 /* ─── Card shell ──────────────────────────────────── */
 .next-bear-card {
   margin-top: var(--space-m);
-  border-radius: var(--radius-2xl);
-  overflow: hidden;
 }
 
 /* ─── Banner ──────────────────────────────────────── */
@@ -43,11 +41,12 @@
 .countdown-label {
   font-size: var(--step-0);
   font-weight: 400;
-  color: #888;
+  color: var(--color-text-dim);
 }
 
 .countdown-live {
-  color: var(--color-danger);
+  color: #ff6b6b;
+  text-shadow: 0 0 6px rgba(255, 0, 0, 0.25);
   animation: pulse 1.5s ease-in-out infinite;
 }
 
@@ -180,8 +179,9 @@
 
 .trap-row {
   &:hover { background: var(--color-row-hover); }
-  &.rally-lead { background: var(--color-rally-bg); }
 }
+
+.rally-lead { background: var(--color-rally-bg); }
 
 .troops-col { font-variant-numeric: tabular-nums; }
 .formation { color: var(--color-text-muted); font-size: 0.75rem; }
@@ -258,29 +258,15 @@
 }
 
 .btn-remove {
-  background: transparent !important;
-  color: var(--color-danger) !important;
-  border: var(--border-thin) solid var(--color-danger) !important;
-  padding: 0.5rem 1rem !important;
-  font-size: 0.85rem !important;
+  background: transparent;
+  color: var(--color-danger);
+  border: var(--border-thin) solid var(--color-danger);
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
 
   &:hover {
-    background: var(--color-danger-dim) !important;
+    background: var(--color-danger-dim);
   }
-}
-
-/* ─── Intl time conversion ────────────────────────── */
-.intl-converted {
-  border-bottom: 1px dashed rgba(240, 192, 64, 0.4);
-  transition: background var(--transition-base) ease;
-
-  &:hover { background: rgba(240, 192, 64, 0.08); }
-}
-
-.intl-showing-utc {
-  border-bottom-style: dotted;
-  border-bottom-color: rgba(136, 136, 170, 0.5);
-  color: #9999bb;
 }
 
 /* ─── Mobile ──────────────────────────────────────── */

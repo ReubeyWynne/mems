@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Planner
+   Bear Hunt: Planner
    Wave planner board, lead chips, slot assignments.
    ═══════════════════════════════════════════════════════ */
 
@@ -103,7 +103,7 @@
 
 .plan-fill-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-border-light), var(--color-primary));
+  background: linear-gradient(90deg, var(--color-border-light) 0%, #c0a040 100%);
   border-radius: var(--radius-sm);
 }
 

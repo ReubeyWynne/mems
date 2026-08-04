@@ -1,13 +1,11 @@
 /* ═══════════════════════════════════════════════════════
-   Bear Hunt — Roster
+   Bear Hunt: Roster
    Roster card, table, allocator info.
    ═══════════════════════════════════════════════════════ */
 
 /* ─── Card ────────────────────────────────────────── */
 .roster-card {
   background: var(--color-surface-deep);
-  border-radius: var(--radius-3xl);
-  overflow: hidden;
 }
 
 .roster-header {

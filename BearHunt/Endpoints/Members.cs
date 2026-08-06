@@ -2,6 +2,8 @@ using StarFederation.Datastar;
 using BearHunt.Data;
 using BearHunt.Models;
 using BearHunt.Helpers;
+using BearHunt.Components.Fragments;
+using BearHunt.Services;
 
 namespace BearHunt.Endpoints;
 
@@ -9,13 +11,19 @@ public static class MembersEndpoints
 {
     public static void Map(WebApplication app)
     {
-        app.MapPost("/api/members/upsert", async (IDatastarService sse, HttpRequest request, AppDbContext db) =>
+        app.MapPost("/api/members/upsert", async (IDatastarService sse, HttpRequest request, AppDbContext db,
+            RazorRenderer renderer) =>
         {
             var username = AuthHelper.GetUsername(request);
 
             if (string.IsNullOrEmpty(username))
             {
-                await sse.PatchElementsAsync("""<div id="feedback" class="feedback feedback--error">Set a username first.</div>""");
+                var fb = await renderer.RenderAsync<Feedback>(parms =>
+                {
+                    parms[nameof(Feedback.Type)] = "error";
+                    parms[nameof(Feedback.Message)] = "Set a username first.";
+                });
+                await sse.PatchElementsAsync(fb);
                 return;
             }
 
@@ -47,7 +55,12 @@ public static class MembersEndpoints
             member.UpdatedAt = DateTime.UtcNow;
 
             await db.SaveChangesAsync();
-            await sse.PatchElementsAsync("""<div id="feedback" class="feedback feedback--success">Profile saved!</div>""");
+            var ok = await renderer.RenderAsync<Feedback>(parms =>
+            {
+                parms[nameof(Feedback.Type)] = "success";
+                parms[nameof(Feedback.Message)] = "Profile saved!";
+            });
+            await sse.PatchElementsAsync(ok);
         }).DisableAntiforgery();
     }
 }

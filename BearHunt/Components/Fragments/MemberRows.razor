@@ -1,7 +1,9 @@
-@foreach (var m in Members)
-{
-    <MemberRow Member="@m" />
-}
+<tbody id="roster-rows">
+    @foreach (var m in Members)
+    {
+        <MemberRow Member="@m" />
+    }
+</tbody>
 
 @code {
     [Parameter, EditorRequired] public IEnumerable<Member> Members { get; set; } = null!;

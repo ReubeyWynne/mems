@@ -58,7 +58,7 @@ public static class JokesEndpoints
             {
                 parms[nameof(JokeList.Jokes)] = jokes;
             });
-            await sse.PatchElementsAsync($"""<div id="joke-list">{jl}</div>""");
+            await sse.PatchElementsAsync(jl);
         }).DisableAntiforgery();
 
         app.MapDelete("/api/jokes/{id:int}", async (int id, IDatastarService sse, AppDbContext db,
@@ -77,7 +77,7 @@ public static class JokesEndpoints
             {
                 parms[nameof(JokeList.Jokes)] = jokes;
             });
-            await sse.PatchElementsAsync($"""<div id="joke-list">{jl}</div>""");
+            await sse.PatchElementsAsync(jl);
         }).DisableAntiforgery();
     }
 }

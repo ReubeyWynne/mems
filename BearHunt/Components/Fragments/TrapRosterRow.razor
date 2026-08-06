@@ -6,9 +6,41 @@
             <span class="rally-badge" title="Rally Lead">&#9733;</span>
         }
     </td>
-    <td class="troops-col">@((MarkupString)Troops)</td>
-    <td class="march-col">@((MarkupString)March)</td>
-    <td class="hero-col">@((MarkupString)Hero)</td>
+    <td class="troops-col">
+        @if (Member is { } m && m.Infantry + m.Cavalry + m.Archers > 0)
+        {
+            var total = m.Infantry + m.Cavalry + m.Archers;
+            @($"{FmtK(m.Infantry)}/{FmtK(m.Cavalry)}/{FmtK(m.Archers)}") <span class="formation">@($"({m.Infantry * 100 / total}/{m.Cavalry * 100 / total}/{m.Archers * 100 / total})")</span>
+        }
+        else
+        {
+            <text>&mdash;</text>
+        }
+    </td>
+    <td class="march-col">
+        @if (Member is { RallySize: > 0 } rs)
+        {
+            @FmtK(rs.RallySize)
+        }
+        else if (Member is { SoloMarchSize: > 0 } sm)
+        {
+            @($"{FmtK(sm.SoloMarchSize)}s")
+        }
+        else
+        {
+            <text>&mdash;</text>
+        }
+    </td>
+    <td class="hero-col">
+        @if (Member is { RallyLeadHero: not null and not "" } h)
+        {
+            @E(h.RallyLeadHero) <span class="hero-lv">Lv@(h.WidgetLevel)</span>
+        }
+        else
+        {
+            <text>&mdash;</text>
+        }
+    </td>
     @if (IsAdmin)
     {
         <td class="wave-col">
@@ -36,39 +68,4 @@
     [Parameter, EditorRequired] public Preference Preference { get; set; } = null!;
     [Parameter] public Member? Member { get; set; }
     [Parameter] public bool IsAdmin { get; set; }
-
-    string Troops
-    {
-        get
-        {
-            if (Member is null) return "\u2014";
-            var total = Member.Infantry + Member.Cavalry + Member.Archers;
-            if (total == 0) return "\u2014";
-            var i = Member.Infantry * 100 / total;
-            var c = Member.Cavalry * 100 / total;
-            var a = Member.Archers * 100 / total;
-            return $"{FmtK(Member.Infantry)}/{FmtK(Member.Cavalry)}/{FmtK(Member.Archers)} <span class=\"formation\">({i}/{c}/{a})</span>";
-        }
-    }
-
-    string March
-    {
-        get
-        {
-            if (Member is null) return "\u2014";
-            if (Member.RallySize > 0) return FmtK(Member.RallySize);
-            if (Member.SoloMarchSize > 0) return $"{FmtK(Member.SoloMarchSize)}s";
-            return "\u2014";
-        }
-    }
-
-    string Hero
-    {
-        get
-        {
-            if (Member is null) return "\u2014";
-            if (string.IsNullOrEmpty(Member.RallyLeadHero)) return "\u2014";
-            return $"{E(Member.RallyLeadHero)} <span class=\"hero-lv\">Lv{Member.WidgetLevel}</span>";
-        }
-    }
 }

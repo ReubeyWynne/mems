@@ -17,7 +17,7 @@ public static class RosterEndpoints
             {
                 parms[nameof(MemberRows.Members)] = members;
             });
-            await sse.PatchElementsAsync($"""<tbody id="roster-rows">{html}</tbody>""");
+            await sse.PatchElementsAsync(html);
         });
     }
 }

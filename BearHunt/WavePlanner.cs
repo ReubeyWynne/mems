@@ -79,7 +79,7 @@ public static class WavePlanner
             // 3. caps with defaults; flag assumed caps
             bool capAssumed = m.RallySize <= 0 || m.RallyJoinerCap <= 0;
             int troopCap = m.RallySize > 0 ? m.RallySize : 500_000;
-            int playerCap = m.RallyJoinerCap > 0 ? m.RallyJoinerCap : 20;
+            int playerCap = m.RallyJoinerCap > 0 ? m.RallyJoinerCap : 15;
             int fairShare = troopCap / playerCap;
 
             int leadPool = m.Infantry + m.Cavalry + m.Archers;

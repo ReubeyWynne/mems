@@ -5,143 +5,81 @@
 <PageTitle>Academy &middot; Bear Hunt</PageTitle>
 
 <h1>&#127891; Bear Academy</h1>
-<p class="academy-intro">Three things make a big difference in Bear Hunt. None of them need a spreadsheet. Each one takes a minute.</p>
+<p class="academy-intro">Three things make a big difference in Bear Hunt &mdash; and none of them need a spreadsheet. Each one takes a minute.</p>
 
 <!-- ══════════════ Bear Strategies ══════════════ -->
 <section id="strategies" class="lesson lesson-section">
     <h2>&#127993;&#65039; Bear Strategies</h2>
-    <p class="academy-intro">A bear rally has a <strong>fixed 5-minute run</strong>: it fires exactly 5 minutes after it launches, no matter what. So the whole game is <em>when</em> your rallies launch. Same 30-minute event, same clock. The first 11 minutes tell you everything. Here are the two ways alliances play it.</p>
+    <p class="academy-intro">A bear rally has a <strong>fixed 5-minute run</strong>: it fires exactly 5 minutes after it launches, no matter what. So the whole game is <em>when</em> your rallies launch. Same 30-minute event, same clock &mdash; the first 11 minutes tell you everything. Here are the two ways alliances play it.</p>
 
     <div class="scenario">
         <div class="tl-shell">
-            <div class="tl-switch" role="radiogroup" aria-label="Timeline view">
-                <input type="radio" id="tl-stag" name="tlview" value="staggered" checked />
-                <input type="radio" id="tl-ffa" name="tlview" value="ffa" />
-                <div class="tl-toggle">
-                    <label for="tl-stag">Staggered waves</label>
-                    <label for="tl-ffa">Free for all</label>
-                </div>
-
-                <div class="tl-legend">
-                    <span class="tl-legend-item"><span class="tl-swatch sw-march"></span>Marching</span>
-                    <span class="tl-legend-item"><span class="tl-swatch sw-reload"></span>Relaunch</span>
-                    <span class="tl-legend-item"><span class="tl-swatch sw-fight"></span>Fight + travel</span>
-                    <span class="tl-legend-item"><span class="tl-swatch sw-join"></span>Join window</span>
-                    <span class="tl-legend-item"><span class="tl-swatch sw-parked"></span>Parked</span>
-                </div>
-
-                <section class="tl-view tl-view-staggered" aria-label="Staggered launch plan">
-                    <div class="tl" style="--axis:@F(Axis);--lanes:@_staggered.Length">
-                        <div class="tl-ticks" aria-hidden="true">
-                            @foreach (var t in MajorTicks())
-                            {
-                                <span class="tl-tick tl-tick-major" style="--at:@F(t)"><span class="tl-tick-label">@T(t)</span></span>
-                            }
-                            @foreach (var t in MinorTicks())
-                            {
-                                <span class="tl-tick tl-tick-minor" style="--at:@F(t)"></span>
-                            }
-                        </div>
-                        <div class="tl-heads">
-                            @foreach (var g in _staggered)
-                            {
-                                <div class="tl-head" style="--lane:@g.Index" data-tip="@g.Leads.Count rally leads · @g.Fires.Count waves"><span>@g.Name</span><span class="tl-head-count">@g.Fires.Count&times;</span></div>
-                            }
-                        </div>
-                        <div class="tl-zone" style="@RangeStyle(LastCall, Axis)"><span>last call @T(LastCall)</span></div>
-                        <div class="tl-lanes">
-                            @foreach (var g in _staggered)
-                            {
-                                <div class="tl-lane" style="--lane:@g.Index">
-                                    @foreach (var s in g.Segs)
-                                    {
-                                        <div class="tl-seg @SegClass(s)" style="@SegStyle(s)" data-tip="@SegTip(g, s)"></div>
-                                    }
-                                    @foreach (var f in g.Fires)
-                                    {
-                                        <div class="tl-fire" style="--at:@F(f)" data-tip="@FireTip(f)"></div>
-                                    }
-                                    @foreach (var s in g.Segs.Where(s => s.Kind == SegKind.March))
-                                    {
-                                        <div class="tl-seg-label @(s.Reload ? "reload" : "first")" style="@SegStyle(s)">
-                                            @if (s.Reload)
-                                            {
-                                                <span class="line1">relaunch</span>
-                                                <span class="line2">fires @T(s.To)</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="line1"><span class="tl-label-full">@g.Name &middot; launch @T(s.From)</span><span class="tl-label-short">launch @T(s.From)</span></span>
-                                                <span class="line2">fires @T(s.To)</span>
-                                            }
-                                        </div>
-                                    }
-                                    @if (g.JoinWindow is { } jw)
-                                    {
-                                        <div class="tl-seg seg-join" style="@RangeStyle(jw.From, jw.To)" data-tip="@JoinTip(jw.From, jw.To)"></div>
-                                    }
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                </section>
-
-                <section class="tl-view tl-view-ffa" aria-label="Free for all outcome">
-                    <div class="tl" style="--axis:@F(Axis);--lanes:1">
-                        <div class="tl-ticks" aria-hidden="true">
-                            @foreach (var t in MajorTicks())
-                            {
-                                <span class="tl-tick tl-tick-major" style="--at:@F(t)"><span class="tl-tick-label">@T(t)</span></span>
-                            }
-                            @foreach (var t in MinorTicks())
-                            {
-                                <span class="tl-tick tl-tick-minor" style="--at:@F(t)"></span>
-                            }
-                        </div>
-                        <div class="tl-heads">
-                            <div class="tl-head"><span>Free for all</span></div>
-                        </div>
-                        <div class="tl-zone" style="@RangeStyle(LastCall, Axis)"><span>last call @T(LastCall)</span></div>
-                        <div class="tl-lanes">
-                            <div class="tl-lane" style="--lane:0">
-                                @foreach (var s in _ffa.Segs)
-                                {
-                                    <div class="tl-seg @SegClass(s)" style="@SegStyle(s)" data-tip="@FfaTip(s)"></div>
-                                }
-                                @foreach (var s in _ffa.Segs.Where(s => s.Kind == SegKind.Reload))
-                                {
-                                    <div class="tl-seg-label wait" style="@SegStyle(s)">
-                                        <span class="line1">waiting</span>
-                                        <span class="line2">fire @T(s.To - Travel)</span>
-                                    </div>
-                                }
-                                @foreach (var at in _ffa.Parked)
-                                {
-                                    <span class="tl-parked" style="--at:@F(at)" data-tip="Troops parked: no rally to join">
-                                        <span class="tl-label-full">parked 4&frac12; min</span><span class="tl-label-short">parked</span>
-                                    </span>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </section>
+            <div class="tl-legend">
+                <span class="tl-legend-item"><span class="tl-swatch sw-march"></span>Marching</span>
+                <span class="tl-legend-item"><span class="tl-swatch sw-reload"></span>Relaunch</span>
+                <span class="tl-legend-item"><span class="tl-swatch sw-fight"></span>Fight + travel</span>
             </div>
+
+            <form method="get" action="" class="tl-controls" data-signals='{ "leads": @_inputs.Leads, "participants": @_inputs.Participants, "tlq": @_inputs.Q, "spread": @_inputs.SpreadSeconds, "g5": @(_inputs.UseGroup5 ? "true" : "false"), "source": "@_source" }'
+                  data-on:submit="@@get('/api/academy/timeline', {contentType: 'form'})">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Rally leads
+                            <input type="number" name="leads" min="0" max="100" data-bind:leads data-attr:disabled="$source === 'prefill'" data-on:change="@@get('/api/academy/timeline', {contentType: 'form'})" />
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Participants (incl. leads)
+                            <input type="number" name="participants" min="1" max="300" data-bind:participants data-attr:disabled="$source === 'prefill'" data-on:change="@@get('/api/academy/timeline', {contentType: 'form'})" />
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="q-slider">Q — simultaneous marches per player
+                            <span data-text="$tlq">@_inputs.Q</span>
+                            <input type="range" name="q" min="1" max="6" data-bind:tlq data-attr:disabled="$source === 'prefill'" data-on:change="@@get('/api/academy/timeline', {contentType: 'form'})" />
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="q-slider">Spread — seconds between a group's lead launches
+                            <span data-text="$spread">@_inputs.SpreadSeconds</span>
+                            <input type="range" name="spread" min="0" max="24" step="1" data-bind:spread data-on:change="@@get('/api/academy/timeline', {contentType: 'form'})" />
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Source
+                            <select name="source" data-bind:source data-on:change="@@get('/api/academy/timeline', {contentType: 'form'})">
+                                <option value="custom">Custom</option>
+                                <option value="prefill">Real schedule</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="tl-check"><input type="checkbox" data-bind:g5 checked="@(_inputs.UseGroup5)" data-on:change="@@get('/api/academy/timeline', {contentType: 'form'})" /> 5th group</label>
+                        <input type="hidden" name="g5" data-bind:g5 value="@(_inputs.UseGroup5 ? "true" : "false")" />
+                        <p class="tl-hint">optional &mdash; excess leads only</p>
+                    </div>
+                </div>
+            </form>
+
+            <AcademyTimelineView Plan="_plan" />
         </div>
         <p class="scenario-caption">
             <br/>
-            <strong>Staggered:</strong> Staff each group with at least 3 rally leads: every lead launches their own rally in the same minute as the group's wave. Group 1's wave launches at 0:00, group 2's at 1:00, group 3's at 2:00, group 4's at 3:00. One group per minute. Joiners flood groups 1 and 2, so those rallies are full immediately. Group 3 stays empty until group 1 troops return around 5:30, then they pile in before the 7:00 fire. Group 4 fills at 6:30 from returning group 2 troops, and because group 4 is closest to the bear with a sub-20s fight window, they squeeze in a 5th rally. The cycle repeats all event: every group relaunches the moment its troops return. Need even smoother coverage? A 5th group at 4:00 helps, but …
-            <strong>Free for all:</strong> Everyone launches at once. All rallies fire together at 5:00. Then nothing. 4&frac12; minutes of silence. A 1-minute scramble. Another gap. Repeat for 30 minutes. And because players join by leader <strong>strength</strong> rather than the next available rally, most troops sit parked for 4+ minutes at a time.
+            <strong>Staggered:</strong> The plan above is generated from your numbers &mdash; rally leads, participants, queues, spread. Leads split into launch groups, strongest first, and the first two groups carry the entire first wave, so they must fit everyone: <em>(leads in groups 1&ndash;2) &times; 14 joiner slots &ge; participants &times; Q</em>. The later groups launch hollow (hatched) and fill from the round-1 returnees around 5:30 (yellow join window); after that every group relaunches the moment its troops return, so rallies fire almost every minute from 5:00 on. Group 4's leads are the fast group &mdash; 20s fight + travel vs the 30s everyone else rides &mdash; which is exactly what buys them a 5th round (launch 24:20, fires 29:20). Group 5 can never fit a 5th (it would need under 15s travel), so it's optional: untick it unless you have an excess of strong leads. The bars in the density strip are those fires; the chips below keep score &mdash; fires per minute, longest silence, coverage, minutes parked. Drag the controls and watch the plan rebuild honestly: too few leads in the first two groups overflows the first wave, and a single lead widens the gaps to minutes.
         </p>
     </div>
 
-    <div class="lesson-fact">  Same joiners, same troops. Staggering keeps fresh rallies firing every minute from 5:00 onward. Free-for-all leaves your best troops parked for 4+ minutes at a time.</div>
+    <div class="lesson-fact">  Same joiners, same troops. Staggering keeps fresh rallies firing every minute from 5:00 onward &mdash; if the first two groups can hold everyone's marches.</div>
 </section>
 
 <!-- ══════════════ Split Your Troops ══════════════ -->
 <section id="split" class="lesson lesson-section">
     <h2>&#9986;&#65039; Split Your Troops</h2>
-    <p class="academy-intro">One big march leaves damage on the table. Double the troops only adds about <strong>40%</strong> more damage. Every extra troop hits a little softer than the last. Spread those same troops across <strong>simultaneous</strong> marches instead, and you deal more damage without spending anything extra. <strong>Use every march slot, every wave.</strong></p>
+    <p class="academy-intro">One big march leaves damage on the table. Double the troops only adds about <strong>40%</strong> more damage &mdash; every extra troop hits a little softer than the last. Spread those same troops across <strong>simultaneous</strong> marches instead, and you deal more damage without spending anything extra. <strong>Use every march slot, every wave.</strong></p>
 
     <div class="lesson diminish">
         <h3>The bigger the rally, the less each troop adds</h3>
@@ -170,7 +108,7 @@
             </svg>
             <figcaption>Troops &rarr; &middot; doubling troops adds only ~40% damage &middot; dashed line = 1:1 growth</figcaption>
         </figure>
-        <p class="scenario-caption">The first 10k troops hit hardest. The next 20k add only about a third as much per troop. The 40k after that? Less than a quarter. Every troop you send is worth a little less than the one before it, so the fastest way to more damage isn't a bigger march, it's more marches.</p>
+        <p class="scenario-caption">The first 10k troops hit hardest. The next 20k add only about a third as much per troop. The 40k after that? Less than a quarter. Every troop you send is worth a little less than the one before it &mdash; so the fastest way to more damage isn't a bigger march, it's more marches.</p>
     </div>
 
     <div class="split-slider" data-signals='{ "q": @_q }'>
@@ -180,32 +118,32 @@
             <input type="range" id="q-slider" min="1" max="6" value="@_q" data-bind:q />
             <span id="q-value" data-text="$q">@_q</span>
         </label>
-        <div class="split-live">That's <strong><span id="split-ratio" data-computed:ratio="Math.sqrt($q).toFixed(1)" data-text="$ratio">@_gainRatio.ToString("0.0", CultureInfo.InvariantCulture)</span>&times;</strong> the damage of one big march. Same troops, nothing extra spent.</div>
-        <p class="split-note">6 is the most simultaneous rallies any player can field. Aim for all 6, every wave.</p>
+        <div class="split-live">That's <strong><span id="split-ratio" data-computed:ratio="Math.sqrt($q).toFixed(1)" data-text="$ratio">@_gainRatio.ToString("0.0", CultureInfo.InvariantCulture)</span>&times;</strong> the damage of one big march &mdash; same troops, nothing extra spent.</div>
+        <p class="split-note">6 is the most simultaneous rallies any player can field &mdash; aim for all 6, every wave.</p>
     </div>
 
     <div class="lesson-box">
-        <h3>Why everyone stacks on the whale (and why it hurts)</h3>
-        <p>It's tempting to stack every march on the strongest player: their stats are better, so their rallies hit harder. But a rally has limited slots, and the same diminishing returns apply: more troops in one rally adds less and less. Most just <strong>queue up, parked 4+ minutes between hits</strong>. The same dead time as the free-for-all. The whale's stats only help the few who fit inside. Spread out: more rallies beats one big one, every time.</p>
+        <h3>Why everyone stacks on the whale &mdash; and why it hurts</h3>
+        <p>It's tempting to stack every march on the strongest player &mdash; their stats are better, so their rallies hit harder. But a rally has limited slots, and the same diminishing returns apply: more troops in one rally adds less and less. Most just <strong>queue up, parked 4+ minutes between hits</strong> &mdash; the same dead time as the free-for-all. The whale's stats only help the few who fit inside. Spread out: more rallies beats one big one, every time.</p>
     </div>
 
     <div class="lesson-box">
         <h3>Don't hog the rally</h3>
-        <p>A 900k rally with 15 slots means <strong>60k per player</strong>. One player stuffing in 200k squeezes out ~3 others, and the room loses more than that one player gains. Spread out; everyone earns more.</p>
+        <p>A 900k rally with 15 slots means <strong>60k per player</strong>. One player stuffing in 200k squeezes out ~3 others &mdash; and the room loses more than that one player gains. Spread out; everyone earns more.</p>
     </div>
 
     <div class="lesson-box">
         <h3>Keep moving</h3>
-        <p>Once waves are staggered, a rally fires roughly <strong>every minute</strong>. Troops parked in a rally that already fired are missing the next one. Every missed fire is damage you're not earning.</p>
+        <p>Once waves are staggered, a rally fires roughly <strong>every minute</strong>. Troops parked in a rally that already fired are missing the next one &mdash; every missed fire is damage you're not earning.</p>
     </div>
 
-    <div class="lesson-fact">Same troops, same leaders: <strong>6 simultaneous rallies deal ~2.4&times; the damage of one big march</strong>, and keep everyone's troops moving instead of parked 4+ minutes.</div>
+    <div class="lesson-fact">Same troops, same leaders: <strong>6 simultaneous rallies deal ~2.4&times; the damage of one big march</strong> &mdash; and keep everyone's troops moving instead of parked 4+ minutes.</div>
 </section>
 
 <!-- ══════════════ Your Formation ══════════════ -->
 <section id="formation" class="lesson lesson-section">
     <h2>&#9876;&#65039; Your Formation</h2>
-    <p class="academy-intro">Every leader likes a specific troop mix, usually <strong>heavy on archers</strong>, because archers hit hardest per troop. Match it and your damage jumps. Pick a leader and plug in your numbers:</p>
+    <p class="academy-intro">Every leader likes a specific troop mix &mdash; usually <strong>heavy on archers</strong>, because archers hit hardest per troop. Match it and your damage jumps. Pick a leader and plug in your numbers:</p>
 
     <form method="get" action="" id="formation-form" class="lesson lesson-form"
           data-on:submit="@@get('/api/academy/formation', {contentType: 'form'})">
@@ -218,12 +156,12 @@
                         <option value="@l.Username" selected="@(_leader == l.Username)" title="Strength = how hard rallies led by this player hit">@E(l.Username) (strength @l.K.ToString("0", CultureInfo.InvariantCulture))</option>
                     }
                 </select></label>
-                <p class="section-hint">Strength is how hard this leader's rallies hit. Higher is better. Choose <strong>Custom stats</strong> to enter your own numbers.</p>
+                <p class="section-hint">Strength is how hard this leader's rallies hit &mdash; higher is better. Choose <strong>Custom stats</strong> to enter your own numbers.</p>
             </div>
         </div>
 
         <details id="custom-stats" class="section-hint" open="@(_leader == "custom")" data-attr:open="$leader === 'custom'">
-            <summary>Custom stats: use your own numbers</summary>
+            <summary>Custom stats &mdash; use your own numbers</summary>
             <div class="form-row">
                 <div class="form-group">
                     <label>Infantry Atk %<input type="number" name="infAtk" value="@_infAtk" placeholder="250" /></label>
@@ -272,9 +210,7 @@
         <button type="submit" class="btn--primary">Compute</button>
     </form>
 
-    <div class="lesson lesson-output" id="formation-output">
-        @((MarkupString)AcademyFormation.RenderHtml(_formation))
-    </div>
+    <FormationOutput Result="_formation" />
 </section>
 
 @code {
@@ -298,6 +234,13 @@
 
         // leader options: members with complete stats, ranked by K
         var members = await Db.Members.ToListAsync();
+
+        // timeline: shared engine plan from the same controls the page seeds
+        var cycle = await Db.Cycles.FindAsync(1);
+        var prefs = await Db.Preferences.ToListAsync();
+        _inputs = AcademyTimeline.Parse(ctx.Request.Query, cycle, members, prefs);
+        _plan = AcademyTimeline.Compute(_inputs);
+        _source = ctx.Request.Query["source"].FirstOrDefault() == "prefill" ? "prefill" : "custom";
         foreach (var m in members.Where(CompleteStats))
         {
             var lInf = DamageCalc.AttackFactor(m.InfantryAtkPct, m.InfantryLethalityPct);
@@ -326,146 +269,8 @@
         && m.CavalryAtkPct.HasValue && m.CavalryLethalityPct.HasValue
         && m.ArcherAtkPct.HasValue && m.ArcherLethalityPct.HasValue;
 
-    // ─── Timeline model ──────────────────────────────
-    // The event runs 30 minutes; a rally fires exactly 5 minutes after launch,
-    // then fights + travels home (~30s). Each group relaunches the moment its
-    // troops return, so one wave takes 5.5 minutes. Launching after the 25:00
-    // mark would fire past the bell, so the projection stops at "last call".
-    private const double Axis = 30;
-    private const double FireDelay = 5;
-    private const double Travel = 0.5;
-    private const double Cycle = FireDelay + Travel;
-    private const double LastCall = 25;
-
-    private enum SegKind { March, Reload, Launch, Fight, Join }
-
-    private sealed record Seg(double From, double To, SegKind Kind, bool Reload);
-    private sealed record Lead(string Label, double LaunchAt);
-    private sealed record Joiner(string Label, double JoinAt, double Travel);
-    private sealed record GroupLane(
-        int Index, string Name,
-        IReadOnlyList<Seg> Segs, IReadOnlyList<double> Fires,
-        (double From, double To)? JoinWindow, string Status,
-        IReadOnlyList<Lead> Leads, IReadOnlyList<Joiner> Joiners);
-    private sealed record FfaLane(IReadOnlyList<Seg> Segs, IReadOnlyList<double> Parked);
-
-    private readonly GroupLane[] _staggered = BuildStaggered();
-    private readonly FfaLane _ffa = BuildFfa();
-
-    // Staggered plan: group N launches at minute N-1, then every cycle as long
-    // as the launch still fires before the event ends (launch < 25:00).
-    // Group 4 (closest to the bear, sub-20s fight window) gets a shorter
-    // return trip, which squeezes in a 5th rally.
-    private static GroupLane[] BuildStaggered()
-    {
-        var groups = new GroupLane[5];
-        for (int g = 0; g < groups.Length; g++)
-        {
-            double l0 = g;
-            // Group 4 (index 3): closest to bear — sub-20s fight+travel home
-            double travel = g == 3 ? 0.25 : Travel;
-            double cycle = FireDelay + travel;
-            var segs = new List<Seg>();
-            var fires = new List<double>();
-            bool reload = false;
-            for (double l = l0; l < LastCall; l += cycle)
-            {
-                segs.Add(new Seg(l, l + FireDelay, SegKind.March, reload));
-                fires.Add(l + FireDelay);
-                segs.Add(new Seg(l + FireDelay, l + cycle, SegKind.Fight, false));
-                reload = true;
-            }
-
-            // Rally leads: each group runs on 3 leads by default. They launch
-            // in the same minute as the group's wave, with natural variance in
-            // launch times (a few seconds to half a minute apart).
-            var leads = new List<Lead>();
-            var rng = new Random(1000 + g * 7919); // seeded: stable output
-            for (int i = 1; i <= 3; i++)
-            {
-                double jitter = 0.05 + rng.NextDouble() * 0.4; // 0:03–0:27
-                leads.Add(new Lead($"Lead {i}", l0 + jitter));
-            }
-
-            // Joiners illustrate natural variance: each member joins at a
-            // slightly different time and travels a slightly different distance.
-            var joiners = new List<Joiner>();
-            int count = g switch { 3 => 4, 4 => 3, _ => 5 };
-            var (arriveFrom, arriveTo) = g switch
-            {
-                0 => (0.1, 1.4),  // flooded immediately
-                1 => (1.1, 2.4),
-                2 => (5.5, 7.0),  // fills when Group 1 troops return
-                3 => (6.5, 8.0),  // fills when Group 2 troops return
-                _ => (4.1, 5.3),  // optional group: sparse joiners
-            };
-            for (int j = 1; j <= count; j++)
-            {
-                double join = arriveFrom + rng.NextDouble() * (arriveTo - arriveFrom);
-                double joinerTravel = 0.1 + rng.NextDouble() * 0.25; // 0:06–0:21
-                joiners.Add(new Joiner($"Joiner {j}", join, joinerTravel));
-            }
-
-            string status = g switch
-            {
-                0 or 1 => "3 rally leads launch within the group's minute; every rally fills instantly.",
-                2 => "3 rally leads: empty until 5:30, then returning Group 1 troops pile in before the 7:00 fire.",
-                3 => "3 rally leads. Closest to the bear with a sub-20s fight window. Empty until 6:30, then returning Group 2 troops pile in before the 8:00 fire. The short return trip squeezes in a 5th rally.",
-                _ => "3 rally leads: optional 5th group, fewer joiners, but smoother coverage.",
-            };
-            (double, double)? joinWindow = g switch { 2 => (6.0, 7.0), 3 => (7.0, 8.0), _ => null };
-            groups[g] = new GroupLane(g, $"Group {g + 1}", segs, fires, joinWindow, status, leads, joiners);
-        }
-        return groups;
-    }
-
-    // Free for all: everyone launches in the same 1-minute window, all rallies
-    // fire together, then 4½ minutes of silence. Repeats every 5.5 minutes.
-    private static FfaLane BuildFfa()
-    {
-        var segs = new List<Seg>();
-        var parked = new List<double>();
-        for (double t = 0; t < LastCall; t += Cycle)
-        {
-            segs.Add(new Seg(t, t + 1, SegKind.Launch, false));           // everyone launches
-            segs.Add(new Seg(t + 1, t + Cycle, SegKind.Reload, true));    // waiting
-            segs.Add(new Seg(t + FireDelay, t + FireDelay + Travel, SegKind.Fight, false)); // fires land
-            parked.Add(t + 2);                                            // parked chip in the wait
-        }
-        return new FfaLane(segs, parked);
-    }
-
-    // Geometry + formatting helpers: positions are minutes/axis percentages,
-    // rendered as CSS custom properties so one DOM tree serves both the
-    // horizontal (desktop) and vertical (mobile) layouts via media queries.
-    private static string F(double v) => v.ToString("0.0", CultureInfo.InvariantCulture);
-    private static string T(double min) =>
-        $"{(int)min}:{Math.Round(min % 1 * 60).ToString("00", CultureInfo.InvariantCulture)}";
-    private static string SegStyle(Seg s) => $"--from:{F(s.From)};--to:{F(s.To)}";
-    private static string RangeStyle(double from, double to) => $"--from:{F(from)};--to:{F(to)}";
-    private static string SegClass(Seg s) => s.Kind switch
-    {
-        SegKind.March => "seg-march",
-        SegKind.Reload => "seg-reload",
-        SegKind.Launch => "seg-launch",
-        SegKind.Fight => "seg-fight",
-        _ => "seg-join",
-    };
-    private static string SegTip(GroupLane g, Seg s) => s.Kind switch
-    {
-        SegKind.March => $"{g.Name}: {g.Leads.Count} leads marching {T(s.From)}-{T(s.To)} · fires at {T(s.To)}",
-        SegKind.Reload => $"{g.Name} relaunch: {g.Leads.Count} leads marching {T(s.From)}-{T(s.To)} · fires at {T(s.To)}",
-        _ => "Fight + travel home (~30s)",
-    };
-    private static string FfaTip(Seg s) => s.Kind switch
-    {
-        SegKind.Launch => "Everyone launches at once: the scramble",
-        SegKind.Reload => $"Nothing fires: {T(s.To - s.From)} of silence",
-        _ => "Fight + travel home (~30s)",
-    };
-    private static string FireTip(double f) => $"Rally fires at {T(f)}";
-    private static string JoinTip(double from, double to) =>
-        $"Join window {T(from)}-{T(to)}: returning troops fill this rally";
-    private static IEnumerable<double> MajorTicks() { for (double t = 0; t <= Axis; t += 5) yield return t; }
-    private static IEnumerable<double> MinorTicks() { for (double t = 1; t < Axis; t += 1) if (t % 5 != 0) yield return t; }
+    // timeline: shared AcademyTimeline engine — SSR plan + controls seed
+    private AcademyTimeline.Inputs _inputs = null!;
+    private AcademyTimeline.Plan _plan = null!;
+    private string _source = "custom";
 }

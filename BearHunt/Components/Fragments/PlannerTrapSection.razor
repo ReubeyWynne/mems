@@ -1,0 +1,142 @@
+@using System.Globalization
+@* One trap's full wave plan: header, lead chips, wave grid, participant
+   table, and projected-readout footer. Rendered by PlannerResults (admin
+   planner SSE patch). *@
+<div class="plan-trap trap-roster trap-@Plan.Trap">
+    <div class="trap-header">
+        <span class="trap-label">Trap @Plan.Trap</span>
+        <span class="trap-time">@(Plan.TrapTime.ToString("HH:mm"))</span>
+        <span class="trap-count">@Plan.Participants.Count</span>
+    </div>
+
+    @if (Plan.Participants.Count == 0)
+    {
+        <p class="trap-empty">No signups yet.</p>
+    }
+    else
+    {
+        @if (Plan.Slots.Count == 0)
+        {
+            <div class="plan-note">No rally leads with stats. Add one on their profile (all six atk/let fields), then toggle &#9733; on the schedule.</div>
+        }
+        else
+        {
+            @* Lead chips: name, K, optimal fractions, caps, launch wave, cap-assumed flag *@
+            <div class="plan-leads">
+                @foreach (var slot in Plan.Slots)
+                {
+                    var launch = Plan.TrapTime.AddMinutes(slot.Wave);
+                    <div class="plan-lead-chip">
+                        <span class="plan-lead-name">&#9733; @E(slot.Lead)</span>
+                        <span class="plan-k">K=@(slot.K.ToString("0.0", CultureInfo.InvariantCulture))</span>
+                        <span class="plan-ratio">@((slot.RInf * 100).ToString("0.0", CultureInfo.InvariantCulture))/@((slot.RCav * 100).ToString("0.0", CultureInfo.InvariantCulture))/@((slot.RArc * 100).ToString("0.0", CultureInfo.InvariantCulture))</span>
+                        <span class="plan-caps">@FmtK(slot.TroopCap) &middot; @slot.PlayerCap slots</span>
+                        <span class="plan-launch">wave @slot.Wave &middot; launch @(launch.ToString("HH:mm:ss"))</span>
+                        @if (slot.CapAssumed)
+                        {
+                            <span class="flag-warn">cap assumed</span>
+                        }
+                    </div>
+                }
+            </div>
+
+            @* Wave grid: slots + per-wave summary *@
+            <div class="plan-waves">
+                @foreach (var summary in Plan.Waves)
+                {
+                    var launch = Plan.TrapTime.Add(summary.LaunchOffset);
+                    var fire = Plan.TrapTime.Add(summary.FireOffset);
+                    var joinFrom = fire.Add(-TimeSpan.FromMinutes(1));
+                    <div class="plan-wave">
+                        <div class="plan-wave-head">
+                            Wave @summary.Wave
+                            <span class="plan-launch">launch @(launch.ToString("HH:mm:ss"))</span>
+                            <span class="plan-fire">fires @(fire.ToString("HH:mm:ss"))</span>
+                            <span class="plan-join">join @(joinFrom.ToString("HH:mm:ss"))&ndash;@(fire.ToString("HH:mm:ss"))</span>
+                        </div>
+                        <div class="plan-slots">
+                            @foreach (var slot in Plan.Slots.Where(s => s.Wave == summary.Wave))
+                            {
+                                double fillPct = slot.TroopCap > 0 ? (double)slot.FilledTroops / slot.TroopCap : 0;
+                                var (ti, tc, ta) = TargetK(slot.RInf, slot.RCav, slot.RArc, slot.TroopCap);
+                                <div class="plan-slot">
+                                    <span class="plan-slot-lead">@E(slot.Lead)</span>
+                                    <div class="plan-fill"><div class="plan-fill-bar" style="width:@(Math.Min(100.0, fillPct * 100).ToString("0", CultureInfo.InvariantCulture))%"></div></div>
+                                    <span class="plan-fill-text">@FmtK((int)slot.FilledTroops)/@FmtK(slot.TroopCap) &middot; @slot.FilledPlayers/@slot.PlayerCap</span>
+                                    <span class="plan-slot-target">target @ti/@tc/@ta</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="plan-wave-summary">
+                            demand @summary.Demand marches vs capacity @summary.Capacity slots &middot; filled @summary.FilledSlots slots / @FmtK((int)summary.FilledTroops) troops
+                            @if (summary.Demand > summary.Capacity)
+                            {
+                                <span class="flag-warn">demand &gt; capacity</span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        @* Participant table *@
+        <table class="plan-table">
+            <thead>
+                <tr>
+                    <th>Player</th><th>Pool</th><th>Q</th>
+                    @for (int w = 0; w < WavePlanner.WaveCount; w++)
+                    {
+                        <th>W@w</th>
+                    }
+                    <th>Est. Damage</th><th>Band</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Plan.Participants)
+                {
+                    <PlannerParticipantRow Username="@p.Username" IsLead="@p.IsLead" Pool="@p.Pool" Q="@p.Q"
+                        Assignments="@p.Assignments.Select(a => (a.Wave, a.Lead, a.Inf, a.Cav, a.Arc)).ToList()"
+                        EstDamage="@p.EstDamage" Bracket="@p.Bracket" BandLabel="@BandLabel(p.Bracket)" />
+                }
+            </tbody>
+        </table>
+
+        @* Footer: totals + shared readouts projected across the 30-min event *@
+        <div class="plan-footer">
+            Total capacity @FmtK((int)Plan.TotalCapacity) vs total demand @Plan.TotalDemand player-marches over @WavePlanner.WaveCount waves &middot; projected @(FooterReadouts.FiresPerMinuteMean.ToString("0.0", CultureInfo.InvariantCulture)) fires/min &middot; @((int)Math.Round(FooterReadouts.CoveragePct * 100))% coverage &middot; longest silence @(FooterReadouts.LongestSilence.ToString("0.0", CultureInfo.InvariantCulture)) min &middot; @(FooterReadouts.MinutesParkedPerParticipant.ToString("0.0", CultureInfo.InvariantCulture)) min parked/participant &middot; @(FooterReadouts.RalliesJoinedPerParticipant.ToString("0.0", CultureInfo.InvariantCulture)) joins/participant
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public TrapPlan Plan { get; set; } = null!;
+
+    AcademyTimeline.Readouts FooterReadouts
+    {
+        get
+        {
+            double cycle = AcademyTimeline.FireDelay + 0.5;
+            var fires = new List<double>();
+            foreach (var w in Plan.Waves)
+                for (double t = w.FireOffset.TotalMinutes; t < AcademyTimeline.EventLength - AcademyTimeline.FireDelay; t += cycle)
+                    fires.Add(t);
+            return AcademyTimeline.FromFireTimes(fires, Array.Empty<double>(),
+                Plan.Waves.Sum(w => w.Capacity), Plan.Waves.Sum(w => w.Demand),
+                Plan.Participants.Count, cycle,
+                (int)Math.Ceiling((AcademyTimeline.EventLength - AcademyTimeline.FireDelay) / cycle));
+        }
+    }
+
+    static (string Inf, string Cav, string Arc) TargetK(double rInf, double rCav, double rArc, int troops)
+        => (FmtK((int)(rInf * troops)),
+            FmtK((int)(rCav * troops)),
+            FmtK((int)(rArc * troops)));
+
+    static string BandLabel(int bracket) => bracket switch
+    {
+        0 => "under 47M",
+        1 => "47\u201390M",
+        2 => "90\u2013175M",
+        _ => "175M+"
+    };
+}

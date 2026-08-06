@@ -91,52 +91,119 @@
 /* ─── Wave lesson timeline ────────────────────────── */
 .tl-shell { max-width: 960px; }
 
-/* segmented view toggle */
-.tl-switch { position: relative; margin: var(--space-s) 0 var(--space-2xs); }
-.tl-switch > input { position: absolute; opacity: 0; pointer-events: none; }
-.tl-toggle {
-  display: inline-flex;
-  gap: 2px;
-  padding: 3px;
-  background: var(--color-surface-deep);
-  border: var(--border-thin) solid var(--color-border);
-  border-radius: var(--radius-2xl);
+/* Staggered-only view: density strip + launch lanes (FFA reference removed for now). */
+#timeline { animation: tl-fade 0.25s ease; }
 
-  & label {
-    padding: 0.35rem 1rem;
-    border-radius: var(--radius-xl);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-text-dim);
-    cursor: pointer;
-    user-select: none;
-    transition: color var(--transition-fast), background var(--transition-fast);
-
-    &:hover { color: var(--color-text); }
-  }
-}
-.tl-switch #tl-stag:checked ~ .tl-toggle label[for="tl-stag"],
-.tl-switch #tl-ffa:checked ~ .tl-toggle label[for="tl-ffa"] {
-  background: var(--color-primary);
-  color: var(--color-bg);
-}
-.tl-switch #tl-stag:focus-visible ~ .tl-toggle label[for="tl-stag"],
-.tl-switch #tl-ffa:focus-visible ~ .tl-toggle label[for="tl-ffa"] {
-  outline: 2px solid var(--color-primary-hover);
-  outline-offset: 2px;
-}
-
-.tl-view { animation: tl-fade 0.25s ease; }
-.tl-view-ffa { display: none; }
-.tl-switch #tl-ffa:checked ~ .tl-view-staggered { display: none; }
-.tl-switch #tl-ffa:checked ~ .tl-view-ffa { display: block; }
 @keyframes tl-fade {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tl-view { animation: none; }
-  
+  #timeline,
+  .tl-group[open] .tl-roster-body { animation: none; }
+}
+
+/* controls panel: compact formation-form look (plain div, .form-row/
+   .form-group children from profile.css) */
+.tl-controls {
+  margin: 0 0 var(--space-2xs);
+  padding: var(--space-xs) var(--space-s);
+  background: var(--color-card-bg);
+  border: var(--border-thin) solid var(--color-card-border);
+  border-radius: var(--radius-2xl);
+
+  /* two-column grid: pairs (leads/participants, Q/spread) fill both columns,
+     the single-child Source row keeps one — no more full-width select */
+  & .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xs);
+  }
+  & .form-row + .form-row { margin-top: var(--space-2xs); }
+
+  & .form-group {
+    min-width: 0;
+    margin-bottom: 0;
+
+    & label {
+      font-size: 0.68rem;
+      margin-bottom: var(--space-3xs);
+    }
+
+    &:has(input:disabled) label { opacity: 0.55; }
+  }
+
+  & input[type="number"],
+  & select {
+    width: 100%;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.82rem;
+    min-height: 32px;
+  }
+  & input[type="range"] { width: 100%; margin: 0; }
+  & .form-group label.tl-check {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: var(--space-3xs);
+    cursor: pointer;
+
+    & input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+      min-height: 0;
+      accent-color: var(--color-primary);
+    }
+  }
+  & .form-group .tl-hint {
+    margin: 2px 0 0;
+    font-size: 0.6rem;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--color-text-faint);
+  }
+  & input:focus,
+  & select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+    outline: none;
+  }
+  & select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23f0c040' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    padding-right: 1.8rem;
+  }
+  & input:disabled,
+  & select:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  /* slider rows: block label with the value badge floated on the label line,
+     range running full-width below — the split-section .q-slider flex layout
+     doesn't fit two-up in this panel */
+  & .q-slider {
+    display: block;
+    cursor: default;
+
+    & > span {
+      float: right;
+      margin-left: 0.6rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      min-width: 1.5em;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    & input[type="range"] {
+      width: 100%;
+      margin: 3px 0 0;
+      padding: 0;          /* base.css pads every input — a range needs none */
+      min-height: 28px;    /* keep the thumb hit area near the 32px inputs */
+    }
+  }
 }
 
 /* segment legend */
@@ -153,8 +220,6 @@
 .sw-march { background: linear-gradient(90deg, var(--color-border-light) 0%, #c08050 100%); }
 .sw-reload { background: rgba(136, 136, 170, 0.1); border: 1px dashed var(--color-text-faint); }
 .sw-fight { background: repeating-linear-gradient(45deg, rgba(230, 57, 70, 0.35) 0 4px, rgba(230, 57, 70, 0.6) 4px 8px); }
-.sw-join { background: rgba(240, 192, 64, 0.28); border: 1px solid var(--color-primary); }
-.sw-parked { background: var(--color-danger); }
 
 /* frame: ruler row, lane headers, lanes */
 .tl {
@@ -164,7 +229,10 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 24px 28px calc(var(--lanes) * 58px);
+  /* ruler, heads, lanes, then density / readouts / overflow / trap / roster.
+     All rows are explicit so .tl-ticks' grid-row: 1 / -1 ruler still spans
+     the whole frame; empty rows collapse to 0. */
+  grid-template-rows: 24px 28px calc(var(--lanes) * 58px) auto auto auto auto auto;
   background: var(--color-surface-deep);
   border: var(--border-thin) solid var(--color-border);
   border-radius: var(--radius-2xl);
@@ -208,9 +276,34 @@
 
   & .tl-head-count { font-size: 0.66rem; font-weight: 600; color: var(--color-text-faint); }
 }
+.tl-pooled {
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* lanes */
 .tl-lanes { grid-column: 1; grid-row: 3; position: relative; z-index: 1; }
+
+/* trailing sections (density / readouts / chips) — explicit rows so the
+   full-height ruler spans them; z-index keeps their chips above the
+   absolute .tl-zone's last-call line */
+.tl-density,
+.tl-readouts,
+.tl-overflow,
+.tl-trap {
+  grid-column: 1;
+  position: relative;
+  z-index: 1;
+}
+.tl-density { grid-row: 4; }
+.tl-readouts { grid-row: 5; }
+.tl-overflow { grid-row: 6; }
+.tl-trap { grid-row: 7; }
 .tl-lane {
   position: absolute;
   left: 0;
@@ -237,7 +330,6 @@
 }
 .seg-march { background: linear-gradient(90deg, var(--color-border-light) 0%, #c08050 100%); }
 .seg-reload { background: rgba(136, 136, 170, 0.1); border: 1px dashed var(--color-text-faint); }
-.seg-launch { background: linear-gradient(90deg, var(--color-danger) 0%, var(--color-danger-alt) 100%); }
 .seg-fight {
   background: repeating-linear-gradient(45deg, rgba(230, 57, 70, 0.35) 0 4px, rgba(230, 57, 70, 0.6) 4px 8px);
   border-left: 2px solid var(--color-danger);
@@ -247,6 +339,27 @@
   border: 1px solid var(--color-primary);
 }
 .seg-join:hover { z-index: 100; }
+
+/* groups 3+ round-1 launches: hollow until the returnees arrive. Hatched =
+   empty marching, yellow = join window (matches .seg-join). */
+.tl-empty-window,
+.tl-fill-window {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+.tl-empty-window {
+  left: 0;
+  width: calc((var(--fill) - var(--from)) / var(--axis) * 100%);
+  background: repeating-linear-gradient(135deg, rgba(136, 136, 170, 0.12) 0 4px, rgba(136, 136, 170, 0.26) 4px 8px);
+}
+.tl-fill-window {
+  left: calc(var(--fill) / var(--axis) * 100%);
+  width: calc((var(--to) - var(--fill)) / var(--axis) * 100%);
+  background: rgba(240, 192, 64, 0.30);
+  border-left: 1px solid var(--color-primary);
+}
 
 /* fire markers */
 .tl-fire {
@@ -296,26 +409,10 @@
 .tl-seg-label.reload .line2,
 .tl-seg-label.wait .line1,
 .tl-seg-label.wait .line2 { color: var(--color-text-subtle); text-shadow: 0 1px 1px rgba(0,0,0,0.30); }
+/* hollow-launch labels carry more text ("fills 5:30 · fires 7:00") — keep them compact */
+.tl-seg-label.wait .line1 { font-size: 0.7rem; }
+.tl-seg-label.wait .line2 { font-size: 0.64rem; }
 .tl-seg-label .tl-label-short { display: none; }
-
-/* parked chip (FFA) */
-.tl-parked {
-  position: absolute;
-  left: calc(var(--at) / var(--axis) * 100%);
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 2px 8px;
-  background: var(--color-danger);
-  color: #fff;
-  font-size: 0.66rem;
-  font-weight: 700;
-  border-radius: var(--radius-md);
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  z-index: 3;
-
-  & .tl-label-short { display: none; }
-}
 
 /* "last call" zone: launching after 25:00 fires past the bell */
 .tl-zone {
@@ -344,6 +441,116 @@
     z-index: 4;
   }
 }
+/* per-minute fire density strip: one cell per minute, bar height driven by
+   --h (staggered fires / max staggered fires in any minute). */
+.tl-density {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  padding: 16px 6px 6px;
+  align-items: flex-end;
+  border-top: 1px solid var(--color-border);
+}
+.tl-density::after {
+  content: "fires per minute";
+  position: absolute;
+  top: 3px;
+  right: 8px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  pointer-events: none;
+}
+.tl-density-cell {
+  flex: 1 1 0;
+  height: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+}
+/* faint minute-ruler: dotted divider every 5 minutes */
+.tl-density-cell:nth-child(5n+6) { border-left: 1px dotted var(--color-border-light); }
+.tl-density-bar-stag {
+  width: 5px;
+  height: calc(var(--h) * 100%);
+  border-radius: 1px;
+  transition: height var(--transition-base);
+  background: var(--color-success);
+}
+
+/* readouts: compact chips that wrap */
+.tl-readouts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  padding: 6px 8px;
+  border-top: 1px solid var(--color-border);
+}
+.tl-readout {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-dim);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* overflow warning chip (danger-tinted) */
+.tl-overflow {
+  justify-self: start;
+  align-self: start;
+  margin: 6px 10px 0;
+  padding: 4px 10px;
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-xl);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-danger-text);
+}
+
+/* trap anchor chip (schedule context) — above the .tl-empty overlay */
+.tl-trap {
+  position: relative;
+  z-index: 6;
+  justify-self: start;
+  align-self: start;
+  margin: 6px 10px 0;
+  padding: 2px 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+/* empty state: centered overlay over the frame (ticks + zone still behind) */
+.tl-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  background: rgba(15, 22, 41, 0.88);
+  border-radius: inherit;
+  font-size: 0.9rem;
+  color: var(--color-text-dim);
+  z-index: 5;
+}
+
 /* popover tooltips: rendered in top layer via Popover API */
 .tl-tooltip {
   margin: 0;
@@ -373,19 +580,21 @@
 
 
 
-/* roster (expand per group) */
+/* roster: flat list of per-group expansion panels */
 .tl-roster {
-  display: grid;
-  grid-template-columns: repeat(var(--lanes), 1fr);
-  gap: var(--space-2xs);
+  display: block;
   margin-top: var(--space-2xs);
+  padding: 0 8px 8px;
 }
 .tl-group {
+  margin-bottom: 6px;
   background: var(--color-surface);
   border: var(--border-thin) solid var(--color-card-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: border-color var(--transition-fast);
+
+  &:last-child { margin-bottom: 0; }
 
   &:hover { border-color: var(--color-primary); }
 
@@ -431,10 +640,14 @@
 .tl-roster-status { margin: 0 0 0.35rem; font-size: 0.7rem; color: var(--color-text-dim); }
 .tl-roster-row {
   display: flex;
+  justify-content: space-between;
   gap: 0.45rem;
   font-size: 0.72rem;
   color: var(--color-text-dim);
-  padding: 2px 0;
+  padding: 3px 0;
+  border-bottom: 1px dashed var(--color-border);
+
+  &:last-child { border-bottom: none; }
 
   & b { color: var(--color-text); font-weight: 600; }
 }
@@ -652,10 +865,48 @@
   .seg-fight { border-left: none; border-top: 2px solid var(--color-danger); }
   /* Gradients follow the bars: horizontal on desktop, vertical on mobile */
   .seg-march { background: linear-gradient(180deg, var(--color-border-light) 0%, #c08050 100%); }
-  .seg-launch { background: linear-gradient(180deg, var(--color-danger) 0%, var(--color-danger-alt) 100%); }
   .seg-fight { background: repeating-linear-gradient(135deg, rgba(230, 57, 70, 0.35) 0 4px, rgba(230, 57, 70, 0.6) 4px 8px); }
   .tl-zone { background: repeating-linear-gradient(45deg, rgba(230, 57, 70, 0.05) 0 10px, rgba(230, 57, 70, 0.1) 10px 20px); }
   .tl-fire { left: 0; right: 0; top: calc(var(--at) / var(--axis) * 100%); height: 0; width: 100%; border-left: none; border-top: 2px solid var(--color-primary); }
+  /* density strip, readouts, chips and roster run full-width below the
+     transposed frame; the strip itself scrolls horizontally */
+  .tl-density,
+  .tl-readouts,
+  .tl-overflow,
+  .tl-trap,
+  .tl-roster {
+    grid-column: 1 / -1;
+    grid-row: auto; /* drop the desktop explicit rows; auto-place below lanes */
+  }
+  .tl-density {
+    overflow-x: auto;
+    padding: 10px 4px 4px;
+
+    &::after { display: none; }
+  }
+  .tl-density-cell { flex: 0 0 16px; }
+  .tl-controls {
+    padding: var(--space-2xs);
+    margin-bottom: var(--space-xs);
+
+    & .form-row { grid-template-columns: 1fr; }
+  }
+  /* fill/empty windows transpose with the segs: vertical bands */
+  .tl-empty-window,
+  .tl-fill-window {
+    left: 0;
+    right: 0;
+    bottom: auto;
+    width: 100%;
+  }
+  .tl-empty-window {
+    top: 0;
+    height: calc((var(--fill) - var(--from)) / var(--axis) * 100%);
+  }
+  .tl-fill-window {
+    top: calc(var(--fill) / var(--axis) * 100%);
+    height: calc((var(--to) - var(--fill)) / var(--axis) * 100%);
+  }
   .tl-seg-label {
     left: 0;
     right: 0;
@@ -671,14 +922,6 @@
     & .tl-label-full { display: none; }
     & .tl-label-short { display: inline; }
   }
-  .tl-parked {
-    left: 50%;
-    top: calc(var(--at) / var(--axis) * 100%);
-    transform: translate(-50%, -50%);
-
-    & .tl-label-full { display: none; }
-    & .tl-label-short { display: inline; }
-  }
   .tl-zone {
     left: 0;
     right: 0;
@@ -688,7 +931,7 @@
 
     & span { top: auto; right: auto; bottom: 4px; left: 4px; }
   }
-  .tl-roster { grid-template-columns: 1fr; }
+  .tl-roster { padding: 0 4px 6px; }
 
   .scenario-caption {
     font-size: 0.8rem;

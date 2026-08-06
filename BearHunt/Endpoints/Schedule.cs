@@ -42,7 +42,7 @@ public static class ScheduleEndpoints
                 parms[nameof(NextBearCard.Now)] = now;
                 parms[nameof(NextBearCard.Username)] = username;
             });
-            await sse.PatchElementsAsync($"""<div id="schedule-cards">{html}</div>""");
+            await sse.PatchElementsAsync(html);
         });
     }
 }

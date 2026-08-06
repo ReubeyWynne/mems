@@ -1,18 +1,20 @@
-<table class="joke-table">
-    <thead>
-        <tr><th scope="col">Text</th><th scope="col">Added</th><th scope="col"></th></tr>
-    </thead>
-    <tbody>
-        @foreach (var j in Jokes)
-        {
-            <tr id="joke-@j.Id">
-                <td>@E(j.Text)</td>
-                <td>@j.CreatedAt.ToString("yyyy-MM-dd")</td>
-                <td><button data-on:click="@($"@delete('/api/jokes/{j.Id}')")" class="btn-delete">Delete</button></td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div id="joke-list">
+    <table class="joke-table">
+        <thead>
+            <tr><th scope="col">Text</th><th scope="col">Added</th><th scope="col"></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var j in Jokes)
+            {
+                <tr id="joke-@j.Id">
+                    <td>@E(j.Text)</td>
+                    <td>@j.CreatedAt.ToString("yyyy-MM-dd")</td>
+                    <td><button data-on:click="@($"@delete('/api/jokes/{j.Id}')")" class="btn-delete">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @code {
     [Parameter, EditorRequired] public IEnumerable<Joke> Jokes { get; set; } = null!;

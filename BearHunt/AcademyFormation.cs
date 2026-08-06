@@ -1,4 +1,3 @@
-using System.Globalization;
 using BearHunt.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -6,9 +5,11 @@ namespace BearHunt;
 
 /// <summary>
 /// Shared logic for the Academy "Your Formation" section: parses form inputs
-/// (query params / Datastar signals), computes the leader mix with DamageCalc,
-/// and renders the output HTML. Used by both the SSR page and the
-/// /api/academy/formation Datastar endpoint so they cannot drift apart.
+/// (query params / Datastar signals) and computes the leader mix with
+/// DamageCalc. Rendering lives in
+/// <see cref="BearHunt.Components.Fragments.FormationOutput"/>, rendered by
+/// both the SSR page and the /api/academy/formation Datastar endpoint (via
+/// RazorRenderer) so they cannot drift apart.
 /// </summary>
 public static class AcademyFormation
 {
@@ -87,26 +88,6 @@ public static class AcademyFormation
         bool archerScarce = aA < rArc * (aI + aC + aA);
 
         return new Result(rInf, rCav, rArc, recInf, recCav, recArc, i.Cap, i.Q, perMarch, perMarch * i.Q, archerScarce);
-    }
-
-    /// <summary>Markup for the <c>#formation-output</c> section (SSR and SSE fragment share this).</summary>
-    public static string RenderHtml(Result r)
-    {
-        var inv = CultureInfo.InvariantCulture;
-        var sb = new System.Text.StringBuilder();
-        sb.Append("""<h3>Your leader's preferred mix</h3>""");
-        sb.Append($"""<p class="lesson-math"><strong>{r.RInf.ToString("0.0%", inv)} infantry / {r.RCav.ToString("0.0%", inv)} cavalry / {r.RArc.ToString("0.0%", inv)} archers</strong></p>""");
-        sb.Append("""<p>Archers hit hardest per troop, so they always get the biggest share.</p>""");
-        sb.Append("""<div class="lesson-fact">""");
-        sb.Append(r.ArcherScarce
-            ? """You don't have enough archers for that mix. Send all your archers, 5k infantry, and fill the rest with cavalry."""
-            : """Your troops fit the mix. Scale each type to match the leader's share.""");
-        sb.Append("""</div>""");
-        sb.Append("""<h3>Send this per march</h3>""");
-        sb.Append($"""<p class="lesson-math"><strong>{Templates.FmtK(r.RecInf)} infantry / {Templates.FmtK(r.RecCav)} cavalry / {Templates.FmtK(r.RecArc)} archers</strong>""");
-        sb.Append($"""&nbsp;(cap {(r.Cap <= 0 ? "uncapped" : Templates.FmtK(r.Cap))}, {r.Q} simultaneous rallies)</p>""");
-        sb.Append($"""<p>Each march scores about {r.PerMarchDmg.ToString("N0", inv)}; all {r.Q} simultaneous rallies together &asymp; <strong>{r.TotalDmg.ToString("N0", inv)}</strong>. (Scores are for comparing setups. Not real damage numbers.)</p>""");
-        return sb.ToString();
     }
 
     static bool CompleteStats(Member m) =>

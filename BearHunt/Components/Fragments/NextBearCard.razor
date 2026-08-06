@@ -1,10 +1,23 @@
-<div id="next-bear" class="card card--rounded next-bear-card">
+<div id="schedule-cards" class="card card--rounded next-bear-card">
     <div class="banner flex-between bear-banner">
         <div class="bear-date-block">
             <span class="bear-label">NEXT BEAR HUNT</span>
             <time class="bear-date" data-intl-time="date" datetime="@NextDate.ToString("yyyy-MM-dd")T00:00:00Z">@NextDate.ToString("dddd, MMMM d")</time>
         </div>
-        <div class="bear-countdown">@((MarkupString)Countdown)</div>
+        <div class="bear-countdown">
+            @if (CountdownPhase == CountdownState.Live)
+            {
+                <span class="countdown-live">LIVE</span>
+            }
+            else if (CountdownPhase == CountdownState.Trap2)
+            {
+                <span class="countdown-label">T2 in</span><text> </text>@CountdownText
+            }
+            else
+            {
+                @CountdownText<text> </text><span class="countdown-label">remaining</span>
+            }
+        </div>
     </div>
     <div class="bear-rosters">
         <TrapRosterSection Trap="1" TrapTime="@Cycle.Trap1Time" NextDate="@NextDate" Prefs="@Trap1Prefs" Members="@Members" IsAdmin="@IsAdmin" />
@@ -44,25 +57,27 @@
     Preference? MyPref => Prefs.FirstOrDefault(p => string.Equals(p.Username, Username, StringComparison.OrdinalIgnoreCase));
     string ButtonText => MyPref != null ? "Update" : "Sign Up";
 
-    string Countdown
+    enum CountdownState { Trap1, Trap2, Live }
+
+    CountdownState CountdownPhase
     {
         get
         {
-            var target = NextDate.Date.Add(Cycle.Trap1Time.ToTimeSpan());
-            var remaining = target - Now;
-            if (remaining.TotalSeconds <= 0)
-            {
-                target = NextDate.Date.Add(Cycle.Trap2Time.ToTimeSpan());
-                remaining = target - Now;
-                if (remaining.TotalSeconds <= 0)
-                    return "<span class=\"countdown-live\">LIVE</span>";
-                if (remaining.TotalHours < 1)
-                    return $"<span class=\"countdown-label\">T2 in</span> {remaining.Minutes}m";
-                return $"<span class=\"countdown-label\">T2 in</span> {remaining.Hours}h {remaining.Minutes}m";
-            }
-            if (remaining.TotalHours < 1)
-                return $"{remaining.Minutes}m <span class=\"countdown-label\">remaining</span>";
-            return $"{remaining.Hours}h {remaining.Minutes}m <span class=\"countdown-label\">remaining</span>";
+            if (RemainingTo(Cycle.Trap1Time).TotalSeconds > 0) return CountdownState.Trap1;
+            return RemainingTo(Cycle.Trap2Time).TotalSeconds > 0 ? CountdownState.Trap2 : CountdownState.Live;
         }
     }
+
+    string CountdownText
+    {
+        get
+        {
+            var remaining = CountdownPhase == CountdownState.Trap1
+                ? RemainingTo(Cycle.Trap1Time)
+                : RemainingTo(Cycle.Trap2Time);
+            return remaining.TotalHours < 1 ? $"{remaining.Minutes}m" : $"{remaining.Hours}h {remaining.Minutes}m";
+        }
+    }
+
+    TimeSpan RemainingTo(TimeOnly trapTime) => NextDate.Date.Add(trapTime.ToTimeSpan()) - Now;
 }

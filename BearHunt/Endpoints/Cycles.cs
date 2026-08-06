@@ -14,7 +14,7 @@ public static class CyclesEndpoints
     public static void Map(WebApplication app)
     {
         app.MapPost("/api/cycles/upsert", async (IDatastarService sse, AppDbContext db,
-            HttpRequest request, IDataProtectionProvider protection) =>
+            HttpRequest request, IDataProtectionProvider protection, RazorRenderer renderer) =>
         {
             if (!AuthHelper.IsAdminAuthenticated(request, protection))
             {
@@ -25,8 +25,12 @@ public static class CyclesEndpoints
             var dateStr = form["date"].FirstOrDefault();
             if (string.IsNullOrWhiteSpace(dateStr) || !DateTime.TryParse(dateStr, out var date))
             {
-                await sse.PatchElementsAsync(
-                    """<div id="feedback" class="feedback feedback--error">Date is required.</div>""");
+                var fb = await renderer.RenderAsync<Feedback>(parms =>
+                {
+                    parms[nameof(Feedback.Type)] = "error";
+                    parms[nameof(Feedback.Message)] = "Date is required.";
+                });
+                await sse.PatchElementsAsync(fb);
                 return;
             }
             var cycle = await db.Cycles.FindAsync(1);
@@ -43,8 +47,12 @@ public static class CyclesEndpoints
             if (!string.IsNullOrWhiteSpace(trap2Str) && TimeOnly.TryParse(trap2Str, out var t2))
                 cycle.Trap2Time = t2;
             await db.SaveChangesAsync();
-            await sse.PatchElementsAsync(
-                """<div id="feedback" class="feedback feedback--success">Cycle updated!</div>""");
+            var ok = await renderer.RenderAsync<Feedback>(parms =>
+            {
+                parms[nameof(Feedback.Type)] = "success";
+                parms[nameof(Feedback.Message)] = "Cycle updated!";
+            });
+            await sse.PatchElementsAsync(ok);
         }).DisableAntiforgery();
 
         app.MapGet("/api/cycles/responses", async (IDatastarService sse, AppDbContext db, RazorRenderer renderer) =>

@@ -1,6 +1,7 @@
 # Bear damage maths — extracted from the Frakinator
 
-Source: the **Frakinator** (Streamlit app by [685] Frak, "Bear ratio" / "Bear damage" tabs).
+Source: the **Frakinator** (Streamlit app by [685] Frak — "Bear ratio", "Bear damage", and
+"Theory-crafting" tabs: <https://frakinator.streamlit.app/>).
 These are the formulas the demystified site (and the old BearHunt app's `DamageCalc`) are pinned to.
 Extracted from the app's KaTeX markup on 2026-08-20.
 
@@ -98,6 +99,78 @@ D* = L · √( (A_inf/3)² + A_cav² + (4.4·A_arc/3)² )
 
 This is the "leader strength" `K = √((A_inf/3)² + A_cav² + (4.4·A_arc/3)²)` used to rank rally
 leads, times the constant `L`.
+
+## 6. Theory-crafting: the general battle model
+
+From the Frakinator's "Theory-crafting" tab. Frak's own disclaimer: *"I do not claim that any of
+the following is real nor accurate … I have done lots of tests, and I confidently believe that the
+bulk of what I am writing here is a good representation of the game mechanics."*
+
+### 6.1 Attack and defence factors
+
+```
+A = [1 + attack_bonus/100] × [1 + lethality_bonus/100]
+D = [1 + defense_bonus/100] × [1 + health_bonus/100]
+```
+
+- The four bonuses are the player's stats from a battle report; each unit type has its own
+  (`A^inf`, `D^arc`, …).
+- Example: attack +250%, lethality +163% → `A = (1+2.5)(1+1.63) = 9.205` (the old app's `ExampleA`).
+- In combat, `A` and `D` only ever appear as the **ratio** `A/D` (attacker / defender).
+
+### 6.2 The simplified kill formula (one attacker type vs one defender type)
+
+```
+K(p2) ∝ √N(p1) × [ (base_att × base_let)_p1 / (base_def × base_hea)_p2 ] × [ A_p1 / D_p2 ]
+```
+
+- **√N**: kills ∝ √(troop count of the attacking type) — the source of every √ rule on the site.
+  2× troops → ×√2 ≈ 1.4; 10× troops → ×√10 ≈ 3.1.
+- **base_let and base_def are 10 for every troop and every tier, and they cancel out of the
+  formula** — only **base_att** and **base_hea** survive, one pair per troop/tier. The values are
+  taken from State of Survival fan data (the game appears to reuse those unit stats).
+- The base-stat relations that produce the bear weights:
+
+```
+attack_inf = health_cav = (1/3)·health_inf = (1/3)·attack_cav
+attack_inf = (4/3)·health_arc = (1/4)·attack_arc
+```
+
+  → base attack ratios **inf : cav : arc = 1 : 3 : 4**. Normalised to cavalry = 1, with the
+  archer ×1.1 vs-infantry bonus (the bear is all infantry): **inf ⅓, cav 1, arc (4/3)×1.1 = 4.4/3**.
+  That is exactly where the site's per-troop weights come from.
+
+### 6.3 The army-min factor (√N₀)
+
+The simplified formula is missing a factor `√N₀` that is common to both sides:
+
+```
+N₀ = min( attacker total troops, defender total troops )
+```
+
+- For bear: the bear's army is much larger than the rally, so `N₀ = rally total troops`, and
+  every joiner's damage carries a common `√(rally total)` multiplier. It is constant per rally,
+  so it never changes the split rules — a full rally at fair share is still √j × a solo carry.
+
+### 6.4 Widgets (and similar buffs) are just multiplicative percentages
+
+A widget's `w%` multiplies the attack factor: `1 + x/100 = (1 + 234.6/100) × (1 + 7.5/100)`
+→ `x = 259.7%` effective. "Multiplicative and additive" is just how percentages compose.
+
+### 6.5 Hero skills (as catalogued by Frakinator; tested = confident)
+
+| Hero | Skills |
+|---|---|
+| Amane | AtkUp |
+| Yeonwoo | LetUp |
+| Chenko | LetUp (sk1), TknDown (sk2) |
+| Saul | DefUp (sk1.1), HeaUp (sk1.2), LetUp (sk3) |
+| Hilde | AtkUp (sk1.1), DefUp (sk1.2), SkDmg (sk2), TknDown (sk3) |
+| Gordon | HeaUp (sk1), AtkUp (sk2) |
+| Amadeus | LetUp (sk1), AtkUp (sk2), DmgUp (sk3) |
+
+For bear, the lead wants heroes whose skills feed attack / lethality / damage (AtkUp, LetUp,
+DmgUp); their effect multiplies into `A`, which everyone in the rally shares.
 
 ## Corrections this implies for the demystified site
 

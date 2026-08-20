@@ -100,10 +100,10 @@
         <p class="d-formula">Σ&nbsp; base<sub>t</sub> × A<sub>t</sub>(lead) × √(n<sub>t</sub>)</p>
         <ul>
           <li><b>n<sub>t</sub></b> — troops of type t in <em>your</em> march.</li>
-          <li><b>A<sub>t</sub>(lead)</b> = (1 + atk%) × (1 + lethality%) of the <em>lead</em>, per type.</li>
-          <li><b>base<sub>t</sub></b> — the game's constants: infantry ⅓, cavalry 1, archers 4.4/3 ≈ 1.47.</li>
+          <li><b>A<sub>t</sub>(lead)</b> = (1 + atk%) × (1 + lethality%) of the <em>lead</em>, per type. Your own attack &amp; lethality never enter it.</li>
+          <li><b>base<sub>t</sub></b> — the relative weights at T6: infantry ⅓, cavalry 1, archers 4.4/3 ≈ 1.47. The archer weight is (4/3) × 1.1 — the bear is all infantry and archers do +10% vs infantry. At T7+/TG3+ archers pick up another 1.1, so the weight becomes 4.84/3 ≈ 1.61.</li>
         </ul>
-        <p>Archers hit hardest per troop — that's the 4 × 1.1 bonus vs infantry baked into the base.</p>
+        <p>The Frakinator's full form also multiplies in a constant bear factor — <b>(1.2/1000) × √5000 × √N<sub>tot</sub></b> — plus your troops' <b>base attack</b> (higher tier = higher base = more damage), and hero skills of the lead <em>and</em> of joining heroes add multiplicative boosts on top. None of that changes the √ and split rules on this page.</p>
       </div>
     </details>
   </section>
@@ -224,7 +224,7 @@
     <div class="cards">
       <article class="card">
         <h3>Lean archers</h3>
-        <p>Archers ≈ <b>1.47</b> base vs cavalry <b>1.0</b> and infantry <b>0.33</b>. Same leader, same march — archers simply hit harder.</p>
+        <p>Archers weigh ≈ <b>1.47</b> per troop at T6 — (4/3) × 1.1, where the 1.1 is their +10% vs infantry and the bear is all infantry. Cavalry 1.0, infantry 0.33. Same leader, same march — archers simply hit harder.</p>
       </article>
       <article class="card">
         <h3>~5k or skip it</h3>
@@ -238,8 +238,22 @@
     <details>
       <summary>If you like the maths</summary>
       <div class="d-body">
-        <p>For a fixed march size, the ideal split of your troops follows the <strong>squared ratio</strong> of
-          (base × leader stat) per type — that's literally what a lead's "preferred mix" is.</p>
+        <p>Maximising Σ base<sub>t</sub>·A<sub>t</sub>·√n<sub>t</sub> over the split
+          (f<sub>inf</sub> + f<sub>cav</sub> + f<sub>arc</sub> = 1) is a Lagrange-multiplier
+          problem; the solution is <strong>f<sub>t</sub> ∝ (base<sub>t</sub>·A<sub>t</sub>)²</strong> —
+          the weights (A<sub>inf</sub>/3, A<sub>cav</sub>, 4.4·A<sub>arc</sub>/3), squared. The bear
+          factor L cancels out of the ratio, so the mix depends only on the lead's attack factors.
+          That "preferred mix" a lead asks for is literally this.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Tier &amp; heroes — the fine print</summary>
+      <div class="d-body">
+        <ul>
+          <li><b>Troop tier:</b> damage scales with your troops' base attack — send your highest tier. The weights above are T6-era numbers.</li>
+          <li><b>T7+ / TG3+:</b> archers gain another ×1.1 vs the bear (all-infantry), weight 4.4/3 → 4.84/3 ≈ 1.61.</li>
+          <li><b>Heroes:</b> the lead's hero skills multiply the whole rally's damage; joining heroes' skills multiply their own march. Reward brackets sit on this absolute scale.</li>
+        </ul>
       </div>
     </details>
   </section>

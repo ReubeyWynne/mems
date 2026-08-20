@@ -1,56 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XGLITCHX IS A DINOSAUR</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #1a1a2e;
-      font-family: 'Courier New', Courier, monospace;
-      color: #e0e0e0;
-    }
-    .card {
-      text-align: center;
-      padding: 3rem 2rem;
-    }
-    h1 {
-      font-size: clamp(1.8rem, 6vw, 3.5rem);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #f0c040;
-      text-shadow: 0 0 20px rgba(240, 192, 64, 0.4);
-      margin-top: 2rem;
-      line-height: 1.3;
-    }
-    .subtitle {
-      margin-top: 1rem;
-      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-      color: #8888aa;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .egg { animation: wobble 2s ease-in-out infinite; }
-      @keyframes wobble {
-        0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(-3deg); }
-        75% { transform: rotate(3deg); }
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="description" content="Bear Hunt, demystified. How rally damage actually works in Bear Hunt — the leader's stats, your troops, the square root, and the four rules that follow. No signup, no data, no spreadsheet.">
+<meta property="og:title" content="Bear Hunt, Demystified">
+<meta property="og:description" content="How rally damage actually works — the one formula and the four rules that follow. No signup, no data, no spreadsheet.">
+<meta property="og:type" content="website">
+<title>Bear Hunt, Demystified</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231a1a2e'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23f0c040'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="card">
-    <div style="font-size: 5rem; line-height: 1.4; margin-bottom: 0.5rem;">
-      🦕 🐣
+<a class="skip-link" href="#model">Skip to the maths</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">BEAR HUNT <b>·</b> DEMYSTIFIED</span>
+    <span class="brand-note">no signup · no data · just the maths</span>
+  </div>
+  <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress"></div></div>
+</header>
+
+<main>
+  <!-- ─────────────── HERO ─────────────── -->
+  <section class="hero" id="top">
+    <p class="kicker">THE 30-MINUTE EVENT THAT RUNS EVERY 48 HOURS</p>
+    <h1>Bear Hunt,<br><span class="accent">demystified.</span></h1>
+    <p class="lede">No signup. No spreadsheet. No begging your alliance mates for their stats.
+      One page that tells you exactly how rally damage works — and the four rules
+      that squeeze the most out of it.</p>
+    <ul class="chips" aria-label="Quick facts">
+      <li>30 minutes per run</li>
+      <li>every 48 hours</li>
+      <li>the most consistent source of <b>Forgehammers</b></li>
+      <li>crucial for F2P &amp; low-spend</li>
+    </ul>
+  </section>
+
+  <!-- ─────────────── TOC ─────────────── -->
+  <nav class="toc" aria-label="Sections" id="toc">
+    <a href="#model">The one-liner</a>
+    <a href="#formula">The formula</a>
+    <a href="#sqrt">The square root</a>
+    <a href="#split">Split it</a>
+    <a href="#timing">Keep moving</a>
+    <a href="#mix">Troop mix</a>
+    <a href="#rewards">Rewards</a>
+    <a href="#rules">The 4 rules</a>
+  </nav>
+
+  <!-- ─────────────── 1 · THE ONE-LINER ─────────────── -->
+  <section class="section" id="model">
+    <h2><span class="step">1</span> Every rally is a team shot</h2>
+    <p class="lede">A bear rally doesn't have one damage number that gets shared out.
+      It has <strong>one number per participant</strong> — and that changes everything.</p>
+
+    <div class="cards">
+      <article class="card">
+        <h3><span class="tag tag-lead">THE LEAD</span> Sets the punch</h3>
+        <p>A rally hits exactly as hard <em>per troop</em> as the <strong>lead's</strong> stats allow.
+          Attack % and Lethality %, per troop type. Everyone in the rally shares the same leader
+          multiplier — it's the same for all 15 of you.</p>
+      </article>
+      <article class="card">
+        <h3><span class="tag tag-you">THE PARTICIPANT</span> Scores on your own troops</h3>
+        <p>Your damage is calculated <strong>per player, from your own march</strong> — using the
+          <strong>square root</strong> of your troop count. The rally's total troop count never
+          enters your personal damage.</p>
+      </article>
     </div>
 
-    <h1>XGLITCHX<br>IS A DINOSAUR</h1>
-    <p class="subtitle">No really. It's true.</p>
-  </div>
+    <p class="punchline">The lead's stats × <em>your</em> troops, scored per player.
+      That single sentence explains every strategy on this page.</p>
+  </section>
+
+  <!-- ─────────────── 2 · THE FORMULA ─────────────── -->
+  <section class="section" id="formula">
+    <h2><span class="step">2</span> The damage formula</h2>
+    <p class="lede">One formula per player, per rally, added over your three troop types:</p>
+
+    <div class="formula" role="img" aria-label="Damage equals the sum over troop types of base ratio times leader attack factor times the square root of troop count.">
+      <div class="formula-line">
+        <span class="f-sym">damage&nbsp;=&nbsp;Σ</span>
+        <span class="f-term">base<sub>t</sub></span>
+        <span class="f-op">×</span>
+        <span class="f-term">A<sub>t</sub>(lead)</span>
+        <span class="f-op">×</span>
+        <span class="f-term">√(n<sub>t</sub>)</span>
+      </div>
+      <p class="formula-key"><b>n<sub>t</sub></b> = troops of type <b>t</b> in <em>your</em> march ·
+        <b>A<sub>t</sub>(lead)</b> = (1 + atk%) × (1 + lethality%) of the <em>lead</em> for type t</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="ratios">
+        <caption>Base damage per troop type — the game's constants</caption>
+        <thead>
+          <tr><th>Troop</th><th>Base</th><th>Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Infantry</td><td class="num">1 / 3</td><td>the weakest per troop</td></tr>
+          <tr><td>Cavalry</td><td class="num">1</td><td>the middle ground</td></tr>
+          <tr><td>Archers</td><td class="num">4.4 / 3 ≈ 1.47</td><td class="good">hit hardest per troop — that's the 4 × 1.1 bonus vs infantry</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="note">You don't need your own attack stats to contribute: the lead's stats apply to
+      <em>every</em> participant. Your job is showing up with the right troops.</p>
+  </section>
+
+  <!-- ─────────────── 3 · THE SQUARE ROOT ─────────────── -->
+  <section class="section" id="sqrt">
+    <h2><span class="step">3</span> The square root: double ≠ double</h2>
+    <p class="lede">The √ sits on <strong>your troop count</strong>. That makes damage grow fast at
+      first, then flatten hard — and it's the entire reason this event plays the way it does.</p>
+
+    <figure class="chart">
+      <svg viewBox="0 0 420 230" role="img" aria-label="Damage grows with troops but slows down: doubling your march adds only about 41 percent. The dashed line shows what one-for-one growth would give.">
+        <line class="axis" x1="30" y1="180" x2="392" y2="180" />
+        <line class="axis" x1="30" y1="20" x2="30" y2="180" />
+        <line class="ref" x1="30" y1="160" x2="390" y2="40" />
+        <polyline class="curve" points="30,160 54,143.4 102,120 198,46.9 390,40" />
+        <circle class="dot" cx="30" cy="160" r="4" /><text class="lbl" x="30" y="152">1.0</text>
+        <circle class="dot" cx="54" cy="143.4" r="4" /><text class="lbl" x="54" y="135">1.41</text>
+        <circle class="dot" cx="102" cy="120" r="4" /><text class="lbl" x="102" y="112">2.0</text>
+        <circle class="dot" cx="198" cy="46.9" r="4" /><text class="lbl" x="198" y="39">2.83</text>
+        <circle class="dot" cx="390" cy="40" r="4" /><text class="lbl" x="390" y="32">4.0</text>
+        <text class="tl" x="30" y="196">1×</text><text class="tl" x="54" y="196">2×</text>
+        <text class="tl" x="102" y="196">4×</text><text class="tl" x="198" y="196">8×</text>
+        <text class="tl" x="390" y="196">16×</text>
+        <text class="ax" x="210" y="218">troops in your march →</text>
+        <text class="ax" x="8" y="100" transform="rotate(-90 8 100)">damage →</text>
+        <text class="callout" x="72" y="160">+41%</text>
+      </svg>
+      <figcaption>Doubling any march adds only ~41% damage. Dashed line = what one-for-one growth would give.</figcaption>
+    </figure>
+
+    <ul class="facts">
+      <li><b>1×</b> troops → <b>1.0</b> damage</li>
+      <li><b>2×</b> troops → <b>1.41</b> damage — only <b>+41%</b></li>
+      <li><b>4×</b> troops → <b>2.0</b> damage</li>
+      <li><b>16×</b> troops → <b>4.0</b> damage</li>
+    </ul>
+
+    <p class="note">The first troops hit hardest; every extra troop is worth a little less than the
+      one before it. So the fastest way to more damage is <strong>not a bigger march — it's more
+      marches</strong>.</p>
+  </section>
+
+  <!-- ─────────────── 4 · SPLIT IT ─────────────── -->
+  <section class="section" id="split">
+    <h2><span class="step">4</span> Split it: the rally and your marches</h2>
+    <p class="lede">Because the √ is per march, <strong>how many marches carry a pile of troops
+      matters more than how big the pile is</strong>. Two rules fall straight out of the formula.</p>
+
+    <article class="card big">
+      <h3>Rule A — fill the rally, don't stuff it</h3>
+      <p>A rally holds <strong>1 lead + 14 joiners = 15 slots</strong>. A rally's troop cap (say
+        900k) divided by its slots is the <strong>fair share</strong> — about <strong>60k per
+        player</strong>.</p>
+      <p>Here's the kicker: rally damage with a <em>fixed</em> troop budget grows with the number
+        of joiners, because <strong>j joiners × √(troops/j) = √(j × troops)</strong>.</p>
+
+      <div class="demo">
+        <p class="demo-title">Same 900,000 troops. Same leader. One rally. Only the split changes.</p>
+        <div class="demo-cols">
+          <div class="demo-cell">
+            <span class="demo-big">≈ 950</span>
+            <span class="demo-small">1 player, all 900k: √900,000</span>
+          </div>
+          <div class="demo-arrow" aria-hidden="true">→</div>
+          <div class="demo-cell">
+            <span class="demo-big">≈ 3,550</span>
+            <span class="demo-small">14 joiners × √64k each</span>
+          </div>
+          <div class="demo-arrow" aria-hidden="true">=</div>
+          <div class="demo-cell good">
+            <span class="demo-big">≈ 3.7×</span>
+            <span class="demo-small">more damage (√14), same troops</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc" id="rallycalc">
+        <h4>Try it — fill the rally</h4>
+        <div class="calc-row">
+          <label for="rally-troops">Rally troop cap</label>
+          <input id="rally-troops" type="number" min="1000" step="1000" value="900000">
+        </div>
+        <div class="calc-row">
+          <label for="rally-joiners">Joiners filling it <output id="rally-j-out">14</output>/14</label>
+          <input id="rally-joiners" type="range" min="1" max="14" step="1" value="14">
+        </div>
+        <p class="calc-out">Fair share per joiner: <b id="rally-share">64,286</b> troops ·
+          rally hits <b id="rally-mult">3.74×</b> harder than one player carrying it all.</p>
+      </div>
+
+      <p class="note">Every slot you leave empty, or every extra march you stuff in, shrinks j —
+        and with it the whole rally's damage. Stuffing 200k into a 15-slot rally squeezes out
+        <strong>~3 fair-share players</strong> and the room loses more than you gain.</p>
+    </article>
+
+    <article class="card big">
+      <h3>Rule B — spread your marches across rallies</h3>
+      <p>Your pool <b>P</b> across <b>Q</b> simultaneous marches: one march scores √P, but Q marches
+        score <strong>√(Q × P)</strong> — same troops, Q ≈ √Q times the damage. You can field up to
+        <strong>6 marches at once</strong>.</p>
+
+      <div class="calc" id="marchcalc">
+        <h4>Try it — your troops, your marches</h4>
+        <div class="calc-row">
+          <label for="march-troops">Your total troops</label>
+          <input id="march-troops" type="number" min="1000" step="1000" value="600000">
+        </div>
+        <div class="calc-row">
+          <label for="march-q">Marches (Q) <output id="march-q-out">6</output>/6</label>
+          <input id="march-q" type="range" min="1" max="6" step="1" value="6">
+        </div>
+        <p class="calc-out"><b id="march-share">100,000</b> troops per march ·
+          <b id="march-mult">2.45×</b> the damage of one big march — nothing extra spent.</p>
+      </div>
+
+      <p class="note">One big march leaves damage on the table. Use every march slot, every wave,
+        across <em>different</em> rallies — that's the whole game.</p>
+    </article>
+  </section>
+
+  <!-- ─────────────── 5 · KEEP MOVING ─────────────── -->
+  <section class="section" id="timing">
+    <h2><span class="step">5</span> Keep it moving</h2>
+    <p class="lede">A rally fires exactly <strong>5:00 after launch</strong>. Troops sitting in a
+      queue are troops that aren't scoring — the event only runs 30 minutes.</p>
+
+    <div class="waves" aria-label="Four staggered launch waves">
+      <p class="waves-cap">Staggered waves turn one giant fire at 5:00 into a fire roughly every minute:</p>
+      <div class="wave-row"><span class="wave-label">Wave 1</span><div class="wave-track"><span class="seg march" style="--w:0;--len:5"></span><span class="seg fire" style="--w:5"></span></div><span class="wave-times">launch 0:00 · fire 5:00</span></div>
+      <div class="wave-row"><span class="wave-label">Wave 2</span><div class="wave-track"><span class="seg march" style="--w:1;--len:5"></span><span class="seg fire" style="--w:6"></span></div><span class="wave-times">launch 1:00 · fire 6:00</span></div>
+      <div class="wave-row"><span class="wave-label">Wave 3</span><div class="wave-track"><span class="seg march" style="--w:2;--len:5"></span><span class="seg fire" style="--w:7"></span></div><span class="wave-times">launch 2:00 · fire 7:00</span></div>
+      <div class="wave-row"><span class="wave-label">Wave 4</span><div class="wave-track"><span class="seg march" style="--w:3;--len:5"></span><span class="seg fire" style="--w:8"></span></div><span class="wave-times">launch 3:00 · fire 8:00</span></div>
+      <div class="wave-axis"><span>0:00</span><span>2:00</span><span>4:00</span><span>6:00</span><span>8:00</span></div>
+    </div>
+
+    <ul class="facts">
+      <li>Fire = launch + <b>5:00</b>, always.</li>
+      <li>A march parked in a rally that already fired is missing the next one.</li>
+      <li>Every missed fire is damage you're not earning — keep marches moving.</li>
+    </ul>
+  </section>
+
+  <!-- ─────────────── 6 · TROOP MIX ─────────────── -->
+  <section class="section" id="mix">
+    <h2><span class="step">6</span> Send what the leader likes</h2>
+    <p class="lede">The leader's stats multiply each troop type separately — and the types aren't
+      equal. <strong>Archers hit hardest per troop</strong>, so a leader's ideal mix is usually
+      heavy on archers. Match it and your damage jumps.</p>
+
+    <div class="cards">
+      <article class="card">
+        <h3>Lean archers</h3>
+        <p>Archers ≈ <b>1.47</b> base vs cavalry <b>1.0</b> and infantry <b>0.33</b>. Same leader,
+          same march size — archers simply hit harder per troop.</p>
+      </article>
+      <article class="card">
+        <h3>Keep ~5k of a type or skip it</h3>
+        <p>Below about <b>5,000</b> troops of a type, the √ barely registers — it's noise.
+          Better to top up the types the leader's ratio wants.</p>
+      </article>
+      <article class="card">
+        <h3>If you like the maths</h3>
+        <p>The ideal split of your march follows the <strong>squared ratio</strong> of
+          (base × leader stat) per type — that's what a rally lead's "preferred mix" is.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─────────────── 7 · REWARDS ─────────────── -->
+  <section class="section" id="rewards">
+    <h2><span class="step">7</span> Why splitting grows the whole alliance</h2>
+    <p class="lede">Damage crosses reward thresholds — roughly <strong>47M, 90M, 175M</strong> on
+      the relative scale — for <strong>Forgehammers</strong>. Because damage is scored per player,
+      spreading troops so <em>everyone</em> crosses a bracket grows the alliance faster than one
+      whale hogging every rally.</p>
+
+    <div class="cards">
+      <article class="card">
+        <h3>Rewards follow your own damage</h3>
+        <p>Your bracket is set by <em>your</em> total — not the rally's. A stuffed rally mostly
+          helps the few who fit inside it.</p>
+      </article>
+      <article class="card">
+        <h3>Everyone crossing beats one whale</h3>
+        <p>Fair-share rallies mean more players in higher brackets — more Forgehammers for the
+          alliance, every single run.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─────────────── 8 · THE 4 RULES ─────────────── -->
+  <section class="section rules" id="rules">
+    <h2><span class="step">8</span> The bottom line: four rules</h2>
+    <ol class="rule-list">
+      <li><span class="rule-num">1</span><div><h3>Split your marches</h3><p>Q rallies ≈ √Q × the damage of one big march. Never one giant march — spread across different rallies.</p></div></li>
+      <li><span class="rule-num">2</span><div><h3>Fill every rally</h3><p>14 joiners at fair share ≈ √14 × the damage of one player carrying the same troops. Leave no slot empty, stuff no rally.</p></div></li>
+      <li><span class="rule-num">3</span><div><h3>Match the lead's mix</h3><p>Lean archers, keep ~5k floors, send the ratio the lead wants.</p></div></li>
+      <li><span class="rule-num">4</span><div><h3>Keep moving</h3><p>Fire = launch + 5:00. Staggered waves = a fire every minute. Parked troops score zero.</p></div></li>
+    </ol>
+    <p class="punchline">Damage = the lead's stats × your troops, with a square root on your count.
+      <strong>Everything else on this page follows from that.</strong></p>
+  </section>
+</main>
+
+<footer>
+  <p class="foot-main">No signup. No data. No roster. Just the maths.</p>
+  <p class="foot-sub">Damage model pinned from the frakinator bear calculator · built for the MadNess alliance · the old tool still lives at <a href="https://dey.ci">dey.ci</a></p>
+</footer>
+
+<script src="app.js"></script>
 </body>
 </html>

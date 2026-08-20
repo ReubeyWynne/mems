@@ -7,7 +7,7 @@
 
   var nf = new Intl.NumberFormat('en-GB');
 
-  // ── Scroll progress bar ────────────────────────────────────
+  // ── Scroll progress bar ────────────────────────────────
   var fill = document.getElementById('progress');
   var doc = document.documentElement;
   function paintProgress() {
@@ -18,20 +18,19 @@
   window.addEventListener('scroll', paintProgress, { passive: true });
   paintProgress();
 
-  // ── TOC active section ─────────────────────────────────────
+  // ── TOC active section ─────────────────────────────────
   var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
   var sections = tocLinks
     .map(function (a) { return document.querySelector(a.getAttribute('href')); })
     .filter(Boolean);
 
   if ('IntersectionObserver' in window && tocLinks.length && sections.length) {
-    var current = null;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          current = entry.target.id;
+          var id = entry.target.id;
           tocLinks.forEach(function (a) {
-            a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
           });
         }
       });
@@ -39,45 +38,48 @@
     sections.forEach(function (s) { io.observe(s); });
   }
 
-  // ── Number formatting helper ───────────────────────────────
+  // ── Number formatting helper ───────────────────────────
   function fmt(n) {
     if (!isFinite(n)) return '—';
     return nf.format(Math.round(n));
   }
+  function mult(n) {
+    return n.toFixed(1).replace('.0', '') + '×';
+  }
 
-  // ── Rally-fill calculator ──────────────────────────────────
-  var rTroops = document.getElementById('rally-troops');
-  var rJoiners = document.getElementById('rally-joiners');
-  var rJOut = document.getElementById('rally-j-out');
+  // ── Rally-fill calculator ──────────────────────────────
+  var rCap = document.getElementById('rally-cap');
+  var rPlayers = document.getElementById('rally-players');
+  var rPOut = document.getElementById('rally-p-out');
   var rShare = document.getElementById('rally-share');
   var rMult = document.getElementById('rally-mult');
   function paintRally() {
-    if (!rTroops || !rJoiners) return;
-    var T = Math.max(1, parseInt(rTroops.value, 10) || 0);
-    var j = parseInt(rJoiners.value, 10) || 1;
-    if (rJOut) rJOut.textContent = j;
+    if (!rCap || !rPlayers) return;
+    var T = Math.max(1, parseInt(rCap.value, 10) || 0);
+    var j = Math.min(15, Math.max(1, parseInt(rPlayers.value, 10) || 1));
+    if (rPOut) rPOut.textContent = j;
     if (rShare) rShare.textContent = fmt(T / j);
-    if (rMult) rMult.textContent = (Math.sqrt(j)).toFixed(2).replace(/0$/, '') + '×';
+    if (rMult) rMult.textContent = mult(Math.sqrt(j));
   }
-  if (rTroops) rTroops.addEventListener('input', paintRally);
-  if (rJoiners) rJoiners.addEventListener('input', paintRally);
+  if (rCap) rCap.addEventListener('input', paintRally);
+  if (rPlayers) rPlayers.addEventListener('input', paintRally);
   paintRally();
 
-  // ── March-split calculator ─────────────────────────────────
-  var mTroops = document.getElementById('march-troops');
+  // ── March-split calculator ─────────────────────────────
+  var mPool = document.getElementById('march-pool');
   var mQ = document.getElementById('march-q');
   var mQOut = document.getElementById('march-q-out');
   var mShare = document.getElementById('march-share');
   var mMult = document.getElementById('march-mult');
   function paintMarch() {
-    if (!mTroops || !mQ) return;
-    var P = Math.max(1, parseInt(mTroops.value, 10) || 0);
-    var q = parseInt(mQ.value, 10) || 1;
+    if (!mPool || !mQ) return;
+    var P = Math.max(1, parseInt(mPool.value, 10) || 0);
+    var q = Math.min(6, Math.max(1, parseInt(mQ.value, 10) || 1));
     if (mQOut) mQOut.textContent = q;
     if (mShare) mShare.textContent = fmt(P / q);
-    if (mMult) mMult.textContent = (Math.sqrt(q)).toFixed(2).replace(/0$/, '') + '×';
+    if (mMult) mMult.textContent = mult(Math.sqrt(q));
   }
-  if (mTroops) mTroops.addEventListener('input', paintMarch);
+  if (mPool) mPool.addEventListener('input', paintMarch);
   if (mQ) mQ.addEventListener('input', paintMarch);
   paintMarch();
 })();

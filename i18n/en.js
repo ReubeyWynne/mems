@@ -18,6 +18,7 @@ window.__BH_I18N_DATA["en"] = {
   "nav.mix": "Troop mix",
   "nav.heroes": "Heroes",
   "nav.rewards": "Rewards",
+  "nav.cap": "The cap",
   "nav.rules": "The 4 rules",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">DEMYSTIFIED</span>",
@@ -133,7 +134,7 @@ window.__BH_I18N_DATA["en"] = {
   "heroes.j.petra.why": "Back-pocket option: exactly one in the rally out-performs every S-tier card (~43.75% effective). Two Petras = one wasted slot.",
   "heroes.j.ava.why": "Flat 25% enemy-defence-down on a fresh code — S as an option, but she's such a good leader you'll usually want her up front.",
   "heroes.j.weewoo.why": "25% split between lethality and attack — the two codes multiply, so ~26.5% effective, and the split dilutes any single stack.",
-  "heroes.j.g1.gloss": "Amadeus is S on paper — but he should be leading your rally, never riding along. Everyone else this generation brings defence or growth: no bear value.",
+  "heroes.j.g1.gloss": "Amadeus is S on paper — but you should be leading your rally with him. Once you're back from your 5th rally as lead, you can still squeeze into 1–2 rallies as a joiner in the final minutes of each event. Everyone else this generation brings defence or growth: no bear value.",
   "heroes.j.g2.gloss": "Zoe's first skill is dead on the bear (hidden-ability quirk). Marlin's 40%-chance skill can't stack — and he's already leading, so don't waste the slot.",
   "heroes.j.g3.gloss": "Petra is D as a joiner — she's leading, and her skill doesn't stack. Jaeger's ~24% expected value gets eaten by its multi-turn application: C, better than an empty slot, worse than everything above. Eric brings defence.",
   "heroes.j.g4.gloss": "Alcar brings defence. And once Rosa exists, Hilde drops from A to B.",
@@ -173,6 +174,13 @@ window.__BH_I18N_DATA["en"] = {
   "rewards.lede": "Your reward bracket follows <strong>your own</strong> damage — not the rally's. Thresholds keep doubling, one extra Forgehammer per bracket, all the way to <strong>38.4B+</strong>:",
   "rewards.forgeAria": "{n} Forgehammers",
   "rewards.note": "47M pays 8 hammers, 38.4B pays 18 — one extra per bracket. More players crossing brackets = more Forgehammers for the whole alliance. Fair-share rallies grow everyone — one whale hoarding rallies grows one player.",
+
+  "cap.title": "The cap",
+  "cap.lede": "Alliances cap how many troops a march participant can send — usually right around fair share. It's a fairness rule, and the maths says it's nearly free: only players past <strong>~364k archers</strong> feel it at all.",
+  "cap.details": "The maths of the cap",
+  "cap.d1": "The line is <b>~364k archers</b> — 65k fair share per march × 80% archers × 7 marches, because a rally lead with six queues fields all seven. Past it, the cap leaves some archers at home. It's a real nerf, but a slight one: every extra troop past your first hits softer (that's the √ again).",
+  "cap.d2": "And it almost never costs a bracket: the thresholds keep doubling, so 47M → 90M is a <b>91% gap</b>, and a few percent lost to the cap won't cross it — <b>provided the alliance launches enough rallies</b> that strong players can keep every queue full.",
+  "cap.note": "So cap away — except one day a month. After KvK, hold a <b>God bear</b>: the strongest players from both hunt time slots in one massive hunt, everyone within <b>~30s travel</b> of the bear, rallies chained back-to-back for super-low dwell times — and the cap off: <b>everyone full-sends</b>, and the whales finally get to use every last archer.",
 
   "rules.title": "The whole page in four rules",
   "rules.hedera": "a small mark in the margin",

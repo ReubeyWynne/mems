@@ -20,8 +20,8 @@
   --oxblood: #8C3030;     /* failure, rubrication            */
   --ember: rgba(216, 166, 64, 0.18); /* drifting embers      */
 
-  --display: 'Pirata One', 'UnifrakturMaguntia', serif;
-  --body: 'IM Fell English', 'Georgia', serif;
+  --display: 'Bear Tilde', 'Pirata One', 'UnifrakturMaguntia', serif;
+  --body: 'Bear Tilde', 'IM Fell English', 'Georgia', serif;
 
   --step--1: clamp(1.05rem, 0.98rem + 0.35vw, 1.2rem);
   --step-0: clamp(1.2rem, 1.12rem + 0.4vw, 1.38rem);
@@ -39,14 +39,24 @@
   --topbar-h: 3rem;
 }
 
+/* ─── Tilde glyph — the Fell & Pirata ASCII tilde rides the
+   ascender line, floating at the top of "~364k". This face
+   borrows a midline tilde from a system font for U+007E only;
+   every other character still renders in the manuscript fonts. */
+@font-face {
+  font-family: "Bear Tilde";
+  src: local("Segoe UI"), local("Roboto"), local("Helvetica Neue"), local("Arial"), local("DejaVu Sans");
+  unicode-range: U+007E;
+}
+
 /* ─── Arabic — the first RTL language ─────────────────── */
 /* Font selection is per-glyph, so Latin runs (brand, numbers,
    formulas) still fall through to IM Fell English inside Arabic
    copy. Amiri (naskh) + Aref Ruqaa (calligraphic display) keep
    the manuscript voice the Latin fonts already set. */
 html[lang="ar"] {
-  --body: 'Amiri', 'IM Fell English', 'Georgia', serif;
-  --display: 'Aref Ruqaa', 'Amiri', serif;
+  --body: 'Bear Tilde', 'Amiri', 'IM Fell English', 'Georgia', serif;
+  --display: 'Bear Tilde', 'Aref Ruqaa', 'Amiri', serif;
 }
 /* Arabic script has no case and no italics, its letters join
    (tracking breaks the joins), and its ascenders/diacritics need

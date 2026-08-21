@@ -197,6 +197,13 @@ DmgUp); their effect multiplies into `A`, which everyone in the rally shares.
    share per rally slot × 5–6 march slots, +1 if leading) — "the per-lead perfect ratio is a
    fool's errand; 10/10/80 is close enough everywhere and doable." Below the threshold, equalised
    marches are best and the mix barely matters.
+8. **The participant-cap line (~364k archers)**: an alliance cap on how many troops each march
+   participant may send only touches players past **~364k archers** — 65k fair share per march ×
+   80% archers × 7 marches (a rally lead with six queues fields all seven). Even there the nerf is
+   slight (√), and because reward brackets double, a few percent almost never costs a bracket
+   while rallies stay plentiful. Hence the monthly "God bear" after KvK: both hunt time slots'
+   strongest players together, everyone within ~30s travel of the bear for a constant stream of
+   rallies (super-low dwell times), cap off, everyone full-sends.
 
 ## Verified-consistent items
 

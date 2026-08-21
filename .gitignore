@@ -11,7 +11,11 @@ obj/
 cookies.txt
 cookies2.txt
 
-# Tooling artifacts
+# AI tooling artifacts (untracked working files; never commit these)
 .dsh/
 .impeccable/
 PRODUCT.md
+.claude/
+.cursor/
+.ai/
+.codex/

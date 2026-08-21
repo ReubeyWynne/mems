@@ -3,20 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#16161f">
+<meta name="theme-color" content="#0B0E16">
 <meta name="description" content="Bear Hunt, demystified. How rally damage works in plain words: the lead's stats, your troops, the square root, and four rules. No signup, no data, no spreadsheet.">
 <meta property="og:title" content="Bear Hunt, Demystified">
 <meta property="og:description" content="How rally damage actually works — in plain words. No signup, no data, no spreadsheet.">
 <meta property="og:type" content="website">
 <title>Bear Hunt, Demystified</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316161f'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23d8f15a'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0E16'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23F0C45A'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Pirata+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<!--
+  impeccable:contract cracktro-scroll f391fa43
+  THESIS: The event as a worked queue on a deep-night field; the four rules are layers pulled forward by scrolling, rank is depth, the frontmost brightest line outranks all, nothing is ever boxed.
+  OWN-WORLD: Navy-black night ground, parchment-ivory manuscript prose, blackletter display, one amber signal, oxblood rubrication for failure, embers drifting at layered speeds.
+  STORY: A Kingshot player scrolls one strip and the whole event walks past as a queue: the one-liner up front, the sqrt as the load diagram, the four rules as rank layers, rewards as the final tally.
+  FIRST VIEWPORT: One blackletter title line dead-still on the night, ember fields drifting behind at different speeds, an amber hedera marking the head of the first rule; scroll pulls the next layer forward.
+  FORM: Cracktro Scroll, dealt challenger elevated by the owner's pin; seed key f391fa43, register bolder, round 2.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
 <a class="skip-link" href="#model">Skip to the maths</a>
+
+<div class="dust" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <header class="topbar">
   <span class="brand">BEAR HUNT <b>·</b> DEMYSTIFIED</span>
@@ -24,36 +35,29 @@
   <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress"></div></div>
 </header>
 
+<nav class="toc" id="toc" aria-label="Sections">
+  <a href="#model">The one-liner</a>
+  <a href="#sqrt">The square root</a>
+  <a href="#rally">Fill the rally</a>
+  <a href="#marches">Spread your marches</a>
+  <a href="#timing">Keep moving</a>
+  <a href="#mix">Troop mix</a>
+  <a href="#rewards">Rewards</a>
+  <a href="#rules">The 4 rules</a>
+</nav>
+
 <main>
   <!-- ═══════════ HERO ═══════════ -->
-  <section class="hero" id="top">
-    <p class="kicker">THE 30-MINUTE EVENT · EVERY 48 HOURS</p>
+  <section class="section hero" id="top">
     <h1>BEAR HUNT,<br><span class="accent">DEMYSTIFIED</span></h1>
     <p class="lede">The whole event in one scroll. How rally damage works in plain words — and the
       four things you should do about it. <strong>No signup. No spreadsheet. No stats required.</strong></p>
-    <ul class="chips">
-      <li>30 min a run</li>
-      <li>every 48 hours</li>
-      <li>Forgehammer goldmine</li>
-      <li>F2P friendly</li>
-    </ul>
+    <p class="chips">30 min a run <span aria-hidden="true">·</span> every 48 hours <span aria-hidden="true">·</span> Forgehammer goldmine <span aria-hidden="true">·</span> F2P friendly</p>
   </section>
-
-  <!-- ═══════════ TOC ═══════════ -->
-  <nav class="toc" id="toc" aria-label="Sections">
-    <a href="#model">The one-liner</a>
-    <a href="#sqrt">The square root</a>
-    <a href="#rally">Fill the rally</a>
-    <a href="#marches">Spread your marches</a>
-    <a href="#timing">Keep moving</a>
-    <a href="#mix">Troop mix</a>
-    <a href="#rewards">Rewards</a>
-    <a href="#rules">The 4 rules</a>
-  </nav>
 
   <!-- ═══════════ 1 · THE ONE-LINER ═══════════ -->
   <section class="section" id="model">
-    <h2><span class="step">1</span> The one-liner</h2>
+    <h2>The one-liner</h2>
     <p class="lede">Remember one sentence and you basically know the whole event:</p>
     <p class="punchline">The <span class="hl">lead's stats</span> × <span class="hl">your troops</span>
       — with a <span class="hl">square root</span> on your count.</p>
@@ -72,7 +76,7 @@
 
   <!-- ═══════════ 2 · THE SQUARE ROOT ═══════════ -->
   <section class="section" id="sqrt">
-    <h2><span class="step">2</span> The square root</h2>
+    <h2>The square root</h2>
     <p class="lede">The sqrt is the whole game. Here's the only number you need:
       <strong>double your march → +41%, not +100%.</strong></p>
 
@@ -110,7 +114,7 @@
 
   <!-- ═══════════ 3 · FILL THE RALLY ═══════════ -->
   <section class="section" id="rally">
-    <h2><span class="step">3</span> Fill the rally</h2>
+    <h2>Fill the rally</h2>
     <p class="lede">A rally holds <strong>1 lead + 14 joiners</strong>. Its troop capacity is split
       evenly: <strong>capacity ÷ players = your fair share.</strong></p>
 
@@ -157,7 +161,7 @@
 
   <!-- ═══════════ 4 · SPREAD YOUR MARCHES ═══════════ -->
   <section class="section" id="marches">
-    <h2><span class="step">4</span> Spread your marches</h2>
+    <h2>Spread your marches</h2>
     <p class="lede">You can field <strong>5–6 marches</strong>. Put them in <strong>5–6 different
       rallies</strong>. That's rule one and two doing their job at the same time.</p>
 
@@ -176,7 +180,8 @@
     </div>
 
     <p class="note">400k in one march isn't even an option on most servers (march cap ~100–150k).
-      Spreading across all your marches is the only way to use what you've got.</p>
+      Spreading across all your marches is the only way to use what you've got. Under ~350k total,
+      equalised marches are best — the ratio barely matters until you're past the line (troop mix).</p>
 
     <details>
       <summary>Why 2.4×, in one line of maths</summary>
@@ -189,9 +194,12 @@
 
   <!-- ═══════════ 5 · KEEP MOVING ═══════════ -->
   <section class="section" id="timing">
-    <h2><span class="step">5</span> Keep moving</h2>
+    <h2>Keep moving</h2>
     <p class="lede">A rally fires <strong>5 minutes after launch</strong>. Parked troops score
       nothing — and the event only runs 30 minutes.</p>
+    <p class="note">Why stagger? A rally fires exactly <b>5:00 after launch</b> — that window is
+      fixed. Staggered launches mean there's always a rally about to fire, so joiners never sit
+      parked waiting out a full countdown.</p>
 
     <div class="waves" aria-label="Four staggered launch waves">
       <p class="waves-cap">Staggered waves = a fire roughly every minute, not one big blob:</p>
@@ -202,6 +210,12 @@
       <div class="wave-axis"><span>0:00</span><span>2:00</span><span>4:00</span><span>6:00</span><span>8:00</span></div>
     </div>
 
+    <p class="note">The ideal, after the first wave: don't join a rally with more than a minute to
+      launch. Join late, fire, go again. The reality: you join the rallies you can — the good leads
+      launch when they launch, and only cities close enough to the bear can reach the slots. And
+      marching is the real clock: out to the rally, to the bear, back home eats most of a joiner's
+      march time. You're optimising marching, really.</p>
+
     <details>
       <summary>The timing, in detail</summary>
       <div class="d-body">
@@ -209,6 +223,11 @@
           <li>Fire = launch + <b>5:00</b>, always.</li>
           <li>Event length: <b>30:00</b>.</li>
           <li>Wave groups launch at 0:00, 1:00, 2:00, 3:00 → fires at 5:00–8:00.</li>
+          <li>No 4:00 group: a lead starting that late can't realistically fit in five rallies —
+            marching to and from the bear costs ~30s per rally at least, so a 3:00 launch is already
+            cutting it close. The 4:00 slot still suits a newer or weaker lead: low pressure, no need
+            to rotate fast.</li>
+          <li>Join late: after the first wave, aim for rallies with ≤1:00 to launch, not fresh ones.</li>
           <li>After firing, troops fight + travel home (~30s) before the next launch.</li>
           <li>A march parked in a rally that already fired is missing the next one.</li>
         </ul>
@@ -218,23 +237,41 @@
 
   <!-- ═══════════ 6 · TROOP MIX ═══════════ -->
   <section class="section" id="mix">
-    <h2><span class="step">6</span> Troop mix</h2>
-    <p class="lede">Archers hit hardest per troop. Match the lead's mix, lean archers, and skip
-      any type you can't send ~5k of.</p>
+    <h2>Troop mix</h2>
+    <p class="lede">Archers hit hardest per troop. And the mix only starts to matter once you're
+      past <b>~350k troops</b> — under that, equalised marches are best and the ratio barely
+      matters.</p>
     <div class="cards">
       <article class="card">
         <h3>Lean archers</h3>
         <p>Archers weigh ≈ <b>1.47</b> per troop at T6 — (4/3) × 1.1, where the 1.1 is their +10% vs infantry and the bear is all infantry. Cavalry 1.0, infantry 0.33. Same leader, same march — archers simply hit harder.</p>
       </article>
       <article class="card">
-        <h3>~5k or skip it</h3>
-        <p>Under ~5,000 troops of a type, the sqrt barely registers. Top up the types the lead's ratio wants instead.</p>
+        <h3>10 / 10 / 80</h3>
+        <p>Past ~350k, run <b>10% infantry, 10% cavalry, 80% archers</b> in every march, and leave
+          the weaker infantry and cavalry at home. It's not the perfect ratio for any one lead — but
+          you'll join rallies from a dozen different leads, and perfect per lead is a fool's errand.
+          10/10/80 is close enough everywhere, and you can actually do it.</p>
       </article>
       <article class="card">
-        <h3>Match the lead</h3>
-        <p>The lead's preferred mix is the one that squeezes the most out of <em>their</em> stats. Send what they ask for.</p>
+        <h3>~5k or skip it</h3>
+        <p>Under ~5,000 troops of a type, the sqrt barely registers. In a 10/10/80 march at fair
+          share, the 10%s land ~6.5k — right around that floor. Any smaller, fold it into the
+          archers.</p>
       </article>
     </div>
+    <p class="note">The perfect bear event isn't humanly possible. Do the heuristics.</p>
+    <details>
+      <summary>When ratios start to matter</summary>
+      <div class="d-body">
+        <p>A full rally pays <b>~65k per player</b> — a 1M rally (Town Center 30, our server) split
+          across 15 slots. Times your <b>5–6 march slots</b>, plus one more if you're leading a
+          rally yourself (leading doesn't use a normal queue) — and you reach about <b>350k troops</b>.
+          Under that, everything you own fits in your marches: equalised marches are best, ratio be
+          damned. Past it, some troops stay home, so what you send decides your damage — and that's
+          when archer-heavy starts to win.</p>
+      </div>
+    </details>
     <details>
       <summary>If you like the maths</summary>
       <div class="d-body">
@@ -243,7 +280,8 @@
           problem; the solution is <strong>f<sub>t</sub> ∝ (base<sub>t</sub>·A<sub>t</sub>)²</strong> —
           the weights (A<sub>inf</sub>/3, A<sub>cav</sub>, 4.4·A<sub>arc</sub>/3), squared. The bear
           factor L cancels out of the ratio, so the mix depends only on the lead's attack factors.
-          That "preferred mix" a lead asks for is literally this.</p>
+          That "preferred mix" a lead asks for is literally this — and 10/10/80 is the doable
+          average of all those per-lead optima.</p>
       </div>
     </details>
     <details>
@@ -260,24 +298,37 @@
 
   <!-- ═══════════ 7 · REWARDS ═══════════ -->
   <section class="section" id="rewards">
-    <h2><span class="step">7</span> Rewards</h2>
+    <h2>Rewards</h2>
     <p class="lede">Your reward bracket follows <strong>your own</strong> damage — not the rally's.
-      Thresholds roughly double each tier:</p>
+      Thresholds keep doubling, one extra Forgehammer per bracket, all the way to <b>38.4B+</b>:</p>
     <ul class="brackets">
-      <li><b>47M</b></li><li><b>90M</b></li><li><b>175M</b></li><li><b>330M</b></li><li><b>625M</b></li><li><b>1.2B</b></li>
+      <li><b>47M</b><span class="forge" role="img" aria-label="8 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">8</span></span></li>
+      <li><b>90M</b><span class="forge" role="img" aria-label="9 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">9</span></span></li>
+      <li><b>175M</b><span class="forge" role="img" aria-label="10 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">10</span></span></li>
+      <li><b>330M</b><span class="forge" role="img" aria-label="11 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">11</span></span></li>
+      <li><b>625M</b><span class="forge" role="img" aria-label="12 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">12</span></span></li>
+      <li><b>1.2B</b><span class="forge" role="img" aria-label="13 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">13</span></span></li>
+      <li><b>2.4B</b><span class="forge" role="img" aria-label="14 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">14</span></span></li>
+      <li><b>4.8B</b><span class="forge" role="img" aria-label="15 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">15</span></span></li>
+      <li><b>9.6B</b><span class="forge" role="img" aria-label="16 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">16</span></span></li>
+      <li><b>19.2B</b><span class="forge" role="img" aria-label="17 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">17</span></span></li>
+      <li><b>38.4B+</b><span class="forge" role="img" aria-label="18 Forgehammers"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">18</span></span></li>
     </ul>
-    <p class="note">More players crossing brackets = more Forgehammers for the whole alliance.
-      Fair-share rallies grow everyone — one whale hoarding rallies grows one player.</p>
+    <p class="note">47M pays 8 hammers, 38.4B pays 18 — one extra per bracket. More players crossing
+      brackets = more Forgehammers for the whole alliance. Fair-share rallies grow everyone — one
+      whale hoarding rallies grows one player.</p>
   </section>
 
   <!-- ═══════════ 8 · THE 4 RULES ═══════════ -->
   <section class="section rules" id="rules">
-    <h2><span class="step">8</span> The whole page in four rules</h2>
+    <h2>The whole page in four rules</h2>
+    <button class="hedera" id="hedera" type="button" aria-label="a small mark in the margin" title="a small mark in the margin">❦</button>
     <ol class="rule-list">
       <li><span class="rule-num">1</span><div><h3>Split your marches</h3><p>6 rallies ≈ 2.4× one big march. Spread across different rallies, every wave.</p></div></li>
       <li><span class="rule-num">2</span><div><h3>Fill every rally</h3><p>Capacity ÷ players = your fair share. Leave no slot empty, stuff no rally.</p></div></li>
-      <li><span class="rule-num">3</span><div><h3>Match the lead's mix</h3><p>Lean archers, ~5k floors, send the ratio they ask for.</p></div></li>
-      <li><span class="rule-num">4</span><div><h3>Keep moving</h3><p>Fire = launch + 5:00. Staggered waves = a fire every minute. Parked = zero.</p></div></li>
+      <li><span class="rule-num">3</span><div><h3>Send 10 / 10 / 80</h3><p>Past ~350k troops: 10% inf, 10% cav, 80% archers — the per-lead perfect ratio is a fool's errand.</p></div></li>
+      <li><span class="rule-num">4</span><div><h3>Keep moving</h3><p>Fire = launch + 5:00. Staggered waves = a fire every minute. <span class="rev">Parked = zero.</span></p></div></li>
+      <li class="rule-five" id="rulefive" hidden><span class="rule-num" aria-hidden="true">5</span><div><h3>The whispered rule</h3><p>Leave no slot empty, no matter how weak the joiner. Every √ counts.</p></div></li>
     </ol>
     <p class="punchline">Lead's stats × your troops, √ on your count.
       <strong>Everything else follows.</strong></p>

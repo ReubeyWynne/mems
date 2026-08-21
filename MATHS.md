@@ -183,12 +183,20 @@ DmgUp); their effect multiplies into `A`, which everyone in the rally shares.
 4. **Heroes multiply**: lead's hero skills (whole rally) and joining heroes' skills (their own
    march) are multiplicative on top of A. The site previously implied the leader's stats were the
    only personal factor.
-5. **Absolute scale**: the reward brackets (47M / 90M / 175M / 330M / 625M / 1.2B) sit on the full
-   scale that includes the bear factor `(1.2/1000)·√5000`, `√N_tot`, `base_att`, and hero boosts.
-   The √ / split / fair-share rules are scale-independent and hold regardless.
+5. **Absolute scale**: the reward brackets double from 47M to 38.4B
+   (47M / 90M / 175M / 330M / 625M / 1.2B / 2.4B / 4.8B / 9.6B / 19.2B / 38.4B), one extra
+   Forgehammer per bracket (8 at 47M → 18 at 38.4B), and sit on the full scale that includes the
+   bear factor `(1.2/1000)·√5000`, `√N_tot`, `base_att`, and hero boosts. The √ / split /
+   fair-share rules are scale-independent and hold regardless.
 6. **Nothing changes the relative rules**: doubling a march is still +41%; Q marches are still
    √Q × one march; a full rally at fair share is still √j × a solo carry — because all of those
    are ratios and every constant cancels.
+7. **The 10/10/80 heuristic**: the exact optimum (§4) is per-lead — it depends on that lead's
+   attack factors. Since joiners sit in rallies from many different leads, the site teaches a
+   fixed inf/cav/arc split of 10/10/80 once a player passes the ~350k ratio threshold (~65k fair
+   share per rally slot × 5–6 march slots, +1 if leading) — "the per-lead perfect ratio is a
+   fool's errand; 10/10/80 is close enough everywhere and doable." Below the threshold, equalised
+   marches are best and the mix barely matters.
 
 ## Verified-consistent items
 

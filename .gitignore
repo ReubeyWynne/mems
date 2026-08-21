@@ -1,3 +1,4 @@
+# .NET build artifacts
 bin/
 obj/
 .vs/
@@ -5,5 +6,12 @@ obj/
 *.db
 *.db-shm
 *.db-wal
+
+# Local cookies
 cookies.txt
 cookies2.txt
+
+# Tooling artifacts
+.dsh/
+.impeccable/
+PRODUCT.md

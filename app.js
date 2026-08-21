@@ -211,14 +211,14 @@
         { id: 7,  section: 'rules',   line: tr('egg.whisper7', 'rule five is whispered, never written.') }
       ];
       gossip = [
-        tr('egg.gossip0', 'xglitchx is a dinosaur'),
-        tr('egg.gossip1', 'xglitchx is a furry'),
-        tr('egg.gossip2', 'get in the basement'),
-        tr('egg.gossip3', 'Spooks for King!'),
-        tr('egg.gossip4', 'take a second to r3lax'),
-        tr('egg.gossip5', 'lucy\u2019s archers scare me'),
-        tr('egg.gossip6', 'shadow you have how many troops?'),
-        tr('egg.gossip7', 'you saving for KvK?')
+        tr('egg.gossip0', 'xglitchx is a dinosaur 🦖'),
+        tr('egg.gossip1', 'xglitchx is a furry 🐾'),
+        tr('egg.gossip2', 'get in the basement 🕳️'),
+        tr('egg.gossip3', 'Spooks for King! 👑'),
+        tr('egg.gossip4', 'take a second to r3lax 😌'),
+        tr('egg.gossip5', 'lucy\u2019s archers scare me 🏹'),
+        tr('egg.gossip6', 'shadow you have how many troops?!? ⚔️'),
+        tr('egg.gossip7', 'you saving for KvK? 💎')
       ];
     }
     refreshEggStrings();
@@ -298,9 +298,9 @@
     // is Latin-only by design); the toasts translate.
     var typedBuf = '';
     var secretWords = [
-      { id: 13, word: 'frak',    key: 'egg.word.frak',    fallback: 'the Frakinator\u2019s bear is watching. it approves of your maths.' },
-      { id: 14, word: 'madness', key: 'egg.word.madness', fallback: 'MADNESS \u2014 the alliance that reads. the bear knows your name.' },
-      { id: 15, word: 'bear',    key: 'egg.word.bear',    fallback: 'you said his name. he is now behind you.' }
+      { id: 13, word: 'frak',    key: 'egg.word.frak',    fallback: 'the Frakinator\u2019s bear is watching. it approves of your maths. 🐻' },
+      { id: 14, word: 'madness', key: 'egg.word.madness', fallback: 'MADNESS \u2014 the alliance that reads. the bear knows your name. 📖' },
+      { id: 15, word: 'bear',    key: 'egg.word.bear',    fallback: 'you said his name. he is now behind you. 🐻' }
     ];
     document.addEventListener('keydown', function (e) {
       if (e.ctrlKey || e.metaKey || e.altKey || e.key.length !== 1) return;

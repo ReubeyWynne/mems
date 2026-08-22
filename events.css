@@ -1,9 +1,11 @@
 /* events.css — multi-event chrome for the dey.ci guide site.
    Loaded on every page (home, bear-hunt, vikings-vengeance) after styles.css.
    Adds: the event switcher, the home event cards, the swipe preview panel,
-   the Vikings wave table + composition rows, and the Vikings sleet theme.
-   Same tokens and the same one-amber-signal contract as the base theme —
-   nothing here introduces a second signal colour. */
+   the Vikings wave table + composition rows, and the page themes.
+   Same tokens and the same one-signal-per-page contract as the base theme:
+   each page owns one signal hue (home amber · bearhunt moss · vikings ice),
+   everything else — parchment ink, oxblood rubrication, manuscript voice —
+   stays shared. */
 
 /* ─── Swipe setup ──────────────────────────────────────── */
 /* The browser's edge-swipe navigation must not fight the peek. touch-action
@@ -37,7 +39,7 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 .ev-switch a:hover { color: var(--ink-dim); }
 .ev-switch a.active {
   color: var(--amber);
-  border-color: rgba(245, 200, 81, 0.35);
+  border-color: var(--signal-line);
 }
 
 /* ─── Footer switch — the same three links, always there ─ */
@@ -67,7 +69,7 @@ body.swiping { user-select: none; -webkit-user-select: none; }
   display: block;
   color: inherit;
   text-decoration: none;
-  border-top: 1px solid rgba(245, 200, 81, 0.35);
+  border-top: 1px solid var(--signal-line);
   padding-top: var(--space-m);
   transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -176,22 +178,68 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 .comp-split .arc { color: var(--ink-muted); }
 .comp-note { margin-top: 0.35rem; font-size: var(--step--1); color: var(--ink-dim); font-style: italic; }
 
-/* ─── Vikings theme — embers become sleet ─────────────── */
-/* Same navy-black night, same parchment, same one amber signal; only the
-   drifting particles change to the longboat weather. Three soft dot layers
-   drifting very slowly — no streak grid, nothing that reads as flicker. */
+/* ─── Page themes — one signal hue per event ──────────── */
+/* The same manuscript night, parchment ink and oxblood rubrication on
+   every page; only the hue of the night, the signal, and the drifting
+   motes change, so each guide reads as its own world. Derived tints
+   (hairlines, glows, hover washes) are explicit rgba siblings of the
+   page's signal — same alphas as the base amber theme — and every
+   hardcoded amber in styles.css was tokenised, so a page theme is
+   just these token overrides. Home is the canonical theme — the
+   tokens in styles.css, no overrides. */
+html[data-page="bearhunt"] {
+  --void: #0B110C;        /* pine night — black-green        */
+  --void-2: #121B13;      /* one step up (fields)            */
+  --amber: #AEC878;       /* moss-verdigris — the hunt signal */
+  --amber-dim: #879E52;   /* deep moss — secondary            */
+  --ember: rgba(220, 208, 120, 0.18); /* golden fireflies    */
+  --ember-2: rgba(214, 200, 110, 0.11);
+  --ember-3: rgba(235, 228, 190, 0.09);
+  --chrome: rgba(11, 17, 12, 0.9);
+  --signal-line: rgba(174, 200, 120, 0.35);
+  --signal-tint: rgba(174, 200, 120, 0.07);
+  --signal-glow: rgba(174, 200, 120, 0.22);
+  --signal-halo: rgba(174, 200, 120, 0.28);
+}
+
+html[data-page="vikings"] {
+  --void: #0A1019;        /* sea night — steel-blue          */
+  --void-2: #111A26;      /* one step up (fields)            */
+  --amber: #A8C8E8;       /* ice blue — the fjord signal     */
+  --amber-dim: #7FA3C7;   /* pale steel — secondary           */
+  --ember: rgba(205, 222, 240, 0.14); /* sleet               */
+  --ember-2: rgba(190, 212, 234, 0.08);
+  --ember-3: rgba(214, 229, 244, 0.06);
+  --chrome: rgba(10, 16, 25, 0.9);
+  --signal-line: rgba(168, 200, 232, 0.35);
+  --signal-tint: rgba(168, 200, 232, 0.07);
+  --signal-glow: rgba(168, 200, 232, 0.22);
+  --signal-halo: rgba(168, 200, 232, 0.28);
+}
+
+/* Motes move their own way: embers drift (home, default), fireflies
+   rise and sway (bearhunt), sleet falls (vikings). Three soft dot
+   layers, no streak grid — nothing that reads as flicker. */
+html[data-page="bearhunt"] .dust i:nth-child(1) { background-size: 120px 120px; animation: mote-drift 120s linear infinite; }
+html[data-page="bearhunt"] .dust i:nth-child(2) { background-size: 190px 190px; animation: mote-drift 170s linear infinite reverse; }
+html[data-page="bearhunt"] .dust i:nth-child(3) { background-size: 260px 260px; animation: mote-drift 220s linear infinite; }
+@keyframes mote-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-3%, -6%, 0); }
+}
+
 html[data-page="vikings"] .dust i:nth-child(1) {
-  background-image: radial-gradient(circle, rgba(205, 222, 240, 0.14) 1px, transparent 1.9px);
+  background-image: radial-gradient(circle, var(--ember) 1px, transparent 1.9px);
   background-size: 130px 130px;
   animation: sleet-fall 80s linear infinite;
 }
 html[data-page="vikings"] .dust i:nth-child(2) {
-  background-image: radial-gradient(circle, rgba(190, 212, 234, 0.08) 1.7px, transparent 2.6px);
+  background-image: radial-gradient(circle, var(--ember-2) 1.7px, transparent 2.6px);
   background-size: 220px 220px;
   animation: sleet-fall 130s linear infinite reverse;
 }
 html[data-page="vikings"] .dust i:nth-child(3) {
-  background-image: radial-gradient(circle, rgba(214, 229, 244, 0.06) 1.6px, transparent 2.4px);
+  background-image: radial-gradient(circle, var(--ember-3) 1.6px, transparent 2.4px);
   background-size: 280px 280px;
   animation: sleet-fall 180s linear infinite;
 }

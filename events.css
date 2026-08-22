@@ -1,0 +1,226 @@
+/* events.css — multi-event chrome for the dey.ci guide site.
+   Loaded on every page (home, bear-hunt, vikings-vengeance) after styles.css.
+   Adds: the event switcher, the home event cards, the swipe preview panel and
+   edge handles, the Vikings wave table + composition rows, and the Vikings
+   sleet theme. Same tokens and the same one-amber-signal contract as the base
+   theme — nothing here introduces a second signal colour. */
+
+/* ─── Swipe setup ──────────────────────────────────────── */
+/* The browser's edge-swipe navigation must not fight the peek. touch-action
+   stays untouched on purpose: an ancestor pan-y would break the range sliders
+   in the calculators (touch-action intersects down the tree), and the gesture
+   handler already requires |dx| > |dy| before it activates. */
+html, body { overscroll-behavior-x: none; }
+body.swiping { user-select: none; -webkit-user-select: none; }
+
+/* ─── Event switcher — the topbar tabs ────────────────── */
+/* Sits between brand and lang-picker; hidden below 700px where the footer
+   carries the same three links (the mobile explicit fallback). */
+.ev-switch {
+  display: flex; align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.ev-switch a {
+  font-family: var(--display);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-muted);
+  padding: 0.22rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ev-switch a:hover { color: var(--ink-dim); }
+.ev-switch a.active {
+  color: var(--amber);
+  border-color: rgba(245, 200, 81, 0.35);
+}
+
+/* ─── Footer switch — the same three links, always there ─ */
+.ev-foot {
+  display: flex; justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-s) var(--space-m);
+  margin-top: var(--space-m);
+}
+.ev-foot a {
+  font-family: var(--display);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-muted);
+}
+.ev-foot a:hover { color: var(--amber); }
+
+@media (max-width: 700px) {
+  .ev-switch { display: none; }
+}
+
+/* ─── Home — the event list as rank lines ─────────────── */
+.event-grid { display: grid; gap: var(--space-xl); margin: var(--space-l) 0; }
+.event-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-top: 1px solid rgba(245, 200, 81, 0.35);
+  padding-top: var(--space-m);
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.event-card h3 {
+  font-size: var(--step-3);
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.event-card:hover h3,
+.event-card:focus-visible h3 { color: var(--amber); }
+.event-card:hover { border-color: var(--amber); }
+.event-lede { margin-top: 0.5rem; color: var(--ink-dim); }
+.event-chips {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  margin-top: 0.8rem;
+  font-size: var(--step--1);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.event-chips span { color: var(--ink-muted); }
+.event-card:hover .event-chips span { color: var(--amber-dim); }
+.event-ghost { opacity: 0.55; pointer-events: none; }
+.event-ghost h3 { color: var(--ink-muted); }
+
+/* ─── Edge handles — the doors at the screen edges ────── */
+/* Purely visual affordances on coarse pointers; pointer-events none, the
+   drag gesture works from anywhere on the page. */
+.edge-handle {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 35;
+  display: none;
+  align-items: center; justify-content: center;
+  width: 1.5rem; height: 4.2rem;
+  color: var(--amber-dim);
+  font-family: var(--display);
+  font-size: var(--step-0);
+  background: rgba(18, 23, 38, 0.8);
+  border: 1px solid var(--ink-muted);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.edge-handle.prev { left: 0; border-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.edge-handle.next { right: 0; border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+@media (pointer: coarse) {
+  .edge-handle { display: flex; }
+}
+
+/* ─── The swipe preview — the neighbour event's cover ─── */
+/* Parked off-screen at ±100% (its own width); the finger pulls it in with
+   resistance; release past the commit bar navigates, short drags snap back
+   (the .snap class supplies the spring, added and removed in common.js). */
+.swipe-peek {
+  position: fixed;
+  top: 0; bottom: 0;
+  z-index: 80;
+  width: min(78vw, 24rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-s);
+  padding: var(--space-l) var(--space-m);
+  background: var(--void-2);
+  border-inline: 1px solid var(--amber-dim);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  will-change: transform;
+}
+.swipe-peek.prev { left: 0; transform: translateX(-100%); }
+.swipe-peek.next { right: 0; transform: translateX(100%); }
+.swipe-peek.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.swipe-peek .peek-kicker {
+  font-family: var(--display);
+  font-size: var(--step--1);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.swipe-peek .peek-title {
+  font-family: var(--display);
+  font-size: var(--step-3);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.swipe-peek .peek-lede { color: var(--ink-dim); font-size: var(--step--1); }
+.swipe-peek .peek-hint { color: var(--amber); font-style: italic; font-size: var(--step--1); }
+.swipe-peek.prev .peek-kicker::before { content: "\276E "; color: var(--amber-dim); }
+.swipe-peek.next .peek-kicker::after  { content: " \276F"; color: var(--amber-dim); }
+main { will-change: transform; }
+main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* ─── Vikings — the wave schedule ─────────────────────── */
+.wavetable { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.wt-row {
+  display: grid;
+  grid-template-columns: 5rem 6.8rem 1fr;
+  gap: 0.7rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
+  font-size: var(--step--1);
+}
+.wt-waves { font-family: var(--display); letter-spacing: 0.04em; color: var(--ink); }
+.wt-type { font-family: var(--display); letter-spacing: 0.1em; text-transform: uppercase; }
+.wt-type.city { color: var(--ink-muted); }
+.wt-type.online { color: var(--amber); }
+.wt-type.hq { color: var(--ink); }
+.wt-note { color: var(--ink-dim); }
+@media (max-width: 640px) {
+  .wt-row { grid-template-columns: 3.6rem 5.2rem 1fr; gap: 0.5rem; }
+}
+
+/* ─── Vikings — troop composition rows ────────────────── */
+.comp { margin: var(--space-m) 0; }
+.comp-row { padding: 0.7rem 0; border-bottom: 1px solid rgba(157, 149, 127, 0.14); }
+.comp-name {
+  font-family: var(--display);
+  font-size: var(--step-0);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+.comp-split { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; }
+.comp-split span { font-family: var(--display); font-size: var(--step--1); letter-spacing: 0.06em; }
+.comp-split .inf { color: var(--amber); }
+.comp-split .cav { color: var(--ink); }
+.comp-split .arc { color: var(--ink-muted); }
+.comp-note { margin-top: 0.35rem; font-size: var(--step--1); color: var(--ink-dim); font-style: italic; }
+
+/* ─── Vikings theme — embers become sleet ─────────────── */
+/* Same navy-black night, same parchment, same one amber signal; only the
+   drifting particles change to the longboat weather. Three soft dot layers
+   drifting very slowly — no streak grid, nothing that reads as flicker. */
+html[data-page="vikings"] .dust i:nth-child(1) {
+  background-image: radial-gradient(circle, rgba(205, 222, 240, 0.14) 1px, transparent 1.9px);
+  background-size: 130px 130px;
+  animation: sleet-fall 80s linear infinite;
+}
+html[data-page="vikings"] .dust i:nth-child(2) {
+  background-image: radial-gradient(circle, rgba(190, 212, 234, 0.08) 1.7px, transparent 2.6px);
+  background-size: 220px 220px;
+  animation: sleet-fall 130s linear infinite reverse;
+}
+html[data-page="vikings"] .dust i:nth-child(3) {
+  background-image: radial-gradient(circle, rgba(214, 229, 244, 0.06) 1.6px, transparent 2.4px);
+  background-size: 280px 280px;
+  animation: sleet-fall 180s linear infinite;
+}
+@keyframes sleet-fall {
+  from { transform: translate3d(0, -5%, 0); }
+  to   { transform: translate3d(2%, 8%, 0); }
+}

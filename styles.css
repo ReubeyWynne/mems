@@ -570,22 +570,22 @@ html { scrollbar-width: thin; scrollbar-color: var(--ink-muted) var(--void); }
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
   transform: rotate(var(--tilt));
   pointer-events: none;
-  animation: egg-rise 7s ease-out forwards;
+  animation: egg-rise 4.4s ease-out forwards;
 }
 @keyframes egg-rise {
   0%   { opacity: 0; transform: translateY(14px) rotate(var(--tilt)); }
-  8%   { opacity: 1; transform: translateY(0) rotate(var(--tilt)); }
+  12%  { opacity: 1; transform: translateY(0) rotate(var(--tilt)); }
   72%  { opacity: 1; }
   100% { opacity: 0; transform: translateY(-24px) rotate(var(--tilt)); }
 }
 .egg-note.calc-note {
   position: static;
   margin-top: var(--space-s);
-  animation: egg-fade 6.5s ease forwards;
+  animation: egg-fade 4s ease forwards;
 }
 @keyframes egg-fade {
   0%   { opacity: 0; }
-  10%  { opacity: 1; }
+  14%  { opacity: 1; }
   75%  { opacity: 1; }
   100% { opacity: 0; }
 }

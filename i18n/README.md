@@ -62,7 +62,7 @@ window.__BH_I18N_DATA["en"] = {
 2. Keep **every key** identical (213 today) — a missing key falls back to English.
 3. Keep all HTML tags, classes and ids byte-identical; translate only the text inside.
 4. Never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, or proper nouns
-   (Bear Hunt, Forgehammer, Frakinator, MadNess, player names).
+   (Bear Hunt, Forgehammer, Frakinator, [2129]MadNess, player names).
 5. Register the code in `index.html`:
    - one `<li role="option" tabindex="-1" data-lang="<code>">` in `#lang-menu`,
      with its flag SVG (viewBox `0 0 50 30` — 5:3, matching the other flags)

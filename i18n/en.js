@@ -198,7 +198,8 @@ window.__BH_I18N_DATA["en"] = {
 
   "foot.main": "NO SIGNUP · NO DATA · NO ROSTER · JUST THE MATHS",
   "foot.note": "Numbers here are for our server: marches ~100–150k, rallies 500k–1M. Your server will differ — <b>the maths doesn't.</b>",
-  "foot.credit": "Damage model from the <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> by [685] Frak — a tested community model, not an official one · built for the MadNess alliance",
+  "foot.credit": "Damage model from the <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> by [685] Frak — a tested community model, not an official one · built for the [2129]MadNess alliance",
+  "foot.credit2": "Hero tiers and extensive play testing with <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> and the <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",
 
   "egg.whisper0": "the bear reads this page too. he's taking notes.",
   "egg.whisper1": "the √ is the bear's favourite sign",

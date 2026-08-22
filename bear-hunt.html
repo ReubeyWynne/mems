@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en" data-page="bearhunt" data-prev-url="index.html" data-prev-title="The events" data-prev-lede="the events, one scroll each. no signup, no data, no spreadsheet." data-next-url="vikings-vengeance.html" data-next-title="Vikings Vengeance" data-next-lede="kills are points, and every city your troops stand in is a kill surface.">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B0E16">
+<meta name="description" content="Bear Hunt, demystified. How rally damage works in plain words: the lead's stats, your troops, the square root, and four rules. No signup, no data, no spreadsheet." data-i18n-key="meta.description" data-i18n-attr="content">
+<meta property="og:title" content="Bear Hunt, Demystified" data-i18n-key="meta.ogTitle" data-i18n-attr="content">
+<meta property="og:description" content="How rally damage actually works — in plain words. No signup, no data, no spreadsheet." data-i18n-key="meta.ogDescription" data-i18n-attr="content">
+<meta property="og:type" content="website">
+<title data-i18n="meta.title">Bear Hunt, Demystified</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0E16'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23F0C45A'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Pirata+One&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="events.css">
+<link rel="canonical" href="https://dey.ci/bear-hunt.html">
+<link rel="alternate" hreflang="en" href="https://dey.ci/bear-hunt.html">
+<link rel="alternate" hreflang="es" href="https://dey.ci/bear-hunt.html?lang=es">
+<link rel="alternate" hreflang="pt-BR" href="https://dey.ci/bear-hunt.html?lang=pt-BR">
+<link rel="alternate" hreflang="de" href="https://dey.ci/bear-hunt.html?lang=de">
+<link rel="alternate" hreflang="fr" href="https://dey.ci/bear-hunt.html?lang=fr">
+<link rel="alternate" hreflang="it" href="https://dey.ci/bear-hunt.html?lang=it">
+<link rel="alternate" hreflang="ru" href="https://dey.ci/bear-hunt.html?lang=ru">
+<link rel="alternate" hreflang="pl" href="https://dey.ci/bear-hunt.html?lang=pl">
+<link rel="alternate" hreflang="tr" href="https://dey.ci/bear-hunt.html?lang=tr">
+<link rel="alternate" hreflang="zh-Hans" href="https://dey.ci/bear-hunt.html?lang=zh-Hans">
+<link rel="alternate" hreflang="zh-Hant" href="https://dey.ci/bear-hunt.html?lang=zh-Hant">
+<link rel="alternate" hreflang="ko" href="https://dey.ci/bear-hunt.html?lang=ko">
+<link rel="alternate" hreflang="ja" href="https://dey.ci/bear-hunt.html?lang=ja">
+<link rel="alternate" hreflang="th" href="https://dey.ci/bear-hunt.html?lang=th">
+<link rel="alternate" hreflang="id" href="https://dey.ci/bear-hunt.html?lang=id">
+<link rel="alternate" hreflang="vi" href="https://dey.ci/bear-hunt.html?lang=vi">
+<link rel="alternate" hreflang="ar" href="https://dey.ci/bear-hunt.html?lang=ar">
+<link rel="alternate" hreflang="x-default" href="https://dey.ci/bear-hunt.html">
+<script>
+/* ── Language resolution for i18n.js — runs before first paint
+   so <html lang> is correct immediately. Order: ?lang= URL param
+   → saved choice → browser language → English. No data sent. */
+(function () {
+  var CANON = { en: 'en', es: 'es', 'pt-br': 'pt-BR', de: 'de', fr: 'fr', it: 'it', ru: 'ru', pl: 'pl', tr: 'tr', 'zh-hans': 'zh-Hans', 'zh-hant': 'zh-Hant', ko: 'ko', ja: 'ja', th: 'th', id: 'id', vi: 'vi', ar: 'ar' };
+  var DIRS = { ar: 'rtl' };
+  function norm(code) {
+    if (!code) return null;
+    var c = String(code).toLowerCase();
+    if (CANON[c]) return CANON[c];
+    var base = c.split('-')[0];
+    if (base === 'pt') return 'pt-BR';
+    if (base === 'zh') return (c.indexOf('zh-tw') === 0 || c.indexOf('zh-hk') === 0 || c.indexOf('zh-hant') === 0) ? 'zh-Hant' : 'zh-Hans';
+    return CANON[base] || null;
+  }
+  var q = (location.search.match(/[?&]lang=([^&]+)/) || [])[1];
+  var lang = null;
+  if (q) lang = norm(q);
+  if (lang) {
+    try { localStorage.setItem('bh_lang', lang); } catch (e) { /* private mode */ }
+  } else {
+    var stored = null;
+    try { stored = localStorage.getItem('bh_lang'); } catch (e) { /* private mode */ }
+    lang = norm(stored) || norm(navigator.language) || 'en';
+  }
+  window.__BH_LANG = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = DIRS[lang] || 'ltr';
+})();
+</script>
+</head>
+<body>
+<!--
+  impeccable:contract cracktro-scroll f391fa43
+  THESIS: The event as a worked queue on a deep-night field; the four rules are layers pulled forward by scrolling, rank is depth, the frontmost brightest line outranks all, nothing is ever boxed.
+  OWN-WORLD: Navy-black night ground, parchment-ivory manuscript prose, blackletter display, one amber signal, oxblood rubrication for failure, embers drifting at layered speeds.
+  STORY: A Kingshot player scrolls one strip and the whole event walks past as a queue: the one-liner up front, the sqrt as the load diagram, the four rules as rank layers, rewards as the final tally.
+  FIRST VIEWPORT: One blackletter title line dead-still on the night, ember fields drifting behind at different speeds, an amber hedera marking the head of the first rule; scroll pulls the next layer forward.
+  FORM: Cracktro Scroll, dealt challenger elevated by the owner's pin; seed key f391fa43, register bolder, round 2.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+<a class="skip-link" href="#model" data-i18n="skip">Skip to the maths</a>
+
+<div class="dust" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="topbar">
+  <span class="brand">BEAR HUNT <b>·</b> DEMYSTIFIED</span>
+  <nav class="ev-switch" aria-label="Events" data-i18n-key="ev.switchAria" data-i18n-attr="aria-label">
+    <a href="index.html" data-i18n="ev.switch.home">Home</a>
+    <a href="bear-hunt.html" class="active" aria-current="page" data-i18n="ev.switch.bear">Bear Hunt</a>
+    <a href="vikings-vengeance.html" data-i18n="ev.switch.vikings">Vikings</a>
+  </nav>
+  <div class="topbar-right">
+    <span class="brand-note" data-i18n="brandNote">no signup · no data · just the maths</span>
+    <div class="lang-picker">
+      <button type="button" id="lang-btn" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language" data-i18n-key="ui.lang" data-i18n-attr="aria-label">
+        <svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><clipPath id="t"><path d="M25,15h25v15zv15h-25zh-25v-15zv-15h25z"/></clipPath><path d="M0,0v30h50v-30z" fill="#012169"/><path d="M0,0 50,30M50,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 50,30M50,0 0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M-1 11h22v-12h8v12h22v8h-22v12h-8v-12h-22z" fill="#C8102E" stroke="#FFF" stroke-width="2"/></svg>
+      </button>
+      <ul id="lang-menu" class="lang-menu" role="listbox" aria-label="Language" data-i18n-key="ui.lang" data-i18n-attr="aria-label" hidden>
+        <li role="option" tabindex="-1" data-lang="en" aria-selected="true"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><clipPath id="t2"><path d="M25,15h25v15zv15h-25zh-25v-15zv-15h25z"/></clipPath><path d="M0,0v30h50v-30z" fill="#012169"/><path d="M0,0 50,30M50,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 50,30M50,0 0,30" clip-path="url(#t2)" stroke="#C8102E" stroke-width="4"/><path d="M-1 11h22v-12h8v12h22v8h-22v12h-8v-12h-22z" fill="#C8102E" stroke="#FFF" stroke-width="2"/></svg><span>English</span></li>
+        <li role="option" tabindex="-1" data-lang="es" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#AA151B"/><rect y="7.5" width="50" height="15" fill="#F1BF00"/></svg><span>Español</span></li>
+        <li role="option" tabindex="-1" data-lang="pt-BR" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#009739"/><polygon points="25,1 48,15 25,29 2,15" fill="#FEDD00"/><circle cx="25" cy="15" r="10.8" fill="#012169"/></svg><span>Português</span></li>
+        <li role="option" tabindex="-1" data-lang="de" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="10" fill="#000"/><rect y="10" width="50" height="10" fill="#DD0000"/><rect y="20" width="50" height="10" fill="#FFCE00"/></svg><span>Deutsch</span></li>
+        <li role="option" tabindex="-1" data-lang="fr" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="16.67" height="30" fill="#002395"/><rect x="16.67" width="16.66" height="30" fill="#fff"/><rect x="33.33" width="16.67" height="30" fill="#ED2939"/></svg><span>Français</span></li>
+        <li role="option" tabindex="-1" data-lang="it" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="16.67" height="30" fill="#009246"/><rect x="16.67" width="16.66" height="30" fill="#fff"/><rect x="33.33" width="16.67" height="30" fill="#CE2B37"/></svg><span>Italiano</span></li>
+        <li role="option" tabindex="-1" data-lang="ru" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="10" fill="#fff"/><rect y="10" width="50" height="10" fill="#0039A6"/><rect y="20" width="50" height="10" fill="#D52B1E"/></svg><span>Русский</span></li>
+        <li role="option" tabindex="-1" data-lang="pl" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="15" fill="#fff"/><rect y="15" width="50" height="15" fill="#DC143C"/></svg><span>Polski</span></li>
+        <li role="option" tabindex="-1" data-lang="tr" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#E30A17"/><circle cx="21.5" cy="15" r="7" fill="#fff"/><circle cx="24" cy="15" r="5.8" fill="#E30A17"/><polygon points="33.5,11.4 34.4,13.8 36.9,13.9 34.9,15.5 35.6,17.9 33.5,16.5 31.4,17.9 32.1,15.5 30.1,13.9 32.7,13.8" fill="#fff"/></svg><span>Türkçe</span></li>
+        <li role="option" tabindex="-1" data-lang="zh-Hans" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#DE2910"/><polygon points="8.33,3.33 9.45,6.78 13.09,6.78 10.15,8.92 11.27,12.38 8.33,10.24 5.39,12.38 6.51,8.92 3.57,6.78 7.21,6.78" fill="#FFDE00"/><polygon points="16.67,1.66 17.04,2.81 18.26,2.81 17.28,3.53 17.65,4.68 16.67,3.97 15.69,4.68 16.06,3.53 15.08,2.81 16.30,2.81" fill="#FFDE00"/><polygon points="20.00,5.00 20.37,6.15 21.59,6.15 20.61,6.87 20.98,8.02 20.00,7.31 19.02,8.02 19.39,6.87 18.41,6.15 19.63,6.15" fill="#FFDE00"/><polygon points="20.00,10.00 20.37,11.15 21.59,11.15 20.61,11.87 20.98,13.02 20.00,12.31 19.02,13.02 19.39,11.87 18.41,11.15 19.63,11.15" fill="#FFDE00"/><polygon points="16.67,13.33 17.04,14.48 18.26,14.48 17.28,15.20 17.65,16.35 16.67,15.64 15.69,16.35 16.06,15.20 15.08,14.48 16.30,14.48" fill="#FFDE00"/></svg><span>中文</span></li>
+        <li role="option" tabindex="-1" data-lang="zh-Hant" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#FE0000"/><rect width="25" height="15" fill="#000095"/><g fill="#fff"><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(30 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(60 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(90 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(120 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(150 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(180 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(210 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(240 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(270 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(300 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(330 12.5 7.5)"/></g><circle cx="12.5" cy="7.5" r="2.4" fill="#fff"/></svg><span>繁體中文</span></li>
+        <li role="option" tabindex="-1" data-lang="ko" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#fff"/><path d="M15 15a10 10 0 0 1 20 0z" fill="#CD2E3A"/><path d="M15 15a10 10 0 0 0 20 0z" fill="#0047A0"/><rect x="4.17" y="3.75" width="1.67" height="7.5" fill="#000"/><rect x="6.67" y="3.75" width="1.67" height="7.5" fill="#000"/><rect x="9.17" y="3.75" width="1.67" height="7.5" fill="#000"/><rect x="39.17" y="18.75" width="1.67" height="7.5" fill="#000"/><rect x="41.67" y="18.75" width="1.67" height="7.5" fill="#000"/><rect x="44.17" y="18.75" width="1.67" height="7.5" fill="#000"/><rect x="39.17" y="3.75" width="8.33" height="1.5" fill="#000"/><rect x="39.17" y="6" width="8.33" height="1.5" fill="#000"/><rect x="39.17" y="8.25" width="8.33" height="1.5" fill="#000"/><rect x="2.5" y="18.75" width="8.33" height="1.5" fill="#000"/><rect x="2.5" y="21" width="8.33" height="1.5" fill="#000"/><rect x="2.5" y="23.25" width="8.33" height="1.5" fill="#000"/></svg><span>한국어</span></li>
+        <li role="option" tabindex="-1" data-lang="ja" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#fff"/><circle cx="25" cy="15" r="10" fill="#BC002D"/></svg><span>日本語</span></li>
+        <li role="option" tabindex="-1" data-lang="th" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#A51931"/><rect y="5" width="50" height="5" fill="#F4F5F8"/><rect y="10" width="50" height="10" fill="#2D2A4A"/><rect y="20" width="50" height="5" fill="#F4F5F8"/></svg><span>ไทย</span></li>
+        <li role="option" tabindex="-1" data-lang="id" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="15" fill="#CE1126"/><rect y="15" width="50" height="15" fill="#fff"/></svg><span>Bahasa Indonesia</span></li>
+        <li role="option" tabindex="-1" data-lang="vi" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#DA251D"/><polygon points="25,6 27.1,12.1 33.6,12.2 28.4,16.1 30.3,22.3 25,18.6 19.7,22.3 21.6,16.1 16.4,12.2 22.9,12.1" fill="#FF0"/></svg><span>Tiếng Việt</span></li>
+        <li role="option" tabindex="-1" data-lang="ar" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#009A44"/><circle cx="24.4" cy="15" r="9.2" fill="#fff"/><circle cx="27.3" cy="15" r="8.5" fill="#009A44"/><circle cx="25" cy="15" r="12.7" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="3.1 1.9"/></svg><span>العربية</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress"></div></div>
+</header>
+
+<nav class="toc" id="toc" aria-label="Sections" data-i18n-key="nav.aria" data-i18n-attr="aria-label">
+  <a href="#model" data-i18n="nav.model">The one-liner</a>
+  <a href="#sqrt" data-i18n="nav.sqrt">The square root</a>
+  <a href="#rally" data-i18n="nav.rally">Fill the rally</a>
+  <a href="#marches" data-i18n="nav.marches">Spread your marches</a>
+  <a href="#timing" data-i18n="nav.timing">Keep moving</a>
+  <a href="#mix" data-i18n="nav.mix">Troop mix</a>
+  <a href="#heroes" data-i18n="nav.heroes">Heroes</a>
+  <a href="#rewards" data-i18n="nav.rewards">Rewards</a>
+  <a href="#cap" data-i18n="nav.cap">The cap</a>
+  <a href="#rules" data-i18n="nav.rules">The 4 rules</a>
+</nav>
+
+<main>
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="section hero" id="top">
+    <h1 data-i18n-html="hero.h1">BEAR HUNT,<br><span class="accent">DEMYSTIFIED</span></h1>
+    <p class="lede" data-i18n-html="hero.lede">The whole event in one scroll. How rally damage works in plain words — and the
+      four things you should do about it. <strong>No signup. No spreadsheet. No stats required.</strong></p>
+    <p class="chips"><span data-i18n="hero.chip1">30 min a run</span> <span aria-hidden="true">·</span>
+      <span data-i18n="hero.chip2">every 48 hours</span> <span aria-hidden="true">·</span>
+      <span data-i18n="hero.chip3">Forgehammer goldmine</span> <span aria-hidden="true">·</span>
+      <span data-i18n="hero.chip4">F2P friendly</span></p>
+  </section>
+
+  <!-- ═══════════ 1 · THE ONE-LINER ═══════════ -->
+  <section class="section" id="model">
+    <h2 data-i18n="model.title">The one-liner</h2>
+    <p class="lede" data-i18n="model.lede">Remember one sentence and you basically know the whole event:</p>
+    <p class="punchline" data-i18n-html="model.punchline">The <span class="hl">lead's stats</span> × <span class="hl">your troops</span>
+      — with a <span class="hl">square root</span> on your count.</p>
+    <div class="cards">
+      <article class="card">
+        <h3><span class="tag tag-lead" data-i18n="model.card1.tag">THE LEAD</span> <span data-i18n="model.card1.title">Sets the power</span></h3>
+        <p data-i18n-html="model.card1.body">Everyone in the rally <strong>borrows the lead's stats</strong>. Same lead, same power, for all 15 of you. Your own attack stats don't matter.</p>
+      </article>
+      <article class="card">
+        <h3><span class="tag tag-you" data-i18n="model.card2.tag">YOU</span> <span data-i18n="model.card2.title">Make your damage</span></h3>
+        <p data-i18n-html="model.card2.body">Each player's march is scored <strong>on its own</strong>, using the square root of its troop count. Your march. Your sqrt. Your damage.</p>
+      </article>
+    </div>
+    <p class="note" data-i18n="model.note">That's it. Everything below is just what those two facts mean in practice.</p>
+  </section>
+
+  <!-- ═══════════ 2 · THE SQUARE ROOT ═══════════ -->
+  <section class="section" id="sqrt">
+    <h2 data-i18n="sqrt.title">The square root</h2>
+    <p class="lede" data-i18n-html="sqrt.lede">The sqrt is the whole game. Here's the only number you need:
+      <strong>double your march → +41%, not +100%.</strong></p>
+
+    <div class="bars" role="img" aria-label="Same troops split across marches: 1 march is 1 times damage, 2 marches is 1.4 times, 4 marches is 2 times, 6 marches is 2.4 times." data-i18n-key="sqrt.barsAria" data-i18n-attr="aria-label">
+      <p class="bars-cap" data-i18n="sqrt.barsCap">Same troops. Just split across more marches:</p>
+      <div class="bar-row"><span class="bar-label" data-i18n="sqrt.bar1">1 march</span><div class="bar-track"><div class="bar-fill" style="--p:41.7"></div></div><span class="bar-value">1.0×</span></div>
+      <div class="bar-row"><span class="bar-label" data-i18n="sqrt.bar2">2 marches</span><div class="bar-track"><div class="bar-fill" style="--p:58.3"></div></div><span class="bar-value">1.4×</span></div>
+      <div class="bar-row"><span class="bar-label" data-i18n="sqrt.bar4">4 marches</span><div class="bar-track"><div class="bar-fill" style="--p:83.3"></div></div><span class="bar-value">2.0×</span></div>
+      <div class="bar-row"><span class="bar-label" data-i18n="sqrt.bar6">6 marches</span><div class="bar-track"><div class="bar-fill" style="--p:100"></div></div><span class="bar-value">2.4×</span></div>
+    </div>
+
+    <ul class="facts">
+      <li data-i18n-html="sqrt.fact1">2× the troops = <b>+41%</b>, not double</li>
+      <li data-i18n-html="sqrt.fact2">4× the troops = <b>2.0×</b></li>
+      <li data-i18n-html="sqrt.fact3">16× the troops = only <b>4.0×</b></li>
+    </ul>
+
+    <p class="note" data-i18n-html="sqrt.note">First troops hit hardest. Every extra troop hits a little softer than the last.
+      So bigger marches help a little — <strong>more marches help a lot</strong>.</p>
+
+    <details>
+      <summary data-i18n="sqrt.details">The exact maths</summary>
+      <div class="d-body">
+        <p data-i18n="sqrt.d1">Per player, per rally, damage is added over your three troop types:</p>
+        <p class="d-formula" data-i18n-html="sqrt.formula">Σ&nbsp; base<sub>t</sub> × A<sub>t</sub>(lead) × √(n<sub>t</sub>)</p>
+        <ul>
+          <li data-i18n-html="sqrt.li1"><b>n<sub>t</sub></b> — troops of type t in <em>your</em> march.</li>
+          <li data-i18n-html="sqrt.li2"><b>A<sub>t</sub>(lead)</b> = (1 + atk%) × (1 + lethality%) of the <em>lead</em>, per type. Your own attack &amp; lethality never enter it.</li>
+          <li data-i18n-html="sqrt.li3"><b>base<sub>t</sub></b> — the relative weights at T6: infantry ⅓, cavalry 1, archers 4.4/3 ≈ 1.47. The archer weight is (4/3) × 1.1 — the bear is all infantry and archers do +10% vs infantry. At T7+/TG3+ archers pick up another 1.1, so the weight becomes 4.84/3 ≈ 1.61.</li>
+        </ul>
+        <p data-i18n-html="sqrt.last">The Frakinator's full form also multiplies in a constant bear factor — <b>(1.2/1000) × √5000 × √N<sub>tot</sub></b> — plus your troops' <b>base attack</b> (higher tier = higher base = more damage), and hero skills of the lead <em>and</em> of joining heroes add multiplicative boosts on top. None of that changes the √ and split rules on this page.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════ 3 · FILL THE RALLY ═══════════ -->
+  <section class="section" id="rally">
+    <h2 data-i18n="rally.title">Fill the rally</h2>
+    <p class="lede" data-i18n-html="rally.lede">A rally holds <strong>1 lead + 14 joiners</strong>. Its troop capacity is split
+      evenly: <strong>capacity ÷ players = your fair share.</strong></p>
+
+    <div class="demo">
+      <p class="demo-title" data-i18n-html="rally.demoTitle">A 900k rally with 15 players → <b>60k each</b>.</p>
+      <div class="slot-row">
+        <span class="slot-label" data-i18n="rally.slotLabel">FULL RALLY — 15 players</span>
+        <span class="slot-grid" aria-hidden="true">
+          <i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i>
+          <i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i>
+          <i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i><i class="slot"></i>
+        </span>
+        <span class="slot-value">≈ 3.9×</span>
+      </div>
+      <p class="demo-sub" data-i18n-html="rally.demoSub">All 15 slots filled beats a few fat ones. <strong>Always.</strong> Because rally
+        damage is every player's √ added up — more players at fair share = more damage from the same 900k.</p>
+    </div>
+
+    <p class="note" data-i18n-html="rally.note">And you <em>can't</em> carry the rally yourself anyway: your march is capped
+      (~100–150k on our server), so stuffing one rally just wastes its slots.</p>
+
+    <div class="calc" id="rallycalc">
+      <h4 class="calc-title" data-i18n="rally.calcTitle">TRY IT — FILL THE RALLY</h4>
+      <div class="calc-row">
+        <label for="rally-cap" data-i18n="rally.capLabel">Rally troop capacity</label>
+        <input id="rally-cap" type="number" min="1000" step="1000" value="900000">
+      </div>
+      <div class="calc-row">
+        <label for="rally-players" data-i18n-html="rally.playersLabel">Players in it (incl. lead) <output id="rally-p-out">15</output>/15</label>
+        <input id="rally-players" type="range" min="1" max="15" step="1" value="15">
+      </div>
+      <p class="calc-out" data-i18n-html="rally.out">Fair share: <b id="rally-share">60,000</b> per player ·
+        rally hits <b id="rally-mult">3.9×</b> harder than one player carrying it all.</p>
+    </div>
+
+    <details>
+      <summary data-i18n="rally.details">Why, in one line of maths</summary>
+      <div class="d-body">
+        <p data-i18n-html="rally.d">15 players × √(900k ÷ 15) = √(15 × 900k) ≈ <b>3.9×</b> one player's √900k.
+          Fewer players → fewer sqrts → less damage. There's no way around it.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════ 4 · SPREAD YOUR MARCHES ═══════════ -->
+  <section class="section" id="marches">
+    <h2 data-i18n="marches.title">Spread your marches</h2>
+    <p class="lede" data-i18n-html="marches.lede">You can field <strong>5–6 marches</strong>. Put them in <strong>5–6 different
+      rallies</strong>. That's rule one and two doing their job at the same time.</p>
+
+    <div class="calc" id="marchcalc">
+      <h4 class="calc-title" data-i18n="marches.calcTitle">TRY IT — YOUR TROOPS, YOUR MARCHES</h4>
+      <div class="calc-row">
+        <label for="march-pool" data-i18n="marches.poolLabel">Your total troops</label>
+        <input id="march-pool" type="number" min="1000" step="1000" value="400000">
+      </div>
+      <div class="calc-row">
+        <label for="march-q" data-i18n-html="marches.qLabel">Marches (Q) <output id="march-q-out">6</output>/6</label>
+        <input id="march-q" type="range" min="1" max="6" step="1" value="6">
+      </div>
+      <p class="calc-out" data-i18n-html="marches.out"><b id="march-share">66,667</b> per march ·
+        <b id="march-mult">2.4×</b> the damage of one big march. Same troops, nothing spent.</p>
+    </div>
+
+    <p class="note" data-i18n="marches.note">400k in one march isn't even an option on most servers (march cap ~100–150k).
+      Spreading across all your marches is the only way to use what you've got. Under ~350k total,
+      equalised marches are best — the ratio barely matters until you're past the line (troop mix).</p>
+
+    <details>
+      <summary data-i18n="marches.details">Why 2.4×, in one line of maths</summary>
+      <div class="d-body">
+        <p data-i18n-html="marches.d">Your pool P across Q marches: 1 march scores √P, but Q marches score √(Q × P).
+          Six marches = √6 ≈ <b>2.4×</b>. Same troops, no extra spend.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════ 5 · KEEP MOVING ═══════════ -->
+  <section class="section" id="timing">
+    <h2 data-i18n="timing.title">Keep moving</h2>
+    <p class="lede" data-i18n-html="timing.lede">A rally fires <strong>5 minutes after launch</strong>. Parked troops score
+      nothing — and the event only runs 30 minutes.</p>
+    <p class="note" data-i18n-html="timing.note1">Why stagger? A rally fires exactly <b>5:00 after launch</b> — that window is
+      fixed. Staggered launches mean there's always a rally about to fire, so joiners never sit
+      parked waiting out a full countdown.</p>
+
+    <div class="waves" aria-label="Four staggered launch waves" data-i18n-key="timing.wavesAria" data-i18n-attr="aria-label">
+      <p class="waves-cap" data-i18n="timing.wavesCap">Staggered waves = a fire roughly every minute, not one big blob:</p>
+      <div class="wave-row"><span class="wave-label">W1</span><div class="wave-track"><span class="seg march" style="--w:0;--len:5"></span><span class="seg fire" style="--w:5"></span></div><span class="wave-times">0:00 → 5:00</span></div>
+      <div class="wave-row"><span class="wave-label">W2</span><div class="wave-track"><span class="seg march" style="--w:1;--len:5"></span><span class="seg fire" style="--w:6"></span></div><span class="wave-times">1:00 → 6:00</span></div>
+      <div class="wave-row"><span class="wave-label">W3</span><div class="wave-track"><span class="seg march" style="--w:2;--len:5"></span><span class="seg fire" style="--w:7"></span></div><span class="wave-times">2:00 → 7:00</span></div>
+      <div class="wave-row"><span class="wave-label">W4</span><div class="wave-track"><span class="seg march" style="--w:3;--len:5"></span><span class="seg fire" style="--w:8"></span></div><span class="wave-times">3:00 → 8:00</span></div>
+      <div class="wave-axis"><span>0:00</span><span>2:00</span><span>4:00</span><span>6:00</span><span>8:00</span></div>
+    </div>
+
+    <p class="note" data-i18n="timing.note2">The ideal, after the first wave: don't join a rally with more than a minute to
+      launch. Join late, fire, go again. The reality: you join the rallies you can — the good leads
+      launch when they launch, and only cities close enough to the bear can reach the slots. And
+      marching is the real clock: out to the rally, to the bear, back home eats most of a joiner's
+      march time. You're optimising marching, really.</p>
+
+    <details>
+      <summary data-i18n="timing.details">The timing, in detail</summary>
+      <div class="d-body">
+        <ul>
+          <li data-i18n-html="timing.d1">Fire = launch + <b>5:00</b>, always.</li>
+          <li data-i18n-html="timing.d2">Event length: <b>30:00</b>.</li>
+          <li data-i18n-html="timing.d3">Wave groups launch at 0:00, 1:00, 2:00, 3:00 → fires at 5:00–8:00.</li>
+          <li data-i18n-html="timing.d4">No 4:00 group: a lead starting that late can't realistically fit in five rallies —
+            marching to and from the bear costs ~30s per rally at least, so a 3:00 launch is already
+            cutting it close. The 4:00 slot still suits a newer or weaker lead: low pressure, no need
+            to rotate fast.</li>
+          <li data-i18n-html="timing.d5">Join late: after the first wave, aim for rallies with ≤1:00 to launch, not fresh ones.</li>
+          <li data-i18n-html="timing.d6">After firing, troops fight + travel home (~30s) before the next launch.</li>
+          <li data-i18n-html="timing.d7">A march parked in a rally that already fired is missing the next one.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════ 6 · TROOP MIX ═══════════ -->
+  <section class="section" id="mix">
+    <h2 data-i18n="mix.title">Troop mix</h2>
+    <p class="lede" data-i18n-html="mix.lede">Archers hit hardest per troop. And the mix only starts to matter once you're
+      past <strong>~350k troops</strong> — under that, equalised marches are best and the ratio barely
+      matters.</p>
+    <div class="cards">
+      <article class="card">
+        <h3 data-i18n="mix.card1.title">Lean archers</h3>
+        <p data-i18n-html="mix.card1.body">Archers weigh ≈ <b>1.47</b> per troop at T6 — (4/3) × 1.1, where the 1.1 is their +10% vs infantry and the bear is all infantry. Cavalry 1.0, infantry 0.33. Same leader, same march — archers simply hit harder.</p>
+      </article>
+      <article class="card">
+        <h3 data-i18n="mix.card2.title">10 / 10 / 80</h3>
+        <p data-i18n-html="mix.card2.body">Past ~350k, run <b>10% infantry, 10% cavalry, 80% archers</b> in every march, and leave
+          the weaker infantry and cavalry at home. It's not the perfect ratio for any one lead — but
+          you'll join rallies from a dozen different leads, and perfect per lead is a fool's errand.
+          10/10/80 is close enough everywhere, and you can actually do it.</p>
+      </article>
+      <article class="card">
+        <h3 data-i18n="mix.card3.title">~5k or skip it</h3>
+        <p data-i18n-html="mix.card3.body">Under ~5,000 troops of a type, the sqrt barely registers. In a 10/10/80 march at fair
+          share, the 10%s land ~6.5k — right around that floor. Any smaller, fold it into the
+          archers.</p>
+      </article>
+    </div>
+    <p class="note" data-i18n="mix.note">The perfect bear event isn't humanly possible. Do the heuristics.</p>
+    <details>
+      <summary data-i18n="mix.details1">When ratios start to matter</summary>
+      <div class="d-body">
+        <p data-i18n-html="mix.d1">A full rally pays <b>~65k per player</b> — a 1M rally (Town Center 30, our server) split
+          across 15 slots. Times your <b>5–6 march slots</b>, plus one more if you're leading a
+          rally yourself (leading doesn't use a normal queue) — and you reach about <b>350k troops</b>.
+          Under that, everything you own fits in your marches: equalised marches are best, ratio be
+          damned. Past it, some troops stay home, so what you send decides your damage — and that's
+          when archer-heavy starts to win.</p>
+      </div>
+    </details>
+    <details>
+      <summary data-i18n="mix.details2">If you like the maths</summary>
+      <div class="d-body">
+        <p data-i18n-html="mix.d2">Maximising Σ base<sub>t</sub>·A<sub>t</sub>·√n<sub>t</sub> over the split
+          (f<sub>inf</sub> + f<sub>cav</sub> + f<sub>arc</sub> = 1) is a Lagrange-multiplier
+          problem; the solution is <strong>f<sub>t</sub> ∝ (base<sub>t</sub>·A<sub>t</sub>)²</strong> —
+          the weights (A<sub>inf</sub>/3, A<sub>cav</sub>, 4.4·A<sub>arc</sub>/3), squared. The bear
+          factor L cancels out of the ratio, so the mix depends only on the lead's attack factors.
+          That "preferred mix" a lead asks for is literally this — and 10/10/80 is the doable
+          average of all those per-lead optima.</p>
+      </div>
+    </details>
+    <details>
+      <summary data-i18n-html="mix.details3">Tier &amp; heroes — the fine print</summary>
+      <div class="d-body">
+        <ul>
+          <li data-i18n-html="mix.d3a"><b>Troop tier:</b> damage scales with your troops' base attack — send your highest tier. The weights above are T6-era numbers.</li>
+          <li data-i18n-html="mix.d3b"><b>T7+ / TG3+:</b> archers gain another ×1.1 vs the bear (all-infantry), weight 4.4/3 → 4.84/3 ≈ 1.61.</li>
+          <li data-i18n-html="mix.d3c"><b>Heroes:</b> the lead's hero skills multiply the whole rally's damage; joining heroes' skills multiply their own march. Reward brackets sit on this absolute scale.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════ 7 · THE HEROES ═══════════ -->
+  <section class="section" id="heroes">
+    <h2 data-i18n="heroes.title">The heroes</h2>
+    <p class="lede" data-i18n-html="heroes.lede">The lead's kit and the joiners' first skills are the last big multiplier
+      left. Two jobs, two lists — and a hero that shines at one is usually dead weight at the other.</p>
+    <p class="note" data-i18n-html="heroes.note">How to read this: a <b>joiner</b> contributes only their first skill to the
+      rally — that one slot is the whole job. A <b>leader</b> brings their full kit and their stats. Same skill codes stack
+      additively; different codes multiply. And defence does nothing to a bear.</p>
+
+    <div class="rank-blocks">
+      <!-- ── JOINERS ── -->
+      <div class="rank-block">
+        <h3 class="rank-title" data-i18n="heroes.joiners.title">Joiners</h3>
+        <p class="rank-lede" data-i18n-html="heroes.joiners.lede">One hero per march, and only the <b>first skill</b> counts.
+          S and A tiers get cards; everyone else gets a line.</p>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> I</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/chenko.webp" alt="Chenko" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Chenko <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.chenko.why">25% attack up — the S-tier benchmark every joiner is measured against.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/yeonwoo.webp" alt="Yeonwoo" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Yeonwoo <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.yeonwoo.why">25% attack up, same code as Chenko — stacks additively with her, multiplies with everything else.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/amane.webp" alt="Amane" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Amane <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.amane.why">25% attack up — the third of the trio. Send all three.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.j.g1.gloss">Amadeus is S on paper — but you should be leading your rally with him. Once you're back from your 5th rally as lead, you can still squeeze into 1–2 rallies as a joiner in the final minutes of each event. Everyone else this generation brings defence or growth: no bear value.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> II</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/hilde.webp" alt="Hilde" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Hilde <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.hilde.why">Half useful: 15% attack, 10% defence — the defence is dead weight. The only option this generation, so alliances allow her sparingly.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.j.g2.gloss">Zoe's first skill is dead on the bear (hidden-ability quirk). Marlin's 40%-chance skill can't stack — and he's already leading, so don't waste the slot.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> III</h4>
+          <p class="gen-gloss" data-i18n-html="heroes.j.g3.gloss">Petra is D as a joiner — she's leading, and her skill doesn't stack. Jaeger's ~24% expected value gets eaten by its multi-turn application: C, better than an empty slot, worse than everything above. Eric brings defence.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> IV</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/margot.webp" alt="Margot" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Margot <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.margot.why">A second Amane — plain 25% attack up, straight into S.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/rosa.webp" alt="Rosa" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Rosa <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.rosa.why">Mislabeled in-game: it's coded as <b>lethality</b>, and despite the chance it stacks — ~20% effective, and it multiplies against the attack heroes.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.j.g4.gloss">Alcar brings defence. And once Rosa exists, Hilde drops from A to B.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> V</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/vivian.webp" alt="Vivian" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Vivian <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.vivian.why">25% enemy-damage-taken-up — a rare code, so it multiplies with the attack/lethality stack instead of joining it.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.j.g5.gloss">Thrud's 15% covers infantry and archers only — worse than Hilde's all-troops version. Long Fei brings defence. Marlin creeps back up to C now that Rosa leads.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> VI</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/yang.webp" alt="Yang" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Yang <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.yang.why">100% damage up, no chance — it stacks. But it only fires on 2 of the 10 bear rounds: ~20% effective, on a par with Rosa.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.j.g6.gloss">Sophia and Triton both bring defence — they waste the slot.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> VII</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/petra.webp" alt="Petra" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Petra <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.petra.why">Back-pocket option: exactly one in the rally out-performs every S-tier card (~43.75% effective). Two Petras = one wasted slot.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/ava.webp" alt="Ava" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Ava <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.ava.why">Flat 25% enemy-defence-down on a fresh code — S as an option, but she's such a good leader you'll usually want her up front.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/weewoo.webp" alt="Wee &amp; Woo" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Wee &amp; Woo <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.j.weewoo.why">25% split between lethality and attack — the two codes multiply, so ~26.5% effective, and the split dilutes any single stack.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.j.g7.gloss">Charles brings defence. And from here there's no excuse: everything through generation 5 sits in the gold-key pool, which is why the old S-tier has been bumped down a tier.</p>
+        </div>
+      </div>
+
+      <!-- ── LEADERS ── -->
+      <div class="rank-block">
+        <h3 class="rank-title" data-i18n="heroes.leaders.title">Leaders</h3>
+        <p class="rank-lede" data-i18n-html="heroes.leaders.lede">The leader's <b>stats × whole kit</b> power every march in
+          the rally. Stats matter most for archers, skills for infantry and cavalry.</p>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> I</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/amadeus.webp" alt="Amadeus" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Amadeus <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.amadeus.why">Three offensive skills and the only offensive widget in the game — still S-tier at generation 7.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/helga.webp" alt="Helga" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Helga <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.helga.why">Two of three offensive skills plus an offensive widget — the infantry staple, and it holds for generations.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/saul.webp" alt="Saul" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Saul <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.saul.why">One offensive skill, but by far the highest archer stats of generation 1.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/jabel.webp" alt="Jabel" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Jabel <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.jabel.why">Two offensive skills and the best cavalry stats of the era.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.l.g1.gloss">Yeonwoo, Amane and Chenko belong in the joiner list — their only offensive skill is their first. Howard is the free-to-play infantry stopgap. The rest gather, they don't fight.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> II</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/marlin.webp" alt="Marlin" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Marlin <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.marlin.why">An offensive widget, two all-troop offensive skills, and stats way above Saul's — he knocks Saul to B.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/hilde.webp" alt="Hilde" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Hilde <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.hilde.why">One-and-a-half offensive skills plus cavalry stats that draw even with Jabel.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/zoe.webp" alt="Zoe" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Zoe <span class="tier tier-b" aria-label="B tier">B</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.zoe.why">Three offensive skills on paper, but Sundering Wounds doesn't work on the bear — still the best free-to-play leader at this point.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.l.g2.gloss">Marlin's arrival knocks Saul down to B.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> III</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/petra.webp" alt="Petra" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Petra <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.petra.why">The roulette-wheel gift: the first cavalry with an offensive widget, two of three skills offensive, and a first skill whose quirked code is the best in the game — ~43.75% effective, and it multiplies with everything.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.l.g3.gloss">Jaeger's 24% damage-up bumps Saul another slot — he's B now. Eric is all defence.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> IV</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/rosa.webp" alt="Rosa" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Rosa <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.rosa.why">An offensive widget archer with a 30% archer skill and the stats to match — she pushes Marlin out of S.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/margot.webp" alt="Margot" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Margot <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.margot.why">Two offensive skills and a defensive widget, but her stats beat Hilde and Jabel — still a step behind Petra.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/alcar.webp" alt="Alcar" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Alcar <span class="tier tier-b" aria-label="B tier">B</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.alcar.why">A rare 25% enemy-damage-taken-up plus monster infantry skills — he only works if you reshape your formation around him. Account-specific: test him against Zoe.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.l.g4.gloss">Rosa pushes Marlin out of S-tier.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> V</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/vivian.webp" alt="Vivian" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Vivian <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.vivian.why">Three offensive skills, but two phase in over four turns — at most two activations each in a ten-round bear. Her archer stats keep her just below Rosa.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/thrud.webp" alt="Thrud" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Thrud <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.thrud.why">An offensive widget, but the kit doesn't fit the bear: a four-turn phase-in, a half-strength 15%, and a cavalry multi-strike worth a third of its PvP damage. Still the only other offensive cavalry leader.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.l.g5.gloss">Long Fei is C — one damage skill and a defensive widget.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> VI</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/yang.webp" alt="Yang" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Yang <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.yang.why">Three offensive skills, an offensive widget, archer stats — the complete bear package, straight into S.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.l.g6.gloss">Sophia is C — her second offensive skill doesn't work on the bear. Triton is C — his 30% doesn't interact with most hero skills, and infantry stats don't matter here.</p>
+        </div>
+
+        <div class="gen">
+          <h4 class="gen-title"><span data-i18n="heroes.gen">Generation</span> VII</h4>
+          <div class="hero-row">
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/ava.webp" alt="Ava" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Ava <span class="tier tier-s" aria-label="S tier">S</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.ava.why">An offensive widget and three offensive skills, with the rare enemy-damage-taken code on the second — she'll hold S for generations.</p>
+              </div>
+            </article>
+            <article class="hero-card">
+              <img class="hero-portrait" src="img/heroes/weewoo.webp" alt="Wee &amp; Woo" width="256" height="256" loading="lazy" decoding="async">
+              <div class="hero-meta">
+                <h5 class="hero-name">Wee &amp; Woo <span class="tier tier-a" aria-label="A tier">A</span></h5>
+                <p class="hero-why" data-i18n="heroes.l.weewoo.why">Three offensive skills and generation-7 archer stats — nearly Yang's level, but her widget still wins the arithmetic.</p>
+              </div>
+            </article>
+          </div>
+          <p class="gen-gloss" data-i18n-html="heroes.l.g7.gloss">Charles is D — three defensive skills and a defensive widget. Blue-hero tier.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="note" data-i18n="heroes.out">Send the S and A faces. Leave the defence heroes at home — the bear doesn't care about your armour.</p>
+
+    <details>
+      <summary data-i18n="heroes.details">Sources, testing and fine print</summary>
+      <div class="d-body">
+        <p data-i18n-html="heroes.d1">Distilled from the Bear Hunt tier-list series — rally <b>joiners</b> and rally <b>leaders</b>, generation by generation — the same lists that power the Optimizer heroes module, tested with Frak of the Frakinator.</p>
+        <p data-i18n-html="heroes.d2">Hidden-ability findings (Zoe's dead first skill, Rosa's mislabeled lethality code, Petra's stacking quirk) come from the hidden-hero-abilities research; numbers are for 10-round bear rallies with current-era skill codes, and the list is updated as new generations land.</p>
+        <p data-i18n-html="heroes.d3">Hero portraits from the Kingshot community wiki (kingshotwiki.com); the hero-card layout owes its start to Catarina's Kingshot transfer chat design.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══════════ 8 · REWARDS ═══════════ -->
+  <section class="section" id="rewards">
+    <h2 data-i18n="rewards.title">Rewards</h2>
+    <p class="lede" data-i18n-html="rewards.lede">Your reward bracket follows <strong>your own</strong> damage — not the rally's.
+      Thresholds keep doubling, one extra Forgehammer per bracket, all the way to <strong>38.4B+</strong>:</p>
+    <ul class="brackets">
+      <li><b>47M</b><span class="forge" role="img" aria-label="8 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="8"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">8</span></span></li>
+      <li><b>90M</b><span class="forge" role="img" aria-label="9 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="9"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">9</span></span></li>
+      <li><b>175M</b><span class="forge" role="img" aria-label="10 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="10"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">10</span></span></li>
+      <li><b>330M</b><span class="forge" role="img" aria-label="11 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="11"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">11</span></span></li>
+      <li><b>625M</b><span class="forge" role="img" aria-label="12 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="12"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">12</span></span></li>
+      <li><b>1.2B</b><span class="forge" role="img" aria-label="13 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="13"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">13</span></span></li>
+      <li><b>2.4B</b><span class="forge" role="img" aria-label="14 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="14"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">14</span></span></li>
+      <li><b>4.8B</b><span class="forge" role="img" aria-label="15 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="15"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">15</span></span></li>
+      <li><b>9.6B</b><span class="forge" role="img" aria-label="16 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="16"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">16</span></span></li>
+      <li><b>19.2B</b><span class="forge" role="img" aria-label="17 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="17"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">17</span></span></li>
+      <li><b>38.4B+</b><span class="forge" role="img" aria-label="18 Forgehammers" data-i18n-key="rewards.forgeAria" data-i18n-attr="aria-label" data-i18n-n="18"><svg class="forge-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5 14 10.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M13.5 3.5 20.5 10.5 14.8 16.2 7.8 9.2Z" fill="currentColor"/></svg><span class="forge-n">18</span></span></li>
+    </ul>
+    <p class="note" data-i18n="rewards.note">47M pays 8 hammers, 38.4B pays 18 — one extra per bracket. More players crossing
+      brackets = more Forgehammers for the whole alliance. Fair-share rallies grow everyone — one
+      whale hoarding rallies grows one player.</p>
+  </section>
+
+  <!-- ═══════════ 9 · THE CAP ═══════════ -->
+  <section class="section" id="cap">
+    <h2 data-i18n="cap.title">The cap</h2>
+    <p class="lede" data-i18n-html="cap.lede">Alliances cap how many troops a march participant can send — usually right
+      around fair share. It's a fairness rule, and the maths says it's nearly free: only players
+      past <strong>~364k archers</strong> feel it at all.</p>
+    <details>
+      <summary data-i18n="cap.details">The maths of the cap</summary>
+      <div class="d-body">
+        <p data-i18n-html="cap.d1">The line is <b>~364k archers</b> — 65k fair share per march × 80% archers ×
+          7 marches, because a rally lead with six queues fields all seven. Past it, the cap leaves
+          some archers at home. It's a real nerf, but a slight one: every extra troop past your
+          first hits softer (that's the √ again).</p>
+        <p data-i18n-html="cap.d2">And it almost never costs a bracket: the thresholds keep doubling, so
+          47M → 90M is a <b>91% gap</b>, and a few percent lost to the cap won't cross it —
+          <b>provided the alliance launches enough rallies</b> that strong players can keep every
+          queue full.</p>
+      </div>
+    </details>
+    <p class="note" data-i18n-html="cap.note">So cap away — except one day a month. After KvK, hold a
+      <b>God bear</b>: the strongest players from both hunt time slots in one massive hunt, everyone
+      within <b>~30s travel</b> of the bear, rallies chained back-to-back for super-low dwell times —
+      and the cap off: <b>everyone full-sends</b>, and the whales finally get to use every last
+      archer.</p>
+  </section>
+
+  <!-- ═══════════ 10 · THE 4 RULES ═══════════ -->
+  <section class="section rules" id="rules">
+    <h2 data-i18n="rules.title">The whole page in four rules</h2>
+    <button class="hedera" id="hedera" type="button" aria-label="a small mark in the margin" title="a small mark in the margin" data-i18n-key="rules.hedera" data-i18n-attr="aria-label title">❦</button>
+    <ol class="rule-list">
+      <li><span class="rule-num">1</span><div><h3 data-i18n="rules.1.title">Split your marches</h3><p data-i18n-html="rules.1.body">6 rallies ≈ 2.4× one big march. Spread across different rallies, every wave.</p></div></li>
+      <li><span class="rule-num">2</span><div><h3 data-i18n="rules.2.title">Fill every rally</h3><p data-i18n-html="rules.2.body">Capacity ÷ players = your fair share. Leave no slot empty, stuff no rally.</p></div></li>
+      <li><span class="rule-num">3</span><div><h3 data-i18n="rules.3.title">Send 10 / 10 / 80</h3><p data-i18n-html="rules.3.body">Past ~350k troops: 10% inf, 10% cav, 80% archers — the per-lead perfect ratio is a fool's errand.</p></div></li>
+      <li><span class="rule-num">4</span><div><h3 data-i18n="rules.4.title">Keep moving</h3><p data-i18n-html="rules.4.body">Fire = launch + 5:00. Staggered waves = a fire every minute. <span class="rev">Parked = zero.</span></p></div></li>
+      <li class="rule-five" id="rulefive" hidden><span class="rule-num" aria-hidden="true">5</span><div><h3 data-i18n="rules.5.title">The whispered rule</h3><p data-i18n-html="rules.5.body">Leave no slot empty, no matter how weak the joiner. Every √ counts.</p></div></li>
+    </ol>
+    <p class="punchline" data-i18n-html="rules.punchline">Lead's stats × your troops, √ on your count.
+      <strong>Everything else follows.</strong></p>
+  </section>
+</main>
+
+<footer>
+  <nav class="ev-foot" aria-label="Events" data-i18n-key="ev.switchAria" data-i18n-attr="aria-label">
+    <a href="index.html" data-i18n="ev.switch.home">Home</a>
+    <a href="bear-hunt.html" aria-current="page" data-i18n="ev.switch.bear">Bear Hunt</a>
+    <a href="vikings-vengeance.html" data-i18n="ev.switch.vikings">Vikings</a>
+  </nav>
+  <p class="foot-main" data-i18n="foot.main">NO SIGNUP · NO DATA · NO ROSTER · JUST THE MATHS</p>
+  <p class="foot-sub" data-i18n-html="foot.note">Numbers here are for our server: marches ~100–150k, rallies 500k–1M.
+    Your server will differ — <b>the maths doesn't.</b></p>
+  <p class="foot-sub" data-i18n-html="foot.credit">Damage model from the <a href="https://frakinator.streamlit.app/">Frakinator</a> by [685] Frak — a tested community model, not an official one · built for the [2129]MadNess alliance</p>
+  <p class="foot-sub" data-i18n-html="foot.credit2">Hero tiers and extensive play testing with <a href="https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA">StratGameSloth</a> and the <a href="https://discord.gg/CVubr6M7x">Play Smarter Community</a></p>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="common.js"></script>
+<script src="bear-hunt.js"></script>
+</body>
+</html>

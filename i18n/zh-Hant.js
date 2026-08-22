@@ -51,7 +51,7 @@ window.__BH_I18N_DATA["zh-Hant"] = {
   "sqrt.fact2": "4 倍兵力 = <b>2.0×</b>",
   "sqrt.fact3": "16 倍兵力 = 只有 <b>4.0×</b>",
   "sqrt.note": "頭一批兵打得最狠。每多一個兵，都比前一個軟一點。所以更大的行軍只幫一點——<strong>更多的行軍幫大忙</strong>。",
-  "sqrt.details": "精確的計算",
+  "sqrt.details": "精確的數學",
   "sqrt.d1": "每個玩家、每場集結，傷害按你的三種兵種分別相加：",
   "sqrt.formula": "Σ base<sub>t</sub> × A<sub>t</sub>(lead) × √(n<sub>t</sub>)",
   "sqrt.li1": "<b>n<sub>t</sub></b> —— <em>你</em>的行軍裡 t 類兵的數量。",
@@ -163,7 +163,7 @@ window.__BH_I18N_DATA["zh-Hant"] = {
   "heroes.l.g4.gloss": "Rosa 把 Marlin 擠出 S-tier。",
   "heroes.l.g5.gloss": "Long Fei 是 C——一個傷害技能加一個防禦裝備。",
   "heroes.l.g6.gloss": "Sophia 是 C——她的第二攻擊技能在熊這裡不生效。Triton 是 C——他的 30% 和大多數英雄技能無法互動，而步兵屬性在這裡無關緊要。",
-  "heroes.l.g7.gloss": "Charles 是 D——三個防禦技能加一個防禦裝備。藍色英雄檔位。",
+  "heroes.l.g7.gloss": "Charles 是 D——三個防禦技能加一個防禦裝備。藍色英雄的檔次。",
   "heroes.out": "派 S 和 A 級的英雄上場。防禦英雄留在家裡——熊不在乎你的盔甲。",
   "heroes.details": "來源、測試與小字條款",
   "heroes.d1": "提煉自 Bear Hunt 的梯隊榜系列——集結<b>加入者</b>與集結<b>隊長</b>，一代一代——和 Optimizer 英雄模組用的是同一份榜單，經 Frakinator 的 Frak 實測。",
@@ -180,7 +180,7 @@ window.__BH_I18N_DATA["zh-Hant"] = {
   "cap.details": "上限的數學",
   "cap.d1": "這條線是 <b>~364k 弓兵</b>——每支行軍 65k 的公平份額 × 80% 弓兵 × 7 支行軍，因為帶六個隊列的集結隊長能把七支全派上場。超過這條線，上限就會讓一部分弓兵留在家裡。這是實打實的削弱，不過很輕微：每多一個兵，都比前一個軟一點（又是那個 √）。",
   "cap.d2": "而且它幾乎從不讓你掉檔：門檻一路翻倍，所以 47M → 90M 是 <b>91% 的差距</b>，被上限吃掉幾個百分點也掉不了檔——<b>前提是聯盟發起足夠多的集結</b>，讓強玩家能一直保持每條隊列滿編。",
-  "cap.note": "所以盡量設上限吧——除了每個月的那一天。KvK 結束後，辦一場 <b>神熊</b>：兩個獵熊時段裡最強的玩家，聚進同一場大型獵熊，每個人都離熊 <b>~30s 路程</b>以內，集結一場接一場地連著發起，駐留時間壓到極低——然後把上限關掉：<b>所有人全軍出動</b>，大佬們終於能用上最後一支弓兵。",
+  "cap.note": "所以盡量設上限吧——除了每個月的那一天。KvK 結束後，辦一場 <b>God bear</b>：兩個獵熊時段裡最強的玩家，聚進同一場大型獵熊，每個人都離熊 <b>~30s 路程</b>以內，集結一場接一場地連著發起，駐留時間壓到極低——然後把上限關掉：<b>所有人全軍出動</b>，大佬們終於能用上最後一支弓兵。",
 
   "rules.title": "整頁濃縮成四條規則",
   "rules.hedera": "頁邊的一個小記號",
@@ -198,7 +198,8 @@ window.__BH_I18N_DATA["zh-Hant"] = {
 
   "foot.main": "無需註冊 · 不留數據 · 不查名冊 · 只有數學",
   "foot.note": "這裡的數字是我們服的：行軍 ~100–150k，集結 500k–1M。你們服會不一樣——<b>數學不會。</b>",
-  "foot.credit": "傷害模型來自 [685] Frak 的 <a href=\"https://frakinator.streamlit.app/\">Frakinator</a>——一個經過實測的社區模型，非官方出品 · 為 MadNess 聯盟打造",
+  "foot.credit": "傷害模型來自 [685] Frak 的 <a href=\"https://frakinator.streamlit.app/\">Frakinator</a>——一個經過實測的社區模型，非官方出品 · 為 [2129]MadNess 聯盟打造",
+  "foot.credit2": "英雄分級與大量實戰測試，來自 <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> 和 <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",
 
   "egg.whisper0": "熊也在讀這一頁。他還在記筆記。",
   "egg.whisper1": "√ 是熊最愛的符號",

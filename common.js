@@ -172,13 +172,19 @@
   // Horizontal intent requires |dx| > |dy| before the peek activates, so
   // reading a long page never triggers it (overscroll-behavior-x: none in
   // events.css keeps the browser's edge-swipe from fighting us). Drags
-  // starting on form controls or the TOC rail are ignored. Release past
-  // ~38% of the viewport (or a fast flick) navigates; short drags spring
-  // back — the preview never commits by itself.
+  // starting on form controls or the TOC rail are ignored. Past ~14% of the
+  // viewport the preview springs fully open so its content is readable; a
+  // release past ~38% (or a fast flick) navigates, short drags spring back —
+  // the preview never commits by itself.
   var peek = null;
   var peekMain = null;
   var peekHint = null;
-  var g = { startX: null, startY: null, active: false, dir: 0, t0: 0 };
+  // OPEN_FRAC: how far the finger must travel (fraction of viewport width)
+  // before the preview springs fully open — the content is readable long
+  // before the release point. COMMIT_FRAC: release past this navigates.
+  var OPEN_FRAC = 0.14;
+  var COMMIT_FRAC = 0.38;
+  var g = { startX: null, startY: null, active: false, opened: false, dir: 0, t0: 0 };
 
   function makePeek() {
     peek = document.createElement('div');
@@ -228,6 +234,14 @@
     }
   }
 
+  function openPeek() {
+    if (!peek) return;
+    // Spring the preview fully open — readable well before the natural
+    // release point, and it stays open while the finger is down.
+    peek.classList.add('snap');
+    peek.style.transform = 'translateX(0)';
+  }
+
   function parallaxMain(dx) {
     if (peekMain) peekMain.style.transform = 'translateX(' + (dx * 0.12) + 'px)';
   }
@@ -253,6 +267,7 @@
     g.startY = touch.clientY;
     g.t0 = Date.now();
     g.active = false;
+    g.opened = false;
     g.dir = 0;
   }, { passive: true });
 
@@ -271,8 +286,18 @@
     }
     if (g.active) {
       e.preventDefault(); // horizontal drag: never a click, never a scroll
-      positionPeek(dx);
-      parallaxMain(dx);
+      if (!g.opened) {
+        var vw = document.documentElement.clientWidth || window.innerWidth;
+        if (Math.abs(dx) >= vw * OPEN_FRAC) {
+          g.opened = true;
+          openPeek();
+        } else {
+          positionPeek(dx);
+          parallaxMain(dx);
+        }
+      } else {
+        parallaxMain(dx); // preview stays open; the finger only decides the release
+      }
     }
   }, { passive: false });
 
@@ -282,28 +307,19 @@
     var dx = touch.clientX - g.startX;
     var dt = Date.now() - g.t0;
     var vw = document.documentElement.clientWidth || window.innerWidth;
-    var commit = Math.abs(dx) > vw * 0.38 || (Math.abs(dx) > 60 && dt < 250);
+    var commit = Math.abs(dx) > vw * COMMIT_FRAC || (Math.abs(dx) > 60 && dt < 250);
     var dir = g.dir;
     resetPeek();
     g.startX = null;
     g.active = false;
+    g.opened = false;
     g.dir = 0;
     if (commit && neighbor(dir)) window.location.href = neighbor(dir);
   }
   document.addEventListener('touchend', finishDrag, { passive: true });
   document.addEventListener('touchcancel', function () {
-    if (g.active) { resetPeek(); g.startX = null; g.active = false; g.dir = 0; }
+    if (g.active) { resetPeek(); g.startX = null; g.active = false; g.opened = false; g.dir = 0; }
   }, { passive: true });
-
-  // Edge handles — visual affordances on coarse pointers (pointer-events none;
-  // the drag works from anywhere, these just say the edge is a door).
-  function makeHandle(cls, glyph) {
-    var h = document.createElement('span');
-    h.className = 'edge-handle ' + cls;
-    h.setAttribute('aria-hidden', 'true');
-    h.textContent = glyph;
-    document.body.appendChild(h);
-  }
 
   // ── Scroll restore — come back to where you were ───────
   var SCROLL_KEY = 'bh_scroll_' + page;
@@ -396,9 +412,8 @@
       if (hero) hero.classList.add('front');
     }
 
-    // Event chrome
-    if (prevUrl) makeHandle('prev', '\u276E');
-    if (nextUrl) makeHandle('next', '\u276F');
+    // Event chrome — the preview panel and swipe handles are created lazily
+    // on the first drag; no persistent affordances.
 
     // Language picker — flag dropdown (custom listbox so real flags render
     // everywhere; Windows shows letter-pairs instead of flag emojis).

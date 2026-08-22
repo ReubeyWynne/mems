@@ -36,8 +36,10 @@ until the English build is approved and verified, then a separate translation pa
 - **Home at `/`**; Bear Hunt moves to `/bear-hunt.html`. Old deep links (`/#sqrt` etc.)
   redirect via a tiny shim on the home page.
 - **Swipe model**: full-page horizontal drag with a commit bar (~38% viewport width or a
-  fast flick), live preview panel of the neighbour event, short drags spring back. Edge
-  grab-handles are shown on coarse pointers as the affordance.
+  fast flick) and a live preview panel of the neighbour event. Past ~14% of the viewport
+  the preview springs fully open so its content is readable before the release point;
+  short drags spring back. No persistent arrows/handles — the preview itself is the
+  affordance (persistent edge tabs were removed after review as mobile noise).
 - **Content truth = the video transcript** (Kingshot Essentials playlist) for the Vikings
   page; difficulty scale is **1–11** (11 hardest). The written kingshotmastery.com guide is
   used only where it does not contradict the transcript (wave table, skill-stacking rules,
@@ -59,8 +61,9 @@ until the English build is approved and verified, then a separate translation pa
 - Old `dey.ci/#model` (and the other nine Bear Hunt section hashes) redirect to
   `bear-hunt.html#model` etc. from the home page.
 - Touch: a horizontal drag from anywhere on an event page (not starting on a form control)
-  slides the neighbour preview in; release past the bar navigates; short drags spring back;
-  vertical scroll works untouched; a flick commits even under the bar.
+  slides the neighbour preview in; past ~14% of the viewport it springs fully open and
+  stays readable; release past the bar navigates; short drags spring back; vertical scroll
+  works untouched; a flick commits even under the bar.
 - Desktop: topbar switcher marks the current page; `←`/`→` navigate between events
   (except when typing in inputs); the home cards navigate.
 - `prefers-reduced-motion`: no slide preview — release past the bar still navigates.
@@ -82,7 +85,7 @@ common.js                shared chrome: progress, TOC scrollspy, front layer, la
 bear-hunt.js             rally + march calculators, bear whispers/gossip, calc
                          eggs, hedera
 vikings.js               kill-surface toy, vikings whispers, toy egg
-events.css               switcher, event cards, edge handles, peek panel, wave
+events.css               switcher, event cards, peek panel, wave
                          table, composition rows, vikings sleet theme
 styles.css               unchanged
 i18n/*.js                unchanged this phase
@@ -115,19 +118,23 @@ Order: `home → bear-hunt → vikings-vengeance`.
   `input/select/textarea/[contenteditable]` never activates. `html, body` get
   `overscroll-behavior-x: none` so iOS edge-swipe can't fight the peek; a global
   `touch-action: pan-y` is deliberately avoided because it intersects down the tree
-  and would break the calculators' range sliders. Preview follows the finger with
-  slight resistance; main content parallaxes a little. Commit = `|dx| > 0.38 × viewport
-  width` or a flick (`|dx| > 60px` in < 250ms); short drags spring back via a `.snap`
-  class added in common.js.
-- **Edge handles**: fixed tabs at the viewport edges (left = previous, right = next),
-  `pointer-events: none`, visible only on coarse pointers and only when a neighbour
-  exists; they are affordances, the drag works anywhere.
+  and would break the calculators' range sliders. Before the open threshold the
+  preview follows the finger with slight resistance and main content parallaxes;
+  past `OPEN_FRAC` (0.14 × viewport) the panel springs fully open (`translateX(0)` +
+  `.snap`) and stays open while the finger is down, so the content is readable well
+  before the release point. Commit = `|dx| > COMMIT_FRAC` (0.38 × viewport) or a
+  flick (`|dx| > 60px` in < 250ms); short drags spring back via a `.snap` class
+  added in common.js.
+- **No persistent affordances**: the always-visible edge tabs were removed after
+  review (mobile noise); the preview panel that appears on drag is the only
+  gesture feedback.
 - **Scroll restore**: `sessionStorage["bh_scroll_" + data-page]` saved on `pagehide`,
   restored on load when there is no location hash.
 - **Switcher**: `.ev-switch` sits between brand and lang-picker in the topbar, hidden
   below 700px; the footer carries the same three links (mobile explicit fallback).
 - **Vikings theme**: same tokens and amber signal; only the `.dust` particle layers
-  change to drifting sleet (pale dots + streaks, downward drift) via
+  change to drifting sleet (three faint dot layers drifting very slowly — the streak
+  grid was removed after review as a flickering grid) via
   `html[data-page="vikings"]` overrides.
 - **No invented maths**: the kill-surface toy labels its output honestly ("garrisons
   scoring for you") and carries a note that there is no published formula — per-wave

@@ -1,9 +1,9 @@
 /* events.css — multi-event chrome for the dey.ci guide site.
    Loaded on every page (home, bear-hunt, vikings-vengeance) after styles.css.
-   Adds: the event switcher, the home event cards, the swipe preview panel and
-   edge handles, the Vikings wave table + composition rows, and the Vikings
-   sleet theme. Same tokens and the same one-amber-signal contract as the base
-   theme — nothing here introduces a second signal colour. */
+   Adds: the event switcher, the home event cards, the swipe preview panel,
+   the Vikings wave table + composition rows, and the Vikings sleet theme.
+   Same tokens and the same one-amber-signal contract as the base theme —
+   nothing here introduces a second signal colour. */
 
 /* ─── Swipe setup ──────────────────────────────────────── */
 /* The browser's edge-swipe navigation must not fight the peek. touch-action
@@ -92,31 +92,6 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 .event-card:hover .event-chips span { color: var(--amber-dim); }
 .event-ghost { opacity: 0.55; pointer-events: none; }
 .event-ghost h3 { color: var(--ink-muted); }
-
-/* ─── Edge handles — the doors at the screen edges ────── */
-/* Purely visual affordances on coarse pointers; pointer-events none, the
-   drag gesture works from anywhere on the page. */
-.edge-handle {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 35;
-  display: none;
-  align-items: center; justify-content: center;
-  width: 1.5rem; height: 4.2rem;
-  color: var(--amber-dim);
-  font-family: var(--display);
-  font-size: var(--step-0);
-  background: rgba(18, 23, 38, 0.8);
-  border: 1px solid var(--ink-muted);
-  border-radius: 2px;
-  pointer-events: none;
-}
-.edge-handle.prev { left: 0; border-left: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; }
-.edge-handle.next { right: 0; border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
-@media (pointer: coarse) {
-  .edge-handle { display: flex; }
-}
 
 /* ─── The swipe preview — the neighbour event's cover ─── */
 /* Parked off-screen at ±100% (its own width); the finger pulls it in with

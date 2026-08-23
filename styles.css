@@ -36,7 +36,15 @@
   --step-1: clamp(1.55rem, 1.44rem + 0.55vw, 1.9rem);
   --step-2: clamp(2rem, 1.85rem + 0.75vw, 2.55rem);
   --step-3: clamp(2.6rem, 2.4rem + 1vw, 3.5rem);
-  --step-4: clamp(3.4rem, 3.1rem + 1.6vw, 4.8rem);
+  /* Hero display step, calibrated to fit: "DEMYSTIFIED" measures 7.889em
+     in Cinzel Decorative 700 at the h1's 0.03em tracking, so the old
+     3.4rem floor (429px wide) spilled off phones under ~460px. The 2.25rem
+     floor fits a 320px viewport; the 6vw slope keeps desktop sizes. */
+  --step-4: clamp(2.25rem, 1.05rem + 6vw, 4.8rem);
+  /* Topbar brand: the widest brand, "KINGSHOT · DEMYSTIFIED", is 16.042em
+     at 0.08em tracking — 398px at the old 1.55rem, a hair too wide for a
+     phone. The 0.88rem floor fits it beside the language picker. */
+  --step-brand: clamp(0.88rem, 0.5rem + 1.5vw, 1.9rem);
 
   --space-s: clamp(1rem, 0.9rem + 0.5vw, 1.3rem);
   --space-m: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
@@ -92,8 +100,13 @@ body {
   font-size: var(--step-0);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: hidden; /* fallback; the clip below is the real guard on iOS */
 }
+
+/* Guard: no glyph run may push a page-level horizontal scrollbar. clip
+   (unlike hidden) does not create a scroll container, so the sticky
+   topbar and TOC keep sticking to the viewport. */
+html, body { overflow-x: clip; }
 
 /* ─── Ember dust (three layers at three speeds) ───────── */
 .dust {
@@ -162,7 +175,7 @@ strong, b { color: var(--ink); font-weight: 700; }
   gap: var(--space-s); flex-wrap: nowrap;
 }
 .brand {
-  font-family: var(--display); font-size: var(--step-1); font-weight: 700;
+  font-family: var(--display); font-size: var(--step-brand); font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink); white-space: nowrap;
 }
@@ -176,7 +189,9 @@ main { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; p
 
 /* ─── Hero ────────────────────────────────────────────── */
 .hero { padding: var(--space-xl) 0 var(--space-l); }
-.hero h1 { line-height: 1.05; }
+/* Some translations' display words (de: ENTMYSTIFIZIERT, it: DEMISTIFICATO)
+   still outrun a narrow phone — break them rather than the layout. */
+.hero h1 { line-height: 1.05; overflow-wrap: break-word; }
 .accent { color: var(--amber); }
 .lede { margin-top: var(--space-s); color: var(--ink-dim); font-size: var(--step-0); }
 .lede strong { color: var(--ink); }

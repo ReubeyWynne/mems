@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["fr"] = {
   "meta.title": "Bear Hunt, Démystifié",
-  "meta.description": "Bear Hunt, démystifié. Comment fonctionnent les dégâts de rally en clair : les stats du meneur, tes troupes, la racine carrée, et quatre règles. Pas d'inscription, pas de données, pas de tableau.",
+  "meta.description": "Bear Hunt, démystifié. Comment fonctionnent les dégâts de rally en clair : les stats du meneur, tes troupes, la racine carrée, et quatre règles.",
   "meta.ogTitle": "Bear Hunt, Démystifié",
-  "meta.ogDescription": "Comment fonctionnent vraiment les dégâts de rally — en clair. Pas d'inscription, pas de données, pas de tableau.",
+  "meta.ogDescription": "Comment fonctionnent vraiment les dégâts de rally — en clair.",
 
   "skip": "Aller aux maths",
-  "brandNote": "pas d'inscription · pas de données · juste les maths",
+  "brandNote": "juste les maths",
   "ui.lang": "Langue",
 
   "nav.aria": "Sections",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["fr"] = {
   "nav.rules": "Les 4 règles",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">DÉMYSTIFIÉ</span>",
-  "hero.lede": "Tout l'événement en un scroll. Comment fonctionnent les dégâts de rally en clair — et les quatre choses que tu devrais faire. <strong>Pas d'inscription. Pas de tableau. Aucune stat requise.</strong>",
+  "hero.lede": "Comment fonctionnent les dégâts de rally en clair — et les quatre choses que tu devrais faire.",
   "hero.chip1": "30 min par run",
   "hero.chip2": "toutes les 48 heures",
   "hero.chip3": "mine d'or de Forgehammers",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["fr"] = {
   "rules.5.body": "Ne laisse aucun emplacement vide, même si le joueur qui rejoint est faible. Chaque √ compte.",
   "rules.punchline": "Les stats du meneur × tes troupes, √ sur ton compte. <strong>Tout le reste en découle.</strong>",
 
-  "foot.main": "PAS D'INSCRIPTION · PAS DE DONNÉES · PAS DE ROSTER · JUSTE LES MATHS",
+  "foot.main": "JUSTE LES MATHS",
   "foot.note": "Les chiffres ici sont pour notre serveur : marches ~100–150k, rallies 500k–1M. Ton serveur sera différent — <b>pas les maths.</b>",
   "foot.credit": "Modèle de dégâts du <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> de [685] Frak — un modèle communautaire testé, pas officiel · construit pour l'alliance [2129]MadNess",
   "foot.credit2": "Tiers de héros et tests approfondis avec <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> et la <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

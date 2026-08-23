@@ -2,7 +2,7 @@
    Bear Hunt, Demystified — Cracktro Scroll, re-voiced
    Kingshot world: navy-black night · parchment · one amber
    signal · oxblood rubrication · drifting embers.
-   Raw and punk, but medieval: blackletter display, worn
+   Raw and punk, but medieval: Roman inscriptional display, literary
    manuscript serif, no CRT, no boxes. Mobile-first strip.
    ═══════════════════════════════════════════════════════ */
 
@@ -27,8 +27,9 @@
   --signal-glow: rgba(245, 200, 81, 0.22); /* portrait inner glow */
   --signal-halo: rgba(245, 200, 81, 0.28); /* portrait hover halo */
 
-  --display: 'Bear Tilde', 'Pirata One', 'UnifrakturMaguntia', serif;
-  --body: 'Bear Tilde', 'IM Fell English', 'Georgia', serif;
+  --display: 'Bear Tilde', 'Cinzel Decorative', 'Cinzel', serif;
+  --display-2: 'Bear Tilde', 'Cinzel', 'Georgia', serif;
+  --body: 'Bear Tilde', 'Alegreya', 'Georgia', serif;
 
   --step--1: clamp(1.05rem, 0.98rem + 0.35vw, 1.2rem);
   --step-0: clamp(1.2rem, 1.12rem + 0.4vw, 1.38rem);
@@ -46,10 +47,10 @@
   --topbar-h: 3rem;
 }
 
-/* ─── Tilde glyph — the Fell & Pirata ASCII tilde rides the
-   ascender line, floating at the top of "~364k". This face
-   borrows a midline tilde from a system font for U+007E only;
-   every other character still renders in the manuscript fonts. */
+/* ─── Tilde glyph — the manuscript faces' ASCII tilde can ride the
+   ascender line, floating at the top of "~364k". This face borrows
+   a midline tilde from a system font for U+007E only; every other
+   character still renders in the manuscript fonts. */
 @font-face {
   font-family: "Bear Tilde";
   src: local("Segoe UI"), local("Roboto"), local("Helvetica Neue"), local("Arial"), local("DejaVu Sans");
@@ -58,12 +59,13 @@
 
 /* ─── Arabic — the first RTL language ─────────────────── */
 /* Font selection is per-glyph, so Latin runs (brand, numbers,
-   formulas) still fall through to IM Fell English inside Arabic
+   formulas) still fall through to Alegreya inside Arabic
    copy. Amiri (naskh) + Aref Ruqaa (calligraphic display) keep
    the manuscript voice the Latin fonts already set. */
 html[lang="ar"] {
-  --body: 'Bear Tilde', 'Amiri', 'IM Fell English', 'Georgia', serif;
+  --body: 'Bear Tilde', 'Amiri', 'Alegreya', 'Georgia', serif;
   --display: 'Bear Tilde', 'Aref Ruqaa', 'Amiri', serif;
+  --display-2: 'Bear Tilde', 'Aref Ruqaa', 'Amiri', serif;
 }
 /* Arabic script has no case and no italics, its letters join
    (tracking breaks the joins), and its ascenders/diacritics need
@@ -126,7 +128,8 @@ body {
 
 /* ─── Base surfaces ───────────────────────────────────── */
 ::selection { background: var(--amber); color: var(--void); }
-h1, h2, h3, h4 { font-family: var(--display); font-weight: 400; line-height: 1.04; }
+h1, h2 { font-family: var(--display); font-weight: 700; line-height: 1.04; }
+h3, h4 { font-family: var(--display-2); font-weight: 700; line-height: 1.04; }
 h1 { font-size: var(--step-4); letter-spacing: 0.03em; text-transform: uppercase; }
 h2 { font-size: var(--step-3); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-dim); transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
 h3 { font-size: var(--step-1); letter-spacing: 0.02em; text-transform: uppercase; }
@@ -136,7 +139,7 @@ a { color: var(--amber); text-decoration-thickness: 1px; text-underline-offset: 
 a:hover { color: var(--ink); }
 :focus-visible { outline: 2px dashed var(--amber); outline-offset: 3px; }
 input { caret-color: var(--amber); }
-strong, b { color: var(--ink); font-style: italic; }
+strong, b { color: var(--ink); font-weight: 700; }
 
 .skip-link {
   position: absolute; inset-inline-start: -9999px; top: 0; z-index: 100;
@@ -159,11 +162,11 @@ strong, b { color: var(--ink); font-style: italic; }
   gap: var(--space-s); flex-wrap: nowrap;
 }
 .brand {
-  font-family: var(--display); font-size: var(--step-1);
+  font-family: var(--display); font-size: var(--step-1); font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink); white-space: nowrap;
 }
-.brand b { color: var(--amber); font-style: normal; }
+.brand b { color: var(--amber); }
 .brand-note { font-size: var(--step--1); color: var(--ink-muted); white-space: nowrap; }
 .progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: transparent; }
 .progress-fill { height: 100%; width: 0; background: var(--amber); }
@@ -173,7 +176,7 @@ main { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; p
 
 /* ─── Hero ────────────────────────────────────────────── */
 .hero { padding: var(--space-xl) 0 var(--space-l); }
-.hero h1 { line-height: 0.98; }
+.hero h1 { line-height: 1.05; }
 .accent { color: var(--amber); }
 .lede { margin-top: var(--space-s); color: var(--ink-dim); font-size: var(--step-0); }
 .lede strong { color: var(--ink); }
@@ -200,7 +203,7 @@ main { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; p
 .toc::-webkit-scrollbar { display: none; }
 .toc a {
   flex: 0 0 auto; white-space: nowrap;
-  font-family: var(--display); font-size: var(--step--1);
+  font-family: var(--body); font-size: var(--step--1); font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase;
   text-decoration: none; color: var(--ink-muted);
   transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -240,7 +243,7 @@ main { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; p
 .section .lede { margin-bottom: var(--space-m); }
 
 /* ─── Highlight / punchline ───────────────────────────── */
-.hl { color: var(--amber); font-style: italic; }
+.hl { color: var(--amber); font-weight: 700; }
 .punchline {
   margin: var(--space-m) 0;
   font-size: var(--step-2); line-height: 1.2;
@@ -255,7 +258,7 @@ main { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; p
   color: var(--ink-dim);
   font-style: italic;
 }
-.note strong, .note b { color: var(--ink); font-style: italic; }
+.note strong, .note b { color: var(--ink); }
 
 /* ─── Cards (no boxes — pure rank lines) ──────────────── */
 .cards { display: grid; gap: var(--space-l); margin: var(--space-l) 0; }
@@ -264,7 +267,7 @@ main { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; p
 .card p + p { margin-top: 0.6rem; }
 .tag {
   align-self: flex-start;
-  font-family: var(--display); font-size: var(--step--1);
+  font-family: var(--body); font-size: var(--step--1); font-weight: 700;
   letter-spacing: 0.2em; text-transform: uppercase;
 }
 .tag-lead { color: var(--amber); }
@@ -281,13 +284,13 @@ main { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; p
 .bar-fill { height: 100%; width: calc(var(--p) * 1%); background: var(--amber-dim); }
 .bar-row:nth-child(n + 4) .bar-fill,
 .bar-row:last-child .bar-fill { background: var(--amber); }
-.bar-value { font-family: var(--display); font-size: var(--step-1); color: var(--ink); text-align: right; }
+.bar-value { font-family: var(--display-2); font-weight: 700; font-size: var(--step-1); color: var(--ink); text-align: right; }
 .bar-row:last-child .bar-value { color: var(--amber); }
 
 /* ─── Facts ───────────────────────────────────────────── */
 .facts { list-style: none; display: grid; gap: 0.5rem; margin-top: var(--space-m); }
 .facts li { font-size: var(--step--1); color: var(--ink-dim); }
-.facts b { color: var(--amber); font-style: italic; }
+.facts b { color: var(--amber); }
 
 /* ─── Demo + slots ────────────────────────────────────── */
 .demo { margin: var(--space-m) 0; }
@@ -297,13 +300,13 @@ main { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; p
 .slot-label { font-size: var(--step--1); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
 .slot-grid { display: flex; flex-wrap: wrap; gap: 6px; }
 .slot { width: 1.15rem; height: 1.15rem; background: var(--amber); }
-.slot-value { font-family: var(--display); font-size: var(--step-3); color: var(--amber); }
+.slot-value { font-family: var(--display-2); font-weight: 700; font-size: var(--step-3); color: var(--amber); }
 .demo-sub { color: var(--ink-dim); font-size: var(--step--1); }
 .demo-sub strong { color: var(--ink); }
 
 /* ─── Calculators ─────────────────────────────────────── */
 .calc { margin-top: var(--space-m); padding-top: var(--space-m); }
-.calc-title { font-family: var(--display); font-size: var(--step--1); letter-spacing: 0.18em; color: var(--amber); margin-bottom: var(--space-s); }
+.calc-title { font-family: var(--body); font-size: var(--step--1); font-weight: 700; letter-spacing: 0.18em; color: var(--amber); margin-bottom: var(--space-s); }
 .calc-row { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: var(--space-s); }
 .calc-row label { font-size: var(--step--1); color: var(--ink-dim); }
 .calc-row label output { color: var(--amber); }
@@ -324,7 +327,7 @@ input[type="range"] { accent-color: var(--amber); height: 2rem; width: 100%; }
 .waves { margin: var(--space-m) 0; }
 .waves-cap { font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: var(--space-m); }
 .wave-row { display: grid; grid-template-columns: 2.6rem 1fr; align-items: center; gap: 0.8rem; margin-bottom: 0.7rem; }
-.wave-label { font-family: var(--display); font-size: var(--step-1); color: var(--ink-dim); }
+.wave-label { font-family: var(--display-2); font-weight: 600; font-size: var(--step-1); color: var(--ink-dim); }
 .wave-track { position: relative; height: 16px; }
 .seg { position: absolute; top: 0; bottom: 0; }
 .seg.march {
@@ -343,11 +346,11 @@ input[type="range"] { accent-color: var(--amber); height: 2rem; width: 100%; }
 
 /* ─── Brackets — rank line, dim to full signal ────────── */
 .brackets { list-style: none; display: flex; flex-wrap: wrap; gap: 0.7rem 1.6rem; margin: var(--space-s) 0 var(--space-m); }
-.brackets li { font-family: var(--display); font-size: var(--step-2); letter-spacing: 0.02em; color: var(--ink-dim); }
+.brackets li { font-family: var(--display-2); font-weight: 600; font-size: var(--step-2); letter-spacing: 0.02em; color: var(--ink-dim); }
 .brackets li:nth-child(n + 4) { color: var(--ink); }
 .brackets li:nth-child(n + 5) { color: var(--amber); }
-/* Damage numbers keep the bracket's rank brightness and upright form */
-.brackets li b { color: inherit; font-style: normal; }
+/* Damage numbers carry the bracket's rank brightness at full weight */
+.brackets li b { color: inherit; font-weight: 700; }
 /* The forge stamp: one hammer in the world's own grammar,
    inheriting the bracket's rank brightness. */
 .forge {
@@ -362,7 +365,7 @@ input[type="range"] { accent-color: var(--amber); height: 2rem; width: 100%; }
 details { margin-top: var(--space-m); }
 details summary {
   cursor: pointer;
-  font-family: var(--display); font-size: var(--step--1); letter-spacing: 0.14em; text-transform: uppercase;
+  font-family: var(--body); font-size: var(--step--1); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--amber);
   padding: 0.4rem 0;
   list-style: none;
@@ -377,7 +380,7 @@ details[open] summary { color: var(--ink); }
 .d-body { padding: 0.4rem 0 var(--space-m); color: var(--ink-dim); font-size: var(--step--1); }
 .d-body ul { list-style: none; }
 .d-body li { padding: 0.15rem 0; }
-.d-body b { color: var(--ink); font-style: italic; }
+.d-body b { color: var(--ink); }
 .d-formula { font-size: var(--step-1); color: var(--amber); margin: 0.6rem 0; font-style: italic; }
 
 /* ─── Rules — the four ranks ──────────────────────────── */
@@ -387,7 +390,7 @@ details[open] summary { color: var(--ink); }
   flex: 0 0 auto;
   width: 3.8rem; height: 3.8rem;
   display: grid; place-items: center;
-  font-family: var(--display); font-size: var(--step-3);
+  font-family: var(--display-2); font-weight: 700; font-size: var(--step-3);
   color: var(--void); background: var(--amber);
 }
 .rule-list h3 { margin-bottom: 0.2rem; }
@@ -403,7 +406,8 @@ details[open] summary { color: var(--ink); }
 .rank-blocks { display: grid; gap: var(--space-xl); margin-top: var(--space-m); }
 .rank-block { min-width: 0; }
 .rank-title {
-  font-family: var(--display);
+  font-family: var(--display-2);
+  font-weight: 700;
   font-size: var(--step-2);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -412,21 +416,22 @@ details[open] summary { color: var(--ink); }
 }
 .rank-title::before { content: "❧ "; color: var(--amber-dim); }
 .rank-lede { font-size: var(--step--1); color: var(--ink-dim); margin-bottom: var(--space-l); }
-.rank-lede b { color: var(--ink); font-style: italic; }
+.rank-lede b { color: var(--ink); }
 
 /* Each generation is a rank line: blackletter header, a gold
    hairline running out to the margin, then the queue of cards. */
 .gen { margin-bottom: var(--space-l); }
 .gen-title {
   display: flex; align-items: center; gap: 0.9rem;
-  font-family: var(--display);
+  font-family: var(--body);
   font-size: var(--step--1);
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ink-muted);
   margin-bottom: var(--space-s);
 }
-.gen-title b { color: var(--ink-dim); font-style: normal; font-size: 1.2em; letter-spacing: 0.08em; }
+.gen-title b { color: var(--ink-dim); font-size: 1.2em; letter-spacing: 0.08em; }
 .gen-title::after {
   content: ""; flex: 1; height: 1px;
   background: linear-gradient(to right, var(--amber-dim), transparent);
@@ -455,7 +460,8 @@ details[open] summary { color: var(--ink); }
 .hero-meta { min-width: 0; }
 .hero-name {
   display: flex; align-items: baseline; gap: 0.55rem; flex-wrap: wrap;
-  font-family: var(--display);
+  font-family: var(--display-2);
+  font-weight: 600;
   font-size: var(--step-0);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -464,7 +470,8 @@ details[open] summary { color: var(--ink); }
 }
 /* Tier stamps — the same rank squares as the four rules */
 .tier {
-  font-family: var(--display);
+  font-family: var(--display-2);
+  font-weight: 700;
   font-size: 0.68em;
   line-height: 1;
   letter-spacing: 0.05em;
@@ -475,7 +482,7 @@ details[open] summary { color: var(--ink); }
 .tier-a { background: var(--ink); color: var(--void); }
 .tier-b { background: var(--ink-muted); color: var(--void); }
 .hero-why { font-size: var(--step--1); color: var(--ink-dim); }
-.hero-why b { color: var(--ink); font-style: italic; }
+.hero-why b { color: var(--ink); }
 
 .gen-gloss {
   margin-top: var(--space-s);
@@ -485,7 +492,7 @@ details[open] summary { color: var(--ink); }
   font-style: italic;
   color: var(--ink-muted);
 }
-.gen-gloss b { color: var(--ink-dim); font-style: italic; }
+.gen-gloss b { color: var(--ink-dim); }
 
 @media (min-width: 640px) {
   .hero-portrait { width: 5rem; height: 5rem; }
@@ -504,11 +511,11 @@ footer {
 .foot-main {
   display: inline-block;
   background: var(--amber); color: var(--void);
-  font-family: var(--display); font-size: var(--step-1); letter-spacing: 0.12em; text-transform: uppercase;
+  font-family: var(--display-2); font-weight: 700; font-size: var(--step-1); letter-spacing: 0.12em; text-transform: uppercase;
   padding: 0.55rem 1.3rem;
 }
 .foot-sub { margin: 0.8rem auto 0; font-size: var(--step--1); color: var(--ink-muted); }
-.foot-sub b { color: var(--ink-dim); font-style: italic; }
+.foot-sub b { color: var(--ink-dim); }
 .foot-sub a { color: var(--ink-muted); text-decoration: underline; text-underline-offset: 3px; }
 .foot-sub a:hover { color: var(--amber); }
 
@@ -547,7 +554,8 @@ html { scrollbar-width: thin; scrollbar-color: var(--ink-muted) var(--void); }
   padding: 0.15rem 0.4rem;
   background: none; border: 0;
   color: var(--amber);
-  font-family: var(--display);
+  font-family: var(--display-2);
+  font-weight: 400;
   font-size: var(--step-2);
   line-height: 1;
   cursor: pointer;
@@ -624,7 +632,8 @@ html { scrollbar-width: thin; scrollbar-color: var(--ink-muted) var(--void); }
   animation: paw-breathe 2.4s ease-in-out infinite;
 }
 .bear-moment p {
-  font-family: var(--display);
+  font-family: var(--display-2);
+  font-weight: 700;
   font-size: var(--step-2);
   letter-spacing: 0.22em;
   text-transform: uppercase;

@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["ja"] = {
   "meta.title": "Bear Hunt、解明",
-  "meta.description": "Bear Huntを解明。ラリーのダメージの仕組みを平易な言葉で説明：リーダーのステータス、あなたの部隊、平方根、そして4つのルール。登録不要、データ不要、スプレッドシート不要。",
+  "meta.description": "Bear Huntを解明。ラリーのダメージの仕組みを平易な言葉で説明：リーダーのステータス、あなたの部隊、平方根、そして4つのルール。",
   "meta.ogTitle": "Bear Hunt、解明",
-  "meta.ogDescription": "ラリーのダメージの実際の仕組み——平易な言葉で。登録不要、データ不要、スプレッドシート不要。",
+  "meta.ogDescription": "ラリーのダメージの実際の仕組み——平易な言葉で。",
 
   "skip": "数学の話へ",
-  "brandNote": "登録不要 · データ不要 · 数学だけ",
+  "brandNote": "数学だけ",
   "ui.lang": "言語",
 
   "nav.aria": "セクション",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["ja"] = {
   "nav.rules": "4つのルール",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">解明</span>",
-  "hero.lede": "イベント全体をひとつのページに。ラリーのダメージの仕組みを平易な言葉で——そしてあなたがやるべき4つのこと。<strong>登録不要。スプレッドシート不要。ステータスも不要。</strong>",
+  "hero.lede": "ラリーのダメージの仕組みを平易な言葉で——そしてあなたがやるべき4つのこと。",
   "hero.chip1": "1回30分",
   "hero.chip2": "48時間ごと",
   "hero.chip3": "Forgehammerの金脈",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["ja"] = {
   "rules.5.body": "参加者がどんなに弱くても、スロットを空けるな。すべての√がカウントされる。",
   "rules.punchline": "リーダーのステータス × あなたの部隊、あなたの数に√。<strong>残りはすべてここから導かれる。</strong>",
 
-  "foot.main": "登録不要 · データ不要 · ロスター不要 · 数学だけ",
+  "foot.main": "数学だけ",
   "foot.note": "ここの数字は当サーバー用：行軍約100–150k、ラリー500k–1M。あなたのサーバーは違うかも——<b>数学は違わない。</b>",
   "foot.credit": "ダメージモデルは[685] Frakによる<a href=\"https://frakinator.streamlit.app/\">Frakinator</a>から——検証済みのコミュニティモデルであり、公式ではない · [2129]MadNess同盟のために制作",
   "foot.credit2": "ヒーローのティアと徹底的なテストは <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> と <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a> と共に行ったものだ",

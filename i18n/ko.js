@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["ko"] = {
   "meta.title": "Bear Hunt, 해부",
-  "meta.description": "Bear Hunt, 해부. 랠리 피해가 어떻게 작동하는지 쉬운 말로 풀어낸다: 리더의 스탯, 네 병력, 제곱근, 그리고 네 가지 규칙. 가입 없음, 데이터 없음, 스프레드시트 없음.",
+  "meta.description": "Bear Hunt, 해부. 랠리 피해가 어떻게 작동하는지 쉬운 말로 풀어낸다: 리더의 스탯, 네 병력, 제곱근, 그리고 네 가지 규칙.",
   "meta.ogTitle": "Bear Hunt, 해부",
-  "meta.ogDescription": "랠리 피해가 실제로 어떻게 계산되는지 — 쉬운 말로. 가입 없음, 데이터 없음, 스프레드시트 없음.",
+  "meta.ogDescription": "랠리 피해가 실제로 어떻게 계산되는지 — 쉬운 말로.",
 
   "skip": "수학 파트로 건너뛰기",
-  "brandNote": "가입 없음 · 데이터 없음 · 오직 수학만",
+  "brandNote": "오직 수학만",
   "ui.lang": "언어",
 
   "nav.aria": "목차",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["ko"] = {
   "nav.rules": "4가지 규칙",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">해부</span>",
-  "hero.lede": "이벤트 전체를 한 번의 스크롤로. 랠리 피해가 쉬운 말로 어떻게 돌아가는지 — 그리고 그에 대해 네가 할 네 가지. <strong>가입 없음. 스프레드시트 없음. 스탯도 필요 없음.</strong>",
+  "hero.lede": "랠리 피해가 쉬운 말로 어떻게 돌아가는지 — 그리고 그에 대해 네가 할 네 가지.",
   "hero.chip1": "한 번에 30분",
   "hero.chip2": "48시간마다",
   "hero.chip3": "Forgehammer 금광",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["ko"] = {
   "rules.5.body": "합류자가 아무리 약해도 빈 슬롯을 남기지 마라. 모든 √가 점수다.",
   "rules.punchline": "리더의 스탯 × 네 병력, 네 병력 수에 √. <strong>나머지는 다 따라온다.</strong>",
 
-  "foot.main": "가입 없음 · 데이터 없음 · 명단 없음 · 오직 수학",
+  "foot.main": "오직 수학",
   "foot.note": "여기 숫자는 우리 서버 기준이다: 행군 ~100–150k, 랠리 500k–1M. 네 서버는 다를 수 있다 — <b>수학은 다르지 않다.</b>",
   "foot.credit": "피해 모델은 [685] Frak이 만든 <a href=\"https://frakinator.streamlit.app/\">Frakinator</a>에서 — 검증된 커뮤니티 모델이지 공식 모델이 아니다 · [2129]MadNess 연합을 위해 만들어졌다",
   "foot.credit2": "영웅 티어와 방대한 플레이 테스트는 <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> 및 <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>와 함께",

@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["de"] = {
   "meta.title": "Bear Hunt, entmystifiziert",
-  "meta.description": "Bear Hunt, entmystifiziert. Wie Rally-Schaden in einfachen Worten funktioniert: die Werte des Anführers, deine Truppen, die Quadratwurzel und vier Regeln. Keine Anmeldung, keine Daten, keine Tabelle.",
+  "meta.description": "Bear Hunt, entmystifiziert. Wie Rally-Schaden in einfachen Worten funktioniert: die Werte des Anführers, deine Truppen, die Quadratwurzel und vier Regeln.",
   "meta.ogTitle": "Bear Hunt, entmystifiziert",
-  "meta.ogDescription": "Wie Rally-Schaden wirklich funktioniert — in einfachen Worten. Keine Anmeldung, keine Daten, keine Tabelle.",
+  "meta.ogDescription": "Wie Rally-Schaden wirklich funktioniert — in einfachen Worten.",
 
   "skip": "Direkt zur Rechnung",
-  "brandNote": "keine anmeldung · keine daten · nur die rechnung",
+  "brandNote": "nur die rechnung",
   "ui.lang": "Sprache",
 
   "nav.aria": "Abschnitte",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["de"] = {
   "nav.rules": "Die 4 Regeln",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">ENTMYSTIFIZIERT</span>",
-  "hero.lede": "Das ganze Event in einem Scroll. Wie Rally-Schaden in einfachen Worten funktioniert — und die vier Dinge, die du tun solltest. <strong>Keine Anmeldung. Keine Tabelle. Keine Werte nötig.</strong>",
+  "hero.lede": "Wie Rally-Schaden in einfachen Worten funktioniert — und die vier Dinge, die du tun solltest.",
   "hero.chip1": "30 min pro Lauf",
   "hero.chip2": "alle 48 Stunden",
   "hero.chip3": "Forgehammer-Goldgrube",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["de"] = {
   "rules.5.body": "Lass keinen Slot leer, egal wie schwach die Beitretenden sind. Jede √ zählt.",
   "rules.punchline": "Werte des Anführers × deine Truppen, √ auf deine Truppenzahl. <strong>Alles andere ergibt sich.</strong>",
 
-  "foot.main": "KEINE ANMELDUNG · KEINE DATEN · KEINE LISTE · NUR DIE RECHNUNG",
+  "foot.main": "NUR DIE RECHNUNG",
   "foot.note": "Die Zahlen hier gelten für unseren Server: Märsche ~100–150k, Rallys 500k–1M. Dein Server wird anders sein — <b>die Mathematik nicht.</b>",
   "foot.credit": "Schadensmodell vom <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> von [685] Frak — ein getestetes Community-Modell, kein offizielles · gebaut für die Allianz [2129]MadNess",
   "foot.credit2": "Helden-Tierliste und umfangreiche Tests mit <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> und der <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

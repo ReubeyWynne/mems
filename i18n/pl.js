@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["pl"] = {
   "meta.title": "Bear Hunt, bez tajemnic",
-  "meta.description": "Bear Hunt bez tajemnic. Jak działają obrażenia rajdu w prostych słowach: statystyki lidera, twoje wojska, pierwiastek kwadratowy i cztery zasady. Bez rejestracji, bez danych, bez arkusza kalkulacyjnego.",
+  "meta.description": "Bear Hunt bez tajemnic. Jak działają obrażenia rajdu w prostych słowach: statystyki lidera, twoje wojska, pierwiastek kwadratowy i cztery zasady.",
   "meta.ogTitle": "Bear Hunt, bez tajemnic",
-  "meta.ogDescription": "Jak naprawdę działają obrażenia rajdu — w prostych słowach. Bez rejestracji, bez danych, bez arkusza kalkulacyjnego.",
+  "meta.ogDescription": "Jak naprawdę działają obrażenia rajdu — w prostych słowach.",
 
   "skip": "Przejdź do wyliczeń",
-  "brandNote": "bez rejestracji · bez danych · tylko wyliczenia",
+  "brandNote": "tylko wyliczenia",
   "ui.lang": "Język",
 
   "nav.aria": "Sekcje",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["pl"] = {
   "nav.rules": "4 zasady",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">BEZ TAJEMNIC</span>",
-  "hero.lede": "Cały event w jednym przewinięciu. Jak działają obrażenia rajdu w prostych słowach — i cztery rzeczy, które warto z tym zrobić. <strong>Bez rejestracji. Bez arkusza. Bez statystyk.</strong>",
+  "hero.lede": "Jak działają obrażenia rajdu w prostych słowach — i cztery rzeczy, które warto z tym zrobić.",
   "hero.chip1": "30 min na rundę",
   "hero.chip2": "co 48 godzin",
   "hero.chip3": "złota żyła Forgehammerów",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["pl"] = {
   "rules.5.body": "Nie zostawiaj pustego slotu, nieważne jak słaby dołączający. Każdy √ się liczy.",
   "rules.punchline": "Statystyki lidera × twoje wojska, √ z twojej liczby. <strong>Reszta z tego wynika.</strong>",
 
-  "foot.main": "BEZ REJESTRACJI · BEZ DANYCH · BEZ LISTY GRACZY · TYLKO WYLICZENIA",
+  "foot.main": "TYLKO WYLICZENIA",
   "foot.note": "Liczby tutaj dotyczą naszego serwera: marsze ~100–150k, rajdy 500k–1M. Twój serwer może się różnić — <b>wyliczenia się nie różnią.</b>",
   "foot.credit": "Model obrażeń z <a href=\"https://frakinator.streamlit.app/\">Frakinatora</a> autorstwa [685] Frak — przetestowany model społeczności, nie oficjalny · stworzony dla sojuszu [2129]MadNess",
   "foot.credit2": "Tier-lista bohaterów i obszerne testy z <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> i <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

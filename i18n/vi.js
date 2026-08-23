@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["vi"] = {
   "meta.title": "Bear Hunt, Giải Mã",
-  "meta.description": "Bear Hunt, giải mã. Cách sát thương rally hoạt động bằng ngôn ngữ đơn giản: chỉ số của lead, quân của bạn, căn bậc hai, và bốn quy tắc. Không đăng ký, không dữ liệu, không bảng tính.",
+  "meta.description": "Bear Hunt, giải mã. Cách sát thương rally hoạt động bằng ngôn ngữ đơn giản: chỉ số của lead, quân của bạn, căn bậc hai, và bốn quy tắc.",
   "meta.ogTitle": "Bear Hunt, Giải Mã",
-  "meta.ogDescription": "Cách sát thương rally thực sự hoạt động — bằng ngôn ngữ đơn giản. Không đăng ký, không dữ liệu, không bảng tính.",
+  "meta.ogDescription": "Cách sát thương rally thực sự hoạt động — bằng ngôn ngữ đơn giản.",
 
   "skip": "Đi thẳng tới phần toán",
-  "brandNote": "không đăng ký · không dữ liệu · chỉ là toán",
+  "brandNote": "chỉ là toán",
   "ui.lang": "Ngôn ngữ",
 
   "nav.aria": "Các phần",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["vi"] = {
   "nav.rules": "4 quy tắc",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">GIẢI MÃ</span>",
-  "hero.lede": "Toàn bộ sự kiện trong một lần cuộn. Cách sát thương rally hoạt động bằng ngôn ngữ đơn giản — và bốn điều bạn nên làm. <strong>Không đăng ký. Không bảng tính. Không cần chỉ số.</strong>",
+  "hero.lede": "Cách sát thương rally hoạt động bằng ngôn ngữ đơn giản — và bốn điều bạn nên làm.",
   "hero.chip1": "30 phút một lượt",
   "hero.chip2": "48 giờ một lần",
   "hero.chip3": "mỏ vàng Forgehammer",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["vi"] = {
   "rules.5.body": "Đừng để slot trống, dù người tham gia yếu đến đâu. Mỗi √ đều tính.",
   "rules.punchline": "Chỉ số của lead × quân của bạn, √ trên số quân của bạn. <strong>Mọi thứ khác đều theo đó.</strong>",
 
-  "foot.main": "KHÔNG ĐĂNG KÝ · KHÔNG DỮ LIỆU · KHÔNG DANH SÁCH · CHỈ LÀ TOÁN",
+  "foot.main": "CHỈ LÀ TOÁN",
   "foot.note": "Các con số ở đây là cho server của chúng tôi: đoàn ~100–150k, rally 500k–1M. Server của bạn có thể khác — <b>toán học thì không.</b>",
   "foot.credit": "Mô hình sát thương từ <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> của [685] Frak — mô hình cộng đồng đã kiểm chứng, không chính thức · xây cho liên minh [2129]MadNess",
   "foot.credit2": "Thứ hạng tướng và thử nghiệm sâu rộng cùng <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> và <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

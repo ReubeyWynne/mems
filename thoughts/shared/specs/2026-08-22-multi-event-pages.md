@@ -40,7 +40,7 @@ until the English build is approved and verified, then a separate translation pa
   the preview springs fully open so its content is readable before the release point;
   short drags spring back. No persistent arrows/handles — the preview itself is the
   affordance (persistent edge tabs were removed after review as mobile noise).
-- **Content truth = the video transcript** (Kingshot Essentials playlist) for the Vikings
+- **Content truth = the video transcript** (StratGameSloth playlist) for the Vikings
   page; difficulty scale is **1–11** (11 hardest). The written kingshotmastery.com guide is
   used only where it does not contradict the transcript (wave table, skill-stacking rules,
   Members-tab workflow). Community reference: kingshotguide.org's Viking Vengeance

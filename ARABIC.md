@@ -83,20 +83,22 @@ all `::before` marks (`❧` hedera/leaf marks move to the inline-start side), `.
 
 ### 2.3 Arabic typography (fonts + script quirks)
 
-The current stacks (`Pirata One` + `IM Fell English`, plus `letter-spacing`, italics,
-tight heading line-heights) are built for Latin/Cyrillic and actively break Arabic:
+The current stacks (`Cinzel Decorative`/`Cinzel` + `Alegreya`, plus `letter-spacing`,
+italics, tight heading line-heights) are built for Latin/Cyrillic and actively break
+Arabic:
 
 1. **Fonts** — add to the Google Fonts `<link>` in `index.html` (D3):
    `family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700`
    Then in CSS:
    ```css
    html[lang="ar"] {
-     --body: 'Amiri', 'IM Fell English', 'Georgia', serif;
+     --body: 'Amiri', 'Alegreya', 'Georgia', serif;
      --display: 'Aref Ruqaa', 'Amiri', serif;
+     --display-2: 'Aref Ruqaa', 'Amiri', serif;
    }
    ```
    Font selection is per-glyph, so Latin runs (brand text, numbers, formulas) keep
-   falling through to IM Fell English — the manuscript voice survives inside Arabic copy.
+   falling through to Alegreya — the manuscript voice survives inside Arabic copy.
 2. **`letter-spacing` must be zeroed** — Arabic is cursive; tracking breaks the joins.
    Affected selectors: `h1–h4`, `.brand`, `.tag` (0.2em!), `.chips`, `.toc a`,
    `.foot-main`, `.calc-title` (0.18em), `details summary` (0.14em), `.bars-cap`,
@@ -164,7 +166,7 @@ tight heading line-heights) are built for Latin/Cyrillic and actively break Arab
 
 ## 4. Translation notes
 
-- The voice is deliberately terse and idiomatic («no signup · no data · just the maths»,
+- The voice is deliberately terse and idiomatic («just the maths»,
   «6 rallies ≈ 2.4× one big march») — a literal translation reads stiff. The Arabic pass
   should aim for the same short, punchy register.
 - Keep all 151 keys; if a specific joke doesn't survive contact with Arabic

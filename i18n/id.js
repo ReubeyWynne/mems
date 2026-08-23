@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["id"] = {
   "meta.title": "Bear Hunt, Dibongkar",
-  "meta.description": "Bear Hunt, dibongkar. Cara kerja damage rally dengan bahasa sederhana: statistik lead, pasukanmu, akar kuadrat, dan empat aturan. Tanpa daftar, tanpa data, tanpa spreadsheet.",
+  "meta.description": "Bear Hunt, dibongkar. Cara kerja damage rally dengan bahasa sederhana: statistik lead, pasukanmu, akar kuadrat, dan empat aturan.",
   "meta.ogTitle": "Bear Hunt, Dibongkar",
-  "meta.ogDescription": "Cara kerja damage rally sebenarnya — dengan bahasa sederhana. Tanpa daftar, tanpa data, tanpa spreadsheet.",
+  "meta.ogDescription": "Cara kerja damage rally sebenarnya — dengan bahasa sederhana.",
 
   "skip": "Langsung ke matematikanya",
-  "brandNote": "tanpa daftar · tanpa data · hanya matematikanya",
+  "brandNote": "hanya matematikanya",
   "ui.lang": "Bahasa",
 
   "nav.aria": "Bagian",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["id"] = {
   "nav.rules": "4 aturan",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">DIBONGKAR</span>",
-  "hero.lede": "Seluruh event dalam sekali gulir. Cara kerja damage rally dengan bahasa sederhana — dan empat hal yang harus kamu lakukan. <strong>Tanpa daftar. Tanpa spreadsheet. Tanpa perlu statistik.</strong>",
+  "hero.lede": "Cara kerja damage rally dengan bahasa sederhana — dan empat hal yang harus kamu lakukan.",
   "hero.chip1": "30 menit sekali main",
   "hero.chip2": "setiap 48 jam",
   "hero.chip3": "tambang emas Forgehammer",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["id"] = {
   "rules.5.body": "Jangan biarkan slot kosong, selemah apa pun pengikutnya. Setiap √ dihitung.",
   "rules.punchline": "Statistik lead × pasukanmu, √ pada jumlahmu. <strong>Segala hal lain mengikuti.</strong>",
 
-  "foot.main": "TANPA DAFTAR · TANPA DATA · TANPA ROSTER · HANYA MATEMATIKA",
+  "foot.main": "HANYA MATEMATIKA",
   "foot.note": "Angka di sini untuk server kami: march ~100–150k, rally 500k–1M. Servermu mungkin berbeda — <b>matematikanya tidak.</b>",
   "foot.credit": "Model damage dari <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> oleh [685] Frak — model komunitas yang sudah diuji, bukan resmi · dibuat untuk aliansi [2129]MadNess",
   "foot.credit2": "Tier hero dan pengujian ekstensif bersama <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> dan <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

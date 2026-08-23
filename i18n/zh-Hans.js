@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["zh-Hans"] = {
   "meta.title": "Bear Hunt, 解密",
-  "meta.description": "Bear Hunt，不再神秘。用大白话讲清集结伤害：队长的属性、你的兵力、平方根，外加四条规则。无需注册，不留数据，不用表格。",
+  "meta.description": "Bear Hunt，不再神秘。用大白话讲清集结伤害：队长的属性、你的兵力、平方根，外加四条规则。",
   "meta.ogTitle": "Bear Hunt, 解密",
-  "meta.ogDescription": "集结伤害到底怎么算——用大白话讲清楚。无需注册，不留数据，不用表格。",
+  "meta.ogDescription": "集结伤害到底怎么算——用大白话讲清楚。",
 
   "skip": "直接看数学",
-  "brandNote": "无需注册 · 不留数据 · 只有数学",
+  "brandNote": "只有数学",
   "ui.lang": "语言",
 
   "nav.aria": "章节",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["zh-Hans"] = {
   "nav.rules": "4 条规则",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">解密</span>",
-  "hero.lede": "整个活动，一屏看完。用大白话讲清集结伤害怎么算——以及你该做的四件事。<strong>无需注册。不用表格。不用看属性。</strong>",
+  "hero.lede": "用大白话讲清集结伤害怎么算——以及你该做的四件事。",
   "hero.chip1": "一次 30 分钟",
   "hero.chip2": "每 48 小时",
   "hero.chip3": "Forgehammer 金矿",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["zh-Hans"] = {
   "rules.5.body": "不管加入的人多弱，别留空位。每一个 √ 都算数。",
   "rules.punchline": "队长的属性 × 你的兵力，兵力数开 √。<strong>其余的都顺理成章。</strong>",
 
-  "foot.main": "无需注册 · 不留数据 · 无需名册 · 只有数学",
+  "foot.main": "只有数学",
   "foot.note": "这里的数字是我们服的：行军 ~100–150k，集结 500k–1M。你们服会不一样——<b>数学不会。</b>",
   "foot.credit": "伤害模型来自 [685] Frak 的 <a href=\"https://frakinator.streamlit.app/\">Frakinator</a>——一个经得起验证的社区模型，非官方出品 · 为 [2129]MadNess 联盟打造",
   "foot.credit2": "英雄分级与大量实战测试，来自 <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> 和 <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

@@ -96,10 +96,11 @@ window.__BH_I18N_DATA["en"] = {
 - **SEO:** Google indexes the default English page (`https://dey.ci/`). The `?lang=` URLs
   are declared via `hreflang` but are primarily for in-app/in-game sharing. If per-language
   SEO ever matters, generate static `/<code>/index.html` copies at build time instead.
-- **Fonts:** `Pirata One` / `IM Fell English` cover Latin + Cyrillic via the `Georgia`
-  fallback; CJK and Thai fall back to system serif fonts. Acceptable for a first pass —
-  a `Noto Sans SC/TH` addition to the Google Fonts link would polish those scripts.
-  Arabic uses **Amiri** (body) + **Aref Ruqaa** (display) via `html[lang="ar"]` overrides.
+- **Fonts:** `Alegreya` (body, incl. Cyrillic) + `Cinzel`/`Cinzel Decorative` (display,
+  Roman inscriptional, Latin only) cover Latin + Cyrillic; CJK and Thai fall back to
+  system serif fonts. Acceptable for a first pass — a `Noto Sans SC/TH` addition to the
+  Google Fonts link would polish those scripts. Arabic uses **Amiri** (body) + **Aref
+  Ruqaa** (display) via `html[lang="ar"]` overrides.
 - **Easter eggs:** alliance in-jokes are translated except names. The typed secret words
   (`frak`, `madness`, `bear`) stay English — they only trigger from Latin keyboard input.
 - **Numbers:** calculator output uses `Intl.NumberFormat` per locale (e.g. `60.000` in

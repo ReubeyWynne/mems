@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["es"] = {
   "meta.title": "Bear Hunt, sin misterios",
-  "meta.description": "Bear Hunt, sin misterios. Cómo funciona el daño de rally en palabras simples: las estadísticas del líder, tus tropas, la raíz cuadrada y cuatro reglas. Sin registro, sin datos, sin hojas de cálculo.",
+  "meta.description": "Bear Hunt, sin misterios. Cómo funciona el daño de rally en palabras simples: las estadísticas del líder, tus tropas, la raíz cuadrada y cuatro reglas.",
   "meta.ogTitle": "Bear Hunt, sin misterios",
-  "meta.ogDescription": "Cómo funciona de verdad el daño de rally — en palabras simples. Sin registro, sin datos, sin hojas de cálculo.",
+  "meta.ogDescription": "Cómo funciona de verdad el daño de rally — en palabras simples.",
 
   "skip": "Saltar a las cuentas",
-  "brandNote": "sin registro · sin datos · solo las cuentas",
+  "brandNote": "solo las cuentas",
   "ui.lang": "Idioma",
 
   "nav.aria": "Secciones",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["es"] = {
   "nav.rules": "Las 4 reglas",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">SIN MISTERIOS</span>",
-  "hero.lede": "Todo el evento en una sola pasada. Cómo funciona el daño de rally en palabras simples — y las cuatro cosas que deberías hacer al respecto. <strong>Sin registro. Sin hojas de cálculo. Sin necesidad de estadísticas.</strong>",
+  "hero.lede": "Cómo funciona el daño de rally en palabras simples — y las cuatro cosas que deberías hacer al respecto.",
   "hero.chip1": "30 min por ronda",
   "hero.chip2": "cada 48 horas",
   "hero.chip3": "mina de oro de Forgehammer",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["es"] = {
   "rules.5.body": "No dejes ningún hueco vacío, por muy débil que sea quien se une. Cada √ cuenta.",
   "rules.punchline": "Estadísticas del líder × tus tropas, √ sobre tu cantidad. <strong>Todo lo demás viene solo.</strong>",
 
-  "foot.main": "SIN REGISTRO · SIN DATOS · SIN PLANTILLA · SOLO LAS CUENTAS",
+  "foot.main": "SOLO LAS CUENTAS",
   "foot.note": "Los números aquí son para nuestro servidor: marchas ~100–150k, rallies 500k–1M. Tu servidor será distinto — <b>las cuentas no.</b>",
   "foot.credit": "Modelo de daño del <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> de [685] Frak — un modelo comunitario probado, no uno oficial · hecho para la alianza [2129]MadNess",
   "foot.credit2": "Clasificación de héroes y amplias pruebas de juego con <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> y la <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

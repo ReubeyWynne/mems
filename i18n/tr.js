@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["tr"] = {
   "meta.title": "Bear Hunt, gizemi çözüldü",
-  "meta.description": "Bear Hunt, gizemi çözüldü. Rally hasarı nasıl çalışır, sade dille: liderin istatistikleri, birliklerin, karekök ve dört kural. Kayıt yok, veri yok, hesap tablosu yok.",
+  "meta.description": "Bear Hunt, gizemi çözüldü. Rally hasarı nasıl çalışır, sade dille: liderin istatistikleri, birliklerin, karekök ve dört kural.",
   "meta.ogTitle": "Bear Hunt, gizemi çözüldü",
-  "meta.ogDescription": "Rally hasarı gerçekte nasıl çalışır — sade dille. Kayıt yok, veri yok, hesap tablosu yok.",
+  "meta.ogDescription": "Rally hasarı gerçekte nasıl çalışır — sade dille.",
 
   "skip": "Matematiğe geç",
-  "brandNote": "kayıt yok · veri yok · sadece matematik",
+  "brandNote": "sadece matematik",
   "ui.lang": "Dil",
 
   "nav.aria": "Bölümler",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["tr"] = {
   "nav.rules": "4 kural",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">GİZEMİ ÇÖZÜLDÜ</span>",
-  "hero.lede": "Tüm etkinlik tek sayfada. Rally hasarı nasıl çalışır, sade dille — ve bu konuda yapman gereken dört şey. <strong>Kayıt yok. Hesap tablosu yok. İstatistik gerekmiyor.</strong>",
+  "hero.lede": "Rally hasarı nasıl çalışır, sade dille — ve bu konuda yapman gereken dört şey.",
   "hero.chip1": "koşu başına 30 dk",
   "hero.chip2": "her 48 saatte",
   "hero.chip3": "Forgehammer altın madeni",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["tr"] = {
   "rules.5.body": "Katılan ne kadar zayıf olursa olsun slot boş bırakma. Her √ sayılır.",
   "rules.punchline": "Liderin istatistikleri × senin birliklerin, sayında √. <strong>Geri kalan her şey bundan çıkar.</strong>",
 
-  "foot.main": "KAYIT YOK · VERİ YOK · KADRO YOK · SADECE MATEMATİK",
+  "foot.main": "SADECE MATEMATİK",
   "foot.note": "Buradaki sayılar bizim sunucumuz için: yürüyüşler ~100–150k, rally'ler 500k–1M. Senin sunucun farklı olur — <b>matematik farklı olmaz.</b>",
   "foot.credit": "Hasar modeli [685] Frak'ın <a href=\"https://frakinator.streamlit.app/\">Frakinator</a>'undan — test edilmiş bir topluluk modeli, resmi değil · [2129]MadNess ittifakı için yapıldı",
   "foot.credit2": "Kahraman tier listesi ve kapsamlı testler <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> ve <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a> ile",

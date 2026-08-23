@@ -37,12 +37,13 @@
     whispers: function () {
       var tr = BH.tr;
       return [
-        { id: 21, section: 'top',    line: tr('vv.egg.whisper0', 'the bear reads this page too. he\u2019s learning to row.') },
-        { id: 22, section: 'send',   line: tr('vv.egg.whisper1', 'every troop at home is a kill nobody scores. the bear counts them.') },
-        { id: 23, section: 'order',  line: tr('vv.egg.whisper2', 'infantry first, archers last. the bear knows the queue.') },
-        { id: 24, section: 'online', line: tr('vv.egg.whisper3', 'wave 17 is the bear\u2019s favourite. everyone is online for wave 17.') },
-        { id: 25, section: 'hq',     line: tr('vv.egg.whisper4', 'fifteen slots at the longhouse. the bear counts those too.') },
-        { id: 26, section: 'heroes', line: tr('vv.egg.whisper5', 'send the bear-hunt faces. the vikings fear the bear.') }
+        { id: 21, section: 'top',         line: tr('vv.egg.whisper0', 'the bear reads this page too. he\u2019s learning to row.') },
+        { id: 37, section: 'waves',       line: tr('vv.egg.whisper6', 'twenty waves. the bear rows through all of them.') },
+        { id: 22, section: 'stand',       line: tr('vv.egg.whisper1', 'every troop at home is a kill nobody scores. the bear counts them.') },
+        { id: 24, section: 'online',      line: tr('vv.egg.whisper3', 'wave 17 is the bear\u2019s favourite. everyone is online for wave 17.') },
+        { id: 23, section: 'composition', line: tr('vv.egg.whisper2', 'infantry first, archers last. the bear knows the queue.') },
+        { id: 25, section: 'hq',          line: tr('vv.egg.whisper4', 'fifteen slots at the longhouse. the bear counts those too.') },
+        { id: 26, section: 'heroes',      line: tr('vv.egg.whisper5', 'send the bear-hunt faces. the vikings fear the bear.') }
       ];
     },
     gossip: function () {

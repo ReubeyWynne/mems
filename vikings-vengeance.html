@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" data-page="vikings" data-prev-url="bear-hunt.html" data-prev-title="Bear Hunt" data-prev-lede="the lead's stats × your troops — with a square root on your count.">
+<html lang="en" data-page="vikings" data-prev-url="bear-hunt.html" data-prev-title="Bear Hunt" data-prev-lede="the lead's stats × your troops — with a square root on your count." data-next-url="swordland-showdown.html" data-next-title="Swordland Showdown" data-next-lede="two scoreboards, one 180,000, and winning is only one lever.">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0A1019">
-<meta name="description" content="Vikings Vengeance, demystified. Kills are points — send everyone out, infantry first, and be online for waves 7, 14 and 17. No signup, no data, no spreadsheet." data-i18n-key="vv.meta.description" data-i18n-attr="content">
+<meta name="description" content="Vikings Vengeance, demystified. Kills are points — send everyone out, infantry first, and be online for waves 7, 14 and 17." data-i18n-key="vv.meta.description" data-i18n-attr="content">
 <meta property="og:title" content="Vikings Vengeance, Demystified" data-i18n-key="vv.meta.ogTitle" data-i18n-attr="content">
-<meta property="og:description" content="Kills are points, and every city your troops stand in is a kill surface — in plain words. No signup, no data, no spreadsheet." data-i18n-key="vv.meta.ogDescription" data-i18n-attr="content">
+<meta property="og:description" content="Kills are points, and every city your troops stand in is a kill surface — in plain words." data-i18n-key="vv.meta.ogDescription" data-i18n-attr="content">
 <meta property="og:type" content="website">
 <title data-i18n="vv.meta.title">Vikings Vengeance, Demystified</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A1019'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23A8C8E8'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Pirata+One&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="events.css">
 <link rel="canonical" href="https://dey.ci/vikings-vengeance.html">
@@ -67,7 +67,7 @@
 </script>
 </head>
 <body>
-<a class="skip-link" href="#model" data-i18n="vv.skip">Skip to the guide</a>
+<a class="skip-link" href="#waves" data-i18n="vv.skip">Skip to the guide</a>
 
 <div class="dust" aria-hidden="true"><i></i><i></i><i></i></div>
 
@@ -77,9 +77,10 @@
     <a href="index.html" data-i18n="ev.switch.home">Home</a>
     <a href="bear-hunt.html" data-i18n="ev.switch.bear">Bear Hunt</a>
     <a href="vikings-vengeance.html" class="active" aria-current="page" data-i18n="ev.switch.vikings">Vikings</a>
+    <a href="swordland-showdown.html" data-i18n="ev.switch.swordland">Swordland</a>
   </nav>
   <div class="topbar-right">
-    <span class="brand-note" data-i18n="vv.brandNote">no signup · no data · just the kill surface</span>
+    <span class="brand-note" data-i18n="vv.brandNote">just the kill surface</span>
     <div class="lang-picker">
       <button type="button" id="lang-btn" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language" data-i18n-key="ui.lang" data-i18n-attr="aria-label">
         <svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><clipPath id="t"><path d="M25,15h25v15zv15h-25zh-25v-15zv-15h25z"/></clipPath><path d="M0,0v30h50v-30z" fill="#012169"/><path d="M0,0 50,30M50,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 50,30M50,0 0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M-1 11h22v-12h8v12h22v8h-22v12h-8v-12h-22z" fill="#C8102E" stroke="#FFF" stroke-width="2"/></svg>
@@ -109,134 +110,103 @@
 </header>
 
 <nav class="toc" id="toc" aria-label="Sections" data-i18n-key="nav.aria" data-i18n-attr="aria-label">
-  <a href="#model" data-i18n="vv.nav.model">The one-liner</a>
-  <a href="#send" data-i18n="vv.nav.send">Send everyone out</a>
-  <a href="#order" data-i18n="vv.nav.order">Troop order</a>
-  <a href="#online" data-i18n="vv.nav.online">Online waves</a>
+  <a href="#waves" data-i18n="vv.nav.waves">The twenty waves</a>
+  <a href="#stand" data-i18n="vv.nav.stand">Where your troops stand</a>
+  <a href="#online" data-i18n="vv.nav.online">The online waves</a>
+  <a href="#composition" data-i18n="vv.nav.composition">The composition</a>
   <a href="#hq" data-i18n="vv.nav.hq">The HQ waves</a>
-  <a href="#heroes" data-i18n="vv.nav.heroes">Heroes</a>
-  <a href="#rules" data-i18n="vv.nav.rules">The rules</a>
+  <a href="#heroes" data-i18n="vv.nav.heroes">The heroes</a>
+  <a href="#routine" data-i18n="vv.nav.routine">The routine</a>
 </nav>
 
 <main>
   <!-- ═══════════ HERO ═══════════ -->
   <section class="section hero" id="top">
     <h1 data-i18n-html="vv.hero.h1">VIKINGS VENGEANCE,<br><span class="accent">DEMYSTIFIED</span></h1>
-    <p class="lede" data-i18n-html="vv.hero.lede">The whole event in one scroll. Twenty waves of Vikings come at your
-      alliance's cities, and every Viking your troops kill is points — at your own city and at every city you
-      reinforced. <strong>No signup. No spreadsheet. No stats required.</strong></p>
+    <p class="lede" data-i18n-html="vv.hero.lede">Vikings come at your alliance's
+      cities in waves, and every Viking your troops kill is points — at your own city and at every city you
+      reinforced.</p>
     <p class="chips"><span data-i18n="vv.hero.chip1">20 waves a run</span> <span aria-hidden="true">·</span>
       <span data-i18n="vv.hero.chip2">every two weeks</span> <span aria-hidden="true">·</span>
       <span data-i18n="vv.hero.chip3">alliance PvE</span> <span aria-hidden="true">·</span>
       <span data-i18n="vv.hero.chip4">satin &amp; gilded threads</span></p>
   </section>
 
-  <!-- ═══════════ 1 · THE ONE-LINER ═══════════ -->
-  <section class="section" id="model">
-    <h2 data-i18n="vv.model.title">The one-liner</h2>
-    <p class="lede" data-i18n="vv.model.lede">Everything on this page follows from one sentence:</p>
-    <p class="punchline" data-i18n-html="vv.model.punchline">Your troops × the cities they stand in — <span class="hl">kills are points</span>, everywhere.</p>
-    <div class="cards">
-      <article class="card">
-        <h3><span class="tag tag-lead" data-i18n="vv.model.card1.tag">THE SCORE</span> <span data-i18n="vv.model.card1.title">Kills are points</span></h3>
-        <p data-i18n-html="vv.model.card1.body">Kill a Viking with your troops and it scores, wherever those troops
-          are standing — your city or someone else's. The scoreboard is basically a <strong>kill count</strong>.</p>
-      </article>
-      <article class="card">
-        <h3><span class="tag tag-you" data-i18n="vv.model.card2.tag">THE CAP</span> <span data-i18n="vv.model.card2.title">Home pays a preset</span></h3>
-        <p data-i18n-html="vv.model.card2.body">Your own city pays a <strong>fixed wave reward</strong> no matter how
-          many kills your garrison gets. So troops left at home aren't just idle — they're siphoning kills off the
-          players who reinforced you.</p>
-      </article>
+  <!-- ═══════════ 1 · THE TWENTY WAVES ═══════════ -->
+  <section class="section" id="waves">
+    <h2 data-i18n="vv.waves.title">The twenty waves</h2>
+    <p class="lede" data-i18n-html="vv.waves.lede">The whole event is one schedule, and almost everything on this page
+      is about which wave is which. Three kinds of wave, twenty of them:</p>
+
+    <div class="wavetable" role="table" aria-label="The three wave types" data-i18n-key="vv.waves.keyAria" data-i18n-attr="aria-label">
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.key1.waves">City</span><span class="wt-type city" data-i18n="vv.waves.key1.type">Most waves</span><span class="wt-note" data-i18n="vv.waves.key1.note">Hit the alliance's cities. Reinforce online members.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.key2.waves">Online</span><span class="wt-type online" data-i18n="vv.waves.key2.type">7 · 14 · 17</span><span class="wt-note" data-i18n="vv.waves.key2.note">Only hit cities whose player is online when they fire.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.key3.waves">HQ</span><span class="wt-type hq" data-i18n="vv.waves.key3.type">10 · 20</span><span class="wt-note" data-i18n="vv.waves.key3.note">Hit the headquarters — only 15 reinforcement slots.</span></div>
     </div>
-    <p class="note" data-i18n="vv.model.note">Everything below is what those two facts mean when the waves are actually coming.</p>
+
+    <div class="wavetable" role="table" aria-label="The twenty waves" data-i18n-key="vv.waves.tableAria" data-i18n-attr="aria-label">
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w1.waves">1–6</span><span class="wt-type city" data-i18n="vv.waves.w1.type">City</span><span class="wt-note" data-i18n="vv.waves.w1.note">Regular waves — reinforce online members, standard 75/25/0.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w2.waves">7</span><span class="wt-type online" data-i18n="vv.waves.w2.type">Online</span><span class="wt-note" data-i18n="vv.waves.w2.note">Online-only — only online cities get hit. Worth more points.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w3.waves">8–9</span><span class="wt-type city" data-i18n="vv.waves.w3.type">City</span><span class="wt-note" data-i18n="vv.waves.w3.note">Regular waves.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w4.waves">10</span><span class="wt-type hq" data-i18n="vv.waves.w4.type">HQ</span><span class="wt-note" data-i18n="vv.waves.w4.note">HQ wave one — infantry-heavy, capped troops.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w5.waves">11–13</span><span class="wt-type city" data-i18n="vv.waves.w5.type">City</span><span class="wt-note" data-i18n="vv.waves.w5.note">Regular waves.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w6.waves">14</span><span class="wt-type online" data-i18n="vv.waves.w6.type">Online</span><span class="wt-note" data-i18n="vv.waves.w6.note">Online-only — second online wave.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w7.waves">15–16</span><span class="wt-type city" data-i18n="vv.waves.w7.type">City</span><span class="wt-note" data-i18n="vv.waves.w7.note">Regular waves.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w8.waves">17</span><span class="wt-type online" data-i18n="vv.waves.w8.type">Online</span><span class="wt-note" data-i18n="vv.waves.w8.note">Online-only — the biggest individual wave.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w9.waves">18–19</span><span class="wt-type city" data-i18n="vv.waves.w9.type">City</span><span class="wt-note" data-i18n="vv.waves.w9.note">Regular waves.</span></div>
+      <div class="wt-row"><span class="wt-waves" data-i18n="vv.waves.w10.waves">20</span><span class="wt-type hq" data-i18n="vv.waves.w10.type">HQ</span><span class="wt-note" data-i18n="vv.waves.w10.note">HQ wave two — the hardest wave of the event.</span></div>
+    </div>
+
+    <p class="note" data-i18n-html="vv.waves.note">The three online waves and the two HQ waves are where the event is
+      won. The rest of the schedule is just the city rhythm in between.</p>
   </section>
 
-  <!-- ═══════════ 2 · SEND EVERYONE OUT ═══════════ -->
-  <section class="section" id="send">
-    <h2 data-i18n="vv.send.title">Send everyone out</h2>
-    <p class="lede" data-i18n-html="vv.send.lede">The most common mistake in Vikings is leaving troops home to defend
-      your own city. It's also the easiest to fix: <strong>send everyone out</strong>.</p>
-    <p data-i18n-html="vv.send.p1">Your city pays the same wave reward whether your garrison wipes the wave or barely
-      survives. The kills your reinforcers get are scored to <em>them</em>, not you. Every troop you keep home is one
-      that isn't out earning points at somebody else's city.</p>
-    <p class="note" data-i18n-html="vv.send.benchmark">A reinforced city holding <strong>200–300k of T8/T9 or
+  <!-- ═══════════ 2 · WHERE YOUR TROOPS STAND ═══════════ -->
+  <section class="section" id="stand">
+    <h2 data-i18n="vv.stand.title">Where your troops stand</h2>
+    <p class="lede" data-i18n-html="vv.stand.lede">Kills are points wherever your troops are standing — your city or
+      somebody else's. That one fact decides most of the strategy:</p>
+    <p data-i18n-html="vv.stand.p1">Your own city pays a <strong>fixed wave reward</strong> no matter how many kills
+      your garrison gets. So troops left at home aren't just idle — they're siphoning kills off the players who
+      reinforced you. <strong>Send everyone out.</strong></p>
+    <p class="note" data-i18n-html="vv.stand.benchmark">A reinforced city holding <strong>200–300k of T8/T9 or
       higher</strong> survives every round, even at difficulty 11. Under that, ask your alliance to cover you — it's
       points for them too.</p>
-    <p data-i18n-html="vv.send.p2">If you truly have more troops than all your marches can carry, something has to
-      stay home — leave the <strong>archers</strong>. They kill the least in regular waves.</p>
-    <p data-i18n-html="vv.send.p3">Resist the urge to heal between rounds. Healed troops pop back into your own city,
+    <p data-i18n-html="vv.stand.p2">If you truly have more troops than all your marches can carry, leave the
+      <strong>archers</strong> home — they kill the least in regular waves.</p>
+    <p data-i18n-html="vv.stand.p3">Resist the urge to heal between rounds. Healed troops pop back into your own city,
       right where they'll steal kills from whoever's covering you. If you really must, time it just before an HQ wave.</p>
-    <p class="note" data-i18n-html="vv.send.capNote">Before you launch, stack your deployment capacity — Marshal King
+    <p class="note" data-i18n-html="vv.stand.capNote">Before you launch, stack your deployment capacity — Marshal King
       perk, deployment gems, pet capacity buffs. Bigger marches mean <b>more infantry in the garrison</b>, and more
       infantry is more kills.</p>
 
     <div class="calc" id="vvcalc">
-      <h4 class="calc-title" data-i18n="vv.send.calcTitle">TRY IT — YOUR KILL SURFACE</h4>
+      <h4 class="calc-title" data-i18n="vv.stand.calcTitle">TRY IT — YOUR KILL SURFACE</h4>
       <div class="calc-row">
-        <label for="vv-cities" data-i18n="vv.send.citiesLabel">Cities you reinforce (marches out)</label>
+        <label for="vv-cities" data-i18n="vv.stand.citiesLabel">Cities you reinforce (marches out)</label>
         <input id="vv-cities" type="range" min="0" max="6" step="1" value="3">
       </div>
       <p class="calc-out" id="vv-outline"><b>3</b> garrisons score for you at once — <b>3×</b> the kill surface of staying home.</p>
     </div>
-    <p class="note" data-i18n="vv.send.calcNote">This isn't a damage formula — there's no published one. It's the
+    <p class="note" data-i18n="vv.stand.calcNote">This isn't a damage formula — there's no published one. It's the
       kill-surface idea: what decides your points per wave is your share of each garrison, not how many you're in.</p>
-    <p class="note" data-i18n-html="vv.send.stackNote">Over-reinforcing cuts the other way: a garrison shares its
+    <p class="note" data-i18n-html="vv.stand.stackNote">Over-reinforcing cuts the other way: a garrison shares its
       kills proportionally, so a city that's already covered doesn't reward extra troops — the same kill pool just
       gets spread thinner. Keep using every queue, but point your marches at different players. The barometer is the
       troop count: ~200–300k of T8/T9 holds a city at difficulty 11, and anything past that is watering down
       someone's share.</p>
 
     <details>
-      <summary data-i18n="vv.send.details">The compounding, in one line</summary>
+      <summary data-i18n="vv.stand.details">The compounding, in one line</summary>
       <div class="d-body">
-        <p data-i18n-html="vv.send.d">Five members who each send their marches into each other's cities defend the
+        <p data-i18n-html="vv.stand.d">Five members who each send their marches into each other's cities defend the
           same total troops as before — but each of them now scores from <b>five garrisons</b> instead of one. Get the
           whole alliance doing it and the event's total output multiplies.</p>
       </div>
     </details>
   </section>
 
-  <!-- ═══════════ 3 · TROOP ORDER ═══════════ -->
-  <section class="section" id="order">
-    <h2 data-i18n="vv.order.title">Troop order</h2>
-    <p class="lede" data-i18n-html="vv.order.lede">The garrison fires first, and the Vikings take hits in a fixed
-      order: <strong>infantry, then cavalry, then archers</strong>. Get enough infantry in and the wave is over before
-      archers get a turn.</p>
-
-    <div class="comp">
-      <div class="comp-row">
-        <p class="comp-name" data-i18n="vv.order.comp1.name">Standard reinforcement</p>
-        <p class="comp-split"><span class="inf" data-i18n="vv.order.comp1.inf">Infantry 75%</span><span class="cav" data-i18n="vv.order.comp1.cav">Cavalry 25%</span><span class="arc" data-i18n="vv.order.comp1.arc">Archer 0%</span></p>
-        <p class="comp-note" data-i18n="vv.order.comp1.note">The reliable default — infantry grabs the most kills, cavalry chips in.</p>
-      </div>
-      <div class="comp-row">
-        <p class="comp-name" data-i18n="vv.order.comp2.name">Infantry only</p>
-        <p class="comp-split"><span class="inf" data-i18n="vv.order.comp2.inf">Infantry 100%</span></p>
-        <p class="comp-note" data-i18n="vv.order.comp2.note">Fine if your cavalry count is low — infantry is the troop type that matters.</p>
-      </div>
-      <div class="comp-row">
-        <p class="comp-name" data-i18n="vv.order.comp3.name">With archers</p>
-        <p class="comp-split"><span class="inf" data-i18n="vv.order.comp3.inf">Infantry 50%</span><span class="cav" data-i18n="vv.order.comp3.cav">Cavalry 25%</span><span class="arc" data-i18n="vv.order.comp3.arc">Archer 25%</span></p>
-        <p class="comp-note" data-i18n="vv.order.comp3.note">Suboptimal in regular waves — archers score almost nothing until infantry runs dry.</p>
-      </div>
-    </div>
-
-    <p class="note" data-i18n-html="vv.order.note">In most garrisons, infantry and cavalry finish every regular wave
-      before the archers' turn. Archers only start to matter late at high difficulty — around wave 12–13 at difficulty
-      11 — and on HQ wave 20.</p>
-
-    <details>
-      <summary data-i18n="vv.order.details">Why archers wait</summary>
-      <div class="d-body">
-        <p data-i18n-html="vv.order.d">Vikings attack in a fixed order — infantry first, cavalry second, archers
-          last — and the garrison shoots first. A garrison with enough infantry kills the whole wave in the first
-          exchange and the archers never fire. Their kills only become real when the wave outlasts the infantry.</p>
-      </div>
-    </details>
-  </section>
-
-  <!-- ═══════════ 4 · THE ONLINE WAVES ═══════════ -->
+  <!-- ═══════════ 3 · THE ONLINE WAVES ═══════════ -->
   <section class="section" id="online">
     <h2 data-i18n="vv.online.title">The online waves</h2>
     <p class="lede" data-i18n-html="vv.online.lede">Waves 7, 14 and 17 only hit cities whose player is
@@ -249,19 +219,45 @@
       the Vikings stop coming — pull your troops and redeploy to a live city.</p>
     <p class="note" data-i18n-html="vv.online.members">The event's <b>Members tab</b> shows who's online and how full
       their garrisons are — faster than asking in chat, and the easiest way to spot the gaps before wave 7.</p>
+  </section>
 
-    <div class="wavetable" role="table" aria-label="The twenty waves" data-i18n-key="vv.online.tableAria" data-i18n-attr="aria-label">
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w1.waves">1–6</span><span class="wt-type city" data-i18n="vv.online.w1.type">City</span><span class="wt-note" data-i18n="vv.online.w1.note">Regular waves — reinforce online members, standard 75/25/0.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w2.waves">7</span><span class="wt-type online" data-i18n="vv.online.w2.type">Online</span><span class="wt-note" data-i18n="vv.online.w2.note">Online-only — only online cities get hit. Worth more points.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w3.waves">8–9</span><span class="wt-type city" data-i18n="vv.online.w3.type">City</span><span class="wt-note" data-i18n="vv.online.w3.note">Regular waves.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w4.waves">10</span><span class="wt-type hq" data-i18n="vv.online.w4.type">HQ</span><span class="wt-note" data-i18n="vv.online.w4.note">HQ wave one — infantry-heavy, capped troops.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w5.waves">11–13</span><span class="wt-type city" data-i18n="vv.online.w5.type">City</span><span class="wt-note" data-i18n="vv.online.w5.note">Regular waves.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w6.waves">14</span><span class="wt-type online" data-i18n="vv.online.w6.type">Online</span><span class="wt-note" data-i18n="vv.online.w6.note">Online-only — second online wave.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w7.waves">15–16</span><span class="wt-type city" data-i18n="vv.online.w7.type">City</span><span class="wt-note" data-i18n="vv.online.w7.note">Regular waves.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w8.waves">17</span><span class="wt-type online" data-i18n="vv.online.w8.type">Online</span><span class="wt-note" data-i18n="vv.online.w8.note">Online-only — the biggest individual wave.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w9.waves">18–19</span><span class="wt-type city" data-i18n="vv.online.w9.type">City</span><span class="wt-note" data-i18n="vv.online.w9.note">Regular waves.</span></div>
-      <div class="wt-row"><span class="wt-waves" data-i18n="vv.online.w10.waves">20</span><span class="wt-type hq" data-i18n="vv.online.w10.type">HQ</span><span class="wt-note" data-i18n="vv.online.w10.note">HQ wave two — the hardest wave of the event.</span></div>
+  <!-- ═══════════ 4 · THE COMPOSITION ═══════════ -->
+  <section class="section" id="composition">
+    <h2 data-i18n="vv.composition.title">The composition</h2>
+    <p class="lede" data-i18n-html="vv.composition.lede">The garrison fires first, and the Vikings take hits in a fixed
+      order: <strong>infantry, then cavalry, then archers</strong>. Get enough infantry in and the wave is over before
+      archers get a turn.</p>
+
+    <div class="comp">
+      <div class="comp-row">
+        <p class="comp-name" data-i18n="vv.composition.comp1.name">Standard reinforcement</p>
+        <p class="comp-split"><span class="inf" data-i18n="vv.composition.comp1.inf">Infantry 75%</span><span class="cav" data-i18n="vv.composition.comp1.cav">Cavalry 25%</span><span class="arc" data-i18n="vv.composition.comp1.arc">Archer 0%</span></p>
+        <p class="comp-note" data-i18n="vv.composition.comp1.note">The reliable default — infantry grabs the most kills, cavalry chips in.</p>
+      </div>
+      <div class="comp-row">
+        <p class="comp-name" data-i18n="vv.composition.comp2.name">Infantry only</p>
+        <p class="comp-split"><span class="inf" data-i18n="vv.composition.comp2.inf">Infantry 100%</span></p>
+        <p class="comp-note" data-i18n="vv.composition.comp2.note">Fine if your cavalry count is low — infantry is the troop type that matters.</p>
+      </div>
+      <div class="comp-row">
+        <p class="comp-name" data-i18n="vv.composition.comp3.name">With archers</p>
+        <p class="comp-split"><span class="inf" data-i18n="vv.composition.comp3.inf">Infantry 50%</span><span class="cav" data-i18n="vv.composition.comp3.cav">Cavalry 25%</span><span class="arc" data-i18n="vv.composition.comp3.arc">Archer 25%</span></p>
+        <p class="comp-note" data-i18n="vv.composition.comp3.note">Suboptimal in regular waves — archers score almost nothing until infantry runs dry.</p>
+      </div>
     </div>
+
+    <p class="note" data-i18n-html="vv.composition.note">In most garrisons, infantry and cavalry finish every regular
+      wave before the archers' turn. Archers only start to matter late at high difficulty — around wave 12–13 at
+      difficulty 11 — and on HQ wave 20.</p>
+
+    <details>
+      <summary data-i18n="vv.composition.details">Why archers wait</summary>
+      <div class="d-body">
+        <p data-i18n-html="vv.composition.d">Vikings attack in a fixed order — infantry first, cavalry second, archers
+          last — and the garrison shoots first. A garrison with enough infantry kills the whole wave in the first
+          exchange and the archers never fire. Their kills only become real when the wave outlasts the infantry.</p>
+      </div>
+    </details>
   </section>
 
   <!-- ═══════════ 5 · THE HQ WAVES ═══════════ -->
@@ -396,17 +392,19 @@
     </details>
   </section>
 
-  <!-- ═══════════ 7 · THE WHOLE PAGE IN FOUR RULES ═══════════ -->
-  <section class="section rules" id="rules">
-    <h2 data-i18n="vv.rules.title">The whole page in four rules</h2>
-    <ol class="rule-list">
-      <li><span class="rule-num">1</span><div><h3 data-i18n="vv.rules.1.title">Send everyone out</h3><p data-i18n-html="vv.rules.1.body">Your city's wave reward is preset. Troops at home earn nothing — and steal kills from your cover.</p></div></li>
-      <li><span class="rule-num">2</span><div><h3 data-i18n="vv.rules.2.title">Infantry first</h3><p data-i18n-html="vv.rules.2.body">75/25/0 in regular waves, mostly infantry at the HQ. Archers stay home unless you must fill.</p></div></li>
-      <li><span class="rule-num">3</span><div><h3 data-i18n="vv.rules.3.title">Be online for 7, 14, 17</h3><p data-i18n-html="vv.rules.3.body">Those waves only hit online cities. Offline, you and your reinforcers both lose.</p></div></li>
-      <li><span class="rule-num">4</span><div><h3 data-i18n="vv.rules.4.title">HQ on 10 and 20 only</h3><p data-i18n-html="vv.rules.4.body">Don't camp the HQ. Fill it with infantry for the two HQ waves, then get back to cities.</p></div></li>
+  <!-- ═══════════ 7 · THE ROUTINE ═══════════ -->
+  <section class="section" id="routine">
+    <h2 data-i18n="vv.routine.title">The routine</h2>
+    <p class="lede" data-i18n-html="vv.routine.lede">The whole page, in the order you'll actually do it:</p>
+    <ol class="checklist">
+      <li><span class="check-num">1</span><div><h3 data-i18n="vv.routine.r1.title">Set the guard station</h3><p data-i18n-html="vv.routine.r1.body">Your 3 strongest heroes stay home and lead the garrison — before wave 1.</p></div></li>
+      <li><span class="check-num">2</span><div><h3 data-i18n="vv.routine.r2.title">Build 75/25/0</h3><p data-i18n-html="vv.routine.r2.body">Every march: infantry-heavy, offence lead. Archers stay home unless you must fill.</p></div></li>
+      <li><span class="check-num">3</span><div><h3 data-i18n="vv.routine.r3.title">Reinforce before wave 1</h3><p data-i18n-html="vv.routine.r3.body">Fill online members' cities, not your own. Every queue, different players.</p></div></li>
+      <li><span class="check-num">4</span><div><h3 data-i18n="vv.routine.r4.title">Be online for 7, 14, 17</h3><p data-i18n-html="vv.routine.r4.body">Those waves only hit online cities. Check the Members tab for gaps first.</p></div></li>
+      <li><span class="check-num">5</span><div><h3 data-i18n="vv.routine.r5.title">Fill the HQ on 10 and 20</h3><p data-i18n-html="vv.routine.r5.body">Infantry, fair share, no camping between waves.</p></div></li>
+      <li><span class="check-num">6</span><div><h3 data-i18n="vv.routine.r6.title">Skip the healing between rounds</h3><p data-i18n-html="vv.routine.r6.body">Healed troops steal kills at home. Time any heal for just before an HQ wave.</p></div></li>
+      <li><span class="check-num">7</span><div><h3 data-i18n="vv.routine.r7.title">Read the reports after wave 20</h3><p data-i18n-html="vv.routine.r7.body">Check the kill reports and adjust the archer share and the garrison lead for next time.</p></div></li>
     </ol>
-    <p class="punchline" data-i18n-html="vv.rules.punchline">Your troops × the cities they stand in.
-      <strong>Everything else follows.</strong></p>
   </section>
 </main>
 
@@ -415,11 +413,12 @@
     <a href="index.html" data-i18n="ev.switch.home">Home</a>
     <a href="bear-hunt.html" data-i18n="ev.switch.bear">Bear Hunt</a>
     <a href="vikings-vengeance.html" aria-current="page" data-i18n="ev.switch.vikings">Vikings</a>
+    <a href="swordland-showdown.html" data-i18n="ev.switch.swordland">Swordland</a>
   </nav>
-  <p class="foot-main" data-i18n="vv.foot.main">NO SIGNUP · NO DATA · NO ROSTER · JUST THE KILLS</p>
-  <p class="foot-sub" data-i18n-html="vv.foot.note">Numbers here are our server's read: reinforced garrisons of
+  <p class="foot-main" data-i18n="vv.foot.main">JUST THE KILLS</p>
+  <p class="foot-sub" data-i18n-html="vv.foot.note">Numbers here are for our server: reinforced garrisons of
     200–300k T8/T9 hold difficulty 11. Your server will differ — <b>the principles don't.</b></p>
-  <p class="foot-sub" data-i18n-html="vv.foot.credit">Event walkthrough from the <a href="https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA">Kingshot Essentials</a>
+  <p class="foot-sub" data-i18n-html="vv.foot.credit">Event walkthrough from <a href="https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA">StratGameSloth</a>'s
     playlists and the <a href="https://www.kingshotguide.org/calculator/viking-vengeance-calculator">kingshotguide.org</a>
     Viking Vengeance calculator — community references, not official · built for the [2129]MadNess alliance</p>
 </footer>

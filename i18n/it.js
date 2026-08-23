@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["it"] = {
   "meta.title": "Bear Hunt, demistificato",
-  "meta.description": "Bear Hunt, demistificato. Come funziona il danno dei rally in parole semplici: le statistiche del leader, le tue truppe, la radice quadrata e quattro regole. Niente iscrizione, niente dati, niente fogli di calcolo.",
+  "meta.description": "Bear Hunt, demistificato. Come funziona il danno dei rally in parole semplici: le statistiche del leader, le tue truppe, la radice quadrata e quattro regole.",
   "meta.ogTitle": "Bear Hunt, demistificato",
-  "meta.ogDescription": "Come funziona davvero il danno dei rally — in parole semplici. Niente iscrizione, niente dati, niente fogli di calcolo.",
+  "meta.ogDescription": "Come funziona davvero il danno dei rally — in parole semplici.",
 
   "skip": "Salta alla matematica",
-  "brandNote": "niente iscrizione · niente dati · solo la matematica",
+  "brandNote": "solo la matematica",
   "ui.lang": "Lingua",
 
   "nav.aria": "Sezioni",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["it"] = {
   "nav.rules": "Le 4 regole",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">DEMISTIFICATO</span>",
-  "hero.lede": "L'intero evento in una sola schermata. Come funziona il danno dei rally in parole semplici — e le quattro cose che dovresti fare al riguardo. <strong>Niente iscrizione. Niente fogli di calcolo. Niente statistiche richieste.</strong>",
+  "hero.lede": "Come funziona il danno dei rally in parole semplici — e le quattro cose che dovresti fare al riguardo.",
   "hero.chip1": "30 min a run",
   "hero.chip2": "ogni 48 ore",
   "hero.chip3": "miniera d'oro di Forgehammer",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["it"] = {
   "rules.5.body": "Non lasciare nessuno slot vuoto, per quanto debole sia il partecipante. Ogni √ conta.",
   "rules.punchline": "Statistiche del leader × le tue truppe, √ sul tuo conteggio. <strong>Tutto il resto ne consegue.</strong>",
 
-  "foot.main": "SENZA ISCRIZIONE · SENZA DATI · SENZA ROSTER · SOLO LA MATEMATICA",
+  "foot.main": "SOLO LA MATEMATICA",
   "foot.note": "I numeri qui sono per il nostro server: marce ~100–150k, rally 500k–1M. Il tuo server sarà diverso — <b>la matematica no.</b>",
   "foot.credit": "Modello del danno dal <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> di [685] Frak — un modello di comunità testato, non ufficiale · costruito per l'alleanza [2129]MadNess",
   "foot.credit2": "Tier degli eroi e test approfonditi con <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> e la <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

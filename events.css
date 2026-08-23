@@ -24,8 +24,9 @@ body.swiping { user-select: none; -webkit-user-select: none; }
   min-width: 0;
 }
 .ev-switch a {
-  font-family: var(--display);
+  font-family: var(--body);
   font-size: var(--step--1);
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
@@ -50,8 +51,9 @@ body.swiping { user-select: none; -webkit-user-select: none; }
   margin-top: var(--space-m);
 }
 .ev-foot a {
-  font-family: var(--display);
+  font-family: var(--body);
   font-size: var(--step--1);
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
@@ -119,14 +121,16 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 .swipe-peek.next { right: 0; transform: translateX(100%); }
 .swipe-peek.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 .swipe-peek .peek-kicker {
-  font-family: var(--display);
+  font-family: var(--body);
   font-size: var(--step--1);
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ink-muted);
 }
 .swipe-peek .peek-title {
-  font-family: var(--display);
+  font-family: var(--display-2);
+  font-weight: 700;
   font-size: var(--step-3);
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -150,8 +154,8 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
   border-bottom: 1px solid rgba(157, 149, 127, 0.14);
   font-size: var(--step--1);
 }
-.wt-waves { font-family: var(--display); letter-spacing: 0.04em; color: var(--ink); }
-.wt-type { font-family: var(--display); letter-spacing: 0.1em; text-transform: uppercase; }
+.wt-waves { font-family: var(--body); font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
+.wt-type { font-family: var(--body); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
 .wt-type.city { color: var(--ink-muted); }
 .wt-type.online { color: var(--amber); }
 .wt-type.hq { color: var(--ink); }
@@ -164,7 +168,8 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 .comp { margin: var(--space-m) 0; }
 .comp-row { padding: 0.7rem 0; border-bottom: 1px solid rgba(157, 149, 127, 0.14); }
 .comp-name {
-  font-family: var(--display);
+  font-family: var(--display-2);
+  font-weight: 600;
   font-size: var(--step-0);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -172,7 +177,7 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
   margin-bottom: 0.35rem;
 }
 .comp-split { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; }
-.comp-split span { font-family: var(--display); font-size: var(--step--1); letter-spacing: 0.06em; }
+.comp-split span { font-family: var(--body); font-weight: 700; font-size: var(--step--1); letter-spacing: 0.06em; }
 .comp-split .inf { color: var(--amber); }
 .comp-split .cav { color: var(--ink); }
 .comp-split .arc { color: var(--ink-muted); }
@@ -247,3 +252,196 @@ html[data-page="vikings"] .dust i:nth-child(3) {
   from { transform: translate3d(0, -5%, 0); }
   to   { transform: translate3d(2%, 8%, 0); }
 }
+
+/* ─── Swordland — red vs blue, one duel ────────────────── */
+/* The event is literally red vs blue, so the duel night keeps
+   both sides in the dust: crimson motes drift one way, steel-blue
+   motes the other, a far rose layer settles the middle. This is
+   the one page that breaks the one-signal rule on purpose: the
+   sections alternate accents down the page — odd sections carry
+   duel crimson (your side), even sections (.section.blue) carry
+   the enemy steel-blue, and the .tag-them accent stays blue. */
+html[data-page="swordland"] {
+  --void: #120A0D;        /* duel night — black-red            */
+  --void-2: #1B1115;      /* one step up (fields)              */
+  --amber: #E05555;       /* duel crimson — your side          */
+  --amber-dim: #A8443F;   /* deep red — secondary               */
+  --ember: rgba(224, 85, 85, 0.16);    /* crimson motes         */
+  --ember-2: rgba(78, 116, 203, 0.22); /* enemy steel-blue      */
+  --ember-3: rgba(224, 85, 85, 0.08);  /* far red motes         */
+  --chrome: rgba(18, 10, 13, 0.9);
+  --signal-line: rgba(224, 85, 85, 0.35);
+  --signal-tint: rgba(224, 85, 85, 0.07);
+  --signal-glow: rgba(224, 85, 85, 0.22);
+  --signal-halo: rgba(224, 85, 85, 0.28);
+  --enemy: #4E74CB;       /* the other side — sparingly        */
+  --enemy-dim: #3C5CA6;   /* deep steel — secondary blue        */
+}
+
+/* Alternate section accents: every other section runs on the
+   enemy blue instead of the duel crimson. Scoping the signal
+   tokens flips every amber accent inside the section at once —
+   carets, rubric labels, table accents, checklist numbers. */
+html[data-page="swordland"] .section.blue {
+  --amber: var(--enemy);
+  --amber-dim: var(--enemy-dim);
+}
+html[data-page="swordland"] .section.blue h2 { color: var(--enemy-dim); }
+html[data-page="swordland"] .section.blue.front h2 { color: var(--enemy); }
+
+/* Two tides drifting toward each other: crimson one way, blue
+   the other. Layer three just settles (base dust-drift). */
+html[data-page="swordland"] .dust i:nth-child(1) { animation: duel-tide 150s linear infinite; }
+html[data-page="swordland"] .dust i:nth-child(2) { background-size: 150px 150px; animation: duel-tide 190s linear infinite reverse; }
+html[data-page="swordland"] .dust i:nth-child(3) { animation: dust-drift 80s linear infinite; }
+@keyframes duel-tide {
+  from { transform: translate3d(-3%, 0, 0); }
+  to   { transform: translate3d(3%, -4%, 0); }
+}
+
+/* The enemy accent — blue appears only on the swordland page.
+   The tag keeps the hedera leaf; only the colour marks the side. */
+html[data-page="swordland"] .tag-them { color: var(--enemy); }
+html[data-page="swordland"] .tag-them::before { content: "❧ "; }
+
+/* A quiet third tag — the support lane, dim like its players. */
+.tag-dim { color: var(--ink-dim); }
+.tag-dim::before { content: "\276C "; }
+
+/* ─── Swordland — the buildings table ──────────────────── */
+.btable { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.bt-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 12.5rem) 10.5rem 1fr;
+  gap: 0.7rem 1.1rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
+  font-size: var(--step--1);
+}
+.bt-name { font-family: var(--body); font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
+.bt-pts { font-family: var(--body); font-weight: 700; letter-spacing: 0.05em; color: var(--amber); }
+.bt-note { color: var(--ink-dim); }
+@media (max-width: 640px) {
+  .bt-row { grid-template-columns: 1fr; gap: 0.2rem; }
+  .bt-pts { color: var(--amber-dim); }
+}
+
+/* ─── Swordland — the scoreboards ──────────────────────── */
+/* Two ruled rows, one per scoreboard: the alliance's bracket
+   and your personal tier. No cards, no tags — a scoreboard
+   reads as rows, so it's rows. */
+.sboard { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.sb-row {
+  display: grid;
+  grid-template-columns: minmax(10rem, 13rem) 1fr;
+  gap: 0.7rem 1.2rem;
+  align-items: baseline;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
+}
+.sb-tag {
+  font-family: var(--body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.sb-row:nth-child(2) .sb-tag { color: var(--ink); }
+.sb-body { color: var(--ink-dim); font-size: var(--step--1); }
+.sb-body strong, .sb-body b { color: var(--ink); }
+.sboard-note {
+  margin-top: var(--space-m);
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+  font-style: italic;
+}
+.sboard-note b { color: var(--ink); }
+@media (max-width: 640px) {
+  .sb-row { grid-template-columns: 1fr; gap: 0.25rem; }
+}
+
+/* ─── Swordland — the scoring matrix ───────────────────── */
+/* The four point sources as a ruled grid: source · alliance
+   points · personal points · what it is. The columns are the
+   point of the table — which scoreboard does this feed? */
+.matrix { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.mx-row {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 9.5rem) 5rem 8.5rem 1fr;
+  gap: 0.7rem 1rem;
+  align-items: baseline;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
+  font-size: var(--step--1);
+}
+.mx-head {
+  font-family: var(--body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border-bottom-color: rgba(157, 149, 127, 0.28);
+}
+.mx-head .mx-name, .mx-head .mx-ally, .mx-head .mx-me, .mx-head .mx-note { color: inherit; }
+.mx-name { font-family: var(--body); font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
+.mx-ally { color: var(--amber); }
+.mx-ally.mx-no { color: var(--ink-muted); }
+.mx-me { color: var(--ink); }
+.mx-note { color: var(--ink-dim); }
+@media (max-width: 700px) {
+  .mx-head { display: none; }
+  .mx-row { grid-template-columns: 1fr; gap: 0.2rem; }
+}
+
+/* ─── Swordland — the three games ──────────────────────── */
+/* The matchup panels: three ruled columns on a wide screen,
+   stacked panels on a narrow one. The even game carries the
+   role lanes inside it — the roles only exist in that game. */
+.games { display: grid; gap: var(--space-l); margin: var(--space-l) 0; }
+.game {
+  padding-top: var(--space-m);
+  border-top: 1px solid var(--signal-line);
+  min-width: 0;
+}
+.game h3 {
+  display: flex; flex-direction: column; gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.game .facts { margin-top: var(--space-s); }
+.roles { margin-top: var(--space-s); border-top: 1px solid rgba(157, 149, 127, 0.18); }
+.role { padding: 0.65rem 0; border-bottom: 1px solid rgba(157, 149, 127, 0.14); }
+.role h4 {
+  display: flex; flex-direction: column; gap: 0.35rem;
+  font-size: var(--step-0);
+  margin-bottom: 0.25rem;
+}
+.role > p { color: var(--ink-dim); font-size: var(--step--1); }
+.role details { margin-top: var(--space-s); }
+.role .d-body { padding: 0.2rem 0 var(--space-s); }
+/* The matchday blocks sit full-width with longer paragraphs —
+   roomier than the compact matchup role cards. */
+.roles-wide .role { padding: 1rem 0; }
+.roles-wide .role h4 { margin-bottom: 0.45rem; }
+.game .note { margin-top: var(--space-s); }
+@media (min-width: 900px) {
+  .games { grid-template-columns: 1fr 1fr 1fr; gap: var(--space-l) var(--space-m); align-items: start; }
+}
+
+/* ─── The practical checklist (Swordland, Vikings) ─────── */
+/* The practical close: a page's advice in the order it
+   actually happens. Numbered ruled rows, no epigram. */
+.checklist { list-style: none; margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.checklist li {
+  display: grid;
+  grid-template-columns: 2.8rem 1fr;
+  gap: 0.9rem;
+  align-items: baseline;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
+}
+.check-num { font-family: var(--display-2); font-weight: 700; font-size: var(--step-1); color: var(--amber); }
+.checklist h3 { font-size: var(--step-0); letter-spacing: 0.04em; margin-bottom: 0.2rem; }
+.checklist p { color: var(--ink-dim); font-size: var(--step--1); }

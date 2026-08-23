@@ -1,12 +1,12 @@
 window.__BH_I18N_DATA = window.__BH_I18N_DATA || {};
 window.__BH_I18N_DATA["en"] = {
   "meta.title": "Bear Hunt, Demystified",
-  "meta.description": "Bear Hunt, demystified. How rally damage works in plain words: the lead's stats, your troops, the square root, and four rules. No signup, no data, no spreadsheet.",
+  "meta.description": "Bear Hunt, demystified. How rally damage works in plain words: the lead's stats, your troops, the square root, and four rules.",
   "meta.ogTitle": "Bear Hunt, Demystified",
-  "meta.ogDescription": "How rally damage actually works — in plain words. No signup, no data, no spreadsheet.",
+  "meta.ogDescription": "How rally damage actually works — in plain words.",
 
   "skip": "Skip to the maths",
-  "brandNote": "no signup · no data · just the maths",
+  "brandNote": "just the maths",
   "ui.lang": "Language",
 
   "nav.aria": "Sections",
@@ -22,7 +22,7 @@ window.__BH_I18N_DATA["en"] = {
   "nav.rules": "The 4 rules",
 
   "hero.h1": "BEAR HUNT,<br><span class=\"accent\">DEMYSTIFIED</span>",
-  "hero.lede": "The whole event in one scroll. How rally damage works in plain words — and the four things you should do about it. <strong>No signup. No spreadsheet. No stats required.</strong>",
+  "hero.lede": "How rally damage works in plain words — and the four things you should do about it.",
   "hero.chip1": "30 min a run",
   "hero.chip2": "every 48 hours",
   "hero.chip3": "Forgehammer goldmine",
@@ -196,7 +196,7 @@ window.__BH_I18N_DATA["en"] = {
   "rules.5.body": "Leave no slot empty, no matter how weak the joiner. Every √ counts.",
   "rules.punchline": "Lead's stats × your troops, √ on your count. <strong>Everything else follows.</strong>",
 
-  "foot.main": "NO SIGNUP · NO DATA · NO ROSTER · JUST THE MATHS",
+  "foot.main": "JUST THE MATHS",
   "foot.note": "Numbers here are for our server: marches ~100–150k, rallies 500k–1M. Your server will differ — <b>the maths doesn't.</b>",
   "foot.credit": "Damage model from the <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> by [685] Frak — a tested community model, not an official one · built for the [2129]MadNess alliance",
   "foot.credit2": "Hero tiers and extensive play testing with <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> and the <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>",

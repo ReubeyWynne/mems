@@ -42,9 +42,17 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
 
 ## Mechanics
 
-- Fonts: body `IM Fell English`, display `Pirata One` — the ASCII tilde rides the
-  ascender line in both, so the "Bear Tilde" `@font-face` (unicode-range `U+007E`,
-  system-font midline tilde) must stay first in `--body` / `--display`.
+- Fonts: body `Alegreya` (400/700 + true italic); display `Cinzel Decorative`
+  (400/700/900) for titles — h1/h2 and the topnav `.brand` — via `--display`, and
+  `Cinzel` (variable 400–900, no italic) for mid display — h3/h4, numerals — via
+  `--display-2`. The ASCII
+  tilde can ride the ascender line in the manuscript faces, so the "Bear Tilde"
+  `@font-face` (unicode-range `U+007E`, system-font midline tilde) must stay first in
+  `--body` / `--display` / `--display-2`. Small display roles (TOC, tags, labels, table
+  data) render in the body serif. Cinzel has **no italic** — never italicise display
+  text. Emphasis is **bold**, not italic; italic is reserved for the marginal-gloss
+  voice (`.note`, `.gen-gloss`, `.egg-note`, `.forge-n`, `.paw-trophy`, `.rev`,
+  `.d-formula`).
 - The TOC scrollspy and front-layer observer in `app.js` pick up new sections
   (`<section class="section" id="…">` + matching `.toc a[href="#…"]`) automatically.
 - Docs: `MATHS.md` is the formula source of truth; `i18n/README.md` is the

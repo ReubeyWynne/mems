@@ -27,9 +27,9 @@
   --signal-glow: rgba(245, 200, 81, 0.22); /* portrait inner glow */
   --signal-halo: rgba(245, 200, 81, 0.28); /* portrait hover halo */
 
-  --display: 'Bear Tilde', 'Cinzel Decorative', 'Cinzel', serif;
-  --display-2: 'Bear Tilde', 'Cinzel', 'Georgia', serif;
-  --body: 'Bear Tilde', 'Alegreya', 'Georgia', serif;
+  --display: 'Cinzel Decorative', 'Cinzel', serif;
+  --display-2: 'Cinzel', 'Georgia', serif;
+  --body: 'Alegreya', 'Georgia', serif;
 
   --step--1: clamp(1.05rem, 0.98rem + 0.35vw, 1.2rem);
   --step-0: clamp(1.2rem, 1.12rem + 0.4vw, 1.38rem);
@@ -55,25 +55,15 @@
   --topbar-h: 3rem;
 }
 
-/* ─── Tilde glyph — the manuscript faces' ASCII tilde can ride the
-   ascender line, floating at the top of "~364k". This face borrows
-   a midline tilde from a system font for U+007E only; every other
-   character still renders in the manuscript fonts. */
-@font-face {
-  font-family: "Bear Tilde";
-  src: local("Segoe UI"), local("Roboto"), local("Helvetica Neue"), local("Arial"), local("DejaVu Sans");
-  unicode-range: U+007E;
-}
-
 /* ─── Arabic — the first RTL language ─────────────────── */
 /* Font selection is per-glyph, so Latin runs (brand, numbers,
    formulas) still fall through to Alegreya inside Arabic
    copy. Amiri (naskh) + Aref Ruqaa (calligraphic display) keep
    the manuscript voice the Latin fonts already set. */
 html[lang="ar"] {
-  --body: 'Bear Tilde', 'Amiri', 'Alegreya', 'Georgia', serif;
-  --display: 'Bear Tilde', 'Aref Ruqaa', 'Amiri', serif;
-  --display-2: 'Bear Tilde', 'Aref Ruqaa', 'Amiri', serif;
+  --body: 'Amiri', 'Alegreya', 'Georgia', serif;
+  --display: 'Aref Ruqaa', 'Amiri', serif;
+  --display-2: 'Aref Ruqaa', 'Amiri', serif;
 }
 /* Arabic script has no case and no italics, its letters join
    (tracking breaks the joins), and its ascenders/diacritics need

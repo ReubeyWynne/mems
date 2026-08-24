@@ -115,19 +115,7 @@
         { id: 7,  section: 'rules',   line: tr('egg.whisper7', 'rule five is whispered, never written.') }
       ];
     },
-    gossip: function () {
-      var tr = BH.tr;
-      return [
-        tr('egg.gossip0', 'xglitchx is a dinosaur \uD83E\uDD96'),
-        tr('egg.gossip1', 'xglitchx is a furry \uD83D\uDC3E'),
-        tr('egg.gossip2', 'get in the basement \uD83D\uDD73\uFE0F'),
-        tr('egg.gossip3', 'Spooks for King! \uD83D\uDC51'),
-        tr('egg.gossip4', 'take a second to r3lax \uD83D\uDE0C'),
-        tr('egg.gossip5', 'lucy\u2019s archers scare me \uD83C\uDFF9'),
-        tr('egg.gossip6', 'shadow you have how many troops?!? \u2694\uFE0F'),
-        tr('egg.gossip7', 'you saving for KvK? \uD83D\uDC8E')
-      ];
-    },
+    // gossip: the alliance lore is shared site-wide — see common.js.
     boot: boot,
     onChange: function () { paintRally(BH); paintMarch(BH); }
   });

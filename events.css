@@ -1,11 +1,14 @@
-/* events.css — multi-event chrome for the dey.ci guide site.
-   Loaded on every page (home, bear-hunt, vikings-vengeance) after styles.css.
-   Adds: the event switcher, the home event cards, the swipe preview panel,
-   the Vikings wave table + composition rows, and the page themes.
+/* events.css — shared multi-event chrome for the dey.ci guide site.
+   Loaded on every page (home, bear-hunt, vikings-vengeance, swordland-showdown)
+   after styles.css. Adds: the event switcher, the swipe preview panel, the page
+   themes, and the components shared between events (the wave/phase ruled rows,
+   the practical checklist). Page-specific components live next to their page:
+   home.css (event cards, hover preview), vikings.css (troop composition),
+   swordland.css (buildings, scoreboards, matrix, games).
    Same tokens and the same one-signal-per-page contract as the base theme:
-   each page owns one signal hue (home amber · bearhunt moss · vikings ice),
-   everything else — parchment ink, oxblood rubrication, manuscript voice —
-   stays shared. */
+   each page owns one signal hue (home amber · bearhunt moss · vikings ember
+   orange · swordland duel crimson + enemy steel-blue), everything else —
+   parchment ink, oxblood rubrication, manuscript voice — stays shared. */
 
 /* ─── Swipe setup ──────────────────────────────────────── */
 /* The browser's edge-swipe navigation must not fight the peek. touch-action
@@ -65,38 +68,6 @@ body.swiping { user-select: none; -webkit-user-select: none; }
   .ev-switch { display: none; }
 }
 
-/* ─── Home — the event list as rank lines ─────────────── */
-.event-grid { display: grid; gap: var(--space-xl); margin: var(--space-l) 0; }
-.event-card {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-  border-top: 1px solid var(--signal-line);
-  padding-top: var(--space-m);
-  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.event-card h3 {
-  font-size: var(--step-3);
-  letter-spacing: 0.04em;
-  color: var(--ink-dim);
-  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.event-card:hover h3,
-.event-card:focus-visible h3 { color: var(--amber); }
-.event-card:hover { border-color: var(--amber); }
-.event-lede { margin-top: 0.5rem; color: var(--ink-dim); }
-.event-chips {
-  display: flex; flex-wrap: wrap; gap: 0.6rem;
-  margin-top: 0.8rem;
-  font-size: var(--step--1);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-.event-chips span { color: var(--ink-muted); }
-.event-card:hover .event-chips span { color: var(--amber-dim); }
-.event-ghost { opacity: 0.55; pointer-events: none; }
-.event-ghost h3 { color: var(--ink-muted); }
-
 /* ─── The swipe preview — the neighbour event's cover ─── */
 /* Parked off-screen at ±100% (its own width); the finger pulls it in with
    resistance; release past the commit bar navigates, short drags snap back
@@ -143,46 +114,6 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 main { will-change: transform; }
 main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 
-/* ─── Vikings — the wave schedule ─────────────────────── */
-.wavetable { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
-.wt-row {
-  display: grid;
-  grid-template-columns: 5rem 6.8rem 1fr;
-  gap: 0.7rem;
-  align-items: baseline;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
-  font-size: var(--step--1);
-}
-.wt-waves { font-family: var(--body); font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
-.wt-type { font-family: var(--body); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-.wt-type.city { color: var(--ink-muted); }
-.wt-type.online { color: var(--amber); }
-.wt-type.hq { color: var(--ink); }
-.wt-note { color: var(--ink-dim); }
-@media (max-width: 640px) {
-  .wt-row { grid-template-columns: 3.6rem 5.2rem 1fr; gap: 0.5rem; }
-}
-
-/* ─── Vikings — troop composition rows ────────────────── */
-.comp { margin: var(--space-m) 0; }
-.comp-row { padding: 0.7rem 0; border-bottom: 1px solid rgba(157, 149, 127, 0.14); }
-.comp-name {
-  font-family: var(--display-2);
-  font-weight: 600;
-  font-size: var(--step-0);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink);
-  margin-bottom: 0.35rem;
-}
-.comp-split { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; }
-.comp-split span { font-family: var(--body); font-weight: 700; font-size: var(--step--1); letter-spacing: 0.06em; }
-.comp-split .inf { color: var(--amber); }
-.comp-split .cav { color: var(--ink); }
-.comp-split .arc { color: var(--ink-muted); }
-.comp-note { margin-top: 0.35rem; font-size: var(--step--1); color: var(--ink-dim); font-style: italic; }
-
 /* ─── Page themes — one signal hue per event ──────────── */
 /* The same manuscript night, parchment ink and oxblood rubrication on
    every page; only the hue of the night, the signal, and the drifting
@@ -191,8 +122,74 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
    page's signal — same alphas as the base amber theme — and every
    hardcoded amber in styles.css was tokenised, so a page theme is
    just these token overrides. Home is the canonical theme — the
-   tokens in styles.css, no overrides. */
-html[data-page="bearhunt"] {
+   tokens in styles.css, no overrides.
+
+   The theme blocks are grouped with .swipe-peek[data-page=…] so the
+   mobile swipe preview wears the destination page's theme (common.js
+   stamps data-page from data-prev-page / data-next-page), not the
+   theme of the page you're on. Home has no theme block, so its peek
+   rule sits below as a small three-token copy. */
+.swipe-peek[data-page="home"] {
+  --void-2: #121726;      /* one step up (fields)            */
+  --amber: #F5C851;       /* the one signal — active         */
+  --amber-dim: #D3A33E;   /* antique gold — secondary signal */
+}
+
+/* ─── Home preview — hover an event, and the page becomes it ──
+   The home page previews each event while its card is hovered or
+   focused (common.js stamps data-hover="bearhunt|vikings|swordland"
+   on <html>; the theme blocks below accept html[data-hover=…] as a
+   second owner). Every themed token is registered with @property so
+   the shift interpolates as one slow dissolve — night, signal,
+   hairlines, glows and mote colours all move in lockstep at
+   --theme-shift — and the dust crossfades into the destination
+   world's motes. Browsers without @property fall back to an instant
+   switch; reduced motion collapses the transition (styles.css
+   blanket rule) while the state change stays legible. The hovered
+   dust groups themselves are styled in home.css — they only exist
+   on the home page. */
+@property --void { syntax: '<color>'; inherits: true; initial-value: #0B0E16; }
+@property --void-2 { syntax: '<color>'; inherits: true; initial-value: #121726; }
+@property --amber { syntax: '<color>'; inherits: true; initial-value: #F5C851; }
+@property --amber-dim { syntax: '<color>'; inherits: true; initial-value: #D3A33E; }
+@property --ember { syntax: '<color>'; inherits: true; initial-value: rgba(216, 166, 64, 0.18); }
+@property --ember-2 { syntax: '<color>'; inherits: true; initial-value: rgba(245, 200, 81, 0.11); }
+@property --ember-3 { syntax: '<color>'; inherits: true; initial-value: rgba(241, 227, 194, 0.09); }
+@property --chrome { syntax: '<color>'; inherits: true; initial-value: rgba(11, 14, 22, 0.9); }
+@property --signal-line { syntax: '<color>'; inherits: true; initial-value: rgba(245, 200, 81, 0.35); }
+@property --signal-tint { syntax: '<color>'; inherits: true; initial-value: rgba(245, 200, 81, 0.07); }
+@property --signal-glow { syntax: '<color>'; inherits: true; initial-value: rgba(245, 200, 81, 0.22); }
+@property --signal-halo { syntax: '<color>'; inherits: true; initial-value: rgba(245, 200, 81, 0.28); }
+@property --enemy { syntax: '<color>'; inherits: true; initial-value: #4E74CB; }
+@property --enemy-dim { syntax: '<color>'; inherits: true; initial-value: #3C5CA6; }
+
+:root { --theme-shift: 0.7s; }
+
+/* The transition lives on <html> because the theme blocks redeclare
+   the tokens there; every descendant inherits the animated value, so
+   the whole page moves as one. Keep the list in step with the tokens
+   a theme block may override. */
+html {
+  transition:
+    --void var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --void-2 var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --amber var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --amber-dim var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --ember var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --ember-2 var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --ember-3 var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --chrome var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --signal-line var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --signal-tint var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --signal-glow var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --signal-halo var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --enemy var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1),
+    --enemy-dim var(--theme-shift) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-page="bearhunt"],
+html[data-hover="bearhunt"],
+.swipe-peek[data-page="bearhunt"] {
   --void: #0B110C;        /* pine night — black-green        */
   --void-2: #121B13;      /* one step up (fields)            */
   --amber: #AEC878;       /* moss-verdigris — the hunt signal */
@@ -207,23 +204,25 @@ html[data-page="bearhunt"] {
   --signal-halo: rgba(174, 200, 120, 0.28);
 }
 
-html[data-page="vikings"] {
-  --void: #0A1019;        /* sea night — steel-blue          */
-  --void-2: #111A26;      /* one step up (fields)            */
-  --amber: #A8C8E8;       /* ice blue — the fjord signal     */
-  --amber-dim: #7FA3C7;   /* pale steel — secondary           */
-  --ember: rgba(205, 222, 240, 0.14); /* sleet               */
-  --ember-2: rgba(190, 212, 234, 0.08);
-  --ember-3: rgba(214, 229, 244, 0.06);
-  --chrome: rgba(10, 16, 25, 0.9);
-  --signal-line: rgba(168, 200, 232, 0.35);
-  --signal-tint: rgba(168, 200, 232, 0.07);
-  --signal-glow: rgba(168, 200, 232, 0.22);
-  --signal-halo: rgba(168, 200, 232, 0.28);
+html[data-page="vikings"],
+html[data-hover="vikings"],
+.swipe-peek[data-page="vikings"] {
+  --void: #150D08;        /* forge night — ember brown         */
+  --void-2: #1E140D;      /* one step up (fields)             */
+  --amber: #E08A3C;       /* ember orange — the forge signal  */
+  --amber-dim: #B96A2E;   /* burnt ember — secondary           */
+  --ember: rgba(224, 138, 60, 0.16); /* ember sparks           */
+  --ember-2: rgba(214, 120, 44, 0.09);
+  --ember-3: rgba(241, 227, 194, 0.06); /* pale ash            */
+  --chrome: rgba(21, 13, 8, 0.9);
+  --signal-line: rgba(224, 138, 60, 0.35);
+  --signal-tint: rgba(224, 138, 60, 0.07);
+  --signal-glow: rgba(224, 138, 60, 0.22);
+  --signal-halo: rgba(224, 138, 60, 0.28);
 }
 
 /* Motes move their own way: embers drift (home, default), fireflies
-   rise and sway (bearhunt), sleet falls (vikings). Three soft dot
+   rise and sway (bearhunt), ember-ash falls (vikings). Three soft dot
    layers, no streak grid — nothing that reads as flicker. */
 html[data-page="bearhunt"] .dust i:nth-child(1) { background-size: 120px 120px; animation: mote-drift 120s linear infinite; }
 html[data-page="bearhunt"] .dust i:nth-child(2) { background-size: 190px 190px; animation: mote-drift 170s linear infinite reverse; }
@@ -236,19 +235,19 @@ html[data-page="bearhunt"] .dust i:nth-child(3) { background-size: 260px 260px; 
 html[data-page="vikings"] .dust i:nth-child(1) {
   background-image: radial-gradient(circle, var(--ember) 1px, transparent 1.9px);
   background-size: 130px 130px;
-  animation: sleet-fall 80s linear infinite;
+  animation: ash-fall 80s linear infinite;
 }
 html[data-page="vikings"] .dust i:nth-child(2) {
   background-image: radial-gradient(circle, var(--ember-2) 1.7px, transparent 2.6px);
   background-size: 220px 220px;
-  animation: sleet-fall 130s linear infinite reverse;
+  animation: ash-fall 130s linear infinite reverse;
 }
 html[data-page="vikings"] .dust i:nth-child(3) {
   background-image: radial-gradient(circle, var(--ember-3) 1.6px, transparent 2.4px);
   background-size: 280px 280px;
-  animation: sleet-fall 180s linear infinite;
+  animation: ash-fall 180s linear infinite;
 }
-@keyframes sleet-fall {
+@keyframes ash-fall {
   from { transform: translate3d(0, -5%, 0); }
   to   { transform: translate3d(2%, 8%, 0); }
 }
@@ -261,7 +260,9 @@ html[data-page="vikings"] .dust i:nth-child(3) {
    sections alternate accents down the page — odd sections carry
    duel crimson (your side), even sections (.section.blue) carry
    the enemy steel-blue, and the .tag-them accent stays blue. */
-html[data-page="swordland"] {
+html[data-page="swordland"],
+html[data-hover="swordland"],
+.swipe-peek[data-page="swordland"] {
   --void: #120A0D;        /* duel night — black-red            */
   --void-2: #1B1115;      /* one step up (fields)              */
   --amber: #E05555;       /* duel crimson — your side          */
@@ -299,135 +300,28 @@ html[data-page="swordland"] .dust i:nth-child(3) { animation: dust-drift 80s lin
   to   { transform: translate3d(3%, -4%, 0); }
 }
 
-/* The enemy accent — blue appears only on the swordland page.
-   The tag keeps the hedera leaf; only the colour marks the side. */
-html[data-page="swordland"] .tag-them { color: var(--enemy); }
-html[data-page="swordland"] .tag-them::before { content: "❧ "; }
-
-/* A quiet third tag — the support lane, dim like its players. */
-.tag-dim { color: var(--ink-dim); }
-.tag-dim::before { content: "\276C "; }
-
-/* ─── Swordland — the buildings table ──────────────────── */
-.btable { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
-.bt-row {
+/* ─── Shared ruled rows — wave/phase tables ───────────── */
+/* The wave schedule (Vikings) and the phase/timeline tables
+   (Swordland) are the same ruled rows; the three type labels are
+   the only per-page difference. */
+.wavetable { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.wt-row {
   display: grid;
-  grid-template-columns: minmax(9rem, 12.5rem) 10.5rem 1fr;
-  gap: 0.7rem 1.1rem;
+  grid-template-columns: 5rem 6.8rem 1fr;
+  gap: 0.7rem;
   align-items: baseline;
   padding: 0.5rem 0;
   border-bottom: 1px solid rgba(157, 149, 127, 0.14);
   font-size: var(--step--1);
 }
-.bt-name { font-family: var(--body); font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
-.bt-pts { font-family: var(--body); font-weight: 700; letter-spacing: 0.05em; color: var(--amber); }
-.bt-note { color: var(--ink-dim); }
+.wt-waves { font-family: var(--body); font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
+.wt-type { font-family: var(--body); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.wt-type.city { color: var(--ink-muted); }
+.wt-type.online { color: var(--amber); }
+.wt-type.hq { color: var(--ink); }
+.wt-note { color: var(--ink-dim); }
 @media (max-width: 640px) {
-  .bt-row { grid-template-columns: 1fr; gap: 0.2rem; }
-  .bt-pts { color: var(--amber-dim); }
-}
-
-/* ─── Swordland — the scoreboards ──────────────────────── */
-/* Two ruled rows, one per scoreboard: the alliance's bracket
-   and your personal tier. No cards, no tags — a scoreboard
-   reads as rows, so it's rows. */
-.sboard { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
-.sb-row {
-  display: grid;
-  grid-template-columns: minmax(10rem, 13rem) 1fr;
-  gap: 0.7rem 1.2rem;
-  align-items: baseline;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
-}
-.sb-tag {
-  font-family: var(--body);
-  font-size: var(--step--1);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--amber);
-}
-.sb-row:nth-child(2) .sb-tag { color: var(--ink); }
-.sb-body { color: var(--ink-dim); font-size: var(--step--1); }
-.sb-body strong, .sb-body b { color: var(--ink); }
-.sboard-note {
-  margin-top: var(--space-m);
-  font-size: var(--step--1);
-  color: var(--ink-dim);
-  font-style: italic;
-}
-.sboard-note b { color: var(--ink); }
-@media (max-width: 640px) {
-  .sb-row { grid-template-columns: 1fr; gap: 0.25rem; }
-}
-
-/* ─── Swordland — the scoring matrix ───────────────────── */
-/* The four point sources as a ruled grid: source · alliance
-   points · personal points · what it is. The columns are the
-   point of the table — which scoreboard does this feed? */
-.matrix { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
-.mx-row {
-  display: grid;
-  grid-template-columns: minmax(7.5rem, 9.5rem) 5rem 8.5rem 1fr;
-  gap: 0.7rem 1rem;
-  align-items: baseline;
-  padding: 0.55rem 0;
-  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
-  font-size: var(--step--1);
-}
-.mx-head {
-  font-family: var(--body);
-  font-size: var(--step--1);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  border-bottom-color: rgba(157, 149, 127, 0.28);
-}
-.mx-head .mx-name, .mx-head .mx-ally, .mx-head .mx-me, .mx-head .mx-note { color: inherit; }
-.mx-name { font-family: var(--body); font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
-.mx-ally { color: var(--amber); }
-.mx-ally.mx-no { color: var(--ink-muted); }
-.mx-me { color: var(--ink); }
-.mx-note { color: var(--ink-dim); }
-@media (max-width: 700px) {
-  .mx-head { display: none; }
-  .mx-row { grid-template-columns: 1fr; gap: 0.2rem; }
-}
-
-/* ─── Swordland — the three games ──────────────────────── */
-/* The matchup panels: three ruled columns on a wide screen,
-   stacked panels on a narrow one. The even game carries the
-   role lanes inside it — the roles only exist in that game. */
-.games { display: grid; gap: var(--space-l); margin: var(--space-l) 0; }
-.game {
-  padding-top: var(--space-m);
-  border-top: 1px solid var(--signal-line);
-  min-width: 0;
-}
-.game h3 {
-  display: flex; flex-direction: column; gap: 0.6rem;
-  margin-bottom: 0.6rem;
-}
-.game .facts { margin-top: var(--space-s); }
-.roles { margin-top: var(--space-s); border-top: 1px solid rgba(157, 149, 127, 0.18); }
-.role { padding: 0.65rem 0; border-bottom: 1px solid rgba(157, 149, 127, 0.14); }
-.role h4 {
-  display: flex; flex-direction: column; gap: 0.35rem;
-  font-size: var(--step-0);
-  margin-bottom: 0.25rem;
-}
-.role > p { color: var(--ink-dim); font-size: var(--step--1); }
-.role details { margin-top: var(--space-s); }
-.role .d-body { padding: 0.2rem 0 var(--space-s); }
-/* The matchday blocks sit full-width with longer paragraphs —
-   roomier than the compact matchup role cards. */
-.roles-wide .role { padding: 1rem 0; }
-.roles-wide .role h4 { margin-bottom: 0.45rem; }
-.game .note { margin-top: var(--space-s); }
-@media (min-width: 900px) {
-  .games { grid-template-columns: 1fr 1fr 1fr; gap: var(--space-l) var(--space-m); align-items: start; }
+  .wt-row { grid-template-columns: 3.6rem 5.2rem 1fr; gap: 0.5rem; }
 }
 
 /* ─── The practical checklist (Swordland, Vikings) ─────── */

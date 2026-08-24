@@ -2,12 +2,29 @@
    Loads i18n/<lang>.js (a one-line JS wrapper around a JSON body)
    via <script> tags, applies it to the [data-i18n*] attributes,
    drives the topbar language switcher, and exposes window.I18N for
-   app.js (locale-aware number formatting, translated easter eggs).
+   common.js (locale-aware number formatting, translated easter eggs).
    Script tags are not CORS-restricted, so dictionaries load even
    when the page is opened directly from disk (file://) — no server,
    no CORS errors. No dependencies, no data collected. */
 (function () {
   'use strict';
+
+  // The dictionaries live in /i18n/ at the site root, but this file is
+  // loaded from any page depth (/, /bear-hunt/, …). Resolve the directory
+  // from the loader's own URL rather than the document, so every page
+  // finds the same /i18n/<code>.js — a document-relative "i18n/…" path
+  // would 404 from the event subdirectories.
+  function dictBase() {
+    var s = document.currentScript;
+    if (s && s.src) return s.src.replace(/[^/]*$/, '');
+    var tags = document.getElementsByTagName('script');
+    for (var i = 0; i < tags.length; i++) {
+      var src = tags[i].src || '';
+      if (src.indexOf('i18n.js') !== -1) return src.replace(/[^/]*$/, '');
+    }
+    return ''; // last resort: document-relative 'i18n/…' (home-page layout)
+  }
+  var DICT_BASE = dictBase();
 
   var KEY = 'bh_lang';
   var LOCALES = { en: 'en-GB', es: 'es-ES', 'pt-BR': 'pt-BR', de: 'de-DE', fr: 'fr-FR', it: 'it-IT', ru: 'ru-RU', pl: 'pl-PL', tr: 'tr-TR', 'zh-Hans': 'zh-Hans-CN', 'zh-Hant': 'zh-Hant-TW', ko: 'ko-KR', ja: 'ja-JP', th: 'th-TH', id: 'id-ID', vi: 'vi-VN', ar: 'ar-u-nu-latn' };
@@ -56,7 +73,7 @@
 
   function loadDict(code, done) {
     var s = document.createElement('script');
-    s.src = 'i18n/' + code + '.js?_=' + Date.now(); // ?_= keeps the old no-cache behaviour
+    s.src = DICT_BASE + 'i18n/' + code + '.js?_=' + Date.now(); // ?_= keeps the old no-cache behaviour
     s.onload = function () {
       t = (window.__BH_I18N_DATA && window.__BH_I18N_DATA[code]) || {};
       done(true);

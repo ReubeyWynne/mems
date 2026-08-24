@@ -1,11 +1,13 @@
-/* common.js — shared chrome for every page (home, bear-hunt, vikings-vengeance).
+/* common.js — shared chrome for every page (home, bear-hunt, vikings-vengeance,
+   swordland-showdown).
    The pages are fully readable without this file; it only adds a scroll progress
    bar, section highlighting, the cracktro depth pull (front layer), the language
    picker, the event switcher, keyboard/swipe navigation between events, and the
    site-wide bear easter eggs. No dependencies, no data collected.
    i18n: all user-visible strings come from i18n/<lang>.js via window.I18N;
    numbers format per the active locale. Page-specific toys and eggs register
-   through window.BH.registerPage(...) and live in bear-hunt.js / vikings.js. */
+   through window.BH.registerPage(...) and live in bear-hunt.js / vikings.js /
+   swordland.js; the alliance gossip pool is shared and lives here. */
 (function () {
   'use strict';
 
@@ -30,17 +32,52 @@
   // Page files call BH.registerPage({ whispers, gossip, boot, onChange })
   // before boot runs (boot waits for the active dictionary, which loads
   // asynchronously, or for DOMContentLoaded when i18n is missing entirely).
+  // Page files supply only what's theirs: whispers (page-specific one-shot
+  // discoveries) and toys. The gossip pool is alliance-wide lore, so it
+  // lives here once, shared by every page.
   var pageCfg = {
     whispers: function () { return []; },
-    gossip: function () { return []; },
+    gossip: function () { return sharedGossip(); },
     boot: function () {},
     onChange: function () {}
   };
 
+  // The alliance lore — the same pool on every event page, read lazily from
+  // the active dictionary so a language switch mid-session shows the new
+  // language (identical to how the whispers work).
+  function sharedGossip() {
+    return [
+      tr('egg.gossip0', 'xglitchx is a dinosaur \uD83E\uDD96'),
+      tr('egg.gossip1', 'xglitchx is a furry \uD83D\uDC3E'),
+      tr('egg.gossip2', 'get in the basement \uD83D\uDD73\uFE0F'),
+      tr('egg.gossip3', 'Spooks for King! \uD83D\uDC51'),
+      tr('egg.gossip4', 'take a second to r3lax \uD83D\uDE0C'),
+      tr('egg.gossip5', 'lucy\u2019s archers scare me \uD83C\uDFF9'),
+      tr('egg.gossip6', 'shadow you have how many troops?!? \u2694\uFE0F'),
+      tr('egg.gossip7', 'you saving for KvK? \uD83D\uDC8E')
+    ];
+  }
+
   // ── Easter eggs — the bear keeps notes ────────────────
-  // One integer in localStorage, bit N = egg N seen (see the spec for the bit
-  // registry). Crafted eggs are one-shot discoveries; the gossip pool repeats.
+  // One integer in localStorage, bit N = egg N seen (registry below).
+  // Crafted eggs are one-shot discoveries; the gossip pool repeats.
   // Nothing else is ever written.
+  //
+  // Bit registry — allocation is manual, so keep it in one place and
+  // never reuse a released id (a seen bit is sticky in localStorage
+  // forever; a collision silently "permanently seen"s an egg on
+  // another page).
+  //   0–7   bear-hunt whispers              (bear-hunt.js)
+  //   8–11  bear-hunt calculator eggs
+  //   12    bear-hunt hedera — rule five
+  //   13–15 typed secret words (frak/madness/bear)   (common.js)
+  //   16    the bear moment / paw trophy     (common.js)
+  //   17–20 free
+  //   21–26 vikings whispers                 (vikings.js)
+  //   27    vikings kill-surface toy
+  //   28–34 swordland whispers               (swordland.js)
+  //   35–36 swordland calculator eggs
+  //   37    vikings waves whisper
   var EGG_KEY = 'bh_eggs';
   var seen = 0;
   try { seen = parseInt(localStorage.getItem(EGG_KEY) || '0', 10) || 0; } catch (e) { /* private mode */ }
@@ -205,6 +242,7 @@
     var p = dir === 1 ? 'next' : 'prev';
     return {
       url: d.getAttribute('data-' + p + '-url') || '',
+      page: d.getAttribute('data-' + p + '-page') || '',
       title: d.getAttribute('data-' + p + '-title') || '',
       lede: d.getAttribute('data-' + p + '-lede') || '',
       kicker: dir === 1 ? tr('ev.peek.next', 'next event') : tr('ev.peek.prev', 'previous event')
@@ -215,6 +253,11 @@
     if (!peek) makePeek();
     var d = peekData(dir);
     peek.className = 'swipe-peek ' + (dir === 1 ? 'next' : 'prev');
+    // The panel wears the destination page's theme (events.css groups the
+    // page-theme tokens with .swipe-peek[data-page=…]) so the card reads as
+    // the page being navigated to, not the page you're on.
+    if (d.page) peek.setAttribute('data-page', d.page);
+    else peek.removeAttribute('data-page');
     peek.querySelector('.peek-kicker').textContent = d.kicker;
     peek.querySelector('.peek-title').textContent = d.title;
     peek.querySelector('.peek-lede').textContent = d.lede;
@@ -414,6 +457,24 @@
 
     // Event chrome — the preview panel and swipe handles are created lazily
     // on the first drag; no persistent affordances.
+
+    // Home — hover (or focus) an event card and the page previews that
+    // event's world: events.css animates every themed token into the
+    // destination palette and the dust dissolves into its motes. The
+    // ghost card carries no data-hover-page, so it never shifts anything.
+    var homeCards = Array.prototype.slice.call(document.querySelectorAll('.event-card[data-hover-page]'));
+    if (homeCards.length) {
+      var rootEl = document.documentElement;
+      homeCards.forEach(function (card) {
+        var hoverPage = card.getAttribute('data-hover-page');
+        function previewOn() { rootEl.setAttribute('data-hover', hoverPage); }
+        function previewOff() { rootEl.removeAttribute('data-hover'); }
+        card.addEventListener('mouseenter', previewOn);
+        card.addEventListener('mouseleave', previewOff);
+        card.addEventListener('focusin', previewOn);
+        card.addEventListener('focusout', previewOff);
+      });
+    }
 
     // Language picker — flag dropdown (custom listbox so real flags render
     // everywhere; Windows shows letter-pairs instead of flag emojis).

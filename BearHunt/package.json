@@ -1,7 +1,0 @@
-{
-  "name": "bearhunt",
-  "private": true,
-  "devDependencies": {
-    "lightningcss-cli": "^1.33.0"
-  }
-}

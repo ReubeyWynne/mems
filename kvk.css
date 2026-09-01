@@ -1,0 +1,300 @@
+/* kvk.css — KvK & Strongest Governor page (kvk-strongest-governor/). Loaded
+   after styles.css + events.css. The live 28-day clock, the prep chart, the
+   point tables, and the KingShot copy box — the page's own components. */
+
+/* ─── Beta demarcation — this page is a work in progress ─ */
+.beta-badge {
+  display: inline-block;
+  margin-top: var(--space-s);
+  padding: 0.2rem 0.6rem;
+  background: var(--amber);
+  color: var(--void);
+  border-radius: 2px;
+  font-family: var(--body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* ─── The live clock — 28 cells, four weeks ───────────── */
+.cycle-bar {
+  display: grid;
+  grid-template-columns: repeat(28, 1fr);
+  gap: 3px;
+  margin: var(--space-s) 0 0.4rem;
+}
+.cycle-keys {
+  display: grid;
+  grid-template-columns: repeat(28, 1fr);
+  gap: 3px;
+  margin-bottom: 0.4rem;
+}
+.cycle-keys span {
+  grid-column: span 7;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.cell {
+  height: 1.05rem;
+  border-radius: 2px;
+  background: var(--void-2);
+  min-width: 0;
+}
+.cell.brawl { background: rgba(157, 149, 127, 0.28); }
+.cell.sg { background: rgba(217, 178, 90, 0.55); }
+.cell.mob { background: rgba(217, 178, 90, 0.2); }
+.cell.prep { background: var(--amber-dim); }
+.cell.battle { background: var(--enemy); }
+.cell.now { outline: 2px solid var(--amber); outline-offset: 1px; }
+.cell.mark { outline: 1px dashed var(--ink-muted); outline-offset: 1px; }
+
+/* ─── The calibration — one date anchors the whole wheel ─ */
+.epoch-set {
+  margin-top: var(--space-m);
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+.epoch-set input[type="date"] {
+  background: transparent;
+  color: var(--ink);
+  border: 0;
+  border-bottom: 1px solid var(--ink-muted);
+  border-radius: 0;
+  padding: 0.3rem 0.1rem;
+  font-family: var(--body);
+  font-size: var(--step--1);
+  color-scheme: dark;
+}
+.epoch-set input[type="date"]:focus { border-bottom-color: var(--amber); outline: none; }
+
+/* ─── The clock controls ──────────────────────────────── */
+.cycle-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-s);
+  margin-top: 0.4rem;
+}
+.cycle-day-out {
+  font-family: var(--display-2);
+  font-weight: 700;
+  font-size: var(--step-1);
+  letter-spacing: 0.04em;
+  color: var(--amber);
+  min-width: 7.5rem;
+  text-align: center;
+}
+.cycle-quick {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.kb {
+  font-family: var(--body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  background: transparent;
+  border: 1px solid var(--signal-line);
+  border-radius: 2px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kb:hover { color: var(--amber); border-color: var(--amber); }
+.kb.on { color: var(--amber); border-color: var(--amber); }
+.kb:focus-visible { outline: 1px solid var(--amber); outline-offset: 2px; }
+
+/* ─── The today card ──────────────────────────────────── */
+.today-card {
+  margin-top: var(--space-m);
+  border-top: 1px solid var(--signal-line);
+  padding-top: var(--space-m);
+}
+.today-empty { font-style: italic; color: var(--ink-muted); font-size: var(--step--1); }
+.today-head { margin-bottom: var(--space-s); }
+.today-kicker {
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.today-title {
+  font-family: var(--display-2);
+  font-weight: 700;
+  font-size: var(--step-2);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-top: 0.25rem;
+}
+.today-meta { margin-top: 0.25rem; font-size: var(--step--1); color: var(--ink-dim); }
+.today-zone { margin-top: var(--space-s); }
+.today-zone h4 {
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+.today-zone h4 .mark { margin-inline-end: 0.4rem; }
+.trow {
+  display: grid;
+  grid-template-columns: 1.7rem 1fr auto;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.1);
+  font-size: var(--step--1);
+}
+.trow.keep { grid-template-columns: 1.7rem 1fr auto auto; }
+.trow .tmark { text-align: center; }
+.trow .tname { color: var(--ink-dim); }
+.trow .tpts { font-family: var(--display-2); font-weight: 700; color: var(--amber); white-space: nowrap; }
+.trow.dont .tname { color: var(--ink-muted); }
+.trow .tkeep { color: var(--amber-dim); font-size: 0.72rem; letter-spacing: 0.12em; }
+
+/* ─── The copy box — KingShot-ready plain text ────────── */
+.copy-box { margin-top: var(--space-m); }
+.copy-label {
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.4rem;
+}
+.copy-box textarea {
+  width: 100%;
+  min-height: 9rem;
+  resize: vertical;
+  background: var(--void-2);
+  color: var(--ink);
+  border: 1px solid var(--signal-line);
+  border-radius: 2px;
+  padding: 0.6rem;
+  font: 0.84rem/1.5 ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace;
+}
+.copy-box textarea:focus { border-color: var(--amber); outline: none; }
+.copy-meta {
+  margin-top: 0.4rem;
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+.copy-meta b { color: var(--ink-dim); }
+.copy-meta .over { color: var(--amber); font-weight: 700; }
+.copy-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+.copy-note { margin-top: 0.5rem; font-size: var(--step--1); font-style: italic; color: var(--ink-muted); }
+
+/* ─── The prep chart (matrix) ─────────────────────────── */
+.legend {
+  margin: var(--space-s) 0;
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1.1rem;
+}
+.lg {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lg.best { color: var(--amber); }
+.lg.ok { color: var(--ink-dim); }
+.lg.no { color: var(--ink-muted); }
+.lg.free { color: var(--amber); }
+.lg.keep { color: var(--amber-dim); }
+
+.mtable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-s) 0 var(--space-m);
+  font-size: var(--step--1);
+}
+.mtable thead th {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  text-align: center;
+  padding: 0.45rem 0.2rem;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.25);
+}
+.mtable thead th:first-child { text-align: start; }
+.mtable tbody td {
+  text-align: center;
+  padding: 0.45rem 0.2rem;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.1);
+}
+.mtable tbody td:first-child { text-align: start; color: var(--ink-dim); }
+.mtable td.best { color: var(--amber); }
+.mtable td.ok { color: var(--ink); }
+.mtable td.no { color: var(--ink-muted); opacity: 0.55; }
+.mtable td.today, .mtable th.today {
+  background: var(--signal-tint);
+  box-shadow: inset 0 0 0 1px var(--signal-line);
+}
+.mtable td.today.best { color: var(--amber); }
+
+/* ─── The day cards & point tables ────────────────────── */
+.day {
+  border-top: 1px solid var(--signal-line);
+  padding-top: var(--space-m);
+  margin-top: var(--space-l);
+}
+.day h3 {
+  font-family: var(--display-2);
+  font-weight: 600;
+  font-size: var(--step-0);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+.day-meta {
+  font-size: var(--step--1);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.4rem;
+}
+.day-meta b { color: var(--amber); }
+.pt {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-s) 0;
+}
+.pt tr { border-bottom: 1px solid rgba(157, 149, 127, 0.12); }
+.pt td {
+  padding: 0.4rem 0;
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+}
+.pt td.pts {
+  text-align: end;
+  font-family: var(--display-2);
+  font-weight: 700;
+  color: var(--amber);
+  white-space: nowrap;
+  padding-inline-start: 1rem;
+}
+.pt tr:first-child td { padding-top: 0.15rem; }
+
+/* ─── Responsive — the clock keys shrink before they wrap ─ */
+@media (max-width: 480px) {
+  .cycle-keys span { font-size: 0.55rem; letter-spacing: 0.08em; }
+  .trow { grid-template-columns: 1.5rem 1fr auto; }
+}

@@ -211,3 +211,39 @@ DmgUp); their effect multiplies into `A`, which everyone in the rally shares.
   (`alpha_i² / Σ alpha_j²` with `alpha = (A_inf/3, A_cav, 4.4·A_arc/3)`).
 - Optimal damage `L·√(Σ (base_t·A_t)²)` matches `DamageCalc.LeaderQuality` (`K`).
 - No extra 1.1 on archers below T7/TG3 — matches the app's comment.
+
+## VIP XP ladder — the calculator's table
+
+The VIP calculator (`vip-calculator/`, `vip.js`) is pinned to the in-game VIP screen
+(verified March 2026 patch, per the Kingshot Mastery VIP guide:
+<https://kingshotmastery.com/guides/kingshot-vip-guide>). The ladder is a game-wide
+constant — same on every server — and XP resets to 0 on each level-up.
+
+| Reaching level | XP for that level | Cumulative |
+|---|---|---|
+| VIP 1 | 0 (you start there) | 0 |
+| VIP 2 | 2,500 | 2,500 |
+| VIP 3 | 5,000 | 7,500 |
+| VIP 4 | 12,500 | 20,000 |
+| VIP 5 | 30,000 | 50,000 |
+| VIP 6 | 40,000 | 90,000 |
+| VIP 7 | 60,000 | 150,000 |
+| VIP 8 | 100,000 | 250,000 |
+| VIP 9 | 350,000 | 600,000 |
+| VIP 10 | 600,000 | 1,200,000 |
+| VIP 11 | 1,200,000 | 2,400,000 |
+| VIP 12 | 2,400,000 | 4,800,000 |
+
+Past VIP 9 the ladder doubles per level. Free sources (daily logins, Alliance Store,
+events, achievements) land around 200–500 XP/day, so the rate is the player's own.
+
+### The date formula
+
+```
+earned  = cumulative(level) + progress
+rate    = earned ÷ days played
+date(T) = today + ceil((cumulative(T) − earned) ÷ rate)
+```
+
+Milestones for the copy: VIP 4 (construction +10%), VIP 6 (march queue +1 — the most
+impactful perk), VIP 9 (construction +20%, first combat buff — the F2P ceiling).

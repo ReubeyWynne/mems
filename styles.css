@@ -152,6 +152,9 @@ strong, b { color: var(--ink); font-weight: 700; }
   padding: 0.5rem 0.9rem; text-decoration: none;
 }
 .skip-link:focus { inset-inline-start: 0; }
+/* The generic `a:hover { color: var(--ink) }` would turn the skip-link's
+   ivory text on its amber pill (1.2:1) — keep void on amber on hover. */
+.skip-link:hover { color: var(--void); }
 
 /* ─── Topbar — fixed height, no gap ───────────────────── */
 .topbar {

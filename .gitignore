@@ -19,3 +19,5 @@ PRODUCT.md
 .cursor/
 .ai/
 .codex/
+# Impeccable design skill (tracked) — but not its installed parser deps
+.agents/skills/impeccable/node_modules/

@@ -1,10 +1,11 @@
 /* events.css — shared multi-event chrome for the dey.ci guide site.
-   Loaded on every page (home, bear-hunt, vikings-vengeance, swordland-showdown)
-   after styles.css. Adds: the event switcher, the swipe preview panel, the page
-   themes, and the components shared between events (the wave/phase ruled rows,
-   the practical checklist). Page-specific components live next to their page:
-   home.css (event cards, hover preview), vikings.css (troop composition),
-   swordland.css (buildings, scoreboards, matrix, games).
+   Loaded on every page (home, bear-hunt, vikings-vengeance, swordland-showdown,
+   vip-calculator) after styles.css. Adds: the event switcher, the swipe preview
+   panel, the page themes, and the components shared between events (the
+   wave/phase ruled rows, the practical checklist). Page-specific components
+   live next to their page: home.css (event cards, hover preview), vikings.css
+   (troop composition), swordland.css (buildings, scoreboards, matrix, games),
+   vip.css (the calculator's ruled rows and the reference ladder).
    Same tokens and the same one-signal-per-page contract as the base theme:
    each page owns one signal hue (home amber · bearhunt moss · vikings ember
    orange · swordland duel crimson + enemy steel-blue), everything else —
@@ -298,6 +299,82 @@ html[data-page="swordland"] .dust i:nth-child(3) { animation: dust-drift 80s lin
 @keyframes duel-tide {
   from { transform: translate3d(-3%, 0, 0); }
   to   { transform: translate3d(3%, -4%, 0); }
+}
+
+/* ─── VIP — the court's violet night ───────────────────── */
+/* The calculator page is a tool, not an event, so its world is the
+   court rather than a battlefield: a violet night, slow candlelight
+   motes, and a pale amethyst signal — the one cool signal on the
+   site, for the page that keeps the ledger. */
+html[data-page="vip"],
+html[data-hover="vip"],
+.swipe-peek[data-page="vip"] {
+  --void: #120A1E;        /* court night — violet-black        */
+  --void-2: #1C1330;      /* one step up (fields)              */
+  --amber: #C5A3EE;       /* amethyst — the court signal       */
+  --amber-dim: #9A75C9;   /* deep violet — secondary            */
+  --ember: rgba(197, 163, 238, 0.16); /* candlelight motes      */
+  --ember-2: rgba(166, 124, 219, 0.10);
+  --ember-3: rgba(236, 226, 250, 0.08); /* pale parchment motes */
+  --chrome: rgba(18, 10, 30, 0.9);
+  --signal-line: rgba(197, 163, 238, 0.35);
+  --signal-tint: rgba(197, 163, 238, 0.07);
+  --signal-glow: rgba(197, 163, 238, 0.22);
+  --signal-halo: rgba(197, 163, 238, 0.28);
+}
+
+/* Candlelight rises slow and straight — the court's quiet dust. */
+html[data-page="vip"] .dust i:nth-child(1) { animation: candle-rise 90s linear infinite; }
+html[data-page="vip"] .dust i:nth-child(2) { background-size: 200px 200px; animation: candle-rise 140s linear infinite reverse; }
+html[data-page="vip"] .dust i:nth-child(3) { background-size: 300px 300px; animation: candle-rise 200s linear infinite; }
+@keyframes candle-rise {
+  from { transform: translate3d(0, 4%, 0); }
+  to   { transform: translate3d(-2%, -6%, 0); }
+}
+
+/* ─── KvK & Strongest Governor — one wheel, two crowns ─── */
+/* The 2-in-1 page: KvK is the campaign of kings, so gold is its
+   primary — sceptre gold for the kingdom territory war, with the
+   Strongest Governor sections stepping up to a brighter crown gold,
+   the way Swordland alternates to the enemy blue. The wheel's battle
+   weekend borrows the shared --enemy red. */
+html[data-page="kvksg"],
+html[data-hover="kvksg"],
+.swipe-peek[data-page="kvksg"] {
+  --void: #081315;        /* sea night — black-teal            */
+  --void-2: #0F1F1E;      /* one step up (fields)              */
+  --amber: #D9B25A;       /* sceptre gold — the campaign signal */
+  --amber-dim: #A9823B;   /* deep gold — secondary             */
+  --ember: rgba(217, 178, 90, 0.16); /* campaign motes          */
+  --ember-2: rgba(196, 152, 66, 0.10);
+  --ember-3: rgba(240, 222, 178, 0.07); /* pale gold light      */
+  --chrome: rgba(8, 19, 21, 0.9);
+  --signal-line: rgba(217, 178, 90, 0.35);
+  --signal-tint: rgba(217, 178, 90, 0.07);
+  --signal-glow: rgba(217, 178, 90, 0.22);
+  --signal-halo: rgba(217, 178, 90, 0.28);
+  --enemy: #E05555;       /* the enemy kingdom — battle red    */
+  --enemy-dim: #B04040;
+}
+
+/* Strongest Governor sections wear a brighter crown gold — a step up
+   from the page's sceptre gold, so the SG blocks read as the peak of
+   the campaign. Scoping the signal tokens flips every amber accent in
+   the section at once. */
+html[data-page="kvksg"] .section.sg {
+  --amber: #F0CE7A;
+  --amber-dim: #C69A4E;
+}
+html[data-page="kvksg"] .section.sg h2 { color: var(--amber-dim); }
+html[data-page="kvksg"] .section.sg.front h2 { color: var(--amber); }
+
+/* The wheel's motes rise slowly — campaign banners going up. */
+html[data-page="kvksg"] .dust i:nth-child(1) { animation: mote-rise 110s linear infinite; }
+html[data-page="kvksg"] .dust i:nth-child(2) { background-size: 180px 180px; animation: mote-rise 160s linear infinite reverse; }
+html[data-page="kvksg"] .dust i:nth-child(3) { background-size: 260px 260px; animation: mote-rise 210s linear infinite; }
+@keyframes mote-rise {
+  from { transform: translate3d(0, 6%, 0); }
+  to   { transform: translate3d(2%, -6%, 0); }
 }
 
 /* ─── Shared ruled rows — wave/phase tables ───────────── */

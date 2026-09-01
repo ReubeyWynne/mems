@@ -66,7 +66,7 @@ window.__BH_I18N_DATA["en"] = {
 
 1. Copy `en.js` → `i18n/<code>.js`, translate every value, and make sure the `<code>`
    inside the wrapper's brackets matches the filename (`["<code>"] =`).
-2. Keep **every key** identical (213 today) — a missing key falls back to English.
+2. Keep **every key** identical (456 today) — a missing key falls back to English.
 3. Keep all HTML tags, classes and ids byte-identical; translate only the text inside.
 4. Never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, or proper nouns
    (Bear Hunt, Forgehammer, Frakinator, [2129]MadNess, player names).

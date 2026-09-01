@@ -1,5 +1,5 @@
 /* common.js — shared chrome for every page (home, bear-hunt, vikings-vengeance,
-   swordland-showdown).
+   swordland-showdown, vip-calculator).
    The pages are fully readable without this file; it only adds a scroll progress
    bar, section highlighting, the cracktro depth pull (front layer), the language
    picker, the event switcher, keyboard/swipe navigation between events, and the
@@ -72,12 +72,15 @@
   //   12    bear-hunt hedera — rule five
   //   13–15 typed secret words (frak/madness/bear)   (common.js)
   //   16    the bear moment / paw trophy     (common.js)
-  //   17–20 free
+  //   17–19 kvksg whispers                 (kvk.js)
+//   20    kvksg copy egg
   //   21–26 vikings whispers                 (vikings.js)
   //   27    vikings kill-surface toy
   //   28–34 swordland whispers               (swordland.js)
   //   35–36 swordland calculator eggs
   //   37    vikings waves whisper
+  //   38–41 vip whispers                     (vip.js)
+  //   42    vip calculator egg
   var EGG_KEY = 'bh_eggs';
   var seen = 0;
   try { seen = parseInt(localStorage.getItem(EGG_KEY) || '0', 10) || 0; } catch (e) { /* private mode */ }

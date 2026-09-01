@@ -1,0 +1,114 @@
+/* vip.css — the VIP calculator page only (vip-calculator/). Loaded after
+   styles.css + events.css (the court-violet theme block for the page lives
+   there). The calculator's ruled output rows, the milestone marks, the full
+   reference ladder, and the input chips — nothing else. */
+
+/* ─── Calculator rows — chips beside the controls ─────── */
+/* The .calc-row desktop rule gives inputs 55% of the row; the wrapper takes
+   that share so the chip sits beside the control, keeping the visual rhythm
+   of the other calculators. */
+.vip-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+.vip-input-wrap input { flex: 1 1 auto; min-width: 0; }
+.vip-chip {
+  flex: 0 0 auto;
+  font-family: var(--display-2);
+  font-weight: 700;
+  font-size: var(--step--1);
+  color: var(--amber);
+  white-space: nowrap;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--signal-line);
+  border-radius: 2px;
+}
+@media (min-width: 640px) {
+  .calc-row .vip-input-wrap { width: 55%; }
+  .calc-row .vip-input-wrap input[type="range"],
+  .calc-row .vip-input-wrap input[type="number"] { width: 100%; }
+}
+
+/* ─── The output table — ruled rows like the wave tables ─
+   Level | XP still needed | days | date. Milestone rows (4/6/9) carry the
+   signal accent and a small tag under the level. On narrow screens the
+   still-needed column drops — the date is the point. */
+.vip-out { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.vip-head, .vip-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 4.6rem 6.4rem;
+  gap: 0.7rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
+  font-size: var(--step--1);
+}
+.vip-head { border-bottom-color: rgba(157, 149, 127, 0.25); }
+.vip-head span {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-size: 0.9em;
+}
+.vip-lvl { font-family: var(--display-2); font-weight: 700; color: var(--ink); }
+.vip-lvl small {
+  display: block;
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 0.72em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber-dim);
+}
+.vip-need { color: var(--ink-dim); text-align: right; }
+.vip-days { color: var(--ink); text-align: right; }
+.vip-date { color: var(--amber); text-align: right; white-space: nowrap; }
+.vip-row.milestone .vip-lvl { color: var(--amber); }
+.vip-row.milestone .vip-date { color: var(--ink); }
+@media (max-width: 640px) {
+  .vip-head, .vip-row { grid-template-columns: 1fr 4.4rem 6.2rem; }
+  .vip-need { display: none; }
+}
+
+/* ─── The reference ladder — the same ruled rows, static ─ */
+.vip-ref { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.vr-head, .vr-row {
+  display: grid;
+  grid-template-columns: 3.6rem 6.4rem 6.6rem 1fr;
+  gap: 0.7rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
+  font-size: var(--step--1);
+}
+.vr-head { border-bottom-color: rgba(157, 149, 127, 0.25); }
+.vr-head span {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-size: 0.9em;
+}
+.vr-lvl { font-family: var(--display-2); font-weight: 700; color: var(--ink); }
+.vr-cost, .vr-cum { text-align: right; color: var(--ink-dim); }
+.vr-perk { color: var(--ink-dim); }
+.vr-row.milestone .vr-lvl { color: var(--amber); }
+.vr-row.milestone .vr-perk { color: var(--ink); }
+@media (max-width: 640px) {
+  .vr-head, .vr-row { grid-template-columns: 3.2rem 5.4rem 1fr; }
+  .vr-cum { display: none; }
+}
+
+/* ─── Target cards — the date line under the milestone copy ─ */
+.vip-target-date {
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(157, 149, 127, 0.18);
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+}
+.vip-target-date b { color: var(--amber); font-size: var(--step-0); }
+.vip-target-date.done { color: var(--ink-muted); }

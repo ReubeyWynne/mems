@@ -2,12 +2,13 @@
    swordland-showdown, vip-calculator).
    The pages are fully readable without this file; it only adds a scroll progress
    bar, section highlighting, the cracktro depth pull (front layer), the language
-   picker, the event switcher, keyboard/swipe navigation between events, and the
-   site-wide bear easter eggs. No dependencies, no data collected.
+   picker, the event switcher, keyboard/swipe navigation between events, and a
+   functional toast for genuine feedback (e.g. copy confirmation). No
+   dependencies, no data collected.
    i18n: all user-visible strings come from i18n/<lang>.js via window.I18N;
-   numbers format per the active locale. Page-specific toys and eggs register
-   through window.BH.registerPage(...) and live in bear-hunt.js / vikings.js /
-   swordland.js; the alliance gossip pool is shared and lives here. */
+   numbers format per the active locale. Page-specific toys register through
+   window.BH.registerPage(...) and live in the per-page files (bear-hunt.js,
+   vikings.js, swordland.js, kvk.js, vip.js). */
 (function () {
   'use strict';
 
@@ -29,165 +30,34 @@
   }
 
   // ── Page registration ──────────────────────────────────
-  // Page files call BH.registerPage({ whispers, gossip, boot, onChange })
-  // before boot runs (boot waits for the active dictionary, which loads
-  // asynchronously, or for DOMContentLoaded when i18n is missing entirely).
-  // Page files supply only what's theirs: whispers (page-specific one-shot
-  // discoveries) and toys. The gossip pool is alliance-wide lore, so it
-  // lives here once, shared by every page.
+  // Page files call BH.registerPage({ boot, onChange }) before boot runs
+  // (boot waits for the active dictionary, which loads asynchronously, or
+  // for DOMContentLoaded when i18n is missing entirely). Page files supply
+  // only what's theirs: their page toys.
   var pageCfg = {
-    whispers: function () { return []; },
-    gossip: function () { return sharedGossip(); },
     boot: function () {},
     onChange: function () {}
   };
 
-  // The alliance lore — the same pool on every event page, read lazily from
-  // the active dictionary so a language switch mid-session shows the new
-  // language (identical to how the whispers work).
-  function sharedGossip() {
-    return [
-      tr('egg.gossip0', 'xglitchx is a dinosaur \uD83E\uDD96'),
-      tr('egg.gossip1', 'xglitchx is a furry \uD83D\uDC3E'),
-      tr('egg.gossip2', 'get in the basement \uD83D\uDD73\uFE0F'),
-      tr('egg.gossip3', 'Spooks for King! \uD83D\uDC51'),
-      tr('egg.gossip4', 'take a second to r3lax \uD83D\uDE0C'),
-      tr('egg.gossip5', 'lucy\u2019s archers scare me \uD83C\uDFF9'),
-      tr('egg.gossip6', 'shadow you have how many troops?!? \u2694\uFE0F'),
-      tr('egg.gossip7', 'you saving for KvK? \uD83D\uDC8E')
-    ];
-  }
-
-  // ── Easter eggs — the bear keeps notes ────────────────
-  // One integer in localStorage, bit N = egg N seen (registry below).
-  // Crafted eggs are one-shot discoveries; the gossip pool repeats.
-  // Nothing else is ever written.
-  //
-  // Bit registry — allocation is manual, so keep it in one place and
-  // never reuse a released id (a seen bit is sticky in localStorage
-  // forever; a collision silently "permanently seen"s an egg on
-  // another page).
-  //   0–7   bear-hunt whispers              (bear-hunt.js)
-  //   8–11  bear-hunt calculator eggs
-  //   12    bear-hunt hedera — rule five
-  //   13–15 typed secret words (frak/madness/bear)   (common.js)
-  //   16    the bear moment / paw trophy     (common.js)
-  //   17–19 kvksg whispers                 (kvk.js)
-//   20    kvksg copy egg
-  //   21–26 vikings whispers                 (vikings.js)
-  //   27    vikings kill-surface toy
-  //   28–34 swordland whispers               (swordland.js)
-  //   35–36 swordland calculator eggs
-  //   37    vikings waves whisper
-  //   38–41 vip whispers                     (vip.js)
-  //   42    vip calculator egg
-  var EGG_KEY = 'bh_eggs';
-  var seen = 0;
-  try { seen = parseInt(localStorage.getItem(EGG_KEY) || '0', 10) || 0; } catch (e) { /* private mode */ }
-  function eggSeen(id) { return (seen & (1 << id)) !== 0; }
-  function markEgg(id) {
-    seen = seen | (1 << id);
-    try { localStorage.setItem(EGG_KEY, String(seen)); } catch (e) { /* private mode */ }
-  }
-
-  // A single parchment slip, reused. Floating for whispers and toasts; static
-  // (anchored inside a .calc) for calculator eggs.
+  // A single parchment slip, reused — functional feedback only (e.g. the
+  // copy confirmation on the Event Cycle page). Fixed bottom-centre so the
+  // toast lands the same place every time.
   var note = null;
-  function showNote(line, anchor) {
+  function showNote(line) {
     if (note && note.parentNode) note.parentNode.removeChild(note);
     var el = document.createElement('div');
     note = el;
-    el.className = 'egg-note' + (anchor ? ' calc-note' : '');
-    el.style.setProperty('--tilt', (Math.random() * 5 - 2.5).toFixed(2) + 'deg');
+    el.className = 'egg-note';
     el.setAttribute('aria-hidden', 'true');
     el.textContent = line;
-    if (anchor) {
-      anchor.appendChild(el);
-    } else {
-      var left = Math.random() < 0.5;
-      el.style.left = left ? (6 + Math.random() * 14) + 'vw' : 'auto';
-      el.style.right = left ? 'auto' : (6 + Math.random() * 14) + 'vw';
-      el.style.bottom = (16 + Math.random() * 34) + 'vh';
-      document.body.appendChild(el);
-    }
+    el.style.left = '0';
+    el.style.right = '0';
+    el.style.bottom = '24vh';
+    el.style.margin = '0 auto';
+    document.body.appendChild(el);
     setTimeout(function () {
       if (el.parentNode) el.parentNode.removeChild(el);
-    }, anchor ? 4000 : 4400);
-  }
-
-  // ── Random margin whispers & alliance gossip ───────────
-  // `whispers` are one-shot discoveries (bit N set once), read lazily from the
-  // page config so a language switch mid-session picks up the new strings.
-  // `gossip` is repeatable alliance lore — no bit, it can recur like alliance
-  // chat, rate-limited and capped.
-  var lastNoteAt = 0;
-  var notesShown = 0;
-  function maybeWhisper(sectionId) {
-    if (notesShown >= 3 || !sectionId) return;
-    var now = Date.now();
-    if (now - lastNoteAt < 15000) return;
-    var whispers = pageCfg.whispers();
-    var gossip = pageCfg.gossip();
-    var w = null;
-    for (var i = 0; i < whispers.length; i++) {
-      if (whispers[i].section === sectionId && !eggSeen(whispers[i].id)) { w = whispers[i]; break; }
-    }
-    var line = null;
-    if (w && Math.random() < 0.015) {
-      markEgg(w.id);
-      line = w.line;
-    } else if (gossip.length && Math.random() < 0.03) {
-      line = gossip[Math.floor(Math.random() * gossip.length)];
-    }
-    if (!line) return;
-    notesShown += 1;
-    lastNoteAt = now;
-    showNote(line);
-  }
-
-  // ── Typed words — parchment toasts (site-wide) ────────
-  // The secret words stay English in every language (typing is Latin-only by
-  // design); the toasts translate.
-  var typedBuf = '';
-  var secretWords = [
-    { id: 13, word: 'frak',    key: 'egg.word.frak',    fallback: 'the Frakinator\u2019s bear is watching. it approves of your maths. \uD83D\uDC3B' },
-    { id: 14, word: 'madness', key: 'egg.word.madness', fallback: 'MADNESS \u2014 the alliance that reads. the bear knows your name. \uD83D\uDCD6' },
-    { id: 15, word: 'bear',    key: 'egg.word.bear',    fallback: 'you said his name. he is now behind you. \uD83D\uDC3B' }
-  ];
-  document.addEventListener('keydown', function (e) {
-    if (e.ctrlKey || e.metaKey || e.altKey || e.key.length !== 1) return;
-    var ch = e.key.toLowerCase();
-    if (ch < 'a' || ch > 'z') { typedBuf = ''; return; }
-    typedBuf = (typedBuf + ch).slice(-12);
-    for (var i = 0; i < secretWords.length; i++) {
-      var sw = secretWords[i];
-      if (eggSeen(sw.id)) continue;
-      var at = typedBuf.indexOf(sw.word);
-      if (at !== -1 && at + sw.word.length === typedBuf.length) {
-        markEgg(sw.id);
-        showNote(tr(sw.key, sw.fallback));
-      }
-    }
-  });
-
-  // ── The bear moment — rare, once, then a trophy ────────
-  var pawSVG = '<svg class="paw" viewBox="0 0 64 64" aria-hidden="true">' +
-    '<ellipse cx="32" cy="42" rx="14" ry="11" fill="currentColor"/>' +
-    '<ellipse cx="13" cy="24" rx="5.5" ry="7.5" fill="currentColor"/>' +
-    '<ellipse cx="27" cy="13" rx="5.5" ry="7.5" fill="currentColor"/>' +
-    '<ellipse cx="42" cy="13" rx="5.5" ry="7.5" fill="currentColor"/>' +
-    '<ellipse cx="54" cy="23" rx="5.5" ry="7.5" fill="currentColor"/></svg>';
-  function plantTrophy() {
-    if (document.querySelector('.paw-trophy')) return;
-    var foot = document.querySelector('footer');
-    if (!foot) return;
-    var trophy = document.createElement('button');
-    trophy.type = 'button';
-    trophy.className = 'paw-trophy';
-    trophy.setAttribute('aria-label', tr('egg.trophyAria', 'the bear has been here'));
-    trophy.innerHTML = pawSVG + '<span>' + tr('egg.trophyLabel', 'he has been here') + '</span>';
-    trophy.addEventListener('click', function () { showNote(tr('egg.trophyClick', 'he comes back when you re-read the rules.')); });
-    foot.appendChild(trophy);
+    }, 4400);
   }
 
   // ── Event navigation — switcher, keyboard, swipe ───────
@@ -203,7 +73,7 @@
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
     var t = e.target;
-    if (t && t.closest && t.closest('input, select, textarea, [contenteditable], #lang-menu, #lang-btn, #toc')) return;
+    if (t && t.closest && t.closest('input, select, textarea, [contenteditable], #lang-menu, #lang-btn, #ledger, #toc')) return;
     var url = neighbor(e.key === 'ArrowLeft' ? -1 : 1);
     if (url) { e.preventDefault(); window.location.href = url; }
   });
@@ -212,19 +82,26 @@
   // Horizontal intent requires |dx| > |dy| before the peek activates, so
   // reading a long page never triggers it (overscroll-behavior-x: none in
   // events.css keeps the browser's edge-swipe from fighting us). Drags
-  // starting on form controls or the TOC rail are ignored. Past ~14% of the
-  // viewport the preview springs fully open so its content is readable; a
-  // release past ~38% (or a fast flick) navigates, short drags spring back —
-  // the preview never commits by itself.
+  // starting on form controls or the TOC rail are ignored. The preview
+  // follows the finger in both directions: past ~14% of the viewport it
+  // springs fully open so its content is readable, and it stays fully in
+  // only while the finger holds it there — pull back and it re-parks at
+  // the finger. Committing is deliberate and positional: releasing while
+  // still holding at/past ~38% navigates; every other release springs
+  // back, so short or fast drags never navigate on their own.
   var peek = null;
   var peekMain = null;
   var peekHint = null;
   // OPEN_FRAC: how far the finger must travel (fraction of viewport width)
   // before the preview springs fully open — the content is readable long
-  // before the release point. COMMIT_FRAC: release past this navigates.
+  // before the release point. COMMIT_FRAC: releasing while still holding
+  // at/past this navigates; any release below it springs back.
   var OPEN_FRAC = 0.14;
   var COMMIT_FRAC = 0.38;
-  var g = { startX: null, startY: null, active: false, opened: false, dir: 0, t0: 0 };
+  // g.opened is a live view of "the finger is at/past OPEN_FRAC right now",
+  // recomputed on every move — never a one-way latch.
+  var g = { startX: null, startY: null, active: false, opened: false, dir: 0 };
+  var peekHintText = '';
 
   function makePeek() {
     peek = document.createElement('div');
@@ -252,6 +129,12 @@
     };
   }
 
+  function setPeekHint(text) {
+    if (!peekHint || peekHintText === text) return;
+    peekHintText = text;
+    peekHint.textContent = text;
+  }
+
   function showPeek(dir) {
     if (!peek) makePeek();
     var d = peekData(dir);
@@ -264,7 +147,7 @@
     peek.querySelector('.peek-kicker').textContent = d.kicker;
     peek.querySelector('.peek-title').textContent = d.title;
     peek.querySelector('.peek-lede').textContent = d.lede;
-    if (peekHint) peekHint.textContent = tr('ev.peek.release', 'release to open');
+    setPeekHint(tr('ev.peek.dismiss', 'pull back to dismiss'));
     document.body.classList.add('swiping');
   }
 
@@ -283,7 +166,10 @@
   function openPeek() {
     if (!peek) return;
     // Spring the preview fully open — readable well before the natural
-    // release point, and it stays open while the finger is down.
+    // release point. Fires only on a clean crossing into the open zone,
+    // while the finger holds at/past OPEN_FRAC. If the finger pulls back
+    // below it, touchmove drops .snap and re-parks the panel at the
+    // finger, so the spring never fights a reversal.
     peek.classList.add('snap');
     peek.style.transform = 'translateX(0)';
   }
@@ -307,11 +193,10 @@
   document.addEventListener('touchstart', function (e) {
     if (e.touches.length !== 1) return;
     var t = e.target;
-    if (t && t.closest && t.closest('input, select, textarea, [contenteditable], #toc')) return;
+    if (t && t.closest && t.closest('input, select, textarea, [contenteditable], #ledger, #toc')) return;
     var touch = e.touches[0];
     g.startX = touch.clientX;
     g.startY = touch.clientY;
-    g.t0 = Date.now();
     g.active = false;
     g.opened = false;
     g.dir = 0;
@@ -329,21 +214,34 @@
       if (!neighbor(g.dir)) { g.startX = null; return; } // nowhere to go
       g.active = true;
       showPeek(g.dir);
+      // A leftover release spring (resetPeek clears .snap after 400 ms) must
+      // never rubber-band a drag that starts inside that window.
+      if (peek) peek.classList.remove('snap');
+      if (peekMain) peekMain.classList.remove('snap');
     }
     if (g.active) {
       e.preventDefault(); // horizontal drag: never a click, never a scroll
-      if (!g.opened) {
-        var vw = document.documentElement.clientWidth || window.innerWidth;
-        if (Math.abs(dx) >= vw * OPEN_FRAC) {
-          g.opened = true;
-          openPeek();
-        } else {
-          positionPeek(dx);
-          parallaxMain(dx);
-        }
+      var vw = document.documentElement.clientWidth || window.innerWidth;
+      // Drive the preview from the live drag, in both directions, at every
+      // stage. "opened" means "|dx| is at/past OPEN_FRAC right now": while
+      // the finger holds there the panel stays fully in; pulling back below
+      // re-parks it at the finger instead of leaving it locked open.
+      if (Math.abs(dx) >= vw * OPEN_FRAC) {
+        if (!g.opened) { g.opened = true; openPeek(); }
       } else {
-        parallaxMain(dx); // preview stays open; the finger only decides the release
+        if (g.opened) {
+          g.opened = false;
+          // Reversal: drop the spring so the panel snaps back to the finger
+          // instantly — the transition must never fight the pull-back.
+          if (peek) peek.classList.remove('snap');
+          if (peekMain) peekMain.classList.remove('snap');
+        }
+        positionPeek(dx);
       }
+      parallaxMain(dx);
+      setPeekHint(Math.abs(dx) >= vw * COMMIT_FRAC
+        ? tr('ev.peek.release', 'release to open')
+        : tr('ev.peek.dismiss', 'pull back to dismiss'));
     }
   }, { passive: false });
 
@@ -351,9 +249,12 @@
     if (!g.active) { g.startX = null; return; }
     var touch = e.changedTouches[0];
     var dx = touch.clientX - g.startX;
-    var dt = Date.now() - g.t0;
     var vw = document.documentElement.clientWidth || window.innerWidth;
-    var commit = Math.abs(dx) > vw * COMMIT_FRAC || (Math.abs(dx) > 60 && dt < 250);
+    // Position-only, held-on-release commit: navigate only when the finger
+    // lifts while still at/past the commit bar. Any release below it —
+    // however fast the flick — springs back via resetPeek, so a short swipe
+    // can never navigate, and pulling back before lifting always cancels.
+    var commit = Math.abs(dx) >= vw * COMMIT_FRAC;
     var dir = g.dir;
     resetPeek();
     g.startX = null;
@@ -449,7 +350,6 @@
           if (entry.isIntersecting) {
             contentSections.forEach(function (s) { s.classList.remove('front'); });
             entry.target.classList.add('front');
-            maybeWhisper(entry.target.id);
           }
         });
       }, { rootMargin: '-30% 0px -60% 0px' });
@@ -567,33 +467,67 @@
       syncPicker();
     }
 
+    // Ledger — the ❧ directory drawer (mobile topbar): a fleuron button
+    // opens the grouped page list under the bar. Same open/close contract
+    // as the language menu: aria-expanded, hidden, Esc + outside-click
+    // close, focus moves to the first row and returns to the trigger.
+    var ledgerBtn = document.getElementById('ledger-btn');
+    var ledger = document.getElementById('ledger');
+    if (ledgerBtn && ledger) {
+      var ledgerLinks = Array.prototype.slice.call(ledger.querySelectorAll('a'));
+      var ledgerOpen = false;
+      function setLedgerOpen(open, focusList) {
+        ledgerOpen = open;
+        ledgerBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        ledger.hidden = !open;
+        ledgerBtn.classList.toggle('open', open);
+        if (open && focusList && ledgerLinks.length) {
+          var current = ledger.querySelector('a.active') || ledgerLinks[0];
+          current.focus();
+        }
+      }
+      ledgerBtn.addEventListener('click', function () { setLedgerOpen(!ledgerOpen, true); });
+      ledgerBtn.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          setLedgerOpen(true, true);
+        }
+      });
+      ledger.addEventListener('keydown', function (e) {
+        var idx = ledgerLinks.indexOf(document.activeElement);
+        if (idx === -1) return;
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          ledgerLinks[(idx + 1) % ledgerLinks.length].focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          ledgerLinks[(idx + ledgerLinks.length - 1) % ledgerLinks.length].focus();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          setLedgerOpen(false);
+          ledgerBtn.focus();
+        }
+      });
+      document.addEventListener('click', function (e) {
+        if (ledgerOpen && !ledgerBtn.contains(e.target) && !ledger.contains(e.target)) {
+          setLedgerOpen(false);
+        }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && ledgerOpen) {
+          setLedgerOpen(false);
+          ledgerBtn.focus();
+        }
+      });
+    }
+
     // Language change: re-format, let the page repaint
     document.addEventListener('i18n:change', function () {
       nf = new Intl.NumberFormat(getLocale());
       pageCfg.onChange();
     });
 
-    // Site-wide bear presence
-    if (eggSeen(16)) {
-      plantTrophy();
-    } else if (Math.random() < 0.005) {
-      markEgg(16);
-      var moment = document.createElement('div');
-      moment.className = 'bear-moment';
-      moment.setAttribute('aria-hidden', 'true');
-      moment.innerHTML = pawSVG + '<p>' + tr('egg.bearMoment', 'the bear sees you.') + '</p>';
-      document.body.appendChild(moment);
-      requestAnimationFrame(function () { moment.classList.add('show'); });
-      setTimeout(function () {
-        moment.classList.remove('show');
-        setTimeout(function () {
-          if (moment.parentNode) moment.parentNode.removeChild(moment);
-          plantTrophy();
-        }, 700);
-      }, 1600);
-    }
-
-    // Page toys (calculators, page eggs)
+    // Page toys (calculators)
     pageCfg.boot(BH);
 
     restoreScroll();
@@ -605,12 +539,8 @@
     mult: mult,
     tr: tr,
     showNote: showNote,
-    eggSeen: eggSeen,
-    markEgg: markEgg,
     registerPage: function (cfg) {
       if (!cfg) return;
-      if (cfg.whispers) pageCfg.whispers = cfg.whispers;
-      if (cfg.gossip) pageCfg.gossip = cfg.gossip;
       if (cfg.boot) pageCfg.boot = cfg.boot;
       if (cfg.onChange) pageCfg.onChange = cfg.onChange;
     }

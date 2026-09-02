@@ -1,6 +1,7 @@
-/* kvk.css — KvK & Strongest Governor page (kvk-strongest-governor/). Loaded
-   after styles.css + events.css. The live 28-day clock, the prep chart, the
-   point tables, and the KingShot copy box — the page's own components. */
+/* kvk.css — the Event Cycle page (kvk-strongest-governor/), the 28-day
+   clock for the recurring events. Loaded after styles.css + events.css.
+   The live 28-day clock, the prep chart, the point tables, and the KingShot
+   copy box — the page's own components. */
 
 /* ─── Beta demarcation — this page is a work in progress ─ */
 .beta-badge {

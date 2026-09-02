@@ -29,19 +29,21 @@ Brawl week (Swordland Showdown) → Strongest Governor week → Alliance Mobiliz
   Development → Skill Up → Combat Training → Skill Up → Combat Training → Hero Development.
 - Newer kingdoms unlock KvK only after their **5th Hall of Governors** event.
 - ⚠ Only the Strongest Governor slot is independently verified in-client; the other
-  three weeks are a community-reported ordering. **The schedule is GLOBAL — the
-  alliance confirms today (2026-09-01) is cycle day 15**, so the wheel is anchored to
-  real dates: **cycle day 1 = 2026-08-18** (KvK prep opens 2026-09-08, battle weekend
-  2026-09-13/14). The live display derives today's day from the date; a calibration
+  three weeks are a community-reported ordering. **The schedule is GLOBAL — the owner
+  confirms (2026-09-02) we are on cycle day 17**, and **day 1 is always a Monday**, so
+  the wheel is anchored to real dates: **cycle day 1 = Monday 2026-08-17** (2026-09-01
+  is day 16; KvK prep opens on day 22, 2026-09-07; the battle weekend is days 27–28,
+  2026-09-12/13). The live display derives today's day from the date; a calibration
   input re-anchors day 1 if a device date ever differs from the game's. Kingdoms that
   haven't yet unlocked KvK (pre-5th-Hall-of-Governors) run their own clock until they
   join the global wheel.
 - **Days 20–21 are the KvK matchmaking window** — the opponent reveal happens there,
   before prep opens on day 22. Day 21 is the intel-hold day: stop collecting
   Watchtower missions from 08:00 so they bank and cash in for prep points.
-- **Swordland Showdown runs twice a cycle** — the Sunday of Brawl week (day 6) AND
-  the Sunday of Mobilization week (day 20) — the user's correction over the
-  community calendar, which only credits Brawl week.
+- **Swordland Showdown runs twice a cycle** — the Sunday of Brawl week AND the
+  Sunday of Mobilization week (days 7 and 21 under the Monday anchor; the earlier
+  day 6 / day 20 numbers came from the old Tuesday-anchored draft) — the user's
+  correction over the community calendar, which only credits Brawl week.
 - **Alliance Mobilization is its own event**, not a quiet week — it has no fixed
   daily themes. The guidance is minimal spend: skip the Armament Competition /
   Officer Project rankings, take the fixed rewards with minimal resources, and keep the
@@ -310,10 +312,11 @@ One shared engine, two event calendars. Each calendar is an array of days; each 
 ```
 
 - **Cycle input:** the schedule is global — the page derives today's day from the
-  date, anchored at **cycle day 1 = 2026-08-18** (a one-line constant in `kvk.js`),
-  with a calibration date input ("day 1 of the cycle falls on…") persisted in
-  localStorage for when the device date differs from the game's. Stepper + week-jump
-  buttons are for peeking at other days; a "today" button snaps back.
+  date, anchored at **cycle day 1 = Monday 2026-08-17** (a one-line constant in
+  `kvk.js`), with a calibration date input ("day 1 of the cycle falls on…") persisted
+  in localStorage for when the device date differs from the game's. Stepper +
+  week-jump buttons are for peeking at other days; a "today" button snaps back, and
+  the card re-checks the date on focus/visibility so an open tab rolls over cleanly.
 - **Today's card:** which event is live (KvK prep day 1–5, SG day 1–7, battle weekend,
   or off-week), the theme, the ✅/🆗/🚫 efficient-spend list for the *current* day, and
   what **not** to touch today (the 🚫 column is the real value).

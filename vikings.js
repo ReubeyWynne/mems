@@ -1,9 +1,8 @@
-/* vikings.js — Vikings Vengeance page toys and easter eggs.
+/* vikings.js — Vikings Vengeance page toys.
    Registers with common.js via window.BH.registerPage: the kill-surface toy
-   (cities you reinforce → garrisons scoring for you) and its deliberate-
-   deviation egg. Whisper strings and the kill-surface outline are read lazily
-   from the active dictionary (vv.* keys, English fallback), so a language
-   switch mid-session shows the new language. */
+   (cities you reinforce → garrisons scoring for you). The outline reads
+   lazily from the active dictionary (vv.* keys, English fallback), so a
+   language switch mid-session shows the new language. */
 (function () {
   'use strict';
 
@@ -32,26 +31,9 @@
     } else {
       outline.innerHTML = BH.tr('vv.stand.out', '<b>{n}</b> garrisons score for you at once \u2014 <b>{n}\u00D7</b> the kill surface of staying home.').replace(/\{n\}/g, n);
     }
-    if (n === 6 && !BH.eggSeen(27)) {
-      BH.markEgg(27);
-      BH.showNote(BH.tr('vv.egg.toy', 'six garrisons. the bear sails with all of them.'), outline.closest('.calc'));
-    }
   }
 
   BH.registerPage({
-    whispers: function () {
-      var tr = BH.tr;
-      return [
-        { id: 21, section: 'top',         line: tr('vv.egg.whisper0', 'the bear reads this page too. he\u2019s learning to row.') },
-        { id: 37, section: 'waves',       line: tr('vv.egg.whisper6', 'twenty waves. the bear rows through all of them.') },
-        { id: 22, section: 'stand',       line: tr('vv.egg.whisper1', 'every troop at home is a kill nobody scores. the bear counts them.') },
-        { id: 24, section: 'online',      line: tr('vv.egg.whisper3', 'wave 17 is the bear\u2019s favourite. everyone is online for wave 17.') },
-        { id: 23, section: 'composition', line: tr('vv.egg.whisper2', 'infantry first, archers last. the bear knows the queue.') },
-        { id: 25, section: 'hq',          line: tr('vv.egg.whisper4', 'fifteen slots at the longhouse. the bear counts those too.') },
-        { id: 26, section: 'heroes',      line: tr('vv.egg.whisper5', 'send the bear-hunt faces. the vikings fear the bear.') }
-      ];
-    },
-    // gossip: the alliance lore is shared site-wide — see common.js.
     boot: boot,
     onChange: function () { paint(BH); }
   });

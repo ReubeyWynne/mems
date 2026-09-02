@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" data-page="kvksg" data-prev-url="../swordland-showdown/" data-prev-page="swordland" data-prev-title="Swordland Showdown" data-prev-lede="two scoreboards, one 180,000, and winning is only one lever." data-next-url="../vip-calculator/" data-next-page="vip" data-next-title="VIP Calculator" data-next-lede="your VIP XP at your own rate, the date for every remaining level.">
+<html lang="en" data-page="kvksg" data-prev-url="../" data-prev-page="home" data-prev-title="The events" data-prev-lede="the alliance events in plain words — how each one scores, what to do about it." data-next-url="../bear-hunt/" data-next-page="bearhunt" data-next-title="Bear Hunt" data-next-lede="the lead's stats × your troops — with a square root on your count.">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#081315">
-<meta name="description" content="KvK & Strongest Governor, demystified. One 28-day clock runs both: set it to your kingdom's day and see what's efficient today, what to save, and what to copy into KingShot." data-i18n-key="ks.meta.description" data-i18n-attr="content">
-<meta property="og:title" content="KvK &amp; Strongest Governor, Demystified" data-i18n-key="ks.meta.ogTitle" data-i18n-attr="content">
-<meta property="og:description" content="One 28-day clock, two events: what's efficient today, in plain words." data-i18n-key="ks.meta.ogDescription" data-i18n-attr="content">
+<meta name="description" content="One 28-day clock for the recurring events. Day 1 is always a Monday: set it to your kingdom's day — what's on today, what to save, what to copy into KingShot." data-i18n-key="ks.meta.description" data-i18n-attr="content">
+<meta property="og:title" content="Event Cycle, Demystified" data-i18n-key="ks.meta.ogTitle" data-i18n-attr="content">
+<meta property="og:description" content="One 28-day clock for the recurring events — what's on today, in plain words." data-i18n-key="ks.meta.ogDescription" data-i18n-attr="content">
 <meta property="og:type" content="website">
-<title data-i18n="ks.meta.title">KvK &amp; Strongest Governor, Demystified</title>
+<title data-i18n="ks.meta.title">Event Cycle, Demystified</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23081315'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23D9B25A'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,17 +73,18 @@
 <div class="dust" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <header class="topbar">
-  <span class="brand">KVK &amp; <b>GOVERNOR</b></span>
+  <span class="brand">EVENT <b>CYCLE</b></span>
   <nav class="ev-switch" aria-label="Events" data-i18n-key="ev.switchAria" data-i18n-attr="aria-label">
     <a href="../" data-i18n="ev.switch.home">Home</a>
+    <a href="../kvk-strongest-governor/" class="active" aria-current="page" data-i18n="ev.switch.cycle">Event Cycle</a>
     <a href="../bear-hunt/" data-i18n="ev.switch.bear">Bear Hunt</a>
     <a href="../vikings-vengeance/" data-i18n="ev.switch.vikings">Vikings</a>
     <a href="../swordland-showdown/" data-i18n="ev.switch.swordland">Swordland</a>
-    <a href="../kvk-strongest-governor/" class="active" aria-current="page" data-i18n="ev.switch.kvk">KvK / Gov</a>
     <a href="../vip-calculator/" data-i18n="ev.switch.vip">VIP</a>
   </nav>
   <div class="topbar-right">
     <span class="brand-note" data-i18n="ks.brandNote">the 28-day clock</span>
+    <button type="button" id="ledger-btn" class="ledger-btn" aria-haspopup="true" aria-expanded="false" aria-controls="ledger" aria-label="the ledger — every page" data-i18n-key="ev.ledger.aria" data-i18n-attr="aria-label">❧</button>
     <div class="lang-picker">
       <button type="button" id="lang-btn" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language" data-i18n-key="ui.lang" data-i18n-attr="aria-label">
         <svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><clipPath id="t"><path d="M25,15h25v15zv15h-25zh-25v-15zv-15h25z"/></clipPath><path d="M0,0v30h50v-30z" fill="#012169"/><path d="M0,0 50,30M50,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 50,30M50,0 0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M-1 11h22v-12h8v12h22v8h-22v12h-8v-12h-22z" fill="#C8102E" stroke="#FFF" stroke-width="2"/></svg>
@@ -109,12 +110,26 @@
       </ul>
     </div>
   </div>
+  <nav id="ledger" class="ledger" aria-label="the ledger — every page" data-i18n-key="ev.ledger.aria" data-i18n-attr="aria-label" hidden>
+    <p class="ledger-group" data-i18n="ev.ledger.home">the index</p>
+    <a href="../" data-i18n="ev.switch.home">Home</a>
+    <p class="ledger-group" data-i18n="ev.ledger.guides">the events</p>
+    <a href="../kvk-strongest-governor/" class="active" aria-current="page" data-i18n="ev.switch.cycle">Event Cycle</a>
+    <a href="../bear-hunt/" data-i18n="ev.switch.bear">Bear Hunt</a>
+    <a href="../vikings-vengeance/" data-i18n="ev.switch.vikings">Vikings</a>
+    <a href="../swordland-showdown/" data-i18n="ev.switch.swordland">Swordland</a>
+    <p class="ledger-group" data-i18n="ev.ledger.tools">the tools</p>
+    <a href="../vip-calculator/" data-i18n="ev.switch.vip">VIP</a>
+  </nav>
   <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress"></div></div>
 </header>
 
 <nav class="toc" id="toc" aria-label="Sections" data-i18n-key="nav.aria" data-i18n-attr="aria-label">
   <a href="#today" data-i18n="ks.nav.today">Today</a>
   <a href="#cycle" data-i18n="ks.nav.cycle">The 28-day clock</a>
+  <a href="#armament" data-i18n="ks.nav.armament">Armament Competition</a>
+  <a href="#officer" data-i18n="ks.nav.officer">Officer Project</a>
+  <a href="#brawl" data-i18n="ks.nav.brawl">Alliance Brawl</a>
   <a href="#matrix" data-i18n="ks.nav.matrix">The prep chart</a>
   <a href="#days" data-i18n="ks.nav.days">The five prep days</a>
   <a href="#governor" data-i18n="ks.nav.governor">Strongest Governor</a>
@@ -125,23 +140,22 @@
 <main>
   <!-- ═══════════ HERO ═══════════ -->
   <section class="section hero" id="top">
-    <h1 data-i18n-html="ks.hero.h1">KVK &amp; STRONGEST GOVERNOR,<br><span class="accent">DEMYSTIFIED</span></h1>
+    <h1 data-i18n-html="ks.hero.h1">EVENT CYCLE,<br><span class="accent">DEMYSTIFIED</span></h1>
     <span class="beta-badge">BETA</span>
-    <p class="lede" data-i18n-html="ks.hero.lede">Two events, one clock. Kingdom of Power prep and Strongest Governor
-      run on the same 28-day wheel, and both are won by spending <strong>the right hoard on the right day</strong>.
-      This page tells you which day it is today, what's efficient, and what to copy into KingShot.</p>
+    <p class="lede" data-i18n-html="ks.hero.lede">One <strong>28-day wheel</strong> for the recurring events —
+      <strong>day 1 is always a Monday</strong>. Set it to your kingdom's day: what's on today, what to save, what to
+      copy into KingShot.</p>
     <p class="chips"><span data-i18n="ks.hero.chip1">every 28 days</span> <span aria-hidden="true">·</span>
-      <span data-i18n="ks.hero.chip2">5 prep + battle</span> <span aria-hidden="true">·</span>
-      <span data-i18n="ks.hero.chip3">7 governor days</span> <span aria-hidden="true">·</span>
+      <span data-i18n="ks.hero.chip2">day 1 is a monday</span> <span aria-hidden="true">·</span>
+      <span data-i18n="ks.hero.chip3">prep · governor · light weeks</span> <span aria-hidden="true">·</span>
       <span data-i18n="ks.hero.chip4">copy for KingShot</span></p>
   </section>
 
   <!-- ═══════════ 1 · TODAY — THE LIVE DISPLAY ═══════════ -->
   <section class="section" id="today">
     <h2 data-i18n="ks.today.title">Today</h2>
-    <p class="lede" data-i18n-html="ks.today.lede">The card below follows the 28-day wheel: the same day for every
-      kingdom, worked out from the date. It tells you what's worth spending today, what to save, and what to copy into
-      KingShot. The buttons just let you look at other days.</p>
+    <p class="lede" data-i18n-html="ks.today.lede">The card follows the 28-day wheel and works today out from your
+      device's date — what's worth spending, what to save, what to copy into KingShot. The buttons peek at other days.</p>
 
     <div class="calc live">
       <p class="calc-title" data-i18n="ks.today.calcTitle">THE 28-DAY CLOCK: WHERE ARE WE?</p>
@@ -160,8 +174,7 @@
         <button type="button" class="kb" data-jump="15">Mobilize</button>
         <button type="button" class="kb" data-jump="22">KvK</button>
       </div>
-      <p class="note" data-i18n="ks.today.note">Every kingdom runs the same wheel on the same day. If your device's
-        date ever disagrees with the game's, set the date of cycle day 1 below.</p>
+      <p class="note" data-i18n="ks.today.note">Same wheel, every kingdom. Device date off? Set cycle day 1 below.</p>
       <p class="epoch-set"><label><span data-i18n="ks.today.epoch">day 1 of the cycle falls on</span>
         <input type="date" id="ks-epoch" aria-label="the date of cycle day 1"></label></p>
 
@@ -174,14 +187,14 @@
   <!-- ═══════════ 2 · THE 28-DAY CLOCK ═══════════ -->
   <section class="section" id="cycle">
     <h2 data-i18n="ks.cycle.title">The 28-day clock</h2>
-    <p class="lede" data-i18n-html="ks.cycle.lede">Four weeks, one loop. After your kingdom's first Kingdom of Power,
-      the same four weeks repeat forever, and KvK matches on a <strong>global 28-day cycle</strong>, so every kingdom
-      runs its prep and battle in the same calendar week. Which week you're in is the whole game.</p>
+    <p class="lede" data-i18n-html="ks.cycle.lede">Four weeks, one loop. After your kingdom's first Kingdom of Power
+      they repeat forever on a <strong>global 28-day cycle</strong> — every kingdom runs the same week, and
+      <strong>day 1 is always a Monday</strong>. Which week you're in is the whole game.</p>
 
     <div class="wavetable">
-      <div class="wt-row"><span class="wt-waves">1–7</span><span class="wt-type">Brawl</span><span class="wt-note" data-i18n-html="ks.cycle.w1">Swordland Showdown's week: its Sunday battle, one of two in the cycle. No fixed daily prep themes; keep building; Strongest Governor is next.</span></div>
+      <div class="wt-row"><span class="wt-waves">1–7</span><span class="wt-type">Brawl</span><span class="wt-note" data-i18n-html="ks.cycle.w1">Alliance Brawl week — the light week, days 1–7: the brawl runs 6.5 days against another kingdom, and armament (Type 1 Mon–Tue, Type 2 Fri–Sat) and officer (Type A Wed–Thu, Type B Sun into day 8) each run twice inside it. Swordland's battle fires on its Sunday.</span></div>
       <div class="wt-row"><span class="wt-waves">8–14</span><span class="wt-type">Governor</span><span class="wt-note" data-i18n-html="ks.cycle.w2">Strongest Governor: seven personal days, a different theme each day. Spend on the days that match your hoard.</span></div>
-      <div class="wt-row"><span class="wt-waves">15–21</span><span class="wt-type">Mobilize</span><span class="wt-note" data-i18n-html="ks.cycle.w3">Alliance Mobilization: its own event, no fixed daily themes, and Swordland Showdown's battle runs again on its Sunday. Spend minimal KvK-precious resources; days 20–21 are matchmaking, and day 21 is when you hold intel for prep.</span></div>
+      <div class="wt-row"><span class="wt-waves">15–21</span><span class="wt-type">Mobilize</span><span class="wt-note" data-i18n-html="ks.cycle.w3">Alliance Mobilization week — days 15–21, its own event with no daily themes: the armament and officer runs repeat the same pattern, Type B's Sunday run spilling into prep day 1 (day 22). Days 20–21 bring the matchmaking reveal; day 21 holds intel for prep.</span></div>
       <div class="wt-row"><span class="wt-waves">22–28</span><span class="wt-type">KvK</span><span class="wt-note" data-i18n-html="ks.cycle.w4">Kingdom of Power: five prep days that decide who attacks, then the castle battle weekend.</span></div>
     </div>
 
@@ -192,6 +205,287 @@
 
     <p data-i18n-html="ks.cycle.other">The other clocks still run underneath: <b>Bear Hunt</b> every two days,
       <b>Mystic Trial</b> rooms on their weekdays, <b>Arena</b> daily. They're the income; the 28-day wheel is the spending.</p>
+  </section>
+
+  <!-- ═══════════ 2A · ARMAMENT COMPETITION ═══════════ -->
+  <section class="section" id="armament">
+    <h2 data-i18n="ks.arm.title">Armament Competition</h2>
+    <p class="lede" data-i18n-html="ks.arm.lede">A <b>two-day</b> run twice in each light week (days 1–7, 15–21):
+      <b>Type 1</b> from Monday, <b>Type 2</b> from Friday — separate task sets that stack with the event beside it
+      (Alliance Brawl week 1, Alliance Mobilization week 3), so one spend counts twice.</p>
+
+    <div class="wavetable">
+      <div class="wt-row"><span class="wt-waves">1–2 · 15–16</span><span class="wt-type">Type 1</span><span class="wt-note">the Monday run, twice a cycle — the shard-and-truegold set</span></div>
+      <div class="wt-row"><span class="wt-waves">5–6 · 19–20</span><span class="wt-type">Type 2</span><span class="wt-note">the Friday run, twice a cycle — the gear-and-mithril set</span></div>
+    </div>
+
+    <div class="day">
+      <h3>Type 1 · the Monday run</h3>
+      <p class="day-meta">cycle days 1–2 and 15–16 · points per action · top tier: Artisan Visions</p>
+      <table class="pt"><tbody>
+        <tr><td>Tempered Truegold (building upgrade)</td><td class="pts">1,500</td></tr>
+        <tr><td>Mythic hero shard</td><td class="pts">125</td></tr>
+        <tr><td>Truegold (building upgrade)</td><td class="pts">100</td></tr>
+        <tr><td>Epic hero shard</td><td class="pts">50</td></tr>
+        <tr><td>Truegold Dust (tech research)</td><td class="pts">50</td></tr>
+        <tr><td>Rare hero shard</td><td class="pts">15</td></tr>
+        <tr><td>Governor Gear max score +1</td><td class="pts">3</td></tr>
+        <tr><td>1m construction / research / training speedup</td><td class="pts">1</td></tr>
+      </tbody></table>
+      <p class="note" data-i18n-html="ks.arm.shardTip">Shard tasks count general shards too — the ascension scores, not the hero.</p>
+      <p class="note">The Truegold Dust row unlocks with the War Academy, Tempered Truegold after TG8 — before those ages the rows don't appear.</p>
+    </div>
+
+    <div class="day">
+      <h3>Type 2 · the Friday run</h3>
+      <p class="day-meta">cycle days 5–6 and 19–20 · points per action · top tier: Truegold</p>
+      <table class="pt"><tbody>
+        <tr><td>Mithril</td><td class="pts">8,000</td></tr>
+        <tr><td>Widget (hero exclusive gear)</td><td class="pts">1,600</td></tr>
+        <tr><td>Tempered Truegold (building upgrade)</td><td class="pts">1,500</td></tr>
+        <tr><td>Hero Gear Forgehammer</td><td class="pts">800</td></tr>
+        <tr><td>Truegold (building upgrade)</td><td class="pts">100</td></tr>
+        <tr><td>Truegold Dust (tech research)</td><td class="pts">50</td></tr>
+        <tr><td>Governor Gear max score +1</td><td class="pts">3</td></tr>
+        <tr><td>1m construction / research / training speedup</td><td class="pts">1</td></tr>
+      </tbody></table>
+    </div>
+
+    <p class="note" data-i18n-html="ks.arm.note">Both types share the same kingdom-rank rewards. The ladders differ, and
+      their thresholds scale with your Town Center — the top tier pays <b>Artisan Visions</b> on Type 1, <b>Truegold</b>
+      on Type 2. Read your own ladder in-game.</p>
+  </section>
+
+  <!-- ═══════════ 2B · OFFICER PROJECT ═══════════ -->
+  <section class="section" id="officer">
+    <h2 data-i18n="ks.off.title">Officer Project</h2>
+    <p class="lede" data-i18n-html="ks.off.lede">Also twice a light week: <b>Type A</b> (Infantry &amp; Charms) from
+      Wednesday — days 3–4, 17–18 — and <b>Type B</b> (Governor Gear &amp; Hero Shards) from Sunday, days 7–8 and
+      21–22, its second day spilling into SG day 1 and prep day 1.</p>
+
+    <div class="wavetable">
+      <div class="wt-row"><span class="wt-waves">3–4 · 17–18</span><span class="wt-type">Type A</span><span class="wt-note">the Wednesday run — Infantry &amp; Charms: charms, mithril, troops</span></div>
+      <div class="wt-row"><span class="wt-waves">7–8 · 21–22</span><span class="wt-type">Type B</span><span class="wt-note">the Sunday run — Governor Gear &amp; Hero Shards; day 2 spills into SG day 1 / prep day 1</span></div>
+    </div>
+
+    <div class="day">
+      <h3>Type A · Infantry &amp; Charms</h3>
+      <p class="day-meta">the Wednesday run · cycle days 3–4 and 17–18 · points per action</p>
+      <table class="pt"><tbody>
+        <tr><td>Mithril</td><td class="pts">60,000</td></tr>
+        <tr><td>Widget (hero exclusive gear)</td><td class="pts">12,000</td></tr>
+        <tr><td>Hero Gear Forgehammer</td><td class="pts">6,000</td></tr>
+        <tr><td>Governor Charm max score +1</td><td class="pts">70</td></tr>
+        <tr><td>T11 troop</td><td class="pts">37</td></tr>
+        <tr><td>T10 troop</td><td class="pts">30</td></tr>
+        <tr><td>T9 troop</td><td class="pts">22</td></tr>
+        <tr><td>T8 troop</td><td class="pts">17</td></tr>
+        <tr><td>T7 troop</td><td class="pts">12</td></tr>
+        <tr><td>T6 troop</td><td class="pts">9</td></tr>
+        <tr><td>T5 troop</td><td class="pts">6</td></tr>
+        <tr><td>T4 troop</td><td class="pts">4</td></tr>
+        <tr><td>T3 troop</td><td class="pts">3</td></tr>
+        <tr><td>T2 troop</td><td class="pts">2</td></tr>
+        <tr><td>T1 troop</td><td class="pts">1</td></tr>
+      </tbody></table>
+      <p class="note">The troop ladder pays a third of KvK prep's top tier — train what you need, don't promote a tier
+        for this run. The charm row is the cheap, steady scorer.</p>
+    </div>
+
+    <div class="day">
+      <h3>Type B · Governor Gear &amp; Hero Shards</h3>
+      <p class="day-meta">the Sunday run · cycle days 7–8 and 21–22 · points per action</p>
+      <table class="pt"><tbody>
+        <tr><td>Widget (hero exclusive gear)</td><td class="pts">12,000</td></tr>
+        <tr><td>Hero Gear Forgehammer</td><td class="pts">6,000</td></tr>
+        <tr><td>Mythic hero shard</td><td class="pts">3,040</td></tr>
+        <tr><td>Epic hero shard</td><td class="pts">1,220</td></tr>
+        <tr><td>Rare hero shard</td><td class="pts">350</td></tr>
+        <tr><td>Governor Gear max score +1</td><td class="pts">70</td></tr>
+      </tbody></table>
+      <p class="note">Its second day lands on SG day 1 (day 8) or prep day 1 (day 22) — the shards and gear it spends
+        are what that week wants. Take the fixed milestones with what you can spare, then stop.</p>
+    </div>
+
+    <p class="note" data-i18n-html="ks.off.m4">Milestone 4 pays <b>Forgehammer(s)</b> on Type A and <b>Charm
+      Design(s)</b> on Type B, each with the Mythic Conquest Skill Book and Mythic Expedition Skill Manual.</p>
+    <p class="note" data-i18n-html="ks.off.hoard">Type A spends Governor charms, Mithril and troops; Type B spends
+      Governor gear and hero shards — the same items the next scoring week wants saved.</p>
+    <p class="note" data-i18n-html="ks.off.note">Every run has <b>four milestones</b> plus an Honor Ranking, and
+      rewards improve with server age. For a free player the fixed milestones beat the ranking — take them with what
+      the live table makes cheap.</p>
+  </section>
+
+  <!-- ═══════════ 2C · ALLIANCE BRAWL ═══════════ -->
+  <section class="section" id="brawl">
+    <h2 data-i18n="ks.brawl.title">Alliance Brawl</h2>
+    <p class="lede" data-i18n-html="ks.brawl.lede">The week-1 main event, right after KvK: your alliance against one
+      from another kingdom for <b>6.5 days</b> — five 24-hour themed days, then a ~36-hour finale. In eligible
+      kingdoms it runs beside Merchant Empire, so the truck tasks count in both.</p>
+
+    <ul class="facts">
+      <li data-i18n-html="ks.brawl.q1"><b>Top-20 alliance.</b> Your alliance must rank in the kingdom's top 20 by power.</li>
+      <li data-i18n-html="ks.brawl.q2"><b>Join before matchmaking.</b> Matchmaking locks at <b>Sunday ~23:00 UTC</b>, the night before the brawl opens — being in your alliance then qualifies you.</li>
+      <li data-i18n-html="ks.brawl.q3"><b>The preview window.</b> Saturday 00:00 to Sunday 22:59 UTC you can switch freely. After matchmaking, a new alliance earns you personal points only until you return.</li>
+      <li data-i18n-html="ks.brawl.q4"><b>Another kingdom.</b> Alliances match across kingdoms; each day the higher-scoring side takes it.</li>
+    </ul>
+
+    <div class="wavetable">
+      <div class="wt-row"><span class="wt-waves">Day 1</span><span class="wt-type">24h</span><span class="wt-note">Rise of the City — buildings, trucks, speedups and research</span></div>
+      <div class="wt-row"><span class="wt-waves">Day 2</span><span class="wt-type">24h</span><span class="wt-note">Hero Development — shards, truegold and intel missions</span></div>
+      <div class="wt-row"><span class="wt-waves">Day 3</span><span class="wt-type">24h</span><span class="wt-note">Pet Training — taming marks, charms and pet advancement</span></div>
+      <div class="wt-row"><span class="wt-waves">Day 4</span><span class="wt-type">24h</span><span class="wt-note">Gear Enhancement — mithril, gear and the troop ladder</span></div>
+      <div class="wt-row"><span class="wt-waves">Day 5</span><span class="wt-type">24h</span><span class="wt-note">Trade Baron — beasts, the terror and truegold</span></div>
+      <div class="wt-row"><span class="wt-waves">Day 6</span><span class="wt-type">~36h</span><span class="wt-note">Full-Scale Competition — every day's tasks at once, into Sunday</span></div>
+    </div>
+
+    <p class="note" data-i18n-html="ks.brawl.schedNote">Days 1–5 run 24 hours each; the finale ~36 hours, Saturday
+      into Sunday. Below: each day's tasks, points per action.</p>
+
+    <div class="day">
+      <h3>Day 1 · Rise of the City</h3>
+      <p class="day-meta">24h · building and gathering day</p>
+      <table class="pt"><tbody>
+        <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Master Emblem</td><td class="pts">3,600</td></tr>
+        <tr><td>Truegold (building upgrade)</td><td class="pts">1,250</td></tr>
+        <tr><td>Truegold Dust (tech research)</td><td class="pts">625</td></tr>
+        <tr><td>Master's Manuscript</td><td class="pts">36</td></tr>
+        <tr><td>1m construction / research / training / master speedup</td><td class="pts">18</td></tr>
+        <tr><td>Gather in the wilderness (bread / wood / stone / iron)</td><td class="pts">2</td></tr>
+      </tbody></table>
+      <p class="note">Trucks are the Merchant Empire overlap — one escort scores in both. Master emblems pay 3,600
+        here; if you hold them for prep days 2–3, weigh it against today's rate.</p>
+    </div>
+
+    <div class="day">
+      <h3>Day 2 · Hero Development</h3>
+      <p class="day-meta">24h · hero day</p>
+      <table class="pt"><tbody>
+        <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Master Emblem</td><td class="pts">3,600</td></tr>
+        <tr><td>Finish an intel mission</td><td class="pts">3,000</td></tr>
+        <tr><td>Mythic hero shard</td><td class="pts">1,875</td></tr>
+        <tr><td>Truegold (building upgrade)</td><td class="pts">1,250</td></tr>
+        <tr><td>Epic hero shard</td><td class="pts">750</td></tr>
+        <tr><td>Truegold Dust (tech research)</td><td class="pts">625</td></tr>
+        <tr><td>Rare hero shard</td><td class="pts">210</td></tr>
+        <tr><td>Master's Manuscript</td><td class="pts">36</td></tr>
+        <tr><td>1m construction / research / training / master speedup</td><td class="pts">18</td></tr>
+      </tbody></table>
+      <p class="note">Shards ascend at better than half the KvK rate, so the fixed rewards can make this the month's
+        cheapest shard spend — but every shard is one Strongest Governor week wants.</p>
+    </div>
+
+    <div class="day">
+      <h3>Day 3 · Pet Training</h3>
+      <p class="day-meta">24h · pet and charm day</p>
+      <table class="pt"><tbody>
+        <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Advanced Taming Mark (pet refinement)</td><td class="pts">9,370</td></tr>
+        <tr><td>Common Taming Mark (pet refinement)</td><td class="pts">680</td></tr>
+        <tr><td>Governor Charm max score +1</td><td class="pts">45</td></tr>
+        <tr><td>Pet Advancement score +1</td><td class="pts">30</td></tr>
+        <tr><td>Gather in the wilderness (bread / wood / stone / iron)</td><td class="pts">2</td></tr>
+      </tbody></table>
+      <p class="note">Levelling a charm or pet also pays a one-time level-up score on top of the per-point rows — the
+        amounts climb steeply with level. Pets here pay less per taming mark than prep day 3 (9,370 vs 15,000): spend
+        only what today's chest needs.</p>
+    </div>
+
+    <div class="day">
+      <h3>Day 4 · Gear Enhancement</h3>
+      <p class="day-meta">24h · gear and troop day</p>
+      <table class="pt"><tbody>
+        <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Mithril</td><td class="pts">18,750</td></tr>
+        <tr><td>Widget (hero exclusive gear)</td><td class="pts">3,750</td></tr>
+        <tr><td>Finish an intel mission</td><td class="pts">3,000</td></tr>
+        <tr><td>Hero Gear Forgehammer</td><td class="pts">1,875</td></tr>
+        <tr><td>T11 troop</td><td class="pts">30</td></tr>
+        <tr><td>T10 troop</td><td class="pts">24</td></tr>
+        <tr><td>T9 troop</td><td class="pts">18</td></tr>
+        <tr><td>T8 troop</td><td class="pts">14</td></tr>
+        <tr><td>T7 troop</td><td class="pts">10</td></tr>
+        <tr><td>T6 troop</td><td class="pts">7</td></tr>
+        <tr><td>T5 troop</td><td class="pts">4</td></tr>
+        <tr><td>T4 troop</td><td class="pts">3</td></tr>
+        <tr><td>T3 troop</td><td class="pts">2</td></tr>
+        <tr><td>T2 troop</td><td class="pts">1</td></tr>
+        <tr><td>T1 troop</td><td class="pts">1</td></tr>
+        <tr><td>Governor Charm max score +1</td><td class="pts">45</td></tr>
+      </tbody></table>
+      <p class="note">The gear day: mithril pays 18,750 here vs 40,000 on prep day 4, and troops at half the KvK rate —
+        it's the day the brawl wants your hoard most. Spend knowingly.</p>
+    </div>
+
+    <div class="day">
+      <h3>Day 5 · Trade Baron</h3>
+      <p class="day-meta">24h · beast day</p>
+      <table class="pt"><tbody>
+        <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Call a rally and hunt a Terror</td><td class="pts">15,000</td></tr>
+        <tr><td>Defeat a level 26–30 beast</td><td class="pts">6,000</td></tr>
+        <tr><td>Defeat a level 21–25 beast</td><td class="pts">5,500</td></tr>
+        <tr><td>Defeat a level 16–20 beast</td><td class="pts">5,000</td></tr>
+        <tr><td>Defeat a level 11–15 beast</td><td class="pts">4,500</td></tr>
+        <tr><td>Defeat a level 1–10 beast</td><td class="pts">4,000</td></tr>
+        <tr><td>Truegold (building upgrade)</td><td class="pts">1,250</td></tr>
+        <tr><td>Truegold Dust (tech research)</td><td class="pts">625</td></tr>
+        <tr><td>Governor Gear max score +1</td><td class="pts">22</td></tr>
+        <tr><td>1m construction / research / training / master speedup</td><td class="pts">18</td></tr>
+      </tbody></table>
+      <p class="note">The free day — beasts, the terror, your own marches; nothing here touches the KvK hoard. If the
+        alliance pushes a day, this is the one that costs you no prep.</p>
+    </div>
+
+    <div class="day">
+      <h3>Day 6 · Full-Scale Competition</h3>
+      <p class="day-meta">~36h finale · every day's tasks at once, into Sunday</p>
+      <table class="pt"><tbody>
+        <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
+        <tr><td>Mithril</td><td class="pts">18,750</td></tr>
+        <tr><td>Call a rally and hunt a Terror</td><td class="pts">15,000</td></tr>
+        <tr><td>Advanced Taming Mark (pet refinement)</td><td class="pts">9,370</td></tr>
+        <tr><td>Defeat a level 26–30 beast</td><td class="pts">6,000</td></tr>
+        <tr><td>Defeat a level 21–25 beast</td><td class="pts">5,500</td></tr>
+        <tr><td>Defeat a level 16–20 beast</td><td class="pts">5,000</td></tr>
+        <tr><td>Defeat a level 11–15 beast</td><td class="pts">4,500</td></tr>
+        <tr><td>Defeat a level 1–10 beast</td><td class="pts">4,000</td></tr>
+        <tr><td>Widget (hero exclusive gear)</td><td class="pts">3,750</td></tr>
+        <tr><td>Mythic hero shard</td><td class="pts">1,875</td></tr>
+        <tr><td>Hero Gear Forgehammer</td><td class="pts">1,875</td></tr>
+        <tr><td>Truegold (building upgrade)</td><td class="pts">1,250</td></tr>
+        <tr><td>Epic hero shard</td><td class="pts">750</td></tr>
+        <tr><td>Common Taming Mark (pet refinement)</td><td class="pts">680</td></tr>
+        <tr><td>Truegold Dust (tech research)</td><td class="pts">625</td></tr>
+        <tr><td>Rare hero shard</td><td class="pts">210</td></tr>
+        <tr><td>Governor Charm max score +1</td><td class="pts">45</td></tr>
+        <tr><td>Pet Advancement score +1</td><td class="pts">30</td></tr>
+        <tr><td>Governor Gear max score +1</td><td class="pts">22</td></tr>
+        <tr><td>1m construction / research / training / master speedup</td><td class="pts">18</td></tr>
+      </tbody></table>
+      <p class="note">The finale mixes every day's table (plus day-2's shards) over ~36 hours. Every brawl day also
+        scores 1 point per gem and 6 per top-up point — small, and never worth spending for.</p>
+    </div>
+
+    <p class="note" data-i18n-html="ks.brawl.rewards">Personal milestones unlock up to five chests a day. A daily
+      alliance reward closes each 24-hour day — <b>both sides get one, the winner's double</b>: recruitment keys, water
+      essence, alliance tokens, resources.</p>
+    <p class="note" data-i18n-html="ks.brawl.end">The winner takes <b>+1 star</b>, the loser <b>−1</b>: star rewards
+      include the Merchant Caravan decoration. The alliance ranking pays the top ~50 on each side, winners greater —
+      its prize: the Horn of Victory decoration.</p>
+    <p class="note" data-i18n-html="ks.brawl.overlap">Escort and raid trucks (10,000 each) live in Merchant Empire,
+      which runs beside the brawl — the same truck counts in both. Armament runs this week too; check it before
+      spending truegold or shards.</p>
+    <p class="note" data-i18n-html="ks.brawl.stance">F2P: the daily chests are the value. Stars and ranking decorations
+      are cosmetic — don't burn the hoard chasing one, and never spend for a ranking slot the chests don't pay.</p>
   </section>
 
   <!-- ═══════════ 3 · THE PREP CHART ═══════════ -->
@@ -339,9 +633,9 @@
   <!-- ═══════════ 5 · STRONGEST GOVERNOR ═══════════ -->
   <section class="section sg" id="governor">
     <h2 data-i18n="ks.governor.title">Strongest Governor</h2>
-    <p class="lede" data-i18n-html="ks.governor.lede">The same machine, played solo: seven days, six kingdoms, and your
-      hoard scored against everyone else's. The day names repeat (<b>Skill Up</b> twice, <b>Combat Training</b> twice,
-      <b>Hero Development</b> twice) but each repeat has a different task list, so always read the live day.</p>
+    <p class="lede" data-i18n-html="ks.governor.lede">The same machine, played solo: seven days, your hoard scored
+      against everyone else's. Day names repeat — Skill Up, Combat Training, Hero Development — but each repeat has
+      its own list; always read the live day.</p>
 
     <p class="legend"><span class="lg free">💎 gems</span> <span data-i18n="ks.governor.gems">roulette spins cost
       gems, so only spin on a day that pays well</span>
@@ -441,52 +735,45 @@
     </div>
 
     <p class="note" data-i18n-html="ks.governor.note">Two things shape every SG plan: <b>milestones scale with your
-      Town Center group</b> (higher groups need more points than lower ones), and the rewards ladder runs <b>daily
-      ranks</b> (at the day rollover), <b>challenge medals</b>, <b>kingdom and cross-kingdom rank rewards</b>, and a
-      <b>kingdom-state reward bar</b> to qualify for kingdom-state rewards when your kingdom finishes near the top of
-      its matchmaking group.</p>
-    <p class="note" data-i18n-html="ks.governor.rank">Most of the time, <b>rankings aren't worth chasing here</b>.
-      Strongest Governor's rank rewards are mostly time-limited cosmetics, with little permanent progression. The
-      fixed rewards (daily milestones, challenge medals, the kingdom-state reward bar) are the value. Your
-      kingdom's <b>KvK record</b> is what it's remembered for, and it's what shapes how Transfer treats the kingdom:
-      save the hoard for prep, not for an SG leaderboard.</p>
+      Town Center group</b>, and the reward ladder runs <b>daily ranks</b>, <b>challenge medals</b>, <b>kingdom and
+      cross-kingdom ranks</b>, and a <b>kingdom-state reward bar</b> that pays state rewards when your kingdom
+      finishes near the top of its group.</p>
+    <p class="note" data-i18n-html="ks.governor.rank">Mostly, <b>rankings aren't worth chasing</b>: the prizes are
+      time-limited cosmetics. The fixed rewards — daily milestones, challenge medals, the kingdom-state bar — are the
+      value; save the hoard for prep, not an SG leaderboard. The <b>KvK record</b> is how Transfer treats the kingdom.</p>
   </section>
 
   <!-- ═══════════ 6 · THE BATTLE WEEKEND ═══════════ -->
   <section class="section" id="battle">
     <h2 data-i18n="ks.battle.title">The battle weekend</h2>
     <p class="lede" data-i18n-html="ks.battle.lede">Prep decides who attacks; the weekend decides who holds. The prep
-      winner enters the loser's kingdom and tries to take the Castle: a <strong>five-hour contest</strong> won by one
-      clean 2.5-hour hold, or by holding longest when the clock runs out.</p>
+      winner enters the loser's kingdom and tries to take the Castle — a <strong>five-hour contest</strong>: one clean
+      2.5-hour hold wins it, else the most hold time at the close.</p>
     <ul class="facts">
-      <li data-i18n-html="ks.battle.f1"><b>The Castle:</b> the contest runs a full <b>5 hours</b>. Hold it
-        <b>2.5 hours continuously</b> as one alliance and you win on the spot; otherwise the alliance with the
-        <b>most total hold time</b> when the window closes takes it. The game doesn't end early: if no one lands the
-        continuous hold, the full 5 hours run even once a side is mathematically uncatchable. Hold time is by
-        <b>alliance</b>, not kingdom.</li>
+      <li data-i18n-html="ks.battle.f1"><b>The Castle:</b> a full <b>5 hours</b>. Hold it <b>2.5 hours continuously</b>
+        and you win on the spot; otherwise the alliance with the <b>most total hold time</b> takes it. The full 5 hours
+        always run, even once a side is uncatchable. Hold time is by <b>alliance</b>, not kingdom.</li>
       <li data-i18n-html="ks.battle.f2"><b>The turrets:</b> four of them. They wear down the defenders and give their
         occupiers lethality in the Castle fight.</li>
-      <li data-i18n-html="ks.battle.f3"><b>The window:</b> the battle day runs ~10:00–22:00 UTC, and the Castle is
-        contestable for the full 5 hours within it. Know your active window in UTC.</li>
-      <li data-i18n-html="ks.battle.f7"><b>The window itself:</b> during 10:00–22:00 UTC, players can teleport
-        between the servers and troop kills score points, All-Out style. It's a fun place to blow off steam, but
-        don't burn too many troops and resources. Check world and alliance chat for any rules of engagement agreed
-        between the servers before you join in.</li>
+      <li data-i18n-html="ks.battle.f3"><b>The window:</b> the battle day runs ~10:00–22:00 UTC; the Castle is
+        contestable for the full 5 hours within it.</li>
+      <li data-i18n-html="ks.battle.f7"><b>The window itself:</b> 10:00–22:00 UTC, teleports between servers open and
+        troop kills score, All-Out style. Fun to blow off steam, but don't burn troops and resources — check world and
+        alliance chat for any agreed rules first.</li>
       <li data-i18n-html="ks.battle.f4"><b>The ±3 TC rule:</b> your Town Center's attack range gates who you can hit.
         It decides your rally assignments before the weekend starts.</li>
       <li data-i18n-html="ks.battle.f5"><b>Field Triage:</b> 30% base troop recovery, up to 90% with Medical Satchels
         and Rescue Orders. Healing burns your stockpiled food and wood; that's what the prep hoard is for.</li>
-      <li data-i18n-html="ks.battle.f6"><b>The shield:</b> activate it before the battle window opens. There is always
-        a window between phases where unshielded towns get hit, agreed rules or not, and the shield is essential for
-        any time you spend offline during the battle day.</li>
+      <li data-i18n-html="ks.battle.f6"><b>The shield:</b> activate it before the window opens — there's always a
+        between-phase gap when unshielded towns fall, and it's essential for offline time during the battle day.</li>
     </ul>
   </section>
 
   <!-- ═══════════ 7 · THE ROUTINE ═══════════ -->
   <section class="section" id="checklist">
     <h2 data-i18n="ks.checklist.title">The routine</h2>
-    <p class="lede" data-i18n-html="ks.checklist.lede">The whole page, in the order you'll actually do it: the save
-      list for prep week, then the day-one ritual, then the weekend:</p>
+    <p class="lede" data-i18n-html="ks.checklist.lede">The page, in the order you'll do it: save for prep, the
+      day-one ritual, then the weekend:</p>
     <ol class="checklist">
       <li><span class="check-num">1</span><div><h3 data-i18n="ks.checklist.c1.title">Save the taming marks</h3><p data-i18n-html="ks.checklist.c1.body">Advanced and Common Taming Marks; they're the day 3 and day 5 stars.</p></div></li>
       <li><span class="check-num">2</span><div><h3 data-i18n="ks.checklist.c2.title">Save the gems and shards</h3><p data-i18n-html="ks.checklist.c2.body">Hero Roulette runs on days 2 and 3; save the <b>gems</b> for it (spins are event-only) and every hero shard tier.</p></div></li>
@@ -494,9 +781,9 @@
       <li><span class="check-num">4</span><div><h3 data-i18n="ks.checklist.c4.title">Save the gear materials</h3><p data-i18n-html="ks.checklist.c4.body">Mithril, widgets and forgehammers: days 4 and 5. Master emblems and manuscripts: days 2 and 3.</p></div></li>
       <li><span class="check-num">5</span><div><h3 data-i18n="ks.checklist.c5.title">Keep the troops one tier down</h3><p data-i18n-html="ks.checklist.c5.body">Come into prep week with troops a tier below your max, ready to promote, for more points per speedup spent.</p></div></li>
       <li><span class="check-num">6</span><div><h3 data-i18n="ks.checklist.c6.title">Stack the buffs before day 1</h3><p data-i18n-html="ks.checklist.c6.body">Wolf pet buff, Double Time Decree, Chief Minister if the kingdom runs it; activate them <b>before</b> you spend, then spend.</p></div></li>
-      <li><span class="check-num">7</span><div><h3 data-i18n="ks.checklist.c7.title">Hold the intel, empty the hospital</h3><p data-i18n-html="ks.checklist.c7.body">Stop collecting Watchtower missions from <b>08:00</b> the day before a scoring day (on day 21 before prep), so the banked missions cash in for points. Empty the hospital before battle week too; healing eats the hoard.</p></div></li>
+      <li><span class="check-num">7</span><div><h3 data-i18n="ks.checklist.c7.title">Hold the intel, empty the hospital</h3><p data-i18n-html="ks.checklist.c7.body">Stop collecting Watchtower missions from <b>08:00</b> the day before a scoring day (day 21 before prep) so they bank for points; empty the hospital before battle week too — healing eats the hoard.</p></div></li>
       <li><span class="check-num">8</span><div><h3 data-i18n="ks.checklist.c8.title">Shield before the window</h3><p data-i18n-html="ks.checklist.c8.body">Activate your town's shield as prep ends. The gap between phases is when unshielded towns fall.</p></div></li>
-      <li><span class="check-num">9</span><div><h3 data-i18n="ks.checklist.c9.title">Know the battle plan</h3><p data-i18n-html="ks.checklist.c9.body">Your UTC window, your Town Center's attack range, your rally assignments, and if you're top-150 by power, check your Duel of the Elites group before you stop at 200,000. Watch days 20–21 for the matchmaking reveal; know your opponent before prep opens.</p></div></li>
+      <li><span class="check-num">9</span><div><h3 data-i18n="ks.checklist.c9.title">Know the battle plan</h3><p data-i18n-html="ks.checklist.c9.body">Your UTC window, your Town Center's attack range, your rally assignments — and if you're top-150 by power, check your Duel of the Elites group before you stop at 200,000. Watch days 20–21 for the matchmaking reveal.</p></div></li>
     </ol>
   </section>
 </main>
@@ -504,17 +791,14 @@
 <footer>
   <nav class="ev-foot" aria-label="Events" data-i18n-key="ev.switchAria" data-i18n-attr="aria-label">
     <a href="../" data-i18n="ev.switch.home">Home</a>
+    <a href="../kvk-strongest-governor/" aria-current="page" data-i18n="ev.switch.cycle">Event Cycle</a>
     <a href="../bear-hunt/" data-i18n="ev.switch.bear">Bear Hunt</a>
     <a href="../vikings-vengeance/" data-i18n="ev.switch.vikings">Vikings</a>
     <a href="../swordland-showdown/" data-i18n="ev.switch.swordland">Swordland</a>
-    <a href="../kvk-strongest-governor/" aria-current="page" data-i18n="ev.switch.kvk">KvK / Gov</a>
     <a href="../vip-calculator/" data-i18n="ev.switch.vip">VIP</a>
   </nav>
   <p class="foot-main" data-i18n="ks.foot.main">JUST THE CLOCK</p>
-  <p class="foot-sub" data-i18n-html="ks.foot.note">Point tables are the community numbers from
-    <a href="https://kingshotoptimizer.com/events/kingdom-of-power/event-guide">Kingshot Optimizer</a> and
-    <a href="https://kingshotmastery.com/guides/kingshot-kvk-prep-guide">Kingshot Mastery</a>, for our server.
-    The live scoring screen is the final word; <b>the principles don't change.</b></p>
+  <p class="foot-sub" data-i18n-html="ks.foot.note">Point tables are community numbers: <a href="https://kingshotoptimizer.com/events/kingdom-of-power/event-guide">Kingshot Optimizer</a> and <a href="https://kingshotmastery.com/guides/kingshot-kvk-prep-guide">Kingshot Mastery</a> for prep, the <a href="https://kingshotwiki.com/events/armament-competition/">Kingshot Wiki</a> for armament and officer, <a href="https://kingshotdata.com/events/alliance-brawl-event/">Kingshot Data</a> for the brawl — for our server. The live scoring screen is the final word; <b>the principles don't change.</b></p>
   <p class="foot-sub" data-i18n-html="ks.foot.credit">prep chart is the alliance's own, checked against the community tables · built for the [2129]MadNess alliance</p>
 </footer>
 

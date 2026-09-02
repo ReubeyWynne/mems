@@ -73,11 +73,12 @@ html[lang="ar"] .tag, html[lang="ar"] .chips, html[lang="ar"] .toc a,
 html[lang="ar"] .foot-main, html[lang="ar"] .calc-title,
 html[lang="ar"] details summary, html[lang="ar"] .bars-cap,
 html[lang="ar"] .waves-cap, html[lang="ar"] .slot-label,
-html[lang="ar"] .brackets li { letter-spacing: 0; }
+html[lang="ar"] .brackets li, html[lang="ar"] .ledger a,
+html[lang="ar"] .ledger-group { letter-spacing: 0; }
 html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] h4 { line-height: 1.25; }
 html[lang="ar"] strong, html[lang="ar"] b, html[lang="ar"] .note,
 html[lang="ar"] .egg-note, html[lang="ar"] .d-formula,
-html[lang="ar"] .paw-trophy, html[lang="ar"] .foot-sub b,
+html[lang="ar"] .foot-sub b,
 html[lang="ar"] .forge-n { font-style: normal; }
 
 /* ─── Reset ───────────────────────────────────────────── */
@@ -575,11 +576,10 @@ html { scrollbar-width: thin; scrollbar-color: var(--ink-muted) var(--void); }
   text-shadow: 0 0 16px rgba(240, 196, 90, 0.6);
   transform: rotate(0deg) scale(1.1);
 }
-.hedera.tapped { transform: rotate(10deg) scale(1.05); }
 
-/* A parchment slip, hand-placed in the margin */
+/* A functional toast — e.g. the copy confirmation on the Event Cycle page */
 .egg-note {
-  --tilt: -1.2deg; /* per-slip rotation, randomised in JS */
+  --tilt: -1.2deg;
   position: fixed;
   z-index: 90;
   max-width: min(21rem, calc(100vw - var(--space-l)));
@@ -601,72 +601,10 @@ html { scrollbar-width: thin; scrollbar-color: var(--ink-muted) var(--void); }
   72%  { opacity: 1; }
   100% { opacity: 0; transform: translateY(-24px) rotate(var(--tilt)); }
 }
-.egg-note.calc-note {
-  position: static;
-  margin-top: var(--space-s);
-  animation: egg-fade 4s ease forwards;
-}
-@keyframes egg-fade {
-  0%   { opacity: 0; }
-  14%  { opacity: 1; }
-  75%  { opacity: 1; }
-  100% { opacity: 0; }
-}
 
-/* Rule five, revealed by the hedera */
-/* `hidden` alone loses to `.rule-list li { display: flex }`, so pin it. */
+/* Rule five stays `hidden` in the markup (no JS reveal anymore); `hidden`
+   alone loses to `.rule-list li { display: flex }`, so pin it. */
 .rule-list li[hidden] { display: none; }
-.rule-five { animation: rule-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.rule-five h3 { color: var(--amber); }
-@keyframes rule-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* The bear moment — one rare full-page flash */
-.bear-moment {
-  position: fixed; inset: 0; z-index: 200;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-m);
-  background: rgba(11, 14, 22, 0.88);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
-}
-.bear-moment.show { opacity: 1; }
-.bear-moment .paw {
-  width: clamp(4rem, 14vw, 7rem);
-  color: var(--amber);
-  filter: drop-shadow(0 0 24px rgba(240, 196, 90, 0.55));
-  animation: paw-breathe 2.4s ease-in-out infinite;
-}
-.bear-moment p {
-  font-family: var(--display-2);
-  font-weight: 700;
-  font-size: var(--step-2);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--ink);
-}
-@keyframes paw-breathe {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.07); }
-}
-
-/* The pawprint trophy left in the footer */
-.paw-trophy {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  margin-top: 1.4rem;
-  padding: 0.2rem 0.5rem;
-  background: none; border: 0;
-  color: var(--amber-dim);
-  font-family: var(--body); font-style: italic; font-size: var(--step--1);
-  cursor: pointer;
-  opacity: 0.9;
-  transition: color 0.25s ease;
-}
-.paw-trophy:hover, .paw-trophy:focus-visible { color: var(--amber); }
-.paw-trophy svg { width: 1.15em; height: 1.15em; display: block; }
 
 /* ─── Language picker — flag dropdown in the 3rem topbar ─ */
 .topbar-right {

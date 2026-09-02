@@ -1,8 +1,6 @@
-/* swordland.js — Swordland Showdown page toys and easter eggs.
+/* swordland.js — Swordland Showdown page toys.
    Registers with common.js via window.BH.registerPage: the 180,000-line
-   calculator (occupation × kills → personal points vs the target) and its
-   deliberate-deviation eggs. Whisper strings are read lazily from the active
-   dictionary (English fallback until the i18n phase adds sw.* keys). */
+   calculator (occupation × kills → personal points vs the target). */
 (function () {
   'use strict';
 
@@ -52,55 +50,18 @@
     var occ = document.getElementById('sw-occ');
     var kill = document.getElementById('sw-kill');
     var def = document.getElementById('sw-def');
-    var calc = occ ? occ.closest('.calc') : null;
 
-    // ── Calculator-state eggs (deliberate deviations only) ─
-    // Egg 35: past the 180,000 line in one sitting. Egg 36: the maximum
-    // occupation time with nothing else — the deviation that proves the point.
-    var pastLine = false;
-    function watchTotal() {
-      if (pastLine || BH.eggSeen(35)) return;
-      var s = paint(BH);
-      if (s && s.total >= TARGET) {
-        pastLine = true;
-        BH.markEgg(35);
-        BH.showNote(BH.tr('sw.egg.calc1', 'past the line. the bear salutes the 180,000.'), calc);
-      }
-    }
-    function armOcc() {
-      if (!occ || BH.eggSeen(36)) return;
-      var k = parseInt(kill && kill.value, 10) || 0;
-      var d = parseInt(def && def.value, 10) || 0;
-      if (parseInt(occ.value, 10) === MAX_MIN && k === 0 && d === 0) {
-        BH.markEgg(36);
-        BH.showNote(BH.tr('sw.egg.calc2', MAX_MIN + ' minutes at full occupation still misses. you knew that.'), calc);
-      }
-    }
-
-    function wire(input, fn) {
+    function wire(input) {
       if (!input) return;
-      input.addEventListener('input', function () { paint(BH); fn(); });
+      input.addEventListener('input', function () { paint(BH); });
     }
-    wire(occ, function () { watchTotal(); armOcc(); });
-    wire(kill, function () { watchTotal(); armOcc(); });
-    wire(def, function () { watchTotal(); armOcc(); });
+    wire(occ);
+    wire(kill);
+    wire(def);
     paint(BH);
   }
 
   BH.registerPage({
-    whispers: function () {
-      var tr = BH.tr;
-      return [
-        { id: 28, section: 'top',       line: tr('sw.egg.whisper0', 'the bear read the signup mail. he\u2019s requesting battle.') },
-        { id: 29, section: 'score',     line: tr('sw.egg.whisper1', 'two scoreboards, one duel. the bear reads them both.') },
-        { id: 30, section: 'sources',   line: tr('sw.egg.whisper2', 'combat is personal. the bear keeps that one for himself.') },
-        { id: 31, section: 'target',    line: tr('sw.egg.whisper3', 'occupation alone misses the line. the bear saw you do the maths.') },
-        { id: 32, section: 'arena',     line: tr('sw.egg.whisper4', 'the bear doesn\u2019t turtle the shrine. he\u2019s been burned by mercs.') },
-        { id: 33, section: 'matchup',   line: tr('sw.egg.whisper5', 'the bear reads the enemy roster. he\u2019s reading yours.') },
-        { id: 34, section: 'matchday',  line: tr('sw.egg.whisper6', 'clear your infirmary. the bear checks his before he queues.') }
-      ];
-    },
-    // gossip: the alliance lore is shared site-wide — see common.js.
     boot: boot,
     onChange: function () { paint(window.BH); }
   });

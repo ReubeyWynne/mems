@@ -1,12 +1,12 @@
-/* vip.js — the VIP calculator page toys and easter eggs.
+/* vip.js — the VIP calculator page toys.
    Registers with common.js via window.BH.registerPage: the date calculator
    (level + progress + days played → expected dates for every remaining level
-   at the player's own rate) and a deliberate-deviation egg. The XP ladder is
-   a game-wide constant — the in-game VIP screen (March 2026 patch), per the
-   Kingshot Mastery VIP guide; only the rate is the player's. Strings are read
-   lazily from the active dictionary (vip.* keys, English fallback) and the
-   page re-paints on i18n:change, so a language switch mid-session shows the
-   new language and locale-formatted numbers and dates. */
+   at the player's own rate). The XP ladder is a game-wide constant — the
+   in-game VIP screen (March 2026 patch), per the Kingshot Mastery VIP guide;
+   only the rate is the player's. Strings are read lazily from the active
+   dictionary (vip.* keys, English fallback) and the page re-paints on
+   i18n:change, so a language switch mid-session shows the new language and
+   locale-formatted numbers and dates. */
 (function () {
   'use strict';
 
@@ -118,13 +118,6 @@
       out.hidden = html === '';
     }
 
-    // ── Deliberate-deviation egg: a thousand a day ───────
-    if (s.rate >= 1000 && !BH.eggSeen(42)) {
-      BH.markEgg(42);
-      var anchor = document.getElementById('vipcalc');
-      BH.showNote(BH.tr('vip.egg.calc', 'a thousand a day. the bear bows.'), anchor || undefined);
-    }
-
     paintTargets(BH, s);
   }
 
@@ -162,16 +155,6 @@
   }
 
   BH.registerPage({
-    whispers: function () {
-      var tr = BH.tr;
-      return [
-        { id: 38, section: 'top',     line: tr('vip.egg.whisper0', 'the bear is VIP 12. he pays in honey.') },
-        { id: 39, section: 'calc',    line: tr('vip.egg.whisper1', 'your rate is your own. the bear tracks it.') },
-        { id: 40, section: 'maths',   line: tr('vip.egg.whisper2', 'earned \u00F7 days. the bear\u2019s favourite division.') },
-        { id: 41, section: 'table',   line: tr('vip.egg.whisper3', 'the bear reads the ladder backwards.') }
-      ];
-    },
-    // gossip: the alliance lore is shared site-wide — see common.js.
     boot: boot,
     onChange: function () { paint(BH); }
   });

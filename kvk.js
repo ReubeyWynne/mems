@@ -346,12 +346,14 @@
   }
 
   function runHeadHtml(run, BH) {
-    var ev = run.event === 'armament' ? BH.tr('ks.today.kickerArm', 'Armament Competition') : BH.tr('ks.today.kickerOff', 'Officer Project');
+    // One event glyph per world, mirrored in the page's fold summaries.
+    var evMark = run.event === 'armament' ? '\uD83D\uDEE1\uFE0F ' : '\uD83C\uDF96\uFE0F ';
+    var ev = evMark + (run.event === 'armament' ? BH.tr('ks.today.kickerArm', 'Armament Competition') : BH.tr('ks.today.kickerOff', 'Officer Project'));
     var kicker = ev + ' \u00B7 ' + BH.tr('ks.today.runOfCycle', 'run {n} of the cycle').replace('{n}', run.n) +
       ' \u00B7 ' + BH.tr('ks.today.runDayNo', 'day {n} of the run').replace('{n}', run.dayNo);
     var title = run.event === 'armament'
       ? 'Type ' + run.run.type
-      : 'Type ' + run.run.type + ' \u2014 ' + (run.run.type === 'A' ? 'Infantry & Charms' : 'Governor Gear & Hero Shards');
+      : 'Type ' + run.run.type + ' \u2014 ' + (run.run.type === 'A' ? 'Troop Training & Charms' : 'Governor Gear & Hero Shards');
     var meta;
     if (run.event === 'armament') {
       meta = BH.tr(run.run.type === 1 ? 'ks.today.armMeta1' : 'ks.today.armMeta2',
@@ -370,7 +372,7 @@
     var when = day >= 6
       ? BH.tr('ks.today.brawlFinale', 'the ~36-hour Full-Scale finale, spilling into Sunday')
       : BH.tr('ks.today.brawlDay', 'Day {n} \u00B7 {theme}').replace('{n}', idx).replace('{theme}', BRAWL_THEMES[idx - 1]);
-    return '<p class="today-meta">' +
+    return '<p class="today-meta">\u2694\uFE0F ' +
       BH.tr('ks.today.brawlLive', 'Alliance Brawl is live beside it \u2014 {when}. one spend can score both; the day tables live in the brawl section.').replace('{when}', when) +
       '</p>';
   }
@@ -393,10 +395,14 @@
   }
 
   function holdZoneHtml(w, BH) {
+    // The hold list folds behind a disclosure — the spend rows above it are
+    // the glance-critical part of a light-week day.
     var save = w === 'brawl' ? SAVE_SG : SAVE_KVK;
     var rows = '';
     for (var i = 0; i < save.length; i++) rows += rowHTML('\u00B7', save[i], '');
-    return zone(BH.tr('ks.today.hold', 'hold these'), rows);
+    return '<details class="today-fold hold-fold">' +
+      '<summary>' + BH.tr('ks.today.hold', 'hold these') + '</summary>' +
+      '<div class="today-fold-body">' + rows + '</div></details>';
   }
 
   function runDayCard(run, w, BH) {
@@ -410,9 +416,14 @@
     body += runNoteHtml(run, w, BH);
     if (w === 'brawl' || w === 'mob') body += holdZoneHtml(w, BH);
     if (phase) {
+      // Officer Type B's spill day: the run leads, the phase day's tables
+      // fold beneath it (its head stays visible above the fold).
+      body += '<details class="today-fold phase-fold">' +
+        '<summary>' + BH.tr('ks.today.openTables', 'open the tables') + '</summary>' +
+        '<div class="today-fold-body">' + phase.body + '</div></details>';
       return {
         head: runHeadHtml(run, BH) + phase.head,
-        body: body + phase.body,
+        body: body,
         copy: phase.copy,
         copyTitle: phase.copyTitle
       };
@@ -559,10 +570,10 @@
     var lines = [];
     var tasks;
     if (run.event === 'armament') {
-      lines.push('\uD83D\uDC51ARMAMENT \u00B7 TYPE ' + r.type + '\uD83D\uDC51');
+      lines.push('\uD83D\uDEE1\uFE0FARMAMENT \u00B7 TYPE ' + r.type + '\uD83D\uDEE1\uFE0F');
       tasks = ARM_TASKS[r.type];
     } else {
-      lines.push('\uD83D\uDC51OFFICER \u00B7 TYPE ' + r.type + '\uD83D\uDC51');
+      lines.push('\uD83C\uDF96\uFE0FOFFICER \u00B7 TYPE ' + r.type + '\uD83C\uDF96\uFE0F');
       tasks = OFF_TASKS[r.type].filter(function (t) { return t[0].indexOf('Troop training') === -1; });
     }
     tasks = tasks.slice().sort(function (a, b) {
@@ -604,8 +615,11 @@
   }
 
   function copyBoxHTML(text, title) {
-    return '<div class="copy-box">' +
-      '<p class="copy-label">' + title + '</p>' +
+    // The KingShot copy block is one tap away but folded by default so the
+    // today card stays short; the summary carries the copy prompt.
+    return '<details class="copy-box">' +
+      '<summary>' + title + '</summary>' +
+      '<div class="copy-inner">' +
       '<textarea id="ks-copy-out" readonly spellcheck="false"></textarea>' +
       '<p class="copy-meta" id="ks-copy-meta"></p>' +
       '<div class="copy-btns">' +
@@ -613,7 +627,8 @@
       '<span id="ks-copy-parts" class="cycle-quick"></span>' +
       '</div>' +
       '<p class="copy-note">' + window.BH.tr('ks.today.copyNote', 'Shaped for KingShot chat: short lines that paste cleanly. If a block runs over one message, it comes split into parts; paste them in order.') + '</p>' +
-      '</div>';
+      '</div>' +
+      '</details>';
   }
 
   function wireCopy(BH, text) {

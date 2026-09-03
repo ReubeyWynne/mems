@@ -166,16 +166,17 @@
 .trow.dont .tname { color: var(--ink-muted); }
 .trow .tkeep { color: var(--amber-dim); font-size: 0.72rem; letter-spacing: 0.12em; }
 
-/* ─── The copy box — KingShot-ready plain text ────────── */
-.copy-box { margin-top: var(--space-m); }
-.copy-label {
-  font-size: var(--step--1);
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--amber);
-  margin-bottom: 0.4rem;
-}
+/* ─── The copy box — KingShot-ready plain text (a disclosure) ─ */
+/* Folded behind its prompt by default so the today card stays short;
+   the summary carries the copy label (the shared ❧ prompt styles). */
+.copy-box { margin-top: var(--space-s); }
+.copy-box > summary { padding: 0.15rem 0; }
+.copy-inner { margin-top: 0.4rem; }
+
+/* ─── Today-card folds (hold list, spill-day tables) ──── */
+details.today-fold { margin-top: var(--space-s); }
+details.today-fold > summary { padding: 0.15rem 0; }
+details.today-fold .today-fold-body { padding-top: 0.2rem; }
 .copy-box textarea {
   width: 100%;
   min-height: 9rem;
@@ -256,14 +257,14 @@
   padding-top: var(--space-m);
   margin-top: var(--space-l);
 }
-.day h3 {
+.day-title {
   font-family: var(--display-2);
   font-weight: 600;
   font-size: var(--step-0);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink);
-  margin-bottom: 0.3rem;
+  margin: 0;
 }
 .day-meta {
   font-size: var(--step--1);
@@ -273,6 +274,19 @@
   margin-bottom: 0.4rem;
 }
 .day-meta b { color: var(--amber); }
+
+/* ─── Disclosure day rows — the tables fold, the label stays glanceable ─ */
+details.day { margin-top: var(--space-s); padding-top: var(--space-s); }
+details.day[open] { margin-top: var(--space-m); padding-top: var(--space-m); }
+details.day > summary {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  column-gap: 0.9rem; row-gap: 0.1rem;
+  padding: 0.05rem 0;
+}
+details.day > summary .day-title { margin: 0; }
+details.day > summary .day-meta { margin: 0; }
+details.day > summary .sum-mark { margin-inline-end: 0.4rem; }
+
 .pt {
   width: 100%;
   border-collapse: collapse;

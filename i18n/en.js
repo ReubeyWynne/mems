@@ -529,6 +529,7 @@ window.__BH_I18N_DATA["en"] = {
   "ks.today.kickerOff": "Officer Project",
   "ks.today.runOfCycle": "run {n} of the cycle",
   "ks.today.runDayNo": "day {n} of the run",
+  "ks.today.openTables": "open the tables",
   "ks.today.armMeta1": "thresholds scale with your Town Center — the top tier pays Artisan Visions. read your own ladder in-game.",
   "ks.today.armMeta2": "thresholds scale with your Town Center — the top tier pays Truegold. read your own ladder in-game.",
   "ks.today.offMeta": "four milestones + an Honor Ranking; rewards grow with server age. the top tier pays {item}, plus the Mythic Conquest and Expedition skill books.",
@@ -572,7 +573,7 @@ window.__BH_I18N_DATA["en"] = {
   "ks.arm.shardTip": "Shard tasks count general shards too \u2014 the ascension scores, not the hero.",
 
   "ks.off.title": "Officer Project",
-  "ks.off.lede": "Also twice a light week: <b>Type A</b> (Infantry &amp; Charms) from Wednesday — days 3–4, 17–18 — and <b>Type B</b> (Governor Gear &amp; Hero Shards) from Sunday, days 7–8 and 21–22, its second day spilling into SG day 1 and prep day 1.",
+  "ks.off.lede": "Also twice a light week: <b>Type A</b> (Troop Training &amp; Charms) from Wednesday — days 3–4, 17–18 — and <b>Type B</b> (Governor Gear &amp; Hero Shards) from Sunday, days 7–8 and 21–22, its second day spilling into SG day 1 and prep day 1.",
   "ks.off.note": "Every run has <b>four milestones</b> plus an Honor Ranking, and rewards improve with server age. For a free player the fixed milestones beat the ranking — take them with what the live table makes cheap.",
   "ks.off.hoard": "Type A spends Governor charms, Mithril and troops; Type B spends Governor gear and hero shards — the same items the next scoring week wants saved.",
   "ks.off.m4": "Milestone 4 pays <b>Forgehammer(s)</b> on Type A and <b>Charm Design(s)</b> on Type B, each with the Mythic Conquest Skill Book and Mythic Expedition Skill Manual.",
@@ -595,6 +596,7 @@ window.__BH_I18N_DATA["en"] = {
   "ks.matrix.ok": "scores, but saving it is better",
   "ks.matrix.no": "doesn't score",
   "ks.matrix.resource": "material",
+  "ks.matrix.summary": "the prep chart — 16 materials \u00D7 five prep days",
   "ks.matrix.note": "The chart is the alliance's own, checked against the community tables. One row to sanity-check in-game: <b>Building</b> marks construction best on day 2, while some guides put it on day 1. Day 5 scores construction too, but it's the cleanup day; gear, intel and truegold beat it there. Beast hunting earns <b>no</b> prep points at all.",
 
   "ks.days.title": "The five prep days",

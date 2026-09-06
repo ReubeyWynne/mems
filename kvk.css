@@ -1,4 +1,4 @@
-/* kvk.css — the Event Cycle page (kvk-strongest-governor/), the 28-day
+/* kvk.css — the Event Cycle page (events/), the 28-day
    clock for the recurring events. Loaded after styles.css + events.css.
    The live 28-day clock, the prep chart, the point tables, and the KingShot
    copy box — the page's own components. */
@@ -165,6 +165,10 @@
 .trow .tpts { font-family: var(--display-2); font-weight: 700; color: var(--amber); white-space: nowrap; }
 .trow.dont .tname { color: var(--ink-muted); }
 .trow .tkeep { color: var(--amber-dim); font-size: 0.72rem; letter-spacing: 0.12em; }
+.trow.v-best { }              /* keep amber pts + ✅ mark (existing tpts/amber) */
+.trow.v-ok { }
+.trow.v-low .tname, .trow.v-low .tkeep { color: var(--ink-dim); }
+.trow.v-hold .tname, .trow.v-hold .tpts, .trow.v-hold .tkeep { color: var(--ink-muted); }
 
 /* ─── The copy box — KingShot-ready plain text (a disclosure) ─ */
 /* Folded behind its prompt by default so the today card stays short;
@@ -172,11 +176,6 @@
 .copy-box { margin-top: var(--space-s); }
 .copy-box > summary { padding: 0.15rem 0; }
 .copy-inner { margin-top: 0.4rem; }
-
-/* ─── Today-card folds (hold list, spill-day tables) ──── */
-details.today-fold { margin-top: var(--space-s); }
-details.today-fold > summary { padding: 0.15rem 0; }
-details.today-fold .today-fold-body { padding-top: 0.2rem; }
 .copy-box textarea {
   width: 100%;
   min-height: 9rem;
@@ -313,3 +312,6 @@ details.day > summary .sum-mark { margin-inline-end: 0.4rem; }
   .cycle-keys span { font-size: 0.55rem; letter-spacing: 0.08em; }
   .trow { grid-template-columns: 1.5rem 1fr auto; }
 }
+
+/* Day-driven page: collapsed event sets stay in the DOM but hidden. */
+section[data-phase][hidden], .toc a[hidden] { display: none !important; }

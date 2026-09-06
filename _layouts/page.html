@@ -1,0 +1,21 @@
+{% assign p = site.data.pages[page.self] %}<!DOCTYPE html>
+<html lang="en" data-page="{{ p.token }}"{% if p.swipePrev %} data-prev-url="{{ p.swipePrev.url }}" data-prev-page="{{ p.swipePrev.page }}" data-prev-title="{{ p.swipePrev.title }}" data-prev-lede="{{ p.swipePrev.lede }}"{% endif %}{% if p.swipeNext %} data-next-url="{{ p.swipeNext.url }}" data-next-page="{{ p.swipeNext.page }}" data-next-title="{{ p.swipeNext.title }}" data-next-lede="{{ p.swipeNext.lede }}"{% endif %}>
+<head>
+{% include head.html %}
+{% for s in p.headScripts %}<script>
+{{ s }}</script>
+{% endfor %}</head>
+<body>
+<a class="skip-link" href="{{ p.skipHref }}"{% if p.skipKey %} data-i18n="{{ p.skipKey }}"{% endif %}>{{ p.skipText }}</a>
+
+<div class="dust" aria-hidden="true">{{ p.dust }}</div>
+
+{% include topbar.html %}
+
+{{ content }}
+
+{% include foot.html %}
+
+{% for s in p.scripts %}<script src="{{ s }}"></script>
+{% endfor %}</body>
+</html>

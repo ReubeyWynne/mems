@@ -1,4 +1,4 @@
-/* kvk.js — the Event Cycle page toys (kvk-strongest-governor/): the live
+/* kvk.js — the Event Cycle page toys (events/): the live
    28-day clock, today's card (what's efficient, what to save), and the
    KingShot copy generator. Registers with common.js via window.BH.registerPage.
    The copy blocks are built for KingShot chat: ≤512 characters a message,
@@ -8,7 +8,8 @@
 
   // ── The 28-day wheel ───────────────────────────────────
   // Brawl week (1-7) → Strongest Governor (8-14) → Alliance
-  // Mobilization (15-21) → KvK prep (22-26) + battle weekend (27-28).
+  // Mobilization (15-20) → a quiet gap (21) → KvK prep (22-26)
+  // + battle weekend (27-28).
   var CYCLE_LEN = 28;
 
   // The alliance's prep chart, validated against the community tables:
@@ -71,15 +72,55 @@
     [['Gov charm', 36], ['T10 troops', 39]],
     [['Advanced Taming Mark', 15000], ['Mythic shard', 3040], ['Truegold', 2000], ['Epic shard', 1220], ['Common Taming Mark', 1150], ['Rare shard', 350], ['Pet Advancement', 50], ['Gathering', 3]]
   ];
-  // Off-week save lists are deliberately day-less: the day mapping lives on
-  // the prep chart, and the off-weeks (Brawl, Mobilization) have no scoring
-  // days of their own — the roulette never runs then either.
-  var SAVE_KVK = ['Truegold', 'Hero shards', 'Master emblems', 'Taming marks', 'Gems for roulette', 'Widgets + hammers', 'Mithril', 'Gov gear'];
-  var SAVE_SG = ['Hero shards', 'Taming marks', 'Mithril', 'Widgets + forgehammers', 'Truegold', 'Gems for roulette'];
+  // Canonical tracked items — the prep chart's 16 materials. Every row shown
+  // in any phase maps back to one of these; ids ARE the MATRIX row names.
+  var VITEMS = ['Truegold','Tempered TG','Hero shard','Master emblem','Building',
+    'Troop','Research','Hero roulette','Gathering','Intel missions','Pets advance',
+    'Gov charm','Gov gear','Widget gear','Mithril','Forgehammer'];
+
+  // A glyph per material, so each item scans by icon before its name.
+  var ITEM_GLYPH = {
+    'Truegold': '\uD83E\uDE99', 'Tempered TG': '\uD83D\uDD36',
+    'Hero shard': '\uD83D\uDCA0', 'Master emblem': '\u2B50',
+    'Building': '\uD83C\uDFD7\uFE0F', 'Troop': '\u2694\uFE0F',
+    'Research': '\uD83D\uDD2C', 'Hero roulette': '\uD83C\uDFA1',
+    'Gathering': '\uD83C\uDF3E', 'Intel missions': '\uD83D\uDCDC',
+    'Pets advance': '\uD83D\uDC3E', 'Gov charm': '\uD83D\uDC8D',
+    'Gov gear': '\uD83D\uDEE1\uFE0F', 'Widget gear': '\u2699\uFE0F',
+    'Mithril': '\u26CF\uFE0F', 'Forgehammer': '\uD83D\uDD28'
+  };
+
+  // Map any row label (prep/SG/brawl tables, run task rows) back to a tracked
+  // item: an id, 'free' (nothing from the hoard), or null (skip — not a
+  // tracked material). Lowercased, first match wins in this order.
+  function labelToItemId(label) {
+    var l = String(label).toLowerCase();
+    if (/truck|beast|terror|rally and hunt|wilderness/.test(l)) return 'free';
+    if (/tempered truegold|temp tg/.test(l)) return 'Tempered TG';
+    if (/mithril/.test(l)) return 'Mithril';
+    if (/widget/.test(l)) return 'Widget gear';
+    if (/forgehammer|hammer/.test(l)) return 'Forgehammer';
+    if (/governor charm|charm/.test(l)) return 'Gov charm';
+    if (/governor gear|gear max score|gov gear/.test(l)) return 'Gov gear';
+    if (/master emblem/.test(l)) return 'Master emblem';
+    if (/mythic|epic|rare|hero shard|shard/.test(l)) return 'Hero shard';
+    if (/roulette/.test(l)) return 'Hero roulette';
+    if (/taming mark|pet advancement|pet refinement|pets/.test(l)) return 'Pets advance';
+    if (/intel mission/.test(l)) return 'Intel missions';
+    if (/truegold dust/.test(l)) return null; // dust is not a tracked material
+    if (/t10|t11|t[0-9] troop|troop training|training/.test(l)) return 'Troop';
+    if (/construction/.test(l)) return 'Building';
+    if (/research/.test(l)) return 'Research';
+    if (/gather/.test(l)) return 'Gathering';
+    if (/truegold/.test(l)) return 'Truegold';
+    if (/master\u2019s manuscript|manuscript/.test(l)) return null;
+    return null;
+  }
 
   // ── The light weeks — day-aware runs, orthogonal to the phase axis ──
   // Owner-confirmed schedule. Alliance Brawl fills week 1 (days 1–7, the
-  // week right after KvK). Inside each light week (days 1–7 and 15–21),
+  // week right after KvK). Inside each light week (days 1–7 and 15–20;
+  // Officer Type B spills across day 21 into the next week's day 1),
   // the Armament Competition and the Officer Project each run twice:
   // Armament Type 1 from the week's Monday (days 1–2, 15–16), Type 2 from
   // its Friday (days 5–6, 19–20); Officer Type A from Wednesday (days
@@ -127,12 +168,6 @@
       ['Governor Gear max score +1', 70]
     ]
   };
-  // The hoard-precious materials each run type spends, for the run cards'
-  // minimal-spend note (the next scoring week wants them saved).
-  var RUN_HOARD = {
-    arm1: ['hero shards', 'truegold'], arm2: ['mithril', 'widgets + hammers'],
-    offA: ['mithril', 'governor charms'], offB: ['hero shards', 'governor gear']
-  };
   function runKey(run) { return (run.event === 'armament' ? 'arm' : 'off') + run.run.type; }
 
   // Which run (if any) is live on cycle day d. Armament and Officer never
@@ -165,34 +200,18 @@
   // 2026-08-17, so 2026-09-01 is day 16 and 2026-09-02 (a Wednesday) is
   // day 17 — the day Officer Project's Type A run is live. KvK prep opens
   // on day 22 (2026-09-07); the battle weekend is days 27–28. Every
-  // kingdom turns the same wheel on the same day. If the game's server
-  // date ever differs from the device's, the calibration input on the
-  // page re-anchors day 1.
-  var KEY = 'ks_epoch';
+  // kingdom turns the same wheel on the same day, anchored to a fixed,
+  // global day 1 — there is no per-reader calibration.
   var EPOCH = new Date(2026, 7, 17); // month 7 = August; day 1 is a Monday
-  try {
-    var saved = localStorage.getItem(KEY);
-    if (saved) {
-      var p = saved.split('-').map(Number);
-      if (p.length === 3 && p[0] > 2000) EPOCH = new Date(p[0], p[1] - 1, p[2]);
-    }
-  } catch (e) { /* private mode */ }
 
-  function epochISO() {
-    var m = String(EPOCH.getMonth() + 1);
-    var d = String(EPOCH.getDate());
-    if (m.length < 2) m = '0' + m;
-    if (d.length < 2) d = '0' + d;
-    return EPOCH.getFullYear() + '-' + m + '-' + d;
-  }
-
-  function dayFromDate(dt) {
-    var ms = Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()) -
+  // "Today" is the UTC calendar date — the game runs the wheel on UTC, so a
+  // reader's local clock must not shift the day (commentary on the widget).
+  function todayDay() {
+    var n = new Date();
+    var ms = Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate()) -
              Date.UTC(EPOCH.getFullYear(), EPOCH.getMonth(), EPOCH.getDate());
-    var n = Math.floor(ms / 86400000);
-    return ((n % CYCLE_LEN) + CYCLE_LEN) % CYCLE_LEN + 1;
+    return ((Math.floor(ms / 86400000) % CYCLE_LEN) + CYCLE_LEN) % CYCLE_LEN + 1;
   }
-  function todayDay() { return dayFromDate(new Date()); }
 
   var day = todayDay();
 
@@ -204,7 +223,8 @@
   function weekOf(d) {
     if (d <= 7) return 'brawl';
     if (d <= 14) return 'sg';
-    if (d <= 21) return 'mob';
+    if (d <= 20) return 'mob';
+    if (d === 21) return 'gap';   // quiet day: Officer Project Type B + Swordland's Sunday
     if (d <= 26) return 'prep';
     return 'battle';
   }
@@ -234,8 +254,8 @@
   }
 
   // ── The today card ─────────────────────────────────────
-  function rowHTML(mark, name, pts, extra) {
-    return '<div class="trow' + (mark === GLYPH.no ? ' dont' : '') + (extra ? ' keep' : '') + '"><span class="tmark">' + mark + '</span>' +
+  function rowHTML(mark, name, pts, extra, vClass) {
+    return '<div class="trow' + (mark === GLYPH.no ? ' dont' : '') + (extra ? ' keep' : '') + (vClass ? ' ' + vClass : '') + '"><span class="tmark">' + mark + '</span>' +
       '<span class="tname">' + name + '</span>' +
       (pts ? '<span class="tpts">' + pts + '</span>' : '<span class="tpts"></span>') +
       (extra ? '<span class="tkeep">' + extra + '</span>' : '') + '</div>';
@@ -245,73 +265,107 @@
     return '<div class="today-zone"><h4>' + title + '</h4>' + html + '</div>';
   }
 
+  // ── The unified at-a-glance value list ─────────────────
+  // ctx: { prepN (1-5) | sgN (1-7) | brawlIds (Set|null), sgIds (Set),
+  //        lowIds (Set), ptsById (id → display pts), freeActions (array|null) }
+  // Owner rules (locked): only KvK prep can produce 'best', and only on the
+  // prep day where an item hits its best MATRIX cell. A brawl/SG day where
+  // the item is a top scorer → 'ok'. Asked for only by a live run → 'low'.
+  // Everything else → 'hold'. Free actions list separately, never inside.
+  function valueOf(id, ctx) {
+    var st = null, i;
+    if (ctx.prepN) {
+      for (i = 0; i < MATRIX.length; i++) {
+        if (MATRIX[i][0] === id) { st = MATRIX[i][1][ctx.prepN - 1]; break; }
+      }
+      if (st === 'best') return 'best';
+      if (st === 'ok') return 'ok';     // 'no' falls through to low/hold
+    } else if (ctx.sgN) {
+      if (ctx.sgIds.has(id)) return 'ok';
+    } else if (ctx.brawlIds) {
+      if (ctx.brawlIds.has(id)) return 'ok';
+    }
+    if (ctx.lowIds.has(id)) return 'low';
+    return 'hold';
+  }
+
+  // Live-run task rows that map to a tracked item — those are the day's lows.
+  function runLowIds() {
+    var run = liveRun(day);
+    var out = new Set();
+    if (!run) return out;
+    var tasks = run.event === 'armament' ? ARM_TASKS[run.run.type] : OFF_TASKS[run.run.type];
+    for (var i = 0; i < tasks.length; i++) {
+      var id = labelToItemId(tasks[i][0]);
+      if (id && id !== 'free') out.add(id);
+    }
+    return out;
+  }
+
+  var VALUE_MARK = { best: GLYPH.best, ok: GLYPH.ok, low: '\uD83D\uDD3B', hold: '\u23F8\uFE0F' };
+  var VALUE_TAG = { best: 'best value', ok: 'ok value', low: 'low value', hold: 'hold' };
+  var VALUE_ORDER = ['best', 'ok', 'low', 'hold'];
+
+  function todayValueHtml(ctx, BH) {
+    var html = '';
+    if (ctx.freeActions && ctx.freeActions.length) {
+      var freeRows = '';
+      for (var i = 0; i < ctx.freeActions.length; i++) {
+        freeRows += rowHTML('\u2705', ctx.freeActions[i].label, ctx.freeActions[i].pts, '');
+      }
+      html += zone('free \u2014 nothing from the hoard', freeRows);
+    }
+    var groups = { best: '', ok: '', low: '', hold: '' };
+    var v;
+    for (v = 0; v < VITEMS.length; v++) {
+      var id = VITEMS[v];
+      var val = valueOf(id, ctx);
+      var pts = (val === 'best' || val === 'ok') && ctx.ptsById[id] ? ctx.ptsById[id] : '';
+      groups[val] += rowHTML(VALUE_MARK[val], ITEM_GLYPH[id] + ' ' + id, pts, VALUE_TAG[val], 'v-' + val);
+    }
+    for (v = 0; v < VALUE_ORDER.length; v++) {
+      if (groups[VALUE_ORDER[v]]) html += zone(VALUE_MARK[VALUE_ORDER[v]] + ' ' + VALUE_TAG[VALUE_ORDER[v]], groups[VALUE_ORDER[v]]);
+    }
+    return '<div class="today-value">' + html + '</div>';
+  }
+
   function prepCard(n, BH) {
     var theme = KOP_THEMES[n - 1];
     var head = '<p class="today-kicker">' + BH.tr('ks.today.kickerPrep', 'KvK prep') + ' \u00B7 ' + BH.tr('ks.today.day', 'day') + ' ' + n + '</p>' +
       '<p class="today-title">' + theme + '</p>' +
       '<p class="today-meta">' + BH.tr('ks.today.chest', 'the daily goal is the 200,000-point chest') + '</p>';
 
-    var best = '', ok = '', dont = '';
-    for (var i = 0; i < MATRIX.length; i++) {
-      var st = MATRIX[i][1][n - 1];
-      var html = rowHTML(GLYPH[st], MATRIX[i][0], PTS[MATRIX[i][0]]);
-      if (st === 'best') best += html;
-      else if (st === 'ok') ok += html;
-      else dont += html;
-    }
-
-    var body = zone(BH.tr('ks.today.spend', 'spend today'), best + ok) +
-      zone(BH.tr('ks.today.dont', "don't touch"), dont);
+    var ctx = { prepN: n, sgN: null, brawlIds: null, sgIds: new Set(), lowIds: runLowIds(), ptsById: PTS, freeActions: null };
+    var body = todayValueHtml(ctx, BH);
 
     return { head: head, body: body, copy: dayBlock(n), copyTitle: BH.tr('ks.today.copyToday', 'copy today for KingShot') };
   }
 
   function sgCard(n, BH) {
-    var tasks = SG_TASKS[n - 1].slice().sort(function (a, b) { return b[1] - a[1]; });
-    var rows = '';
-    for (var i = 0; i < tasks.length; i++) {
-      rows += rowHTML('\u00B7', tasks[i][0], BH.fmt(tasks[i][1]));
+    var sgIds = new Set();
+    var ptsById = {};
+    var dayRows = SG_TASKS[n - 1];
+    var i;
+    for (i = 0; i < dayRows.length; i++) {
+      var id = labelToItemId(dayRows[i][0]);
+      if (!id || id === 'free') continue;   // e.g. 'Speedups' → null: not tracked
+      if (!sgIds.has(id)) ptsById[id] = typeof dayRows[i][1] === 'number' ? BH.fmt(dayRows[i][1]) : String(dayRows[i][1]);
+      sgIds.add(id);
     }
     var head = '<p class="today-kicker">' + BH.tr('ks.today.kickerSg', 'Strongest Governor') + ' \u00B7 ' + BH.tr('ks.today.day', 'day') + ' ' + n + '</p>' +
       '<p class="today-title">' + SG_THEMES[n - 1] + '</p>' +
       '<p class="today-meta">' + BH.tr('ks.today.sgMeta', 'daily rank closes at 00:00 UTC \u2014 two challenge medals a day') + '</p>';
-    var body = zone(BH.tr('ks.today.top', 'best value today'), rows) +
-      '<p class="note">' + BH.tr('ks.today.sgNote', 'roulette spins cost gems \u2014 spin only on a day that pays. hold intel from 08:00 the day before a scoring day so it banks. fixed rewards usually beat the rankings: SG prizes are cosmetics; the KvK record is the legacy.') + '</p>';
+    var ctx = { prepN: null, sgN: n, brawlIds: null, sgIds: sgIds, lowIds: runLowIds(), ptsById: ptsById, freeActions: null };
+    var body = todayValueHtml(ctx, BH);
     return { head: head, body: body, copy: sgCopy(n), copyTitle: BH.tr('ks.today.copySg', 'copy this day for KingShot') };
   }
 
   function battleCard(BH) {
-    var facts = [
-      BH.tr('ks.battle.f1', 'the castle contest runs a full 5 hours. hold it 2.5 hours continuously as one alliance and you win on the spot; otherwise the alliance with the most total hold time when the window closes takes it. the game runs the full 5 hours even once a side is mathematically uncatchable'),
-      BH.tr('ks.battle.f2', 'four turrets wear the defenders down and give occupiers lethality'),
-      BH.tr('ks.battle.f3', 'the battle day runs ~10:00\u201322:00 UTC; the castle is contestable for the full 5 hours within it'),
-      BH.tr('ks.battle.f7', 'the window itself: during 10:00\u201322:00 UTC players can teleport between the servers and troop kills score points, all-out style. fun to blow off steam, but don\u2019t burn too many troops and resources. check world and alliance chat for any rules of engagement agreed between the servers first'),
-      BH.tr('ks.battle.f5', 'field triage: 30% base recovery, up to 90% with satchels and rescue orders'),
-      BH.tr('ks.battle.f6', 'shield before the window: the gap between phases is when towns fall, and the shield is essential for any time you spend offline in the battle window')
-    ];
-    var rows = '';
-    for (var i = 0; i < facts.length; i++) rows += rowHTML('\u00B7', facts[i], '');
     var head = '<p class="today-kicker">' + BH.tr('ks.today.kickerBattle', 'KvK') + ' \u00B7 ' + BH.tr('ks.today.battleSub', 'battle weekend') + '</p>' +
       '<p class="today-title">' + BH.tr('ks.today.battleTitle', 'The Castle') + '</p>';
-    var body = zone(BH.tr('ks.today.spend', 'the rules'), rows) +
-      '<p class="note">' + BH.tr('ks.today.battleNote', 'your prep hoard is the healing fund \u2014 food and wood burn fast here.') + '</p>';
+    var ctx = { prepN: null, sgN: null, brawlIds: null, sgIds: new Set(), lowIds: new Set(), ptsById: {}, freeActions: null };
+    var body = todayValueHtml(ctx, BH);
     return { head: head, body: body, copy: battleCopy(BH), copyTitle: BH.tr('ks.today.copyBattle', 'copy the battle reminder for KingShot') };
-  }
-
-  function weekCard(w, BH) {
-    // Fallback for a light-week day with no live run — the confirmed
-    // schedule always has one, but keep the save-list card if it changes.
-    var save = w === 'brawl' ? SAVE_SG : SAVE_KVK;
-    var kicker = w === 'brawl' ? BH.tr('ks.today.kickerBrawl', 'week 1') + ' \u00B7 ' + BH.tr('ks.week.brawl', 'Brawl') : BH.tr('ks.today.kickerMob', 'week 3') + ' \u00B7 ' + BH.tr('ks.week.mob', 'Alliance Mobilization');
-    var title = w === 'brawl' ? BH.tr('ks.week.brawl', 'Brawl week') : BH.tr('ks.week.mob', 'Alliance Mobilization week');
-    var head = '<p class="today-kicker">' + kicker + '</p><p class="today-title">' + title + '</p>' + weekNotesHtml(w, BH);
-    var rows = '';
-    for (var i = 0; i < save.length; i++) rows += rowHTML('\u00B7', save[i], '');
-    var body = zone(BH.tr('ks.today.hold', 'hold these'), rows) +
-      '<p class="note">' + (w === 'brawl'
-        ? BH.tr('ks.today.brawlNote', 'its own week: no fixed daily themes, Swordland\u2019s one-hour battle on Sunday (one of two in the cycle). keep the KvK-precious hoard intact; Strongest Governor is next.')
-        : BH.tr('ks.today.mobNote', 'its own event, no daily themes. spend minimal KvK-precious resources \u2014 take the armament and officer fixed rewards, skip their rankings. the hoard is for prep.')) + '</p>';
-    return { head: head, body: body, copy: saveCopy(w === 'brawl' ? 'sg' : 'kvk', BH), copyTitle: BH.tr('ks.today.copySave', 'copy the save list for KingShot') };
   }
 
   // ── The light weeks — day-aware cards ──────────────────
@@ -321,122 +375,136 @@
   function brawlThemeIdx(d) { return d > 6 ? 6 : d; }
 
   function weekNotesHtml(w, BH) {
-    // Time-critical notes that ride on the light weeks: the Swordland
-    // battle on their Sundays (days 7 and 21 under the Monday anchor), the
-    // matchmaking reveal (days 20–21) and day 21's intel hold for prep.
+    // Time-critical notes: the Swordland battle on the cycle's Sundays
+    // (days 7 and 21), the matchmaking reveal on Mobilization's last day
+    // (day 20), and day 21's intel hold for prep.
     var h = '';
-    if (w === 'mob' && day >= 20) {
-      h += '<p class="today-meta">' + BH.tr('ks.today.matchmaking', 'KvK matchmaking: your opponent is revealed.') + '</p>';
+    if (w === 'mob' && day === 20) {
+      h += '<p class="today-meta">' + BH.tr('ks.today.matchmaking', 'KvK matchmaking: your opponent is revealed tomorrow!') + '</p>';
     }
     if (day === 7 || day === 21) {
       h += '<p class="today-meta">' + BH.tr('ks.today.swordSunday', 'Swordland Showdown\u2019s one-hour battle runs today, the Sunday of this week.') + '</p>';
     }
-    if (w === 'mob' && day === 21) {
+    if (day === 21) {
       h += '<p class="today-meta">' + BH.tr('ks.today.holdIntel', 'from 08:00 today, stop collecting intel missions. They bank and cash in for prep points.') + '</p>';
     }
     return h;
   }
 
-  function runZoneRows(tasks, BH) {
-    var rows = '';
-    for (var i = 0; i < tasks.length; i++) {
-      rows += rowHTML('\u00B7', tasks[i][0], typeof tasks[i][1] === 'number' ? BH.fmt(tasks[i][1]) : tasks[i][1]);
+  // ── The week's main event feeds the card (single source: the section DOM) ──
+  function brawlDayDetails(n) {
+    var sec = document.getElementById('brawl');
+    if (!sec) return null;
+    var days = sec.querySelectorAll('details.day');
+    if (!days.length) return null;
+    var i = (n - 1) % days.length;
+    var d = days[i];
+    if (!d) return null;
+    var rows = [];
+    var trs = d.querySelectorAll('table.pt tbody tr');
+    for (var r = 0; r < trs.length; r++) {
+      var cells = trs[r].querySelectorAll('td');
+      if (cells.length < 2) continue;
+      var label = cells[0].textContent.replace(/\s+/g, ' ').trim();
+      var p = cells[1].textContent.replace(/,/g, '').trim();
+      var pts = /^\d+$/.test(p) ? parseInt(p, 10) : p;
+      rows.push({ label: label, pts: pts });
     }
-    return rows;
+    var v = d.querySelector('.bd-verdict');
+    return { title: d.querySelector('.day-title') ? d.querySelector('.day-title').textContent.replace(/\s+/g, ' ').trim() : '', verdict: v ? v.textContent.replace(/\s+/g, ' ').trim() : null, rows: rows };
   }
 
-  function runHeadHtml(run, BH) {
-    // One event glyph per world, mirrored in the page's fold summaries.
-    var evMark = run.event === 'armament' ? '\uD83D\uDEE1\uFE0F ' : '\uD83C\uDF96\uFE0F ';
-    var ev = evMark + (run.event === 'armament' ? BH.tr('ks.today.kickerArm', 'Armament Competition') : BH.tr('ks.today.kickerOff', 'Officer Project'));
-    var kicker = ev + ' \u00B7 ' + BH.tr('ks.today.runOfCycle', 'run {n} of the cycle').replace('{n}', run.n) +
-      ' \u00B7 ' + BH.tr('ks.today.runDayNo', 'day {n} of the run').replace('{n}', run.dayNo);
-    var title = run.event === 'armament'
-      ? 'Type ' + run.run.type
-      : 'Type ' + run.run.type + ' \u2014 ' + (run.run.type === 'A' ? 'Troop Training & Charms' : 'Governor Gear & Hero Shards');
-    var meta;
-    if (run.event === 'armament') {
-      meta = BH.tr(run.run.type === 1 ? 'ks.today.armMeta1' : 'ks.today.armMeta2',
-        'thresholds scale with your Town Center \u2014 the top tier pays ' + (run.run.type === 1 ? 'Artisan Visions' : 'Truegold') + '. read your own ladder in-game.');
-    } else {
-      var item = run.run.type === 'A' ? 'Forgehammer(s)' : 'Charm Design(s)';
-      meta = BH.tr('ks.today.offMeta', 'four milestones + an Honor Ranking; rewards grow with server age. the top tier pays {item}, plus the Mythic Conquest and Expedition skill books.').replace('{item}', item);
+  function brawlCard(BH) {
+    var n = brawlThemeIdx(day);
+    var kicker = 'Alliance Brawl \u00B7 day ' + n + ' of the week';
+    var det = brawlDayDetails(n);
+    var title = det ? det.title : (BRAWL_THEMES[n - 1] || '');
+    var meta = det && det.verdict ? det.verdict
+      : BH.tr('ks.today.brawlMeta', 'spend on the rows worth it below; keep the saved stockpile for Strongest Governor and KvK prep.');
+    var brawlIds = new Set();
+    var ptsById = {};
+    var freeActions = [];
+    if (det && det.rows.length) {
+      for (var i = 0; i < det.rows.length; i++) {
+        var row = det.rows[i];
+        var id = labelToItemId(row.label);
+        var ptsTxt = typeof row.pts === 'number' ? BH.fmt(row.pts) : String(row.pts);
+        if (id === 'free') { freeActions.push({ label: row.label, pts: ptsTxt }); continue; }
+        if (!id) continue;
+        if (!brawlIds.has(id)) ptsById[id] = ptsTxt;
+        brawlIds.add(id);
+      }
     }
-    return '<p class="today-kicker">' + kicker + '</p>' +
+    var ctx = { prepN: null, sgN: null, brawlIds: brawlIds, sgIds: new Set(), lowIds: runLowIds(), ptsById: ptsById, freeActions: freeActions };
+    var body = todayValueHtml(ctx, BH);
+    var head = '<p class="today-kicker">' + kicker + '</p>' +
       '<p class="today-title">' + title + '</p>' +
       '<p class="today-meta">' + meta + '</p>' + weekNotesHtml(weekOf(day), BH);
+    return { head: head, body: body, copy: '', copyTitle: '' };
   }
 
-  function brawlContextHtml(BH) {
-    var idx = brawlThemeIdx(day);
-    var when = day >= 6
-      ? BH.tr('ks.today.brawlFinale', 'the ~36-hour Full-Scale finale, spilling into Sunday')
-      : BH.tr('ks.today.brawlDay', 'Day {n} \u00B7 {theme}').replace('{n}', idx).replace('{theme}', BRAWL_THEMES[idx - 1]);
-    return '<p class="today-meta">\u2694\uFE0F ' +
-      BH.tr('ks.today.brawlLive', 'Alliance Brawl is live beside it \u2014 {when}. one spend can score both; the day tables live in the brawl section.').replace('{when}', when) +
-      '</p>';
+  function mobCard(BH) {
+    var kicker = 'Alliance Mobilization \u00B7 week 3';
+    var title = BH.tr('ks.today.mobTitle', 'spend little from the hoard today');
+    var meta = BH.tr('ks.today.mobMeta', 'no high-value events for spending today. if armament or officer is live, accept your mobilization missions first so a spend double-dips; everything else keeps for KvK prep.');
+    if (day === 20) meta = BH.tr('ks.today.mobLast', 'last day of mobilization \u2014 ') + meta;
+    var head = '<p class="today-kicker">' + kicker + '</p>' +
+      '<p class="today-title">' + title + '</p>' +
+      '<p class="today-meta">' + meta + '</p>' + weekNotesHtml(weekOf(day), BH);
+    var ctx = { prepN: null, sgN: null, brawlIds: null, sgIds: new Set(), lowIds: runLowIds(), ptsById: {}, freeActions: null };
+    var body = todayValueHtml(ctx, BH);
+    return { head: head, body: body, copy: '', copyTitle: '' };
   }
 
-  function hoardList(run) { return RUN_HOARD[runKey(run)].join(' \u00B7 '); }
+  // Runs are never the headline: a slim strip naming the live run as the
+  // source of the low-value rows above — not a parallel event.
+  function sideRun(run, BH) {
+    var name = run.event === 'armament' ? 'Armament Competition' : 'Officer Project';
+    var gly = run.event === 'armament' ? '\uD83D\uDEE1\uFE0F ' : '\uD83C\uDF96\uFE0F ';
+    return '<p class="side-run">' + gly + '<b>' + name + ' \u00B7 Type ' + run.run.type + ' is live</b> \u2014 its asks are the low-value rows above, so treat them like holds.</p>';
+  }
 
-  function runNoteHtml(run, w, BH) {
-    if (w === 'sg' || w === 'prep') {
-      // Officer Type B's spill day — the run shares the card with the phase day.
-      var next = w === 'sg' ? 'Strongest Governor' : 'KvK prep';
-      return '<p class="note">' + BH.tr('ks.today.spillNote',
-        'Type B spills into today \u2014 ' + next + ' day 1 is live below it. take the fixed rewards with what\u2019s cheap; the ' + next + ' week is where the hoard pays.') + '</p>';
+  function gapCard(BH) {
+    // Day 21: nothing of its own — Officer Project Type B and Swordland's
+    // Sunday battle are the only things live (weekNotes + sideRun carry them).
+    var head = '<p class="today-kicker">between weeks \u00B7 day 21</p>' +
+      '<p class="today-title">quiet day</p>' +
+      '<p class="today-meta">' + BH.tr('ks.today.gapMeta', 'nothing of its own today \u2014 KvK prep opens tomorrow (day 22). keep the hoard.') + '</p>' +
+      weekNotesHtml('gap', BH);
+    var ctx = { prepN: null, sgN: null, brawlIds: null, sgIds: new Set(), lowIds: runLowIds(), ptsById: {}, freeActions: null };
+    var body = todayValueHtml(ctx, BH);
+    return { head: head, body: body, copy: '', copyTitle: '' };
+  }
+
+  // ── Day-driven page ────────────────────────────────────
+  var PHASE_FIRST = { brawl: 1, sg: 8, mob: 15, prep: 22, battle: 27 };
+  var PHASE_NAME = {
+    brawl: 'Alliance Brawl', sg: 'Strongest Governor', mob: 'Alliance Mobilization',
+    prep: 'KvK prep', battle: 'the battle weekend'
+  };
+  function paintDaySections(BH) {
+    var w = weekOf(day);
+    var hasRun = !!liveRun(day);
+    var secs = document.querySelectorAll('section[data-phase]');
+    for (var i = 0; i < secs.length; i++) {
+      var ph = secs[i].getAttribute('data-phase');
+      var show = (ph === w) || (ph === 'fillers' && hasRun);
+      secs[i].hidden = !show;
     }
-    var arm = run.event === 'armament';
-    var next = w === 'brawl' ? 'Strongest Governor wants next week' : 'KvK prep wants';
-    var fallback = arm
-      ? 'fixed rewards beat the ranking here \u2014 this run spends {hoard}, which ' + next + '. take the milestones; skip the chase.'
-      : 'the ranking costs more than it pays \u2014 take the milestones with what\u2019s cheap. this run spends {hoard}; ' + (w === 'brawl' ? 'Strongest Governor opens on day 8.' : 'KvK prep opens on day 22.');
-    return '<p class="note">' + BH.tr(arm ? (w === 'brawl' ? 'ks.today.armNote1' : 'ks.today.armNote3') : (w === 'brawl' ? 'ks.today.offNote1' : 'ks.today.offNote3'), fallback).replace('{hoard}', hoardList(run)) + '</p>';
-  }
-
-  function holdZoneHtml(w, BH) {
-    // The hold list folds behind a disclosure — the spend rows above it are
-    // the glance-critical part of a light-week day.
-    var save = w === 'brawl' ? SAVE_SG : SAVE_KVK;
-    var rows = '';
-    for (var i = 0; i < save.length; i++) rows += rowHTML('\u00B7', save[i], '');
-    return '<details class="today-fold hold-fold">' +
-      '<summary>' + BH.tr('ks.today.hold', 'hold these') + '</summary>' +
-      '<div class="today-fold-body">' + rows + '</div></details>';
-  }
-
-  function runDayCard(run, w, BH) {
-    var phase = null;
-    if (w === 'sg' || w === 'prep') {
-      phase = w === 'sg' ? sgCard(sgDayOf(day), BH) : prepCard(prepDayOf(day), BH);
+    var links = document.querySelectorAll('.toc a');
+    for (var j = 0; j < links.length; j++) {
+      var h = links[j].getAttribute('href');
+      if (h && h.charAt(0) === '#') {
+        var el = document.getElementById(h.slice(1));
+        links[j].hidden = !!(el && el.hasAttribute('data-phase') && el.hidden);
+      } else {
+        links[j].hidden = false;
+      }
     }
-    var tasks = run.event === 'armament' ? ARM_TASKS[run.run.type] : OFF_TASKS[run.run.type];
-    var body = zone(BH.tr('ks.today.spend', 'spend today'), runZoneRows(tasks, BH));
-    if (w === 'brawl') body += brawlContextHtml(BH);
-    body += runNoteHtml(run, w, BH);
-    if (w === 'brawl' || w === 'mob') body += holdZoneHtml(w, BH);
-    if (phase) {
-      // Officer Type B's spill day: the run leads, the phase day's tables
-      // fold beneath it (its head stays visible above the fold).
-      body += '<details class="today-fold phase-fold">' +
-        '<summary>' + BH.tr('ks.today.openTables', 'open the tables') + '</summary>' +
-        '<div class="today-fold-body">' + phase.body + '</div></details>';
-      return {
-        head: runHeadHtml(run, BH) + phase.head,
-        body: body,
-        copy: phase.copy,
-        copyTitle: phase.copyTitle
-      };
-    }
-    return {
-      head: runHeadHtml(run, BH),
-      body: body,
-      copy: runCopy(run, BH),
-      copyTitle: BH.tr('ks.today.copyRun', 'copy the run for KingShot')
-    };
   }
 
   function render(BH) {
+    paintDaySections(BH);
     var out = document.getElementById('ks-day-out');
     if (out) out.textContent = BH.tr('ks.today.dayOut', 'day {n} of 28').replace('{n}', day) +
       (day === todayDay() ? ' ' + BH.tr('ks.today.isToday', '\u00B7 today') : '');
@@ -448,14 +516,18 @@
     var w = weekOf(day);
     var run = liveRun(day);
     var info;
-    if (run) info = runDayCard(run, w, BH);
+    if (w === 'brawl') info = brawlCard(BH);
+    else if (w === 'mob') info = mobCard(BH);
+    else if (w === 'gap') info = gapCard(BH);
     else if (w === 'prep') info = prepCard(prepDayOf(day), BH);
     else if (w === 'sg') info = sgCard(sgDayOf(day), BH);
-    else if (w === 'battle') info = battleCard(BH);
-    else info = weekCard(w, BH);
+    else info = battleCard(BH);
+    if (run) info.body += sideRun(run, BH);
 
-    card.innerHTML = info.head + info.body + copyBoxHTML(info.copy, info.copyTitle);
-    wireCopy(BH, info.copy);
+    var html = info.head + info.body;
+    if (info.copy) html += copyBoxHTML(info.copy, info.copyTitle);
+    card.innerHTML = html;
+    if (info.copy) wireCopy(BH, info.copy);
   }
 
   // ── The matrix highlight ───────────────────────────────
@@ -548,20 +620,6 @@
     ].join('\n');
   }
 
-  function saveCopy(target, BH) {
-    var list = target === 'kvk' ? SAVE_KVK : SAVE_SG;
-    var title = target === 'kvk' ? 'SAVE FOR KVK' : 'SAVE FOR GOVERNOR';
-    var lines = ['\uD83D\uDC51' + title + '\uD83D\uDC51'];
-    var cur = '';
-    for (var i = 0; i < list.length; i++) {
-      var add = (cur ? ' \u00B7 ' : '') + list[i];
-      if (cur && cur.length + add.length > 50) { lines.push(cur); cur = list[i]; }
-      else cur += add;
-    }
-    lines.push(cur);
-    return lines.join('\n');
-  }
-
   // The live run, one compact block: header, its task table as short
   // lines (highest points first), then the milestone note. Same ≤6-line
   // contract as the prep and SG blocks.
@@ -595,7 +653,7 @@
     } else {
       lines.push('M4: ' + (r.type === 'A' ? 'Forgehammer(s)' : 'Charm Design(s)') + ' + skill books');
     }
-    lines.push('milestones > ranking \u00B7 check in-game');
+    lines.push('low reward \u00B7 skip unless it\u2019s free/cheap');
     return lines.join('\n');
   }
 
@@ -694,22 +752,10 @@
         b.addEventListener('click', function () { setDay(parseInt(b.getAttribute('data-jump'), 10), BH); });
       })(quicks[i]);
     }
-    var epoch = document.getElementById('ks-epoch');
-    if (epoch) {
-      epoch.value = epochISO();
-      epoch.addEventListener('change', function (e) {
-        var v = e.target.value;
-        if (!v) return;
-        try { localStorage.setItem(KEY, v); } catch (err) { /* private mode */ }
-        var p = v.split('-').map(Number);
-        if (p.length === 3 && p[0] > 2000) EPOCH = new Date(p[0], p[1] - 1, p[2]);
-        setDay(todayDay(), BH);
-      });
-    }
-    // The today display is live on the reader's device date: if the cycle
-    // day rolls over while the page is open (or the tab sat backgrounded
-    // overnight), catch up on focus/visibility instead of showing a stale
-    // day. No-op whenever the selected day already matches today.
+    // The today display is live on the UTC date: if the cycle day rolls over
+    // while the page is open (or the tab sat backgrounded overnight), catch
+    // up on focus/visibility instead of showing a stale day. No-op whenever
+    // the selected day already matches today.
     function refreshToday() {
       var t = todayDay();
       if (t !== day) setDay(t, BH);

@@ -1,0 +1,49 @@
+{% assign p = site.data.pages[page.self] %}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="{{ p.themeColor }}">
+<meta name="description" content="{{ p.metaDesc }}" data-i18n-key="{{ p.metaDescKey }}" data-i18n-attr="content">
+<meta property="og:title" content="{{ p.ogTitle }}" data-i18n-key="{{ p.ogTitleKey }}" data-i18n-attr="content">
+<meta property="og:description" content="{{ p.ogDesc }}" data-i18n-key="{{ p.ogDescKey }}" data-i18n-attr="content">
+<meta property="og:type" content="website">
+<title data-i18n="{{ p.titleKey }}">{{ p.titleText }}</title>
+{{ p.icon }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+{% for c in p.css %}<link rel="stylesheet" href="{{ c }}">
+{% endfor %}<link rel="canonical" href="{{ site.url }}{{ p.canonicalPath }}">
+{% for l in site.data.langs %}<link rel="alternate" hreflang="{{ l.h }}" href="{{ site.url }}{{ p.canonicalPath }}{% if l.q %}?lang={{ l.h }}{% endif %}">
+{% endfor %}
+<script>
+/* ── Language resolution for i18n.js — runs before first paint
+   so <html lang> is correct immediately. Order: ?lang= URL param
+   → saved choice → browser language → English. No data sent. */
+(function () {
+  var CANON = { en: 'en', es: 'es', 'pt-br': 'pt-BR', de: 'de', fr: 'fr', it: 'it', ru: 'ru', pl: 'pl', tr: 'tr', 'zh-hans': 'zh-Hans', 'zh-hant': 'zh-Hant', ko: 'ko', ja: 'ja', th: 'th', id: 'id', vi: 'vi', ar: 'ar' };
+  var DIRS = { ar: 'rtl' };
+  function norm(code) {
+    if (!code) return null;
+    var c = String(code).toLowerCase();
+    if (CANON[c]) return CANON[c];
+    var base = c.split('-')[0];
+    if (base === 'pt') return 'pt-BR';
+    if (base === 'zh') return (c.indexOf('zh-tw') === 0 || c.indexOf('zh-hk') === 0 || c.indexOf('zh-hant') === 0) ? 'zh-Hant' : 'zh-Hans';
+    return CANON[base] || null;
+  }
+  var q = (location.search.match(/[?&]lang=([^&]+)/) || [])[1];
+  var lang = null;
+  if (q) lang = norm(q);
+  if (lang) {
+    try { localStorage.setItem('bh_lang', lang); } catch (e) { /* private mode */ }
+  } else {
+    var stored = null;
+    try { stored = localStorage.getItem('bh_lang'); } catch (e) { /* private mode */ }
+    lang = norm(stored) || norm(navigator.language) || 'en';
+  }
+  window.__BH_LANG = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = DIRS[lang] || 'ltr';
+})();
+</script>

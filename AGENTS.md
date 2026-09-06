@@ -55,6 +55,11 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   text. Emphasis is **bold**, not italic; italic is reserved for the marginal-gloss
   voice (`.note`, `.gen-gloss`, `.egg-note`, `.forge-n`, `.paw-trophy`, `.rev`,
   `.d-formula`).
+- **Build model (Jekyll, GH Pages):** `_config.yml` + `_layouts/page.html` +
+  `_includes/{head,topbar,foot}.html` template every page's chrome — the
+  `<head>` (meta, canonical/hreflang, favicon, fonts), the lang resolver
+  script, the topbar (brand, `.ev-switch`, language menu, `.ledger`),
+  skip link, dust, footer nav. Per-page content files are `---\nlayout: page\nself: <key>\n---\n` + their TOC + `<main>` only. `_data/pages.json` (per-page identity/meta/swipe) and `_data/nav.json` (order + labels) drive all of it — the swipe-ring and every nav are one `_data` edit, never per-page. **Local work is `jekyll build` then serve `_site/`**; the `.dsh` page checks run against `_site/`. Never paste chrome (head/nav/lang-menu) into a page content file — it belongs in the layout/includes.
 - File layout: shared CSS is `styles.css` (tokens, base, manuscript components)
   + `events.css` (event switcher, swipe preview, page themes, shared ruled rows
   and checklist); per-page CSS is `home.css`, `vikings.css`, `swordland.css`
@@ -65,10 +70,12 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   `vikings.js`, `swordland.js` and register via `window.BH.registerPage(...)`.
 - The TOC scrollspy and front-layer observer in `common.js` pick up new sections
   (`<section class="section" id="…">` + matching `.toc a[href="#…"]`) automatically.
-- A new event page = one directory (like `vikings-vengeance/`), a `data-page`
-  theme block + dust rules in `events.css`, a per-page CSS file for bespoke
-  components, a per-page JS file registering whispers/toys (see the egg bit
-  registry in `common.js` before allocating whisper ids), and nav updates in
-  the topbar/footer of every page.
+- A new event page = one directory with a front-matter `index.html` (its TOC +
+  `<main>` body only), a `data-page` theme block + dust rules in `events.css`,
+  a per-page CSS file for bespoke components, a per-page JS file registering
+  whispers/toys (see the egg bit registry in `common.js` before allocating
+  whisper ids), and one row each in `_data/nav.json` + `_data/pages.json` so
+  the navs, ledger, footer and swipe ring pick it up (no per-page nav edits).
+  Then `jekyll build` and re-run `.dsh/kvk-check.js` against `_site/`.
 - Docs: `MATHS.md` is the formula source of truth; `i18n/README.md` is the
   translation playbook.

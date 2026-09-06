@@ -1,0 +1,44 @@
+[
+  {
+    "self": "home",
+    "tail": "",
+    "labelKey": "ev.switch.home",
+    "label": "Home",
+    "group": "home"
+  },
+  {
+    "self": "events",
+    "tail": "events/",
+    "labelKey": "ev.switch.cycle",
+    "label": "Event Cycle",
+    "group": "events"
+  },
+  {
+    "self": "bear",
+    "tail": "bear-hunt/",
+    "labelKey": "ev.switch.bear",
+    "label": "Bear Hunt",
+    "group": "events"
+  },
+  {
+    "self": "vikings",
+    "tail": "vikings-vengeance/",
+    "labelKey": "ev.switch.vikings",
+    "label": "Vikings",
+    "group": "events"
+  },
+  {
+    "self": "swordland",
+    "tail": "swordland-showdown/",
+    "labelKey": "ev.switch.swordland",
+    "label": "Swordland",
+    "group": "events"
+  },
+  {
+    "self": "vip",
+    "tail": "vip-calculator/",
+    "labelKey": "ev.switch.vip",
+    "label": "VIP",
+    "group": "tools"
+  }
+]

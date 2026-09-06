@@ -324,7 +324,7 @@ One shared engine, two event calendars. Each calendar is an array of days; each 
   Decree, Chief Minister, intel queue, hospital empty, bison stacking ⚠).
 - **Copy button:** builds the KingShot block for today (see §5). One button per scope:
   today's chart, or the full prep-week chart.
-- Site plumbing: new `kvk-strongest-governor/` directory (per AGENTS.md mechanics), a
+- Site plumbing: new `events/` directory (per AGENTS.md mechanics), a
   `data-page` theme block + dust rules in `events.css`, a per-page CSS file, a per-page
   JS registering via `window.BH.registerPage` (the swordland/vikings toy pattern), nav
   updates in topbar + footer of every page, and `i18n/<lang>.js` keys (`kvk.*` / `sg.*`).

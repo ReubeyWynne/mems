@@ -1,141 +1,22 @@
-<!DOCTYPE html>
-<html lang="en" data-page="kvksg" data-prev-url="../" data-prev-page="home" data-prev-title="The events" data-prev-lede="the alliance events in plain words — how each one scores, what to do about it." data-next-url="../bear-hunt/" data-next-page="bearhunt" data-next-title="Bear Hunt" data-next-lede="the lead's stats × your troops — with a square root on your count.">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#081315">
-<meta name="description" content="One 28-day clock for the recurring events. Day 1 is always a Monday: set it to your kingdom's day — what's on today, what to save, what to copy into KingShot." data-i18n-key="ks.meta.description" data-i18n-attr="content">
-<meta property="og:title" content="Event Cycle, Demystified" data-i18n-key="ks.meta.ogTitle" data-i18n-attr="content">
-<meta property="og:description" content="One 28-day clock for the recurring events — what's on today, in plain words." data-i18n-key="ks.meta.ogDescription" data-i18n-attr="content">
-<meta property="og:type" content="website">
-<title data-i18n="ks.meta.title">Event Cycle, Demystified</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23081315'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23D9B25A'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400..900&family=Cinzel+Decorative:wght@400;700;900&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css">
-<link rel="stylesheet" href="../events.css">
-<link rel="stylesheet" href="../kvk.css">
-<link rel="canonical" href="https://dey.ci/kvk-strongest-governor/">
-<link rel="alternate" hreflang="en" href="https://dey.ci/kvk-strongest-governor/">
-<link rel="alternate" hreflang="es" href="https://dey.ci/kvk-strongest-governor/?lang=es">
-<link rel="alternate" hreflang="pt-BR" href="https://dey.ci/kvk-strongest-governor/?lang=pt-BR">
-<link rel="alternate" hreflang="de" href="https://dey.ci/kvk-strongest-governor/?lang=de">
-<link rel="alternate" hreflang="fr" href="https://dey.ci/kvk-strongest-governor/?lang=fr">
-<link rel="alternate" hreflang="it" href="https://dey.ci/kvk-strongest-governor/?lang=it">
-<link rel="alternate" hreflang="ru" href="https://dey.ci/kvk-strongest-governor/?lang=ru">
-<link rel="alternate" hreflang="pl" href="https://dey.ci/kvk-strongest-governor/?lang=pl">
-<link rel="alternate" hreflang="tr" href="https://dey.ci/kvk-strongest-governor/?lang=tr">
-<link rel="alternate" hreflang="zh-Hans" href="https://dey.ci/kvk-strongest-governor/?lang=zh-Hans">
-<link rel="alternate" hreflang="zh-Hant" href="https://dey.ci/kvk-strongest-governor/?lang=zh-Hant">
-<link rel="alternate" hreflang="ko" href="https://dey.ci/kvk-strongest-governor/?lang=ko">
-<link rel="alternate" hreflang="ja" href="https://dey.ci/kvk-strongest-governor/?lang=ja">
-<link rel="alternate" hreflang="th" href="https://dey.ci/kvk-strongest-governor/?lang=th">
-<link rel="alternate" hreflang="id" href="https://dey.ci/kvk-strongest-governor/?lang=id">
-<link rel="alternate" hreflang="vi" href="https://dey.ci/kvk-strongest-governor/?lang=vi">
-<link rel="alternate" hreflang="ar" href="https://dey.ci/kvk-strongest-governor/?lang=ar">
-<link rel="alternate" hreflang="x-default" href="https://dey.ci/kvk-strongest-governor/">
-<script>
-/* ── Language resolution for i18n.js — runs before first paint
-   so <html lang> is correct immediately. Order: ?lang= URL param
-   → saved choice → browser language → English. No data sent. */
-(function () {
-  var CANON = { en: 'en', es: 'es', 'pt-br': 'pt-BR', de: 'de', fr: 'fr', it: 'it', ru: 'ru', pl: 'pl', tr: 'tr', 'zh-hans': 'zh-Hans', 'zh-hant': 'zh-Hant', ko: 'ko', ja: 'ja', th: 'th', id: 'id', vi: 'vi', ar: 'ar' };
-  var DIRS = { ar: 'rtl' };
-  function norm(code) {
-    if (!code) return null;
-    var c = String(code).toLowerCase();
-    if (CANON[c]) return CANON[c];
-    var base = c.split('-')[0];
-    if (base === 'pt') return 'pt-BR';
-    if (base === 'zh') return (c.indexOf('zh-tw') === 0 || c.indexOf('zh-hk') === 0 || c.indexOf('zh-hant') === 0) ? 'zh-Hant' : 'zh-Hans';
-    return CANON[base] || null;
-  }
-  var q = (location.search.match(/[?&]lang=([^&]+)/) || [])[1];
-  var lang = null;
-  if (q) lang = norm(q);
-  if (lang) {
-    try { localStorage.setItem('bh_lang', lang); } catch (e) { /* private mode */ }
-  } else {
-    var stored = null;
-    try { stored = localStorage.getItem('bh_lang'); } catch (e) { /* private mode */ }
-    lang = norm(stored) || norm(navigator.language) || 'en';
-  }
-  window.__BH_LANG = lang;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = DIRS[lang] || 'ltr';
-})();
-</script>
-</head>
-<body>
-<a class="skip-link" href="#today" data-i18n="ks.skip">Skip to the guide</a>
+---
+layout: page
+self: events
+---
 
-<div class="dust" aria-hidden="true"><i></i><i></i><i></i></div>
-
-<header class="topbar">
-  <span class="brand">EVENT <b>CYCLE</b></span>
-  <nav class="ev-switch" aria-label="Events" data-i18n-key="ev.switchAria" data-i18n-attr="aria-label">
-    <a href="../" data-i18n="ev.switch.home">Home</a>
-    <a href="../kvk-strongest-governor/" class="active" aria-current="page" data-i18n="ev.switch.cycle">Event Cycle</a>
-    <a href="../bear-hunt/" data-i18n="ev.switch.bear">Bear Hunt</a>
-    <a href="../vikings-vengeance/" data-i18n="ev.switch.vikings">Vikings</a>
-    <a href="../swordland-showdown/" data-i18n="ev.switch.swordland">Swordland</a>
-    <a href="../vip-calculator/" data-i18n="ev.switch.vip">VIP</a>
-  </nav>
-  <div class="topbar-right">
-    <span class="brand-note" data-i18n="ks.brandNote">the 28-day clock</span>
-    <button type="button" id="ledger-btn" class="ledger-btn" aria-haspopup="true" aria-expanded="false" aria-controls="ledger" aria-label="the ledger — every page" data-i18n-key="ev.ledger.aria" data-i18n-attr="aria-label">❧</button>
-    <div class="lang-picker">
-      <button type="button" id="lang-btn" class="lang-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language" data-i18n-key="ui.lang" data-i18n-attr="aria-label">
-        <svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><clipPath id="t"><path d="M25,15h25v15zv15h-25zh-25v-15zv-15h25z"/></clipPath><path d="M0,0v30h50v-30z" fill="#012169"/><path d="M0,0 50,30M50,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 50,30M50,0 0,30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M-1 11h22v-12h8v12h22v8h-22v12h-8v-12h-22z" fill="#C8102E" stroke="#FFF" stroke-width="2"/></svg>
-      </button>
-      <ul id="lang-menu" class="lang-menu" role="listbox" aria-label="Language" data-i18n-key="ui.lang" data-i18n-attr="aria-label" hidden>
-        <li role="option" tabindex="-1" data-lang="en" aria-selected="true"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><clipPath id="t2"><path d="M25,15h25v15zv15h-25zh-25v-15zv-15h25z"/></clipPath><path d="M0,0v30h50v-30z" fill="#012169"/><path d="M0,0 50,30M50,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 50,30M50,0 0,30" clip-path="url(#t2)" stroke="#C8102E" stroke-width="4"/><path d="M-1 11h22v-12h8v12h22v8h-22v12h-8v-12h-22z" fill="#C8102E" stroke="#FFF" stroke-width="2"/></svg><span>English</span></li>
-        <li role="option" tabindex="-1" data-lang="es" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#AA151B"/><rect y="7.5" width="50" height="15" fill="#F1BF00"/></svg><span>Español</span></li>
-        <li role="option" tabindex="-1" data-lang="pt-BR" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#009739"/><polygon points="25,1 48,15 25,29 2,15" fill="#FEDD00"/><circle cx="25" cy="15" r="10.8" fill="#012169"/></svg><span>Português</span></li>
-        <li role="option" tabindex="-1" data-lang="de" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="10" fill="#000"/><rect y="10" width="50" height="10" fill="#DD0000"/><rect y="20" width="50" height="10" fill="#FFCE00"/></svg><span>Deutsch</span></li>
-        <li role="option" tabindex="-1" data-lang="fr" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="16.67" height="30" fill="#002395"/><rect x="16.67" width="16.66" height="30" fill="#fff"/><rect x="33.33" width="16.67" height="30" fill="#ED2939"/></svg><span>Français</span></li>
-        <li role="option" tabindex="-1" data-lang="it" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="16.67" height="30" fill="#009246"/><rect x="16.67" width="16.66" height="30" fill="#fff"/><rect x="33.33" width="16.67" height="30" fill="#CE2B37"/></svg><span>Italiano</span></li>
-        <li role="option" tabindex="-1" data-lang="ru" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="10" fill="#fff"/><rect y="10" width="50" height="10" fill="#0039A6"/><rect y="20" width="50" height="10" fill="#D52B1E"/></svg><span>Русский</span></li>
-        <li role="option" tabindex="-1" data-lang="pl" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="15" fill="#fff"/><rect y="15" width="50" height="15" fill="#DC143C"/></svg><span>Polski</span></li>
-        <li role="option" tabindex="-1" data-lang="tr" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#E30A17"/><circle cx="21.5" cy="15" r="7" fill="#fff"/><circle cx="24" cy="15" r="5.8" fill="#E30A17"/><polygon points="33.5,11.4 34.4,13.8 36.9,13.9 34.9,15.5 35.6,17.9 33.5,16.5 31.4,17.9 32.1,15.5 30.1,13.9 32.7,13.8" fill="#fff"/></svg><span>Türkçe</span></li>
-        <li role="option" tabindex="-1" data-lang="zh-Hans" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#DE2910"/><polygon points="8.33,3.33 9.45,6.78 13.09,6.78 10.15,8.92 11.27,12.38 8.33,10.24 5.39,12.38 6.51,8.92 3.57,6.78 7.21,6.78" fill="#FFDE00"/><polygon points="16.67,1.66 17.04,2.81 18.26,2.81 17.28,3.53 17.65,4.68 16.67,3.97 15.69,4.68 16.06,3.53 15.08,2.81 16.30,2.81" fill="#FFDE00"/><polygon points="20.00,5.00 20.37,6.15 21.59,6.15 20.61,6.87 20.98,8.02 20.00,7.31 19.02,8.02 19.39,6.87 18.41,6.15 19.63,6.15" fill="#FFDE00"/><polygon points="20.00,10.00 20.37,11.15 21.59,11.15 20.61,11.87 20.98,13.02 20.00,12.31 19.02,13.02 19.39,11.87 18.41,11.15 19.63,11.15" fill="#FFDE00"/><polygon points="16.67,13.33 17.04,14.48 18.26,14.48 17.28,15.20 17.65,16.35 16.67,15.64 15.69,16.35 16.06,15.20 15.08,14.48 16.30,14.48" fill="#FFDE00"/></svg><span>中文</span></li>
-        <li role="option" tabindex="-1" data-lang="zh-Hant" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#FE0000"/><rect width="25" height="15" fill="#000095"/><g fill="#fff"><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(30 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(60 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(90 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(120 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(150 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(180 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(210 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(240 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(270 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(300 12.5 7.5)"/><path d="M12.5 7.5 L13.1 2.7 L11.9 2.7 Z" transform="rotate(330 12.5 7.5)"/></g><circle cx="12.5" cy="7.5" r="2.4" fill="#fff"/></svg><span>繁體中文</span></li>
-        <li role="option" tabindex="-1" data-lang="ko" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#fff"/><path d="M15 15a10 10 0 0 1 20 0z" fill="#CD2E3A"/><path d="M15 15a10 10 0 0 0 20 0z" fill="#0047A0"/><rect x="4.17" y="3.75" width="1.67" height="7.5" fill="#000"/><rect x="6.67" y="3.75" width="1.67" height="7.5" fill="#000"/><rect x="9.17" y="3.75" width="1.67" height="7.5" fill="#000"/><rect x="39.17" y="18.75" width="1.67" height="7.5" fill="#000"/><rect x="41.67" y="18.75" width="1.67" height="7.5" fill="#000"/><rect x="44.17" y="18.75" width="1.67" height="7.5" fill="#000"/><rect x="39.17" y="3.75" width="8.33" height="1.5" fill="#000"/><rect x="39.17" y="6" width="8.33" height="1.5" fill="#000"/><rect x="39.17" y="8.25" width="8.33" height="1.5" fill="#000"/><rect x="2.5" y="18.75" width="8.33" height="1.5" fill="#000"/><rect x="2.5" y="21" width="8.33" height="1.5" fill="#000"/><rect x="2.5" y="23.25" width="8.33" height="1.5" fill="#000"/></svg><span>한국어</span></li>
-        <li role="option" tabindex="-1" data-lang="ja" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#fff"/><circle cx="25" cy="15" r="10" fill="#BC002D"/></svg><span>日本語</span></li>
-        <li role="option" tabindex="-1" data-lang="th" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#A51931"/><rect y="5" width="50" height="5" fill="#F4F5F8"/><rect y="10" width="50" height="10" fill="#2D2A4A"/><rect y="20" width="50" height="5" fill="#F4F5F8"/></svg><span>ไทย</span></li>
-        <li role="option" tabindex="-1" data-lang="id" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="15" fill="#CE1126"/><rect y="15" width="50" height="15" fill="#fff"/></svg><span>Bahasa Indonesia</span></li>
-        <li role="option" tabindex="-1" data-lang="vi" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#DA251D"/><polygon points="25,6 27.1,12.1 33.6,12.2 28.4,16.1 30.3,22.3 25,18.6 19.7,22.3 21.6,16.1 16.4,12.2 22.9,12.1" fill="#FF0"/></svg><span>Tiếng Việt</span></li>
-        <li role="option" tabindex="-1" data-lang="ar" aria-selected="false"><svg class="flag" viewBox="0 0 50 30" aria-hidden="true"><rect width="50" height="30" fill="#009A44"/><circle cx="24.4" cy="15" r="9.2" fill="#fff"/><circle cx="27.3" cy="15" r="8.5" fill="#009A44"/><circle cx="25" cy="15" r="12.7" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="3.1 1.9"/></svg><span>العربية</span></li>
-      </ul>
-    </div>
-  </div>
-  <nav id="ledger" class="ledger" aria-label="the ledger — every page" data-i18n-key="ev.ledger.aria" data-i18n-attr="aria-label" hidden>
-    <p class="ledger-group" data-i18n="ev.ledger.home">the index</p>
-    <a href="../" data-i18n="ev.switch.home">Home</a>
-    <p class="ledger-group" data-i18n="ev.ledger.guides">the events</p>
-    <a href="../kvk-strongest-governor/" class="active" aria-current="page" data-i18n="ev.switch.cycle">Event Cycle</a>
-    <a href="../bear-hunt/" data-i18n="ev.switch.bear">Bear Hunt</a>
-    <a href="../vikings-vengeance/" data-i18n="ev.switch.vikings">Vikings</a>
-    <a href="../swordland-showdown/" data-i18n="ev.switch.swordland">Swordland</a>
-    <p class="ledger-group" data-i18n="ev.ledger.tools">the tools</p>
-    <a href="../vip-calculator/" data-i18n="ev.switch.vip">VIP</a>
-  </nav>
-  <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress"></div></div>
-</header>
 
 <nav class="toc" id="toc" aria-label="Sections" data-i18n-key="nav.aria" data-i18n-attr="aria-label">
   <a href="#today" data-i18n="ks.nav.today">Today</a>
   <a href="#cycle" data-i18n="ks.nav.cycle">The 28-day clock</a>
-  <a href="#armament" data-i18n="ks.nav.armament">Armament Competition</a>
-  <a href="#officer" data-i18n="ks.nav.officer">Officer Project</a>
   <a href="#brawl" data-i18n="ks.nav.brawl">Alliance Brawl</a>
+  <a href="#governor" data-i18n="ks.nav.governor">Strongest Governor</a>
+  <a href="#mobilize" data-i18n="ks.nav.mob">Alliance Mobilization</a>
   <a href="#matrix" data-i18n="ks.nav.matrix">The prep chart</a>
   <a href="#days" data-i18n="ks.nav.days">The five prep days</a>
-  <a href="#governor" data-i18n="ks.nav.governor">Strongest Governor</a>
   <a href="#battle" data-i18n="ks.nav.battle">The battle weekend</a>
   <a href="#checklist" data-i18n="ks.nav.checklist">The routine</a>
+  <a href="#fillers" data-i18n="ks.nav.fillers">the light-week fillers</a>
 </nav>
+
 
 <main>
   <!-- ═══════════ HERO ═══════════ -->
@@ -154,11 +35,9 @@
   <!-- ═══════════ 1 · TODAY — THE LIVE DISPLAY ═══════════ -->
   <section class="section" id="today">
     <h2 data-i18n="ks.today.title">Today</h2>
-    <p class="lede" data-i18n-html="ks.today.lede">The card follows the 28-day wheel and works today out from your
-      device's date — what's worth spending, what to save, what to copy into KingShot. The buttons peek at other days.</p>
 
     <div class="calc live">
-      <p class="calc-title" data-i18n="ks.today.calcTitle">THE 28-DAY CLOCK: WHERE ARE WE?</p>
+      <p class="calc-title" data-i18n="ks.today.calcTitle">the 28-day clock</p>
 
       <div id="ks-cycle" role="group" aria-label="the 28 day cycle"></div>
 
@@ -174,15 +53,11 @@
         <button type="button" class="kb" data-jump="15">Mobilize</button>
         <button type="button" class="kb" data-jump="22">KvK</button>
       </div>
-      <p class="note" data-i18n="ks.today.note">Same wheel, every kingdom. Device date off? Set cycle day 1 below.</p>
-      <p class="epoch-set"><label><span data-i18n="ks.today.epoch">day 1 of the cycle falls on</span>
-        <input type="date" id="ks-epoch" aria-label="the date of cycle day 1"></label></p>
-
       <div id="ks-card" class="today-card" aria-live="polite">
         <p class="today-empty" data-i18n="ks.today.empty">set the clock and the card fills itself in.</p>
       </div>
     </div>
-  </section>
+</section>
 
   <!-- ═══════════ 2 · THE 28-DAY CLOCK ═══════════ -->
   <section class="section" id="cycle">
@@ -194,126 +69,25 @@
     <div class="wavetable">
       <div class="wt-row"><span class="wt-waves">1–7</span><span class="wt-type">Brawl</span><span class="wt-note" data-i18n-html="ks.cycle.w1">Alliance Brawl week — the light week, days 1–7: the brawl runs 6.5 days against another kingdom, and armament (Type 1 Mon–Tue, Type 2 Fri–Sat) and officer (Type A Wed–Thu, Type B Sun into day 8) each run twice inside it. Swordland's battle fires on its Sunday.</span></div>
       <div class="wt-row"><span class="wt-waves">8–14</span><span class="wt-type">Governor</span><span class="wt-note" data-i18n-html="ks.cycle.w2">Strongest Governor: seven personal days, a different theme each day. Spend on the days that match your hoard.</span></div>
-      <div class="wt-row"><span class="wt-waves">15–21</span><span class="wt-type">Mobilize</span><span class="wt-note" data-i18n-html="ks.cycle.w3">Alliance Mobilization week — days 15–21, its own event with no daily themes: the armament and officer runs repeat the same pattern, Type B's Sunday run spilling into prep day 1 (day 22). Days 20–21 bring the matchmaking reveal; day 21 holds intel for prep.</span></div>
+      <div class="wt-row"><span class="wt-waves">15–20</span><span class="wt-type">Mobilize</span><span class="wt-note" data-i18n-html="ks.cycle.w3">Alliance Mobilization week — days 15–20, its own event with no daily themes: the armament and officer runs repeat the same pattern, Officer Type B's Sunday run spilling across the quiet day 21 into prep day 1 (day 22). Day 20 reveals the KvK matchmaking; day 21 is quiet — hold intel from 08:00 so it banks for prep.</span></div>
       <div class="wt-row"><span class="wt-waves">22–28</span><span class="wt-type">KvK</span><span class="wt-note" data-i18n-html="ks.cycle.w4">Kingdom of Power: five prep days that decide who attacks, then the castle battle weekend.</span></div>
     </div>
 
     <p class="note" data-i18n-html="ks.cycle.note">The wheel is <b>global</b>: one date anchors it for every kingdom.
       New kingdoms join the wheel once they unlock Kingdom of Power, after their <b>5th Hall of Governors</b>; before
-      that, their events run on their own clock. The live clock above works today out from the date; correct it in
-      the calibration box if your device date differs from the game's.</p>
+      that, their events run on their own clock. The live clock above works today out from the UTC date, so every
+      kingdom sees the same day.</p>
 
     <p data-i18n-html="ks.cycle.other">The other clocks still run underneath: <b>Bear Hunt</b> every two days,
-      <b>Mystic Trial</b> rooms on their weekdays, <b>Arena</b> daily. They're the income; the 28-day wheel is the spending.</p>
+      <b>Mystic Trial</b> rooms on their weekdays, <b>Arena</b> daily. They're the income; the 28-day wheel is the
+      spending — and what your kingdom does there becomes its <b>permanent KvK record</b>, the ledger that shapes how
+      Transfer treats it. the hoard is the point: spend it only where the wheel scores it highest.</p>
   </section>
 
-  <!-- ═══════════ 2A · ARMAMENT COMPETITION ═══════════ -->
-  <section class="section" id="armament">
-    <h2 data-i18n="ks.arm.title">Armament Competition</h2>
-    <p class="lede" data-i18n-html="ks.arm.lede">A <b>two-day</b> run twice in each light week (days 1–7, 15–21):
-      <b>Type 1</b> from Monday, <b>Type 2</b> from Friday — separate task sets that stack with the event beside it
-      (Alliance Brawl week 1, Alliance Mobilization week 3), so one spend counts twice.</p>
 
-    <div class="wavetable">
-      <div class="wt-row"><span class="wt-waves">1–2 · 15–16</span><span class="wt-type">Type 1</span><span class="wt-note">the Monday run, twice a cycle — the shard-and-truegold set</span></div>
-      <div class="wt-row"><span class="wt-waves">5–6 · 19–20</span><span class="wt-type">Type 2</span><span class="wt-note">the Friday run, twice a cycle — the gear-and-mithril set</span></div>
-    </div>
-
-    <details class="day">
-      <summary><span class="sum-mark" aria-hidden="true">🛡️</span><span class="day-title">Type 1 · the Monday run</span>
-      <span class="day-meta">cycle days 1–2 and 15–16 · points per action · top tier: Artisan Visions</span></summary>
-      <table class="pt"><tbody>
-        <tr><td>Tempered Truegold (building upgrade)</td><td class="pts">1,500</td></tr>
-        <tr><td>Mythic hero shard</td><td class="pts">125</td></tr>
-        <tr><td>Truegold (building upgrade)</td><td class="pts">100</td></tr>
-        <tr><td>Epic hero shard</td><td class="pts">50</td></tr>
-        <tr><td>Truegold Dust (tech research)</td><td class="pts">50</td></tr>
-        <tr><td>Rare hero shard</td><td class="pts">15</td></tr>
-        <tr><td>Governor Gear max score +1</td><td class="pts">3</td></tr>
-        <tr><td>1m construction / research / training speedup</td><td class="pts">1</td></tr>
-      </tbody></table>
-      <p class="note" data-i18n-html="ks.arm.shardTip">Shard tasks count general shards too — the ascension scores, not the hero.</p>
-      <p class="note">The Truegold Dust row unlocks with the War Academy, Tempered Truegold after TG8 — before those ages the rows don't appear.</p>
-    </details>
-    <details class="day">
-      <summary><span class="sum-mark" aria-hidden="true">🛡️</span><span class="day-title">Type 2 · the Friday run</span>
-      <span class="day-meta">cycle days 5–6 and 19–20 · points per action · top tier: Truegold</span></summary>
-      <table class="pt"><tbody>
-        <tr><td>Mithril</td><td class="pts">8,000</td></tr>
-        <tr><td>Widget (hero exclusive gear)</td><td class="pts">1,600</td></tr>
-        <tr><td>Tempered Truegold (building upgrade)</td><td class="pts">1,500</td></tr>
-        <tr><td>Hero Gear Forgehammer</td><td class="pts">800</td></tr>
-        <tr><td>Truegold (building upgrade)</td><td class="pts">100</td></tr>
-        <tr><td>Truegold Dust (tech research)</td><td class="pts">50</td></tr>
-        <tr><td>Governor Gear max score +1</td><td class="pts">3</td></tr>
-        <tr><td>1m construction / research / training speedup</td><td class="pts">1</td></tr>
-      </tbody></table>
-    </details>
-    <p class="note" data-i18n-html="ks.arm.note">Both types share the same kingdom-rank rewards. The ladders differ, and
-      their thresholds scale with your Town Center — the top tier pays <b>Artisan Visions</b> on Type 1, <b>Truegold</b>
-      on Type 2. Read your own ladder in-game.</p>
-  </section>
-
-  <!-- ═══════════ 2B · OFFICER PROJECT ═══════════ -->
-  <section class="section" id="officer">
-    <h2 data-i18n="ks.off.title">Officer Project</h2>
-    <p class="lede" data-i18n-html="ks.off.lede">Also twice a light week: <b>Type A</b> (Troop Training &amp; Charms)
-      from Wednesday — days 3–4, 17–18 — and <b>Type B</b> (Governor Gear &amp; Hero Shards) from Sunday, days 7–8
-      and 21–22, its second day spilling into SG day 1 and prep day 1.</p>
-
-    <div class="wavetable">
-      <div class="wt-row"><span class="wt-waves">3–4 · 17–18</span><span class="wt-type">Type A</span><span class="wt-note">the Wednesday run — Troop Training &amp; Charms: charms, mithril, any troop type</span></div>
-      <div class="wt-row"><span class="wt-waves">7–8 · 21–22</span><span class="wt-type">Type B</span><span class="wt-note">the Sunday run — Governor Gear &amp; Hero Shards; day 2 spills into SG day 1 / prep day 1</span></div>
-    </div>
-
-    <details class="day">
-      <summary><span class="sum-mark" aria-hidden="true">🎖️</span><span class="day-title">Type A · Troop Training &amp; Charms</span>
-      <span class="day-meta">the Wednesday run · cycle days 3–4 and 17–18 · points per action</span></summary>
-      <table class="pt"><tbody>
-        <tr><td>Mithril</td><td class="pts">60,000</td></tr>
-        <tr><td>Widget (hero exclusive gear)</td><td class="pts">12,000</td></tr>
-        <tr><td>Hero Gear Forgehammer</td><td class="pts">6,000</td></tr>
-        <tr><td>Governor Charm max score +1</td><td class="pts">70</td></tr>
-        <tr><td>T11 troop</td><td class="pts">37</td></tr>
-        <tr><td>T10 troop</td><td class="pts">30</td></tr>
-        <tr><td>T9 troop</td><td class="pts">22</td></tr>
-        <tr><td>T8 troop</td><td class="pts">17</td></tr>
-        <tr><td>T7 troop</td><td class="pts">12</td></tr>
-        <tr><td>T6 troop</td><td class="pts">9</td></tr>
-        <tr><td>T5 troop</td><td class="pts">6</td></tr>
-        <tr><td>T4 troop</td><td class="pts">4</td></tr>
-        <tr><td>T3 troop</td><td class="pts">3</td></tr>
-        <tr><td>T2 troop</td><td class="pts">2</td></tr>
-        <tr><td>T1 troop</td><td class="pts">1</td></tr>
-      </tbody></table>
-      <p class="note">The troop ladder pays a third of KvK prep's top tier — train what you need, don't promote a tier
-        for this run. The charm row is the cheap, steady scorer.</p>
-    </details>
-    <details class="day">
-      <summary><span class="sum-mark" aria-hidden="true">🎖️</span><span class="day-title">Type B · Governor Gear &amp; Hero Shards</span>
-      <span class="day-meta">the Sunday run · cycle days 7–8 and 21–22 · points per action</span></summary>
-      <table class="pt"><tbody>
-        <tr><td>Widget (hero exclusive gear)</td><td class="pts">12,000</td></tr>
-        <tr><td>Hero Gear Forgehammer</td><td class="pts">6,000</td></tr>
-        <tr><td>Mythic hero shard</td><td class="pts">3,040</td></tr>
-        <tr><td>Epic hero shard</td><td class="pts">1,220</td></tr>
-        <tr><td>Rare hero shard</td><td class="pts">350</td></tr>
-        <tr><td>Governor Gear max score +1</td><td class="pts">70</td></tr>
-      </tbody></table>
-      <p class="note">Its second day lands on SG day 1 (day 8) or prep day 1 (day 22) — the shards and gear it spends
-        are what that week wants. Take the fixed milestones with what you can spare, then stop.</p>
-    </details>
-    <p class="note" data-i18n-html="ks.off.m4">Milestone 4 pays <b>Forgehammer(s)</b> on Type A and <b>Charm
-      Design(s)</b> on Type B, each with the Mythic Conquest Skill Book and Mythic Expedition Skill Manual.</p>
-    <p class="note" data-i18n-html="ks.off.hoard">Type A spends Governor charms, Mithril and troops; Type B spends
-      Governor gear and hero shards — the same items the next scoring week wants saved.</p>
-    <p class="note" data-i18n-html="ks.off.note">Every run has <b>four milestones</b> plus an Honor Ranking, and
-      rewards improve with server age. For a free player the fixed milestones beat the ranking — take them with what
-      the live table makes cheap.</p>
-  </section>
 
   <!-- ═══════════ 2C · ALLIANCE BRAWL ═══════════ -->
-  <section class="section" id="brawl">
+  <section class="section" id="brawl" data-phase="brawl">
     <h2 data-i18n="ks.brawl.title">Alliance Brawl</h2>
     <p class="lede" data-i18n-html="ks.brawl.lede">The week-1 main event, right after KvK: your alliance against one
       from another kingdom for <b>6.5 days</b> — five 24-hour themed days, then a ~36-hour finale. In eligible
@@ -341,6 +115,8 @@
     <details class="day">
       <summary><span class="sum-mark" aria-hidden="true">⚔️</span><span class="day-title">Day 1 · Rise of the City</span>
       <span class="day-meta">24h · building and gathering day</span></summary>
+      <p class="note bd-verdict">the verdict: trucks, raids and gathering are free and score twice (Merchant Empire); the building rows eat truegold you'll want in prep, so spend them only up to a chest.</p>
+      
       <table class="pt"><tbody>
         <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
         <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
@@ -357,6 +133,8 @@
     <details class="day">
       <summary><span class="sum-mark" aria-hidden="true">⚔️</span><span class="day-title">Day 2 · Hero Development</span>
       <span class="day-meta">24h · hero day</span></summary>
+      <p class="note bd-verdict">the verdict: trucks and intel missions are the free score; shards cost a hoard Strongest Governor wants, so spend them only when today's chest needs it.</p>
+      
       <table class="pt"><tbody>
         <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
         <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
@@ -376,6 +154,8 @@
     <details class="day">
       <summary><span class="sum-mark" aria-hidden="true">⚔️</span><span class="day-title">Day 3 · Pet Training</span>
       <span class="day-meta">24h · pet and charm day</span></summary>
+      <p class="note bd-verdict">the verdict: pets and charms score, but taming marks pay less here than prep day 3 — spend only what today's chest needs, keep the rest for prep.</p>
+      
       <table class="pt"><tbody>
         <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
         <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
@@ -392,6 +172,8 @@
     <details class="day">
       <summary><span class="sum-mark" aria-hidden="true">⚔️</span><span class="day-title">Day 4 · Gear Enhancement</span>
       <span class="day-meta">24h · gear and troop day</span></summary>
+      <p class="note bd-verdict">the verdict: this day asks the most hoard (mithril at half the prep rate); run the free rows and save the mithril and gear for prep.</p>
+      
       <table class="pt"><tbody>
         <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
         <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
@@ -418,6 +200,8 @@
     <details class="day">
       <summary><span class="sum-mark" aria-hidden="true">⚔️</span><span class="day-title">Day 5 · Trade Baron</span>
       <span class="day-meta">24h · beast day</span></summary>
+      <p class="note bd-verdict">the verdict: the free day — beasts and the terror cost nothing from the hoard; push it if the alliance needs a win.</p>
+      
       <table class="pt"><tbody>
         <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
         <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
@@ -438,6 +222,8 @@
     <details class="day">
       <summary><span class="sum-mark" aria-hidden="true">⚔️</span><span class="day-title">Day 6 · Full-Scale Competition</span>
       <span class="day-meta">~36h finale · every day's tasks at once, into Sunday</span></summary>
+      <p class="note bd-verdict">the verdict: the finale mixes every table; the free and cheap rows are the value and gems are never worth spending for — keep the hoard whole.</p>
+      
       <table class="pt"><tbody>
         <tr><td>Escort a truck (any grade)</td><td class="pts">10,000</td></tr>
         <tr><td>Raid a truck (any grade)</td><td class="pts">10,000</td></tr>
@@ -474,16 +260,18 @@
     <p class="note" data-i18n-html="ks.brawl.overlap">Escort and raid trucks (10,000 each) live in Merchant Empire,
       which runs beside the brawl — the same truck counts in both. Armament runs this week too; check it before
       spending truegold or shards.</p>
-    <p class="note" data-i18n-html="ks.brawl.stance">F2P: the daily chests are the value. Stars and ranking decorations
-      are cosmetic — don't burn the hoard chasing one, and never spend for a ranking slot the chests don't pay.</p>
+    <p class="note" data-i18n-html="ks.brawl.stance">F2P: the daily chests are the value. Stars and ranking decorations are cosmetic — don't burn the hoard chasing one, and never spend for a ranking slot the chests don't pay — unless the alliance is deliberately pushing the brawl, which is the one reason to spend here. the hoard you keep is the kingdom's KvK record.</p>
   </section>
 
   <!-- ═══════════ 3 · THE PREP CHART ═══════════ -->
-  <section class="section" id="matrix">
+  <section class="section" id="matrix" data-phase="prep">
     <h2 data-i18n="ks.matrix.title">The prep chart</h2>
     <p class="lede" data-i18n-html="ks.matrix.lede">The whole KvK prep week as one chart: every material you've been
       saving, and which of the five prep days wants it. <strong>Today's column is what the clock above says to
       spend.</strong></p>
+    <p class="note" data-i18n-html="ks.matrix.record"><b>the prep week is the point.</b> what you spend the saved
+      hoard on here becomes your kingdom's permanent <b>KvK record</b> — the one that shapes how Transfer treats it. a
+      light-week filler's fixed reward is a rounding error next to that.</p>
 
     <details class="matrix-fold">
       <summary data-i18n="ks.matrix.summary">the prep chart — 16 materials × five prep days</summary>
@@ -525,7 +313,7 @@
   </section>
 
   <!-- ═══════════ 4 · THE FIVE PREP DAYS ═══════════ -->
-  <section class="section" id="days">
+  <section class="section" id="days" data-phase="prep">
     <h2 data-i18n="ks.days.title">The five prep days</h2>
     <p class="lede" data-i18n-html="ks.days.lede">Each prep day is one theme, and each theme decides what your hoard is
       worth. The daily goal is the <strong>200,000-point chest</strong>; the milestone thresholds scale with your server
@@ -620,7 +408,7 @@
     </details>  </section>
 
   <!-- ═══════════ 5 · STRONGEST GOVERNOR ═══════════ -->
-  <section class="section sg" id="governor">
+  <section class="section sg" id="governor" data-phase="sg">
     <h2 data-i18n="ks.governor.title">Strongest Governor</h2>
     <p class="lede" data-i18n-html="ks.governor.lede">The same machine, played solo: seven days, your hoard scored
       against everyone else's. Day names repeat — Skill Up, Combat Training, Hero Development — but each repeat has
@@ -720,13 +508,19 @@
       Town Center group</b>, and the reward ladder runs <b>daily ranks</b>, <b>challenge medals</b>, <b>kingdom and
       cross-kingdom ranks</b>, and a <b>kingdom-state reward bar</b> that pays state rewards when your kingdom
       finishes near the top of its group.</p>
-    <p class="note" data-i18n-html="ks.governor.rank">Mostly, <b>rankings aren't worth chasing</b>: the prizes are
-      time-limited cosmetics. The fixed rewards — daily milestones, challenge medals, the kingdom-state bar — are the
-      value; save the hoard for prep, not an SG leaderboard. The <b>KvK record</b> is how Transfer treats the kingdom.</p>
+    <p class="note" data-i18n-html="ks.governor.rank">Worth your hoard for the fixed rewards — after KvK prep it's the best place to spend in the whole cycle. Hit the daily milestones and challenge medals; skip the cosmetic ranking chase. The one exception: if your alliance is deliberately pushing the brawl, that week's brawl takes the spend. What you do in the 28-day cycle becomes your kingdom's permanent <b>KvK record</b> — the one that shapes how Transfer treats it.</p>
   </section>
 
   <!-- ═══════════ 6 · THE BATTLE WEEKEND ═══════════ -->
-  <section class="section" id="battle">
+    <!-- ═══ 6A · ALLIANCE MOBILIZATION (week 3) ════════════ -->
+  <section class="section" id="mobilize" data-phase="mob">
+    <h2 data-i18n="ks.mob.title">Alliance Mobilization</h2>
+    <p class="lede" data-i18n-html="ks.mob.lede">The week-3 main event (days 15–20), the month's second light week — its own event with <strong>no daily themes</strong>. The armament and officer runs repeat here, and the week's real job is banking the hoard for the KvK prep that follows.</p>
+    <p class="note" data-i18n-html="ks.mob.hold"><strong>Spend nothing from the hoard this week.</strong> Day 20 reveals the KvK matchmaking; day 21 is a quiet gap before prep — from 08:00 stop collecting intel so it banks.</p>
+    <p class="note" data-i18n-html="ks.mob.open">A full guide to what Alliance Mobilization scores is still being written — the scoring detail isn't on this page yet. What you can already bank on: your hoard is worth more in Strongest Governor and KvK prep than here.</p>
+  </section>
+
+<section class="section" id="battle" data-phase="battle">
     <h2 data-i18n="ks.battle.title">The battle weekend</h2>
     <p class="lede" data-i18n-html="ks.battle.lede">Prep decides who attacks; the weekend decides who holds. The prep
       winner enters the loser's kingdom and tries to take the Castle — a <strong>five-hour contest</strong>: one clean
@@ -754,7 +548,7 @@
   <!-- ═══════════ 7 · THE ROUTINE ═══════════ -->
   <section class="section" id="checklist">
     <h2 data-i18n="ks.checklist.title">The routine</h2>
-    <p class="lede" data-i18n-html="ks.checklist.lede">The page, in the order you'll do it: save for prep, the
+    <p class="lede" data-i18n-html="ks.checklist.lede">The page, in the order you'll do it: save for KvK prep, the
       day-one ritual, then the weekend:</p>
     <ol class="checklist">
       <li><span class="check-num">1</span><div><h3 data-i18n="ks.checklist.c1.title">Save the taming marks</h3><p data-i18n-html="ks.checklist.c1.body">Advanced and Common Taming Marks; they're the day 3 and day 5 stars.</p></div></li>
@@ -763,29 +557,88 @@
       <li><span class="check-num">4</span><div><h3 data-i18n="ks.checklist.c4.title">Save the gear materials</h3><p data-i18n-html="ks.checklist.c4.body">Mithril, widgets and forgehammers: days 4 and 5. Master emblems and manuscripts: days 2 and 3.</p></div></li>
       <li><span class="check-num">5</span><div><h3 data-i18n="ks.checklist.c5.title">Keep the troops one tier down</h3><p data-i18n-html="ks.checklist.c5.body">Come into prep week with troops a tier below your max, ready to promote, for more points per speedup spent.</p></div></li>
       <li><span class="check-num">6</span><div><h3 data-i18n="ks.checklist.c6.title">Stack the buffs before day 1</h3><p data-i18n-html="ks.checklist.c6.body">Wolf pet buff, Double Time Decree, Chief Minister if the kingdom runs it; activate them <b>before</b> you spend, then spend.</p></div></li>
-      <li><span class="check-num">7</span><div><h3 data-i18n="ks.checklist.c7.title">Hold the intel, empty the hospital</h3><p data-i18n-html="ks.checklist.c7.body">Stop collecting Watchtower missions from <b>08:00</b> the day before a scoring day (day 21 before prep) so they bank for points; empty the hospital before battle week too — healing eats the hoard.</p></div></li>
+      <li><span class="check-num">7</span><div><h3 data-i18n="ks.checklist.c7.title">Hold the intel</h3><p data-i18n-html="ks.checklist.c7.body">Stop collecting Watchtower missions from <b>08:00</b> the day before a scoring day (day 21 before prep) so they bank for points.</p></div></li>
       <li><span class="check-num">8</span><div><h3 data-i18n="ks.checklist.c8.title">Shield before the window</h3><p data-i18n-html="ks.checklist.c8.body">Activate your town's shield as prep ends. The gap between phases is when unshielded towns fall.</p></div></li>
-      <li><span class="check-num">9</span><div><h3 data-i18n="ks.checklist.c9.title">Know the battle plan</h3><p data-i18n-html="ks.checklist.c9.body">Your UTC window, your Town Center's attack range, your rally assignments — and if you're top-150 by power, check your Duel of the Elites group before you stop at 200,000. Watch days 20–21 for the matchmaking reveal.</p></div></li>
+      <li><span class="check-num">9</span><div><h3 data-i18n="ks.checklist.c9.title">Know the battle plan</h3><p data-i18n-html="ks.checklist.c9.body">Your UTC window, your Town Center's attack range, your rally assignments — and if you're top-150 by power, check your Duel of the Elites group before you stop at 200,000. Watch day 20 for the matchmaking reveal.</p></div></li>
     </ol>
   </section>
+
+  <!-- ═══ A · THE LIGHT-WEEK FILLERS (Armament + Officer — reference only) ═════════ -->
+  <section class="section" id="fillers" data-phase="fillers">
+    <h2 data-i18n="ks.fm.title">the light-week fillers</h2>
+    <p class="lede" data-i18n-html="ks.fm.lede">Two low-reward side events — <b>Armament Competition</b> and <b>Officer Project</b> — each repeat twice inside every light week (days 1–7 and 15–20), two days at a time. They pay the hoard back at a fraction of what Strongest Governor and KvK prep do for the same material.</p>
+    <p class="note" data-i18n-html="ks.fm.verdict"><b>skip them.</b> Even the fixed milestones are usually not worth the material they ask; do the free or cheap rows if they're convenient, otherwise keep everything for Strongest Governor and KvK prep. What you do in the 28-day cycle becomes your kingdom's permanent <b>KvK record</b> — the one that shapes how Transfer treats it.</p>
+    <details class="day">
+      <summary><span class="sum-mark" aria-hidden="true">🛡️ 🎖️</span><span class="day-title" data-i18n="ks.fm.tables">the point tables (for reference only)</span><span class="day-meta">Armament &amp; Officer · for reference only</span></summary>
+      <div class="day-body">
+      <details class="day">
+      <summary><span class="sum-mark" aria-hidden="true">🛡️</span><span class="day-title">Type 1 · the Monday run</span>
+      <span class="day-meta">cycle days 1–2 and 15–16 · points per action · top tier: Artisan Visions</span></summary>
+      <table class="pt"><tbody>
+        <tr><td>Tempered Truegold (building upgrade)</td><td class="pts">1,500</td></tr>
+        <tr><td>Mythic hero shard</td><td class="pts">125</td></tr>
+        <tr><td>Truegold (building upgrade)</td><td class="pts">100</td></tr>
+        <tr><td>Epic hero shard</td><td class="pts">50</td></tr>
+        <tr><td>Truegold Dust (tech research)</td><td class="pts">50</td></tr>
+        <tr><td>Rare hero shard</td><td class="pts">15</td></tr>
+        <tr><td>Governor Gear max score +1</td><td class="pts">3</td></tr>
+        <tr><td>1m construction / research / training speedup</td><td class="pts">1</td></tr>
+      </tbody></table>
+      <p class="note" data-i18n-html="ks.arm.shardTip">Shard tasks count general shards too — the ascension scores, not the hero.</p>
+      <p class="note">The Truegold Dust row unlocks with the War Academy, Tempered Truegold after TG8 — before those ages the rows don't appear.</p>
+    </details>
+      <details class="day">
+      <summary><span class="sum-mark" aria-hidden="true">🛡️</span><span class="day-title">Type 2 · the Friday run</span>
+      <span class="day-meta">cycle days 5–6 and 19–20 · points per action · top tier: Truegold</span></summary>
+      <table class="pt"><tbody>
+        <tr><td>Mithril</td><td class="pts">8,000</td></tr>
+        <tr><td>Widget (hero exclusive gear)</td><td class="pts">1,600</td></tr>
+        <tr><td>Tempered Truegold (building upgrade)</td><td class="pts">1,500</td></tr>
+        <tr><td>Hero Gear Forgehammer</td><td class="pts">800</td></tr>
+        <tr><td>Truegold (building upgrade)</td><td class="pts">100</td></tr>
+        <tr><td>Truegold Dust (tech research)</td><td class="pts">50</td></tr>
+        <tr><td>Governor Gear max score +1</td><td class="pts">3</td></tr>
+        <tr><td>1m construction / research / training speedup</td><td class="pts">1</td></tr>
+      </tbody></table>
+    </details>
+      <details class="day">
+      <summary><span class="sum-mark" aria-hidden="true">🎖️</span><span class="day-title">Type A · Troop Training &amp; Charms</span>
+      <span class="day-meta">the Wednesday run · cycle days 3–4 and 17–18 · points per action</span></summary>
+      <table class="pt"><tbody>
+        <tr><td>Mithril</td><td class="pts">60,000</td></tr>
+        <tr><td>Widget (hero exclusive gear)</td><td class="pts">12,000</td></tr>
+        <tr><td>Hero Gear Forgehammer</td><td class="pts">6,000</td></tr>
+        <tr><td>Governor Charm max score +1</td><td class="pts">70</td></tr>
+        <tr><td>T11 troop</td><td class="pts">37</td></tr>
+        <tr><td>T10 troop</td><td class="pts">30</td></tr>
+        <tr><td>T9 troop</td><td class="pts">22</td></tr>
+        <tr><td>T8 troop</td><td class="pts">17</td></tr>
+        <tr><td>T7 troop</td><td class="pts">12</td></tr>
+        <tr><td>T6 troop</td><td class="pts">9</td></tr>
+        <tr><td>T5 troop</td><td class="pts">6</td></tr>
+        <tr><td>T4 troop</td><td class="pts">4</td></tr>
+        <tr><td>T3 troop</td><td class="pts">3</td></tr>
+        <tr><td>T2 troop</td><td class="pts">2</td></tr>
+        <tr><td>T1 troop</td><td class="pts">1</td></tr>
+      </tbody></table>
+      <p class="note">The troop ladder pays a third of KvK prep's top tier — train what you need, don't promote a tier
+        for this run. The charm row is the cheap, steady scorer.</p>
+    </details>
+      <details class="day">
+      <summary><span class="sum-mark" aria-hidden="true">🎖️</span><span class="day-title">Type B · Governor Gear &amp; Hero Shards</span>
+      <span class="day-meta">the Sunday run · cycle days 7–8 and 21–22 · points per action</span></summary>
+      <table class="pt"><tbody>
+        <tr><td>Widget (hero exclusive gear)</td><td class="pts">12,000</td></tr>
+        <tr><td>Hero Gear Forgehammer</td><td class="pts">6,000</td></tr>
+        <tr><td>Mythic hero shard</td><td class="pts">3,040</td></tr>
+        <tr><td>Epic hero shard</td><td class="pts">1,220</td></tr>
+        <tr><td>Rare hero shard</td><td class="pts">350</td></tr>
+        <tr><td>Governor Gear max score +1</td><td class="pts">70</td></tr>
+      </tbody></table>
+      <p class="note">Its second day lands on SG day 1 (day 8) or prep day 1 (day 22) — the shards and gear it spends
+        are what that week wants. Take the fixed milestones with what you can spare, then stop.</p>
+    </details>
+      </div>
+    </details>
+  </section>
 </main>
-
-<footer>
-  <nav class="ev-foot" aria-label="Events" data-i18n-key="ev.switchAria" data-i18n-attr="aria-label">
-    <a href="../" data-i18n="ev.switch.home">Home</a>
-    <a href="../kvk-strongest-governor/" aria-current="page" data-i18n="ev.switch.cycle">Event Cycle</a>
-    <a href="../bear-hunt/" data-i18n="ev.switch.bear">Bear Hunt</a>
-    <a href="../vikings-vengeance/" data-i18n="ev.switch.vikings">Vikings</a>
-    <a href="../swordland-showdown/" data-i18n="ev.switch.swordland">Swordland</a>
-    <a href="../vip-calculator/" data-i18n="ev.switch.vip">VIP</a>
-  </nav>
-  <p class="foot-main" data-i18n="ks.foot.main">JUST THE CLOCK</p>
-  <p class="foot-sub" data-i18n-html="ks.foot.note">Point tables are community numbers: <a href="https://kingshotoptimizer.com/events/kingdom-of-power/event-guide">Kingshot Optimizer</a> and <a href="https://kingshotmastery.com/guides/kingshot-kvk-prep-guide">Kingshot Mastery</a> for prep, the <a href="https://kingshotwiki.com/events/armament-competition/">Kingshot Wiki</a> for armament and officer, <a href="https://kingshotdata.com/events/alliance-brawl-event/">Kingshot Data</a> for the brawl — for our server. The live scoring screen is the final word; <b>the principles don't change.</b></p>
-  <p class="foot-sub" data-i18n-html="ks.foot.credit">prep chart is the alliance's own, checked against the community tables · built for the [2129]MadNess alliance</p>
-</footer>
-
-<script src="../i18n.js"></script>
-<script src="../common.js"></script>
-<script src="../kvk.js"></script>
-</body>
-</html>

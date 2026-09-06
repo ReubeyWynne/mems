@@ -11,6 +11,10 @@ obj/
 cookies.txt
 cookies2.txt
 
+# Jekyll build output and cache
+_site/
+.jekyll-cache/
+
 # AI tooling artifacts (untracked working files; never commit these)
 .dsh/
 .impeccable/

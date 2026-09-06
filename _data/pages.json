@@ -1,0 +1,343 @@
+{
+  "home": {
+    "token": "home",
+    "depth": "",
+    "canonicalPath": "/",
+    "themeColor": "#0B0E16",
+    "icon": "<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0E16'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23F0C45A'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E\">",
+    "titleKey": "home.meta.title",
+    "titleText": "Kingshot, Demystified — dey.ci",
+    "metaDescKey": "home.meta.description",
+    "metaDesc": "The alliance events, demystified. Bear Hunt, Vikings Vengeance and Swordland Showdown — how each one scores, what to do about it, and where the real points live.",
+    "ogTitleKey": "home.meta.ogTitle",
+    "ogTitle": "Kingshot, Demystified — dey.ci",
+    "ogDescKey": "home.meta.ogDescription",
+    "ogDesc": "The alliance events in plain words — how each one scores, what to do about it, and where the real points live.",
+    "skipHref": "#events",
+    "skipKey": "home.skip",
+    "skipText": "Skip to the events",
+    "dust": "<i></i><i></i><i></i><span class=\"dust-g dust-bear\"><i></i><i></i><i></i></span><span class=\"dust-g dust-vikings\"><i></i><i></i><i></i></span><span class=\"dust-g dust-sword\"><i></i><i></i><i></i></span><span class=\"dust-g dust-kvk\"><i></i><i></i><i></i></span><span class=\"dust-g dust-vip\"><i></i><i></i><i></i></span>",
+    "brand": "KINGSHOT <b>·</b> DEMYSTIFIED",
+    "brandNoteKey": "home.brandNote",
+    "brandNote": "just the guides",
+    "swipePrev": null,
+    "swipeNext": {
+      "url": "events/",
+      "page": "kvksg",
+      "title": "Event Cycle",
+      "lede": "the recurring events on one 28-day clock: what's on today, what to save, and what to copy into KingShot."
+    },
+    "css": [
+      "styles.css",
+      "events.css",
+      "home.css"
+    ],
+    "scripts": [
+      "i18n.js",
+      "common.js"
+    ],
+    "footMainKey": "home.foot.main",
+    "footMain": "JUST THE GUIDES",
+    "footSubs": [
+      {
+        "key": "home.foot.note",
+        "html": "Numbers live on each event page — they're for our server.\n    Your server will differ — <b>the maths doesn't.</b>"
+      },
+      {
+        "key": "home.foot.credit",
+        "html": "built for the [2129]MadNess alliance"
+      }
+    ],
+    "headScripts": [
+      "\n/* Old Bear Hunt deep links (dey.ci/#sqrt etc.) now land here; the guide\n   moved to /bear-hunt/. Redirect the section hashes so bookmarks and\n   shared links keep working. */\n(function () {\n  var h = location.hash;\n  if (!h) return;\n  var id = h.slice(1);\n  var BH_SECTIONS = ['top', 'model', 'sqrt', 'rally', 'marches', 'timing', 'mix', 'heroes', 'rewards', 'cap', 'rules'];\n  if (BH_SECTIONS.indexOf(id) !== -1) location.replace('bear-hunt/' + h);\n})();\n"
+    ]
+  },
+  "events": {
+    "token": "kvksg",
+    "depth": "../",
+    "canonicalPath": "/events/",
+    "themeColor": "#081315",
+    "icon": "<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23081315'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23D9B25A'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E\">",
+    "titleKey": "ks.meta.title",
+    "titleText": "Event Cycle, Demystified",
+    "metaDescKey": "ks.meta.description",
+    "metaDesc": "One 28-day clock for the recurring events. Day 1 is always a Monday: set it to your kingdom's day — what's on today, what to save, what to copy into KingShot.",
+    "ogTitleKey": "ks.meta.ogTitle",
+    "ogTitle": "Event Cycle, Demystified",
+    "ogDescKey": "ks.meta.ogDescription",
+    "ogDesc": "One 28-day clock for the recurring events — what's on today, in plain words.",
+    "skipHref": "#today",
+    "skipKey": "ks.skip",
+    "skipText": "Skip to the guide",
+    "dust": "<i></i><i></i><i></i>",
+    "brand": "EVENT <b>CYCLE</b>",
+    "brandNoteKey": "ks.brandNote",
+    "brandNote": "the 28-day clock",
+    "swipePrev": {
+      "url": "../",
+      "page": "home",
+      "title": "The events",
+      "lede": "the alliance events in plain words — how each one scores, what to do about it."
+    },
+    "swipeNext": {
+      "url": "../bear-hunt/",
+      "page": "bearhunt",
+      "title": "Bear Hunt",
+      "lede": "the lead's stats × your troops — with a square root on your count."
+    },
+    "css": [
+      "../styles.css",
+      "../events.css",
+      "../kvk.css"
+    ],
+    "scripts": [
+      "../i18n.js",
+      "../common.js",
+      "../kvk.js"
+    ],
+    "footMainKey": "ks.foot.main",
+    "footMain": "JUST THE CLOCK",
+    "footSubs": [
+      {
+        "key": "ks.foot.note",
+        "html": "Point tables are community numbers: <a href=\"https://kingshotoptimizer.com/events/kingdom-of-power/event-guide\">Kingshot Optimizer</a> and <a href=\"https://kingshotmastery.com/guides/kingshot-kvk-prep-guide\">Kingshot Mastery</a> for prep, the <a href=\"https://kingshotwiki.com/events/armament-competition/\">Kingshot Wiki</a> for armament and officer, <a href=\"https://kingshotdata.com/events/alliance-brawl-event/\">Kingshot Data</a> for the brawl — for our server. The live scoring screen is the final word; <b>the principles don't change.</b>"
+      },
+      {
+        "key": "ks.foot.credit",
+        "html": "prep chart is the alliance's own, checked against the community tables · built for the [2129]MadNess alliance"
+      }
+    ],
+    "headScripts": []
+  },
+  "bear": {
+    "token": "bearhunt",
+    "depth": "../",
+    "canonicalPath": "/bear-hunt/",
+    "themeColor": "#0B110C",
+    "icon": "<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B110C'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23AEC878'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E\">",
+    "titleKey": "meta.title",
+    "titleText": "Bear Hunt, Demystified",
+    "metaDescKey": "meta.description",
+    "metaDesc": "Bear Hunt, demystified. How rally damage works in plain words: the lead's stats, your troops, the square root, and four rules.",
+    "ogTitleKey": "meta.ogTitle",
+    "ogTitle": "Bear Hunt, Demystified",
+    "ogDescKey": "meta.ogDescription",
+    "ogDesc": "How rally damage actually works — in plain words.",
+    "skipHref": "#model",
+    "skipKey": "skip",
+    "skipText": "Skip to the maths",
+    "dust": "<i></i><i></i><i></i>",
+    "brand": "BEAR HUNT",
+    "brandNoteKey": "brandNote",
+    "brandNote": "just the maths",
+    "swipePrev": {
+      "url": "../events/",
+      "page": "kvksg",
+      "title": "Event Cycle",
+      "lede": "the recurring events on one 28-day clock: what's on today, what to save, and what to copy into KingShot."
+    },
+    "swipeNext": {
+      "url": "../vikings-vengeance/",
+      "page": "vikings",
+      "title": "Vikings Vengeance",
+      "lede": "kills are points, and every city your troops stand in is a kill surface."
+    },
+    "css": [
+      "../styles.css",
+      "../events.css"
+    ],
+    "scripts": [
+      "../i18n.js",
+      "../common.js",
+      "../bear-hunt.js"
+    ],
+    "footMainKey": "foot.main",
+    "footMain": "JUST THE MATHS",
+    "footSubs": [
+      {
+        "key": "foot.note",
+        "html": "Numbers here are for our server: marches ~100–150k, rallies 500k–1M.\n    Your server will differ — <b>the maths doesn't.</b>"
+      },
+      {
+        "key": "foot.credit",
+        "html": "Damage model from the <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> by [685] Frak — a tested community model, not an official one · built for the [2129]MadNess alliance"
+      },
+      {
+        "key": "foot.credit2",
+        "html": "Hero tiers and extensive play testing with <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a> and the <a href=\"https://discord.gg/CVubr6M7x\">Play Smarter Community</a>"
+      }
+    ],
+    "headScripts": []
+  },
+  "vikings": {
+    "token": "vikings",
+    "depth": "../",
+    "canonicalPath": "/vikings-vengeance/",
+    "themeColor": "#150D08",
+    "icon": "<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23150D08'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23E08A3C'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E\">",
+    "titleKey": "vv.meta.title",
+    "titleText": "Vikings Vengeance, Demystified",
+    "metaDescKey": "vv.meta.description",
+    "metaDesc": "Vikings Vengeance, demystified. Kills are points — send everyone out, infantry first, and be online for waves 7, 14 and 17.",
+    "ogTitleKey": "vv.meta.ogTitle",
+    "ogTitle": "Vikings Vengeance, Demystified",
+    "ogDescKey": "vv.meta.ogDescription",
+    "ogDesc": "Kills are points, and every city your troops stand in is a kill surface — in plain words.",
+    "skipHref": "#waves",
+    "skipKey": "vv.skip",
+    "skipText": "Skip to the guide",
+    "dust": "<i></i><i></i><i></i>",
+    "brand": "VIKINGS VENGEANCE",
+    "brandNoteKey": "vv.brandNote",
+    "brandNote": "just the kill surface",
+    "swipePrev": {
+      "url": "../bear-hunt/",
+      "page": "bearhunt",
+      "title": "Bear Hunt",
+      "lede": "the lead's stats × your troops — with a square root on your count."
+    },
+    "swipeNext": {
+      "url": "../swordland-showdown/",
+      "page": "swordland",
+      "title": "Swordland Showdown",
+      "lede": "two scoreboards, one 180,000, and winning is only one lever."
+    },
+    "css": [
+      "../styles.css",
+      "../events.css",
+      "../vikings.css"
+    ],
+    "scripts": [
+      "../i18n.js",
+      "../common.js",
+      "../vikings.js"
+    ],
+    "footMainKey": "vv.foot.main",
+    "footMain": "JUST THE KILLS",
+    "footSubs": [
+      {
+        "key": "vv.foot.note",
+        "html": "Numbers here are for our server: reinforced garrisons of\n    200–300k T8/T9 hold difficulty 11. Your server will differ — <b>the principles don't.</b>"
+      },
+      {
+        "key": "vv.foot.credit",
+        "html": "Event walkthrough from <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a>'s\n    playlists and the <a href=\"https://www.kingshotguide.org/calculator/viking-vengeance-calculator\">kingshotguide.org</a>\n    Viking Vengeance calculator — community references, not official · built for the [2129]MadNess alliance"
+      }
+    ],
+    "headScripts": []
+  },
+  "swordland": {
+    "token": "swordland",
+    "depth": "../",
+    "canonicalPath": "/swordland-showdown/",
+    "themeColor": "#120A0D",
+    "icon": "<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23120A0D'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23E05555'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E\">",
+    "titleKey": "sw.meta.title",
+    "titleText": "Swordland Showdown, Demystified",
+    "metaDescKey": "sw.meta.description",
+    "metaDesc": "Swordland Showdown, demystified. Two scoreboards, the alliance's bracket and your personal tier, and a 180,000 personal-point target that outlives every matchup.",
+    "ogTitleKey": "sw.meta.ogTitle",
+    "ogTitle": "Swordland Showdown, Demystified",
+    "ogDescKey": "sw.meta.ogDescription",
+    "ogDesc": "Two scoreboards, one 180,000, in plain words.",
+    "skipHref": "#score",
+    "skipKey": "sw.skip",
+    "skipText": "Skip to the guide",
+    "dust": "<i></i><i></i><i></i>",
+    "brand": "SWORDLAND SHOWDOWN",
+    "brandNoteKey": "sw.brandNote",
+    "brandNote": "just the scoreboards",
+    "swipePrev": {
+      "url": "../vikings-vengeance/",
+      "page": "vikings",
+      "title": "Vikings Vengeance",
+      "lede": "kills are points, and every city your troops stand in is a kill surface."
+    },
+    "swipeNext": {
+      "url": "../events/",
+      "page": "kvksg",
+      "title": "Event Cycle",
+      "lede": "the recurring events on one 28-day clock — what's on today, what to save, and what to copy into KingShot."
+    },
+    "css": [
+      "../styles.css",
+      "../events.css",
+      "../swordland.css"
+    ],
+    "scripts": [
+      "../i18n.js",
+      "../common.js",
+      "../swordland.js"
+    ],
+    "footMainKey": "sw.foot.main",
+    "footMain": "JUST THE SCOREBOARDS",
+    "footSubs": [
+      {
+        "key": "sw.foot.note",
+        "html": "Numbers here are the event's fixed rules: 180,000 personal points, 3,000 a\n    minute of best-case occupation, 80 per 10k defeated — <b>they don't vary.</b>"
+      },
+      {
+        "key": "sw.foot.credit",
+        "html": "Event walkthrough from <a href=\"https://www.youtube.com/channel/UCUB-sjmFklRFmVuybS_fOSA\">StratGameSloth</a>'s\n    Swordland Showdown guide (footage and feedback from SecondExpress, UpwardDragon and Just2Majic, map by Sgt Slayer,\n    with the <a href=\"https://www.kingshotguide.org/\">kingshotguide.org</a> event guide), community references, not\n    official · built for the [2129]MadNess alliance"
+      }
+    ],
+    "headScripts": []
+  },
+  "vip": {
+    "token": "vip",
+    "depth": "../",
+    "canonicalPath": "/vip-calculator/",
+    "themeColor": "#120A1E",
+    "icon": "<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23120A1E'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23C5A3EE'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E\">",
+    "titleKey": "vip.meta.title",
+    "titleText": "VIP Calculator, Demystified",
+    "metaDescKey": "vip.meta.description",
+    "metaDesc": "VIP Calculator, demystified. Your VIP level, your VIP XP and your days played — the date every remaining level lands, at your own rate, in plain words.",
+    "ogTitleKey": "vip.meta.ogTitle",
+    "ogTitle": "VIP Calculator, Demystified",
+    "ogDescKey": "vip.meta.ogDescription",
+    "ogDesc": "Your VIP XP is a straight line at your rate — here's the date for every remaining level.",
+    "skipHref": "#calc",
+    "skipKey": "vip.skip",
+    "skipText": "Skip to the calculator",
+    "dust": "<i></i><i></i><i></i>",
+    "brand": "VIP CALCULATOR",
+    "brandNoteKey": "vip.brandNote",
+    "brandNote": "just the dates",
+    "swipePrev": {
+      "url": "../swordland-showdown/",
+      "page": "swordland",
+      "title": "Swordland Showdown",
+      "lede": "two scoreboards, one 180,000, and winning is only one lever."
+    },
+    "swipeNext": {
+      "url": "../",
+      "page": "home",
+      "title": "The events",
+      "lede": "the alliance events in plain words — how each one scores, what to do about it."
+    },
+    "css": [
+      "../styles.css",
+      "../events.css",
+      "../vip.css"
+    ],
+    "scripts": [
+      "../i18n.js",
+      "../common.js",
+      "../vip.js"
+    ],
+    "footMainKey": "vip.foot.main",
+    "footMain": "JUST THE DATES",
+    "footSubs": [
+      {
+        "key": "vip.foot.note",
+        "html": "The costs are the game's, the same on every server. Your\n    rate is yours: it changes the dates, not the maths."
+      },
+      {
+        "key": "vip.foot.credit",
+        "html": "VIP costs verified in-game per the\n    <a href=\"https://kingshotmastery.com/guides/kingshot-vip-guide\">Kingshot Mastery VIP guide</a> — community\n    reference, not official · built for the [2129]MadNess alliance"
+      }
+    ],
+    "headScripts": []
+  }
+}

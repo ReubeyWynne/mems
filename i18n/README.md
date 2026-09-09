@@ -1,7 +1,7 @@
 # Translations
 
 The site is translated **client-side, with zero build step** — it stays a plain static
-GitHub Pages site. A tiny loader (`../i18n.js`) injects one `<script>` tag per language
+GitHub Pages site. A tiny loader (`../js/i18n.js`) injects one `<script>` tag per language
 (a one-line wrapper around a JSON body) and swaps the text in place. Script tags are
 **not CORS-restricted**, so the pages work when opened straight from disk (`file://`) —
 no local server, no CORS errors.

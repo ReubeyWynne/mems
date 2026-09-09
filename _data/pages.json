@@ -28,13 +28,13 @@
       "lede": "the recurring events on one 28-day clock: what's on today, what to save, and what to copy into KingShot."
     },
     "css": [
-      "styles.css",
-      "events.css",
-      "home.css"
+      "css/styles.css",
+      "css/events.css",
+      "css/home.css"
     ],
     "scripts": [
-      "i18n.js",
-      "common.js"
+      "js/i18n.js",
+      "js/common.js"
     ],
     "footMainKey": "home.foot.main",
     "footMain": "JUST THE GUIDES",
@@ -86,14 +86,14 @@
       "lede": "the lead's stats × your troops — with a square root on your count."
     },
     "css": [
-      "../styles.css",
-      "../events.css",
-      "../kvk.css"
+      "../css/styles.css",
+      "../css/events.css",
+      "../css/kvk.css"
     ],
     "scripts": [
-      "../i18n.js",
-      "../common.js",
-      "../kvk.js"
+      "../js/i18n.js",
+      "../js/common.js",
+      "../js/kvk.js"
     ],
     "footMainKey": "ks.foot.main",
     "footMain": "JUST THE CLOCK",
@@ -143,13 +143,13 @@
       "lede": "kills are points, and every city your troops stand in is a kill surface."
     },
     "css": [
-      "../styles.css",
-      "../events.css"
+      "../css/styles.css",
+      "../css/events.css"
     ],
     "scripts": [
-      "../i18n.js",
-      "../common.js",
-      "../bear-hunt.js"
+      "../js/i18n.js",
+      "../js/common.js",
+      "../js/bear-hunt.js"
     ],
     "footMainKey": "foot.main",
     "footMain": "JUST THE MATHS",
@@ -203,14 +203,14 @@
       "lede": "two scoreboards, one 180,000, and winning is only one lever."
     },
     "css": [
-      "../styles.css",
-      "../events.css",
-      "../vikings.css"
+      "../css/styles.css",
+      "../css/events.css",
+      "../css/vikings.css"
     ],
     "scripts": [
-      "../i18n.js",
-      "../common.js",
-      "../vikings.js"
+      "../js/i18n.js",
+      "../js/common.js",
+      "../js/vikings.js"
     ],
     "footMainKey": "vv.foot.main",
     "footMain": "JUST THE KILLS",
@@ -260,14 +260,14 @@
       "lede": "the recurring events on one 28-day clock — what's on today, what to save, and what to copy into KingShot."
     },
     "css": [
-      "../styles.css",
-      "../events.css",
-      "../swordland.css"
+      "../css/styles.css",
+      "../css/events.css",
+      "../css/swordland.css"
     ],
     "scripts": [
-      "../i18n.js",
-      "../common.js",
-      "../swordland.js"
+      "../js/i18n.js",
+      "../js/common.js",
+      "../js/swordland.js"
     ],
     "footMainKey": "sw.foot.main",
     "footMain": "JUST THE SCOREBOARDS",
@@ -317,14 +317,14 @@
       "lede": "the alliance events in plain words — how each one scores, what to do about it."
     },
     "css": [
-      "../styles.css",
-      "../events.css",
-      "../vip.css"
+      "../css/styles.css",
+      "../css/events.css",
+      "../css/vip.css"
     ],
     "scripts": [
-      "../i18n.js",
-      "../common.js",
-      "../vip.js"
+      "../js/i18n.js",
+      "../js/common.js",
+      "../js/vip.js"
     ],
     "footMainKey": "vip.foot.main",
     "footMain": "JUST THE DATES",

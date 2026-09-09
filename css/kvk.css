@@ -162,6 +162,16 @@
 .trow.keep { grid-template-columns: 1.7rem 1fr auto auto; }
 .trow .tmark { text-align: center; }
 .trow .tname { color: var(--ink-dim); }
+/* Inline KingShot game icons (truegold, gem, speedups…) in the today-card
+   rows and the prep-chart matrix: real game art, sized to the row's text. */
+.ks-ico {
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: -0.32em;
+  margin-inline-end: 0.3rem;
+  object-fit: contain;
+  image-rendering: auto;
+}
 .trow .tpts { font-family: var(--display-2); font-weight: 700; color: var(--amber); white-space: nowrap; }
 .trow.dont .tname { color: var(--ink-muted); }
 .trow .tkeep { color: var(--amber-dim); font-size: 0.72rem; letter-spacing: 0.12em; }

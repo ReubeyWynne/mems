@@ -16,13 +16,17 @@
   // would 404 from the event subdirectories.
   function dictBase() {
     var s = document.currentScript;
-    if (s && s.src) return s.src.replace(/[^/]*$/, '');
-    var tags = document.getElementsByTagName('script');
-    for (var i = 0; i < tags.length; i++) {
-      var src = tags[i].src || '';
-      if (src.indexOf('i18n.js') !== -1) return src.replace(/[^/]*$/, '');
+    var src = s && s.src;
+    if (!src) {
+      var tags = document.getElementsByTagName('script');
+      for (var i = 0; i < tags.length; i++) {
+        if ((tags[i].src || '').indexOf('i18n.js') !== -1) { src = tags[i].src; break; }
+      }
     }
-    return ''; // last resort: document-relative 'i18n/…' (home-page layout)
+    // This loader now lives in js/ at the site root, one level below the
+    // dictionaries — strip ".../js/i18n.js" back to the site root so every
+    // page finds the same /i18n/<code>.js.
+    return src ? src.replace(/\/js\/i18n\.js[^/]*$/, '/') : '';
   }
   var DICT_BASE = dictBase();
 

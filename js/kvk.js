@@ -1,8 +1,10 @@
 /* kvk.js — the Event Cycle page toys (events/): the live
    28-day clock, today's card (what's efficient, what to save), and the
    KingShot copy generator. Registers with common.js via window.BH.registerPage.
-   The copy blocks are built for KingShot chat: ≤512 characters a message,
-   ✅/🆗/🚫 and full-width ｜ only — no box-drawing, no arrows. */
+   The copy blocks are built for KingShot chat: item icons ride in as
+   <item_icon_N> tags, every line stays ≤28 display cells (a tag = 1 cell,
+   a narrow char = 1 cell, a wide/full-width char = 2 cells), and a block
+   stays ≤512 characters a message. */
 (function () {
   'use strict';
 
@@ -78,16 +80,28 @@
     'Troop','Research','Hero roulette','Gathering','Intel missions','Pets advance',
     'Gov charm','Gov gear','Widget gear','Mithril','Forgehammer'];
 
-  // A glyph per material, so each item scans by icon before its name.
+  // Icon per material, shown in the today-card rows. The materials that have
+  // a KingShot in-game icon render the real game art (img/kingshot/, the icon
+  // PUA glyphs as PNGs); the rest keep an emoji stand-in — the game has no
+  // icon for them. KS_IMG resolves from this script's own URL (like i18n.js),
+  // so it works from any page depth.
+  var KS_IMG = (function () {
+    try {
+      return new URL('../img/kingshot/', (document.currentScript && document.currentScript.src) || location.href).href;
+    } catch (e) { return '../img/kingshot/'; }
+  })();
+  function ksIco(file) {
+    return '<img class="ks-ico" src="' + KS_IMG + file + '" alt="" decoding="async">';
+  }
   var ITEM_GLYPH = {
-    'Truegold': '\uD83E\uDE99', 'Tempered TG': '\uD83D\uDD36',
-    'Hero shard': '\uD83D\uDCA0', 'Master emblem': '\u2B50',
-    'Building': '\uD83C\uDFD7\uFE0F', 'Troop': '\u2694\uFE0F',
-    'Research': '\uD83D\uDD2C', 'Hero roulette': '\uD83C\uDFA1',
-    'Gathering': '\uD83C\uDF3E', 'Intel missions': '\uD83D\uDCDC',
+    'Truegold': ksIco('truegold.png'), 'Tempered TG': ksIco('truegold.png'),
+    'Hero shard': ksIco('hero-shard.png'), 'Master emblem': '\u2B50',
+    'Building': ksIco('construction-speedup.png'), 'Troop': ksIco('training-speedup.png'),
+    'Research': ksIco('research-speedup.png'), 'Hero roulette': ksIco('gem.png'),
+    'Gathering': '\uD83C\uDF3E', 'Intel missions': ksIco('energy-booster.png'),
     'Pets advance': '\uD83D\uDC3E', 'Gov charm': '\uD83D\uDC8D',
     'Gov gear': '\uD83D\uDEE1\uFE0F', 'Widget gear': '\u2699\uFE0F',
-    'Mithril': '\u26CF\uFE0F', 'Forgehammer': '\uD83D\uDD28'
+    'Mithril': '\u26CF\uFE0F', 'Forgehammer': ksIco('forgehammer.png')
   };
 
   // Map any row label (prep/SG/brawl tables, run task rows) back to a tracked
@@ -168,8 +182,6 @@
       ['Governor Gear max score +1', 70]
     ]
   };
-  function runKey(run) { return (run.event === 'armament' ? 'arm' : 'off') + run.run.type; }
-
   // Which run (if any) is live on cycle day d. Armament and Officer never
   // overlap in the confirmed schedule, so at most one is returned.
   function liveRun(d) {
@@ -192,7 +204,7 @@
     'Hero Roulette': 'Roulette', 'Widget gear': 'Widget', 'Mythic shard': 'Mythic',
     'Epic shard': 'Epic', 'Rare shard': 'Rare', 'Advanced Taming Mark': 'Adv Taming',
     'Common Taming Mark': 'Taming', 'Pet Advancement': 'Pets', 'T10 troops': 'T10',
-    'Gathering': 'Gather'
+    'Gathering': 'Gather', 'Tempered Truegold': 'temp TG', 'Speedups': 'spd'
   };
 
   // ── State — the schedule is GLOBAL: one wheel, anchored to dates ──
@@ -506,8 +518,14 @@
   function render(BH) {
     paintDaySections(BH);
     var out = document.getElementById('ks-day-out');
-    if (out) out.textContent = BH.tr('ks.today.dayOut', 'day {n} of 28').replace('{n}', day) +
-      (day === todayDay() ? ' ' + BH.tr('ks.today.isToday', '\u00B7 today') : '');
+    if (out) {
+      var dows = BH.tr('ks.today.dows', ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
+      var uw = (day - 1) % 7;
+      var weekday = (Array.isArray(dows) ? dows[uw] : '') ||
+        ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][uw];
+      out.textContent = weekday + ' \u00B7 ' + BH.tr('ks.today.dayOut', 'day {n} of 28').replace('{n}', day) +
+        (day === todayDay() ? ' ' + BH.tr('ks.today.isToday', '\u00B7 today') : '');
+    }
     paintCycle(BH);
     highlightMatrix(BH);
 
@@ -547,47 +565,133 @@
   // ── KingShot copy ──────────────────────────────────────
   // KingShot chat has a fixed width and a LINE CAP — the full prep chart
   // comes back from a paste with its rows merged (the alliance's own test
-  // showed it). So every copy block is compact: ≤6 lines, no blank lines,
-  // short chat labels. One prep day = one message.
+  // showed it). So every copy block is compact: lines stay aligned in ≤28
+  // display cells (item icons ride in as <item_icon_N> tags), no blank
+  // lines, short chat labels, and a whole block ≤512 characters. One prep
+  // day = one message.
 
   // Short chat labels — the alliance's own chart words.
   var SHORT = {
-    'Truegold': 'Truegold', 'Tempered TG': 'Tempered TG', 'Hero shard': 'Hero shard',
-    'Master emblem': 'Master', 'Building': 'Building', 'Troop': 'Troop', 'Research': 'Research',
-    'Hero roulette': 'Wheel', 'Gathering': 'Gathering', 'Intel missions': 'Intel',
+    'Truegold': 'Truegold', 'Tempered TG': 'temp TG', 'Hero shard': 'Hero shard',
+    'Master emblem': 'Master Emblem', 'Building': 'Building', 'Troop': 'Troop', 'Research': 'Research',
+    'Hero roulette': 'Roulette', 'Gathering': 'Gathering', 'Intel missions': 'Intel',
     'Pets advance': 'Pets', 'Gov charm': 'Gov charm', 'Gov gear': 'Gov gear',
     'Widget gear': 'Widget', 'Mithril': 'Mithril', 'Forgehammer': 'Hammer'
   };
 
-  // Short chat labels for the light-week run tasks (Armament / Officer).
-  var RUN_SHORT = {
-    'Truegold (building upgrade)': 'Truegold', 'Truegold Dust (tech research)': 'TG dust',
-    'Tempered Truegold (building upgrade)': 'temp TG', 'Governor Gear max score +1': 'gear +1',
-    'Governor Charm max score +1': 'charm +1', '1m construction / research / training speedup': '1m spd',
-    'Rare hero shard': 'Rare', 'Epic hero shard': 'Epic', 'Mythic hero shard': 'Mythic',
-    'Forgehammer': 'Hammer', 'Widget': 'Widget', 'Mithril': 'Mithril'
-  };
+  // ── Display-width helpers for the KingShot copy ────────
+  // KingShot renders an <item_icon_N> tag as a single glyph (1 display cell),
+  // a narrow char as 1 cell, and a wide/full-width char (CJK, full-width
+  // digits １, full-width ｜, emoji) as 2 cells. displayCells() measures a
+  // line's true display width; every copy line must stay ≤28 cells.
+  function isWideCode(cp) {
+    return (
+      (cp >= 0x1100 && cp <= 0x115F) ||   // Hangul Jamo
+      (cp >= 0x2E80 && cp <= 0x303E) ||   // CJK radicals .. CJK symbols
+      (cp >= 0x3041 && cp <= 0x33FF) ||   // Hiragana .. CJK compatibility
+      (cp >= 0x3400 && cp <= 0x4DBF) ||   // CJK ext A
+      (cp >= 0x4E00 && cp <= 0x9FFF) ||   // CJK unified ideographs
+      (cp >= 0xA000 && cp <= 0xA4CF) ||   // Yi
+      (cp >= 0xAC00 && cp <= 0xD7A3) ||   // Hangul syllables
+      (cp >= 0xF900 && cp <= 0xFAFF) ||   // CJK compat ideographs
+      (cp >= 0xFE30 && cp <= 0xFE4F) ||   // CJK compat forms
+      (cp >= 0xFF00 && cp <= 0xFF60) ||   // Full-width forms (｜, １, …)
+      (cp >= 0xFFE0 && cp <= 0xFFE6) ||   // Full-width signs
+      (cp >= 0x2600 && cp <= 0x27BF) ||   // Misc symbols / dingbats (✅, marks)
+      (cp >= 0x1F000 && cp <= 0x1FAFF) || // Emoji (🆗, 🚫, 👑, 🛡, 🎖)
+      (cp >= 0x20000 && cp <= 0x2FFFD) || // CJK ext B+
+      (cp >= 0x30000 && cp <= 0x3FFFD)
+    );
+  }
+  function cellsOf(seg) {
+    var n = 0;
+    for (var i = 0; i < seg.length; i++) {
+      var cp = seg.charCodeAt(i);
+      if (cp >= 0xD800 && cp <= 0xDBFF && i + 1 < seg.length) {
+        var lo = seg.charCodeAt(i + 1);
+        if (lo >= 0xDC00 && lo <= 0xDFFF) { cp = (cp - 0xD800) * 0x400 + (lo - 0xDC00) + 0x10000; i++; }
+      }
+      if (cp === 0x200D || (cp >= 0xFE00 && cp <= 0xFE0F)) continue; // zero-width (ZWJ, VS16)
+      n += isWideCode(cp) ? 2 : 1;
+    }
+    return n;
+  }
+  // A line's display width: every <item_icon_N> tag counts 1 cell, wide
+  // chars count 2, everything else 1. Used where the old code used .length.
+  function displayCells(str) {
+    var s = String(str);
+    var n = 0;
+    var last = 0;
+    var re = /<item_icon_[A-Za-z0-9_]+>/g;
+    var m;
+    while ((m = re.exec(s)) !== null) {
+      n += cellsOf(s.slice(last, m.index));
+      n += 1; // the whole tag renders as one icon glyph
+      last = re.lastIndex;
+    }
+    n += cellsOf(s.slice(last));
+    return n;
+  }
 
-  // One prep day, ≤6 lines: header, theme, then the ✅/🆗/🚫 groups.
-  // Lines wrap at ~50 chars (KingShot's fixed width) and the 🚫 group
-  // compresses to "everything else" when it would take more than one line.
-  function fit(items, mark, max) {
-    var line = mark + ' ' + items.join(' \u00B7 ');
-    if (line.length <= max) return [line];
-    var cut = line.lastIndexOf(' \u00B7 ', max);
-    if (cut <= mark.length) return [line];
-    return [line.slice(0, cut), mark + ' ' + line.slice(cut + 5)];
+  // Map a copy label to its KingShot item-icon tag, returned as an inline
+  // <item_icon_N> tag ('' when the item has no icon). The tag, not the raw
+  // PUA codepoint, is the reliable in-game notation — the game font aliases
+  // the raw codepoints and pasting them produces duplicate glyphs.
+  function itemTag(label) {
+    var l = String(label).toLowerCase();
+    if (/dust/.test(l)) return '';                                          // Truegold Dust → no icon
+    if (/temp(ered)?\s*tg/.test(l)) return '<item_icon_100081>';             // Tempered TG / temp TG
+    if (/truegold/.test(l)) return '<item_icon_100081>';                     // KINGSHOT TRUEGOLD
+    if (/speedup|\bspd\b/.test(l)) return '<item_icon_200101>';              // GENERAL SPEEDUP (combined)
+    if (/hero shard|shard/.test(l)) return '<item_icon_500220>';            // KINGSHOT HERO SHARD
+    if (/building|construction/.test(l)) return '<item_icon_200201>';       // BUILDING SPEEDUP
+    if (/troop|t1[01]|train|promot/.test(l)) return '<item_icon_200301>';   // TROOP SPEEDUP
+    if (/research/.test(l)) return '<item_icon_200401>';                    // RESEARCH SPEEDUP
+    if (/intel/.test(l)) return '<item_icon_620163>';                       // INTEL MISSIONS — owner: the Energy Booster icon
+    if (/roulette/.test(l)) return '<item_icon_101>';                  // HERO ROULETTE — spins cost GEMS (KINGSHOT GEM)
+    if (/wheel coin/.test(l)) return '<item_icon_109>';                 // WHEEL COIN
+    if (/forgehammer|hammer/.test(l)) return '<item_icon_500240>';          // FORGEHAMMER
+    return '';  // Mithril, Widget, emblem/manuscript, Gov charm/gear, intel,
+                // gathering, pets, trucks/beasts/terror → no Kingshot icon.
+  }
+
+  // Wrap items into ≤maxCells display lines. Every line of a group is marked
+  // (✅/🆗/🚫) so a wrapped continuation is unambiguous. Icons are already
+  // embedded in each item (a tag costs 1 cell). Full-width ｜ separators keep
+  // the rows matrix-aligned; they already cost less than " · " (2 vs 3 cells).
+  // Each emitted line ends with the group's mark (✅/🆗/🚫) rather than leading
+  // with it, so a wrapped group keeps its verdict on every row it spans.
+  // Packing uses the game's own count (each char, each tag = 1 cell — the
+  // layout the alliance tested in chat): icon tag + space = 2, label chars =
+  // their length, ｜ separator = 1, trailing space + verdict = 2. Budget 28.
+  function packRows(ids, mark, maxCells) {
+    var lines = [];
+    var cur = '';
+    var cells = 0;
+    var sep = '\uFF5C';
+    for (var i = 0; i < ids.length; i++) {
+      var id = ids[i];
+      var t = itemTag(id);
+      var name = SHORT[id] || id;
+      var piece = t ? (t + ' ' + name) : name;
+      var pc = (t ? 2 : 0) + name.length;
+      var sepCost = cur ? 1 : 0;
+      if (cur && cells + sepCost + pc + 2 > maxCells) { lines.push(cur + ' ' + mark); cur = piece; cells = pc; }
+      else { cur = (cur ? cur + sep : '') + piece; cells += sepCost + pc; }
+    }
+    if (cur) lines.push(cur + ' ' + mark);
+    return lines;
   }
 
   function dayBlock(n) {
     var groups = { best: [], ok: [], no: [] };
     for (var i = 0; i < MATRIX.length; i++) {
-      var st = MATRIX[i][1][n - 1];
-      groups[st].push(SHORT[MATRIX[i][0]]);
+      groups[MATRIX[i][1][n - 1]].push(MATRIX[i][0]);
     }
     var lines = ['\uD83D\uDC51KVK PREP \u00B7 DAY ' + n + '\uD83D\uDC51', KOP_THEMES[n - 1]];
-    lines = lines.concat(fit(groups.best, '\u2705', 50), fit(groups.ok, '\uD83C\uDD97', 50));
-    lines.push('\uD83D\uDEAB ' + (groups.no.length > 4 ? 'everything else, save it' : groups.no.join(' \u00B7 ')));
+    lines = lines.concat(packRows(groups.best, '\u2705', 28), packRows(groups.ok, '\uD83C\uDD97', 28));
+    if (groups.no.length > 4) lines.push('\uD83D\uDEAB everything else, save it \uD83D\uDEAB');
+    else lines = lines.concat(packRows(groups.no, '\uD83D\uDEAB', 28));
     return lines.join('\n');
   }
 
@@ -595,17 +699,20 @@
     var tasks = SG_TASKS[n - 1].slice().sort(function (a, b) { return b[1] - a[1]; });
     var pieces = [];
     for (var i = 0; i < tasks.length; i++) {
-      pieces.push(tasks[i][1].toLocaleString('en-GB') + ' ' + (SG_SHORT[tasks[i][0]] || tasks[i][0]));
+      var label = tasks[i][0];
+      pieces.push(tasks[i][1].toLocaleString('en-GB') + ' ' + itemTag(label) + (SG_SHORT[label] || label));
     }
-    var lines = ['\uD83D\uDC51SG DAY ' + n + ' \u00B7 ' + SG_THEMES[n - 1] + '\uD83D\uDC51'];
+    var lines = ['\uD83D\uDC51SG DAY ' + n + '\uD83D\uDC51', SG_THEMES[n - 1]];
     var cur = '';
+    var sep = '\uFF5C';
     for (var j = 0; j < pieces.length; j++) {
-      var add = (cur ? ' \u00B7 ' : '') + pieces[j];
-      if (cur && cur.length + add.length > 50) { lines.push(cur); cur = pieces[j]; }
+      var add = (cur ? sep : '') + pieces[j];
+      if (cur && displayCells(cur + add) > 28) { lines.push(cur); cur = pieces[j]; }
       else cur += add;
     }
-    lines.push(cur);
-    lines.push('roulette costs gems \u00B7 hold intel from 08:00');
+    if (cur) lines.push(cur);
+    lines.push('roulette costs gems');
+    lines.push('hold intel from 08:00');
     return lines.join('\n');
   }
 
@@ -613,48 +720,13 @@
     return [
       '\uD83D\uDC51KVK BATTLE WEEKEND\uD83D\uDC51',
       'castle: 5h contest',
-      '2.5h continuous = early win \u00B7 else most hold time',
-      '10-22 UTC: teleports + kill points (chat rules)',
+      '2.5h continuous = early win',
+      'else most hold time',
+      '10-22 UTC: teleports + kills',
+      'chat rules',
       '4 turrets \u00B7 triage 30% \u2192 90%',
-      'SHIELD before the window, essential offline'
+      'SHIELD \u00B7 essential offline'
     ].join('\n');
-  }
-
-  // The live run, one compact block: header, its task table as short
-  // lines (highest points first), then the milestone note. Same ≤6-line
-  // contract as the prep and SG blocks.
-  function runCopy(run, BH) {
-    var r = run.run;
-    var lines = [];
-    var tasks;
-    if (run.event === 'armament') {
-      lines.push('\uD83D\uDEE1\uFE0FARMAMENT \u00B7 TYPE ' + r.type + '\uD83D\uDEE1\uFE0F');
-      tasks = ARM_TASKS[r.type];
-    } else {
-      lines.push('\uD83C\uDF96\uFE0FOFFICER \u00B7 TYPE ' + r.type + '\uD83C\uDF96\uFE0F');
-      tasks = OFF_TASKS[r.type].filter(function (t) { return t[0].indexOf('Troop training') === -1; });
-    }
-    tasks = tasks.slice().sort(function (a, b) {
-      return (typeof b[1] === 'number' ? b[1] : 0) - (typeof a[1] === 'number' ? a[1] : 0);
-    });
-    var cur = '';
-    for (var i = 0; i < tasks.length; i++) {
-      var piece = (typeof tasks[i][1] === 'number' ? BH.fmt(tasks[i][1]) : tasks[i][1]) + ' ' + (RUN_SHORT[tasks[i][0]] || tasks[i][0]);
-      var add = (cur ? ' \u00B7 ' : '') + piece;
-      if (cur && cur.length + add.length > 50) { lines.push(cur); cur = piece; }
-      else cur += add;
-    }
-    lines.push(cur);
-    if (run.event === 'officer' && r.type === 'A') {
-      lines.push('troop train: T11 37 \u2192 T1 1');
-    }
-    if (run.event === 'armament') {
-      lines.push(r.type === 1 ? 'top tier: Artisan Visions \u00B7 read your ladder' : 'top tier: Truegold \u00B7 read your ladder');
-    } else {
-      lines.push('M4: ' + (r.type === 'A' ? 'Forgehammer(s)' : 'Charm Design(s)') + ' + skill books');
-    }
-    lines.push('low reward \u00B7 skip unless it\u2019s free/cheap');
-    return lines.join('\n');
   }
 
   // Split into ≤512-char messages at line boundaries.
@@ -684,7 +756,7 @@
       '<button type="button" id="ks-copy-btn" class="kb">' + window.BH.tr('ks.today.copyBtn', 'copy') + '</button>' +
       '<span id="ks-copy-parts" class="cycle-quick"></span>' +
       '</div>' +
-      '<p class="copy-note">' + window.BH.tr('ks.today.copyNote', 'Shaped for KingShot chat: short lines that paste cleanly. If a block runs over one message, it comes split into parts; paste them in order.') + '</p>' +
+      '<p class="copy-note">' + window.BH.tr('ks.today.copyNote', 'Shaped for KingShot chat: item icons ride in as &lt;item_icon_N&gt; tags, every line stays inside 28 display cells, and a block stays under 512 characters. If a block runs over one message, it comes split into parts; paste them in order.') + '</p>' +
       '</div>' +
       '</details>';
   }

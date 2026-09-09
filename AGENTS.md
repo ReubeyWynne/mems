@@ -60,20 +60,22 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   `<head>` (meta, canonical/hreflang, favicon, fonts), the lang resolver
   script, the topbar (brand, `.ev-switch`, language menu, `.ledger`),
   skip link, dust, footer nav. Per-page content files are `---\nlayout: page\nself: <key>\n---\n` + their TOC + `<main>` only. `_data/pages.json` (per-page identity/meta/swipe) and `_data/nav.json` (order + labels) drive all of it — the swipe-ring and every nav are one `_data` edit, never per-page. **Local work is `jekyll build` then serve `_site/`**; the `.dsh` page checks run against `_site/`. Never paste chrome (head/nav/lang-menu) into a page content file — it belongs in the layout/includes.
-- File layout: shared CSS is `styles.css` (tokens, base, manuscript components)
-  + `events.css` (event switcher, swipe preview, page themes, shared ruled rows
-  and checklist); per-page CSS is `home.css`, `vikings.css`, `swordland.css`
-  (bear-hunt has none — its components are the shared base). Shared JS is
-  `i18n.js` (dictionary loader — resolves `/i18n/` from its own URL, so it
-  works from any page depth) + `common.js` (chrome, easter eggs, egg bit
-  registry, shared gossip pool); per-page toys live in `bear-hunt.js`,
-  `vikings.js`, `swordland.js` and register via `window.BH.registerPage(...)`.
-- The TOC scrollspy and front-layer observer in `common.js` pick up new sections
+- File layout: CSS lives in `css/` — shared `styles.css` (tokens, base, manuscript
+  components) + `events.css` (event switcher, swipe preview, page themes, shared
+  ruled rows and checklist); per-page sheets are `css/home.css`, `css/vikings.css`,
+  `css/swordland.css` (bear-hunt has none — its components are the shared base).
+  JS lives in `js/` — shared `js/i18n.js` (dictionary loader — resolves `/i18n/`
+  from its own URL, so it works from any page depth) + `js/common.js` (chrome,
+  easter eggs, egg bit registry, shared gossip pool); per-page toys live in
+  `js/bear-hunt.js`, `js/vikings.js`, `js/swordland.js` and register via
+  `window.BH.registerPage(...)`. `_data/pages.json` references these as
+  `css/…`/`js/…` (root-relative from the page's depth: `../css/…` from subdirs).
+- The TOC scrollspy and front-layer observer in `js/common.js` pick up new sections
   (`<section class="section" id="…">` + matching `.toc a[href="#…"]`) automatically.
 - A new event page = one directory with a front-matter `index.html` (its TOC +
-  `<main>` body only), a `data-page` theme block + dust rules in `events.css`,
+  `<main>` body only), a `data-page` theme block + dust rules in `css/events.css`,
   a per-page CSS file for bespoke components, a per-page JS file registering
-  whispers/toys (see the egg bit registry in `common.js` before allocating
+  whispers/toys (see the egg bit registry in `js/common.js` before allocating
   whisper ids), and one row each in `_data/nav.json` + `_data/pages.json` so
   the navs, ledger, footer and swipe ring pick it up (no per-page nav edits).
   Then `jekyll build` and re-run `.dsh/kvk-check.js` against `_site/`.

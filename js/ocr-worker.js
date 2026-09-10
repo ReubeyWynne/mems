@@ -41,10 +41,35 @@ var PADDLE_ESM = 'https://cdn.jsdelivr.net/npm/@paddleocr/paddleocr-js@0.4.2/+es
 //   shot infers in ~190ms off a 1.6MB Mat.
 // DET_SIDE is pinned into the detector's own config below so the pre-resize and
 // the model's resize cannot drift apart.
-var DET_SIDE = 960;
+var DET_SIDE = 800;
 
 function modelsUrl(file) {
   return new URL('../models/' + file, self.location.href).href;
+}
+
+// Resample a decoded bitmap, degrading instead of failing: a browser that
+// accepts the resize options gives the good filter; one that ignores them (or
+// refuses the crop overload outright, as some mobile engines do) gets an
+// OffscreenCanvas resample; one with neither gets null, and the detector does
+// its own resize — slower, but never a failed read.
+function shrink(bitmap, w, h) {
+  return createImageBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, {
+    resizeWidth: w,
+    resizeHeight: h,
+    resizeQuality: 'high'
+  }).then(function (out) {
+    if (out.width === w && out.height === h) return out;
+    out.close();
+    return viaCanvas(bitmap, w, h);
+  }, function () {
+    return viaCanvas(bitmap, w, h);
+  }).catch(function () { return null; });
+}
+
+function viaCanvas(bitmap, w, h) {
+  var canvas = new OffscreenCanvas(w, h);
+  canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+  return canvas.transferToImageBitmap();
 }
 
 // One decode, then a native resample of the decoded bitmap — no full-size
@@ -55,14 +80,12 @@ function fitForDetector(blob) {
     var side = Math.max(full.width, full.height);
     if (side <= DET_SIDE) return full;
     var scale = DET_SIDE / side;
-    return createImageBitmap(full, 0, 0, full.width, full.height, {
-      resizeWidth: Math.round(full.width * scale),
-      resizeHeight: Math.round(full.height * scale),
-      resizeQuality: 'high'
-    }).then(function (small) {
-      full.close();
-      return small;
-    });
+    return shrink(full, Math.round(full.width * scale), Math.round(full.height * scale))
+      .then(function (small) {
+        if (!small) return full;
+        full.close();
+        return small;
+      });
   });
 }
 
@@ -84,13 +107,13 @@ function warmPipelines(ocr) {
 }
 
 var enginePromise = null;
+var engineKind = 'auto';
 
 // Import + session build happen once, inside this worker. `worker: false` is
 // deliberate: this file *is* the worker, so the pipeline runs directly here
 // rather than the library spawning a second one.
-function loadEngine() {
-  if (enginePromise) return enginePromise;
-  var p = import(PADDLE_ESM).then(function (m) {
+function createEngine(backend) {
+  return import(PADDLE_ESM).then(function (m) {
     return m.PaddleOCR.create({
       worker: false,
       textDetectionModelName: 'PP-OCRv6_tiny_det',
@@ -98,14 +121,36 @@ function loadEngine() {
       textDetectionModelAsset: { url: modelsUrl('det-v6-tiny.tar') },
       textRecognitionModelAsset: { url: modelsUrl('rec-v6-tiny.tar') },
       textDetLimitSideLen: DET_SIDE,
-      textDetLimitType: 'max'
+      textDetLimitType: 'max',
+      ortOptions: { backend: backend }
     });
   });
+}
+
+function loadEngine() {
+  if (enginePromise) return enginePromise;
+  var p = createEngine(engineKind);
   enginePromise = p;
   // A failed load must not poison later attempts (offline, quota, one bad
   // session build) — clear the cache so the next request retries.
   p.catch(function () { if (enginePromise === p) enginePromise = null; });
   return p;
+}
+
+// A phone's GPU is the least predictable part of this stack: ORT's WebGPU
+// backend can build a session and then fail on the run, which a desktop's
+// software rasteriser never does. When the engine fails, give up on the GPU for
+// the rest of the session (freeing its memory first — that matters most on the
+// device where it just failed) and come back on wasm. Coarser and several times
+// slower, but it is the path that always works.
+function fallBackToWasm() {
+  var previous = enginePromise;
+  enginePromise = null;
+  engineKind = 'wasm';
+  var freed = previous
+    ? previous.then(function (ocr) { return ocr.dispose ? ocr.dispose() : null; }, function () { return null; })
+    : Promise.resolve(null);
+  return freed.then(loadEngine);
 }
 
 // The bitmap handed to the detector is the library's to dispose of, so the
@@ -153,9 +198,23 @@ self.onmessage = function (e) {
 
   if (msg.type === 'warm') {
     loadEngine().then(warmPipelines).then(function () { reply({ ok: true }); }, fail);
+  } else if (msg.type === 'useWasm') {
+    // The page found a read useless even though nothing threw — the one failure
+    // the worker cannot see for itself, because it doesn't know which words
+    // matter. Drop the GPU for the rest of the session.
+    if (engineKind === 'wasm' && enginePromise) { reply({ ok: true }); return; }
+    fallBackToWasm().then(function () { reply({ ok: true }); }, fail);
   } else if (msg.type === 'predict') {
     loadEngine()
       .then(function (ocr) { return runPredict(ocr, msg.blob); })
+      .then(function (out) {
+        // `ok: false` here means the engine itself threw — a shot we can't
+        // decode never gets this far. On a phone that is usually the GPU, so
+        // retry once on wasm rather than hand the user a failure they can't act
+        // on. If wasm fails too, that answer stands.
+        if (out.ok || engineKind === 'wasm') return out;
+        return fallBackToWasm().then(function (wasmOcr) { return runPredict(wasmOcr, msg.blob); });
+      })
       .then(reply, fail);
   }
 };

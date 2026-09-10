@@ -425,6 +425,28 @@
       shotEl.hidden = false;
     }
 
+    // One read: ask the worker, then fill whatever labels we recognise.
+    function readOnce(f) {
+      return askWorker('predict', f).then(function (res) {
+        return { filled: fill(parseItems(res.items)), preview: res.preview };
+      });
+    }
+
+    // A phone's GPU can run the engine without throwing and still hand back
+    // nothing usable — a failure mode a desktop's rasteriser never shows, and
+    // one the worker can't detect because it doesn't know which words matter.
+    // So if a read yields no values at all, drop the GPU for the session and
+    // read the shot once more on wasm before reporting failure.
+    function readShot(f) {
+      return readOnce(f).then(function (first) {
+        if (first.filled > 0) return first;
+        return askWorker('useWasm')
+          .then(function () { return readOnce(f); })
+          .then(function (second) { return second.filled > 0 ? second : first; },
+            function () { return first; });
+      });
+    }
+
     btn.addEventListener('click', function () { file.click(); });
     file.addEventListener('change', function () {
       var f = file.files && file.files[0];
@@ -433,27 +455,27 @@
       if (!f || ocrBusy) return;
       ocrBusy = true;
       ocrStatus(BH, 'sim.ocr.loading', 'Reading the screenshot\u2026');
-      loadPaddle()
-        .then(function () { return askWorker('predict', f); })
-        .then(function (res) {
-          var filled = fill(parseItems(res.items));
-          if (filled) paint(BH);
-          showShot(f, res.preview);
-          if (filled === FIELDS.length) {
+      readShot(f)
+        .then(function (out) {
+          if (out.filled) paint(BH);
+          showShot(f, out.preview);
+          if (out.filled === FIELDS.length) {
             ocrStatus(BH, 'sim.ocr.done', 'Filled from your report \u2014 double-check the numbers.', 'ok');
-          } else if (filled > 0) {
+          } else if (out.filled > 0) {
             // A partial read is still useful: keep what we got and say so,
             // rather than discarding it behind a flat "couldn't read that".
             // Amber like a full read — values landed; the count is the caveat.
             ocrStatus(BH, 'sim.ocr.partial',
-              'Read {n} of 6 values \u2014 fill in the rest below.', 'ok', { n: filled });
+              'Read {n} of 6 values \u2014 fill in the rest below.', 'ok', { n: out.filled });
           } else {
             ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers below.', 'bad');
           }
         })
         .catch(function (err) {
           // A failed read still hands back the shot it saw, so the user can see
-          // what we were looking at.
+          // what we were looking at. The reason goes to the console — the only
+          // place it can be read back from a device we can't debug directly.
+          if (window.console && console.error) console.error('[sim-ocr]', err && err.message ? err.message : err);
           showShot(f, err && err.preview);
           ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers below.', 'bad');
         })

@@ -405,6 +405,34 @@ html[data-page="vip"] .dust i:nth-child(3) { background-size: 300px 300px; anima
   to   { transform: translate3d(-2%, -6%, 0); }
 }
 
+/* ─── Battle Simulator — the war room's night ─────────── */
+/* Another tool, not an event: the page where the maths of a fight gets
+   worked out on paper. A near-black war-room night with an antique-gold
+   signal — the same palette as the ledger tool, but a step darker and
+   colder, for the page that does the arithmetic. */
+html[data-page="sim"],
+html[data-hover="sim"],
+.swipe-peek[data-page="sim"] {
+  --void: #0E0A12;        /* war-room night — near-black        */
+  --void-2: #16111C;      /* one step up (fields)              */
+  --amber: #E0B24A;       /* antique gold — the ledger signal  */
+  --amber-dim: #B3873A;   /* deep gold — secondary             */
+  --rubric: #E05555;      /* rubrication red — draft marks only (oxblood is too dark on this night) */
+  --ember: rgba(224, 178, 74, 0.16); /* ember motes             */
+  --ember-2: rgba(196, 150, 52, 0.10);
+  --ember-3: rgba(241, 227, 194, 0.07); /* pale parchment motes */
+  --chrome: rgba(14, 10, 18, 0.9);
+  --signal-line: rgba(224, 178, 74, 0.35);
+  --signal-tint: rgba(224, 178, 74, 0.07);
+  --signal-glow: rgba(224, 178, 74, 0.22);
+  --signal-halo: rgba(224, 178, 74, 0.28);
+}
+
+/* Embers drift slow and straight — the war room's quiet dust. */
+html[data-page="sim"] .dust i:nth-child(1) { animation: candle-rise 90s linear infinite; }
+html[data-page="sim"] .dust i:nth-child(2) { background-size: 200px 200px; animation: candle-rise 140s linear infinite reverse; }
+html[data-page="sim"] .dust i:nth-child(3) { background-size: 300px 300px; animation: candle-rise 200s linear infinite; }
+
 /* ─── KvK & Strongest Governor — one wheel, two crowns ─── */
 /* The 2-in-1 page: KvK is the campaign of kings, so gold is its
    primary — sceptre gold for the kingdom territory war, with the

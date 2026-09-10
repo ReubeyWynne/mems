@@ -314,7 +314,12 @@
     return out;
   }
 
-  var VALUE_MARK = { best: GLYPH.best, ok: GLYPH.ok, low: '\uD83D\uDD3B', hold: '\u23F8\uFE0F' };
+  // The hold mark is drawn, not an emoji: the ⏸️ chip renders in the same
+  // blue family as the ok 🆗 at row size, and the two are easy to blur
+  // together. Amber bars read as the theme's caution/save-it tone instead.
+  // (Copy lines keep emoji marks — those must paste into KingShot chat.)
+  var HOLD_ICO = '<svg class="hold-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.3 5.1v13.8M15.7 5.1v13.8" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/></svg>';
+  var VALUE_MARK = { best: GLYPH.best, ok: GLYPH.ok, low: '\uD83D\uDD3B', hold: HOLD_ICO };
   var VALUE_TAG = { best: 'best value', ok: 'ok value', low: 'low value', hold: 'hold' };
   var VALUE_ORDER = ['best', 'ok', 'low', 'hold'];
 

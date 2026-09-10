@@ -40,5 +40,12 @@
     "labelKey": "ev.switch.vip",
     "label": "VIP",
     "group": "tools"
+  },
+  {
+    "self": "sim",
+    "tail": "battle-simulator/",
+    "labelKey": "ev.switch.sim",
+    "label": "Simulator",
+    "group": "tools"
   }
 ]

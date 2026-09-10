@@ -1,0 +1,141 @@
+/* sim.css — the Battle Simulator page only (battle-simulator/). Loaded after
+   styles.css + events.css (the page's theme block lives there). The bear-ratio
+   calculator: the attack/lethality field pairs, and the ruled output table
+   with the lead's A factors, weights and ideal shares. Plus the early-alpha
+   gloss that demarks the page. Nothing else. */
+
+/* ─── Early-alpha demarcation — this page is a work in progress ─
+   A red-ink "FIRST DRAFT" stamp on the proof sheet: rotated a couple of
+   degrees, thin double ring (1px border + 1px outline, the rubber-stamp
+   edge), rubrication red. Under it, the gloss names what alpha means in
+   the marginal voice. The stamp reads raw against the polished page —
+   a proof mark, not a product badge. */
+.alpha-stamp {
+  display: inline-block;
+  margin-top: var(--space-s);
+  padding: 0.26rem 0.9rem 0.24rem 0.95rem;
+  border: 1px solid var(--rubric);
+  outline: 1px solid var(--rubric);
+  outline-offset: 3px;
+  transform: rotate(-2deg);
+  font-family: var(--body);
+  font-size: var(--step-1);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;      /* balance the last letter's tracking */
+  text-transform: uppercase;
+  color: var(--rubric);
+}
+.draft-note {
+  margin-top: var(--space-s);
+  max-width: 34rem;
+  font-size: var(--step--1);
+  font-style: italic;
+  color: var(--ink-dim);
+}
+.draft-note b {
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 700;
+}
+/* Arabic joins its letters — tracking and indentation would break the
+   script, so the stamp's Latin word keeps normal spacing. */
+html[lang="ar"] .alpha-stamp { letter-spacing: 0; text-indent: 0; }
+
+/* ─── The input rows — two labelled fields per troop type ──
+   Each calc-row is "Infantry  [Attack %  input] [Lethality %  input]".
+   On desktop the field group takes the same 55% the other calculators give
+   their controls, so the label keeps the same rhythm. */
+.sim-fields {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.sim-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 5.5rem;
+}
+.sim-field label {
+  font-size: 0.82em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.sim-field input { width: 100%; }
+@media (min-width: 640px) {
+  .calc-row .sim-fields { width: 55%; }
+}
+
+/* ─── The output table — ruled rows like the other calculators ──
+   Troop | A factor | weight | ideal share. On narrow screens the weight
+   column drops — the share is the point. */
+.sim-out { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.sim-head, .sim-row {
+  display: grid;
+  grid-template-columns: 1fr 5.4rem 5.4rem 6rem;
+  gap: 0.7rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(157, 149, 127, 0.14);
+  font-size: var(--step--1);
+}
+.sim-head { border-bottom-color: rgba(157, 149, 127, 0.25); }
+.sim-head span {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-size: 0.9em;
+  text-align: right;
+}
+.sim-head span:first-child { text-align: left; }
+.sim-type { font-family: var(--display-2); font-weight: 700; color: var(--ink); }
+.sim-a, .sim-w { text-align: right; color: var(--ink-dim); }
+.sim-share { text-align: right; color: var(--amber); font-weight: 700; }
+@media (max-width: 640px) {
+  .sim-head, .sim-row { grid-template-columns: 1fr 4.6rem 5.4rem; }
+  .sim-w { display: none; }
+}
+
+/* ─── OCR prefill — button + status ───────────────────── */
+.sim-ocr {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: var(--space-s);
+}
+.sim-ocr button {
+  font-family: var(--body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--amber);
+  background: transparent;
+  border: 1px solid var(--signal-line);
+  border-radius: 2px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sim-ocr button:hover,
+.sim-ocr button:focus-visible {
+  color: var(--ink);
+  border-color: var(--amber);
+}
+.sim-ocr-hint {
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+  font-style: italic;
+}
+.sim-ocr-status {
+  display: block;
+  margin: var(--space-s) 0;
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+}
+.sim-ocr-status.ok { color: var(--amber); }
+.sim-ocr-status.bad { color: var(--ink-dim); }

@@ -162,6 +162,15 @@
 .trow.keep { grid-template-columns: 1.7rem 1fr auto auto; }
 .trow .tmark { text-align: center; }
 .trow .tname { color: var(--ink-dim); }
+/* The hold mark — an authored pause glyph in the page's caution amber,
+   so it never reads as a twin of the blue ok 🆗 chip. Sized like the
+   emoji marks beside it; currentColor follows the theme tokens. */
+.hold-ico {
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.2em;
+  color: var(--amber);
+}
 /* Inline KingShot game icons (truegold, gem, speedups…) in the today-card
    rows and the prep-chart matrix: real game art, sized to the row's text. */
 .ks-ico {

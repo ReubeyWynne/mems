@@ -79,5 +79,7 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   whisper ids), and one row each in `_data/nav.json` + `_data/pages.json` so
   the navs, ledger, footer and swipe ring pick it up (no per-page nav edits).
   Then `jekyll build` and re-run `.dsh/kvk-check.js` against `_site/`.
-- Docs: `MATHS.md` is the formula source of truth; `i18n/README.md` is the
-  translation playbook.
+- Docs: `MATHS.md` is the formula source of truth; `KINGSHOT-SOURCES.md` is the
+  mined KingShot reference (the Frakinator's acknowledged sources: engine canon,
+  unit stats, buffs, OCR decision) — read it before claiming new gameplay facts;
+  `i18n/README.md` is the translation playbook.

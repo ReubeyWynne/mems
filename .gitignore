@@ -17,6 +17,7 @@ _site/
 
 # AI tooling artifacts (untracked working files; never commit these)
 .dsh/
+.scratch/
 .impeccable/
 PRODUCT.md
 .claude/

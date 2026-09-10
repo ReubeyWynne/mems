@@ -4,6 +4,11 @@ Source: the **Frakinator** (Streamlit app by [685] Frak — "Bear ratio", "Bear 
 "Theory-crafting" tabs: <https://frakinator.streamlit.app/>).
 These are the formulas the demystified site (and the old BearHunt app's `DamageCalc`) are pinned to.
 Extracted from the app's KaTeX markup on 2026-08-20.
+Corroborated 2026-09-10 against the Frakinator's acknowledged sources (the SoS
+battle engine `unit_stats.json` + `Fight.java`, the SoS guide, and the KingShot
+simulator's embedded troop table — see `KINGSHOT-SOURCES.md` §1): the base-stat
+relations, the √ laws, and the A/D factor shapes below all check out against
+engine data.
 
 ## Notation
 

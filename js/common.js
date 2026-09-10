@@ -290,7 +290,9 @@
     function paintProgress() {
       if (!fill) return;
       var max = doc.scrollHeight - doc.clientHeight;
-      fill.style.width = (max > 0 ? (doc.scrollTop / max) * 100 : 0) + '%';
+      // scaleX, not width: a percentage width dirties layout on every scroll
+      // event, while a transform only moves an already-painted layer.
+      fill.style.transform = 'scaleX(' + (max > 0 ? doc.scrollTop / max : 0) + ')';
     }
     window.addEventListener('scroll', paintProgress, { passive: true });
     paintProgress();

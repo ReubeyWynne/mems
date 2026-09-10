@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["ko"] = {
   "sim.foot.note": "곰 비율은 우리 서버의 곰 사냥용이다. 네 서버는 다를 수 있다 — <b>수학은 다르지 않다.</b>",
   "sim.foot.credit": "곰 피해 모델은 <a href=\"https://frakinator.streamlit.app/\">Frakinator</a>의 [685] Frak — 테스트된 커뮤니티 모델이지 공식이 아니다 · Mystic Trial 방들은 Kingshot Mastery 커뮤니티 표에서 · [2129]MadNess 연합을 위해 만들어졌다",
 
+  "ev.switchAria": "이벤트",
+  "ev.switch.home": "홈",
+  "ev.switch.cycle": "이벤트 주기",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "시뮬레이터",
+
+  "ev.ledger.aria": "장부 — 모든 페이지",
+  "ev.ledger.home": "색인",
+  "ev.ledger.guides": "이벤트",
+  "ev.ledger.tools": "도구",
 }
 ;

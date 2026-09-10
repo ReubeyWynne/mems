@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["es"] = {
   "sim.foot.note": "La proporción de oso es para las cacerías de oso de nuestro servidor. Tu servidor será distinto — <b>las cuentas no.</b>",
   "sim.foot.credit": "Modelo de daño del oso del <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> de [685] Frak — un modelo comunitario probado, no oficial · salas de Mystic Trial de las tablas de la comunidad de Kingshot Mastery · hecho para la alianza [2129]MadNess",
 
-  "ev.switch.sim": "Simulador"
+  "ev.switchAria": "Eventos",
+  "ev.switch.home": "Inicio",
+  "ev.switch.cycle": "Ciclo de eventos",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
+  "ev.switch.sim": "Simulador",
+
+  "ev.ledger.aria": "el registro — cada página",
+  "ev.ledger.home": "el índice",
+  "ev.ledger.guides": "los eventos",
+  "ev.ledger.tools": "las herramientas"
 }
 ;

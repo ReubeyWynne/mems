@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["ru"] = {
   "sim.foot.note": "Медвежье соотношение — для охот нашего сервера. На твоём сервере будет иначе — <b>математика не изменится.</b>",
   "sim.foot.credit": "Модель урона медведя из <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> от [685] Frak — проверенная модель сообщества, не официальная · комнаты Mystic Trial из таблиц сообщества Kingshot Mastery · сделано для альянса [2129]MadNess",
 
+  "ev.switchAria": "События",
+  "ev.switch.home": "Главная",
+  "ev.switch.cycle": "События",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Симулятор",
+
+  "ev.ledger.aria": "реестр — все страницы",
+  "ev.ledger.home": "главная",
+  "ev.ledger.guides": "события",
+  "ev.ledger.tools": "инструменты",
 }
 ;

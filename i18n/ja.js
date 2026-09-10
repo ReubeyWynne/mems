@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["ja"] = {
   "sim.foot.note": "ベアレシオは私たちのサーバーのベアハント用です。あなたのサーバーでは違うでしょう——<b>計算は変わりません。</b>",
   "sim.foot.credit": "ベアのダメージモデルは[685] Frakによる<a href=\"https://frakinator.streamlit.app/\">Frakinator</a>から——検証済みのコミュニティモデルであり、公式ではありません · Mystic Trialの部屋はKingshot Masteryのコミュニティ表から · [2129]MadNess同盟のために制作",
 
+  "ev.switchAria": "イベント",
+  "ev.switch.home": "ホーム",
+  "ev.switch.cycle": "イベント周期",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "シミュレーター",
+
+  "ev.ledger.aria": "台帳 — すべてのページ",
+  "ev.ledger.home": "目次",
+  "ev.ledger.guides": "イベント",
+  "ev.ledger.tools": "ツール",
 }
 ;

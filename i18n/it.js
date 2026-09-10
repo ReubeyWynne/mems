@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["it"] = {
   "sim.foot.note": "Il rapporto dell'orso riguarda le cacce all'orso del nostro server. Il tuo server sarà diverso — <b>la matematica no.</b>",
   "sim.foot.credit": "Modello del danno dell'orso dal <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> di [685] Frak — un modello di comunità testato, non ufficiale · stanze di Mystic Trial dalle tabelle della community di Kingshot Mastery · costruito per l'alleanza [2129]MadNess",
 
+  "ev.switchAria": "Eventi",
+  "ev.switch.home": "Home",
+  "ev.switch.cycle": "Ciclo eventi",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Simulatore",
+
+  "ev.ledger.aria": "il registro — tutte le pagine",
+  "ev.ledger.home": "l'indice",
+  "ev.ledger.guides": "gli eventi",
+  "ev.ledger.tools": "gli strumenti",
 }
 ;

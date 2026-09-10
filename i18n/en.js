@@ -584,9 +584,15 @@ window.__BH_I18N_DATA["en"] = {
   "sim.foot.note": "The bear ratio is for our server's bear hunts. Your server will differ — <b>the maths doesn't.</b>",
   "sim.foot.credit": "Bear damage model from the <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> by [685] Frak — a tested community model, not official · Mystic Trial rooms from Kingshot Mastery community tables · built for the [2129]MadNess alliance",
 
+  "ev.switchAria": "Events",
+  "ev.switch.home": "Home",
+  "ev.switch.cycle": "Event Cycle",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Simulator",
 
-  "ev.switch.cycle": "Event Cycle",
   "ev.ledger.aria": "the ledger — every page",
   "ev.ledger.home": "the index",
   "ev.ledger.guides": "the events",

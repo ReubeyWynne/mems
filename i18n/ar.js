@@ -572,6 +572,18 @@ window.__BH_I18N_DATA["ar"] = {
   "sim.foot.note": "نسبة الدب تخص صيد الدب في سيرفرنا. سيرفرك سيختلف — <b>الرياضيات لا تختلف.</b>",
   "sim.foot.credit": "نموذج ضرر الدب من <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> بواسطة [685] Frak — نموذج مجتمعي مختبَر، وليس رسميًا · غرف Mystic Trial من جداول Kingshot Mastery المجتمعية · صُنع لتحالف [2129]MadNess",
 
+  "ev.switchAria": "الأحداث",
+  "ev.switch.home": "الرئيسية",
+  "ev.switch.cycle": "الدورة",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "المحاكي",
+
+  "ev.ledger.aria": "السجل — كل الصفحات",
+  "ev.ledger.home": "الفهرس",
+  "ev.ledger.guides": "الأحداث",
+  "ev.ledger.tools": "الأدوات",
 
 };

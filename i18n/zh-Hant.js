@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["zh-Hant"] = {
   "sim.foot.note": "熊比例是給我們服的獵熊活動用的。你們服會不一樣——<b>數學不會。</b>",
   "sim.foot.credit": "熊傷害模型來自 [685] Frak 的 <a href=\"https://frakinator.streamlit.app/\">Frakinator</a>——一個經過實測的社群模型，非官方 · Mystic Trial 房間來自 Kingshot Mastery 社群表格 · 為 [2129]MadNess 聯盟打造",
 
+  "ev.switchAria": "活動",
+  "ev.switch.home": "首頁",
+  "ev.switch.cycle": "活動週期",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "模擬器",
+
+  "ev.ledger.aria": "帳冊——每一頁",
+  "ev.ledger.home": "索引",
+  "ev.ledger.guides": "活動",
+  "ev.ledger.tools": "工具",
 }
 ;

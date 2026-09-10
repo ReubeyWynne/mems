@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["de"] = {
   "sim.foot.note": "Das Bären-Verhältnis gilt für die Bärenjagden unseres Servers. Dein Server wird anders sein — <b>die Mathematik nicht.</b>",
   "sim.foot.credit": "Schadensmodell der Bären vom <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> von [685] Frak — ein getestetes Community-Modell, kein offizielles · Mystic-Trial-Räume aus den Community-Tabellen von Kingshot Mastery · gebaut für die Allianz [2129]MadNess",
 
+  "ev.switchAria": "Events",
+  "ev.switch.home": "Startseite",
+  "ev.switch.cycle": "Eventzyklus",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Simulator",
+
+  "ev.ledger.aria": "das Register — jede Seite",
+  "ev.ledger.home": "der Index",
+  "ev.ledger.guides": "die Events",
+  "ev.ledger.tools": "die Tools",
 }
 ;

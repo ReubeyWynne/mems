@@ -575,6 +575,18 @@ window.__BH_I18N_DATA["tr"] = {
   "sim.foot.note": "Ayı oranı, sunucumuzun ayı avları içindir. Senin sunucun farklı olacak — <b>matematik değil.</b>",
   "sim.foot.credit": "Ayı hasar modeli, [685] Frak'ın <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> aracından — test edilmiş bir topluluk modeli, resmi değil · Mystic Trial odaları Kingshot Mastery topluluk tablolarından · [2129]MadNess ittifakı için yapıldı",
 
+  "ev.switchAria": "Etkinlikler",
+  "ev.switch.home": "Ana sayfa",
+  "ev.switch.cycle": "Etkinlik Döngüsü",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Simülatör",
+
+  "ev.ledger.aria": "defter — her sayfa",
+  "ev.ledger.home": "dizin",
+  "ev.ledger.guides": "etkinlikler",
+  "ev.ledger.tools": "araçlar",
 }
 ;

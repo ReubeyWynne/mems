@@ -584,7 +584,19 @@ window.__BH_I18N_DATA["th"] = {
   "sim.foot.note": "อัตราส่วนหมีใช้สำหรับการล่าหมีของเซิร์ฟเวอร์เรา. เซิร์ฟเวอร์ของคุณอาจต่างกัน — <b>คณิตศาสตร์ไม่ต่าง.</b>",
   "sim.foot.credit": "แบบจำลองความเสียหายใส่หมีจาก <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> โดย [685] Frak — แบบจำลองชุมชนที่ผ่านการทดสอบ, ไม่เป็นทางการ · ห้อง Mystic Trial จากตารางชุมชนของ Kingshot Mastery · สร้างเพื่อพันธมิตร [2129]MadNess",
 
+  "ev.switchAria": "อีเวนต์",
+  "ev.switch.home": "หน้าแรก",
+  "ev.switch.cycle": "รอบอีเวนต์",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "ตัวจำลอง",
+
+  "ev.ledger.aria": "สารบัญ — ทุกหน้า",
+  "ev.ledger.home": "หน้าแรก",
+  "ev.ledger.guides": "อีเวนต์",
+  "ev.ledger.tools": "เครื่องมือ",
 
 }
 ;

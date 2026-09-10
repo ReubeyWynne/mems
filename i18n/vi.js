@@ -584,7 +584,19 @@ window.__BH_I18N_DATA["vi"] = {
   "sim.foot.note": "Tỷ lệ gấu là cho các cuộc săn gấu của server chúng tôi. Server của bạn có thể khác — <b>toán học thì không.</b>",
   "sim.foot.credit": "Mô hình sát thương gấu từ <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> bởi [685] Frak — mô hình cộng đồng đã được kiểm chứng, không chính thức · các phòng Mystic Trial từ bảng dữ liệu cộng đồng Kingshot Mastery · xây cho liên minh [2129]MadNess",
 
+  "ev.switchAria": "Sự kiện",
+  "ev.switch.home": "Trang chủ",
+  "ev.switch.cycle": "Chu kỳ sự kiện",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Mô phỏng",
+
+  "ev.ledger.aria": "sổ cái — mọi trang",
+  "ev.ledger.home": "mục lục",
+  "ev.ledger.guides": "các sự kiện",
+  "ev.ledger.tools": "các công cụ",
 
 }
 ;

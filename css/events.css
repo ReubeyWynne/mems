@@ -20,22 +20,27 @@ html, body { overscroll-behavior-x: none; }
 body.swiping { user-select: none; -webkit-user-select: none; }
 
 /* ─── Event switcher — the topbar tabs ────────────────── */
-/* Sits between brand and lang-picker; hidden below 700px where the footer
-   carries the same three links (the mobile explicit fallback). */
+/* Sits between brand and lang-picker; hidden below 1240px, where the bar can
+   no longer hold the masthead and seven labels with the strip on the centre
+   line — there the ledger drawer carries the same links. The label size is
+   capped below the type scale's --step--1 (1.2rem): a strip of seven uppercase
+   labels at the full label size is ~864px, which pushes the bar's centre off
+   any laptop it is asked to fit. At 0.85rem with the tracking pulled in it is
+   550-664px depending on the language, which the centre line can hold. */
 .ev-switch {
   display: flex; align-items: center;
-  gap: 0.35rem;
+  gap: 0.26rem;
   min-width: 0;
 }
 .ev-switch a {
   font-family: var(--body);
-  font-size: var(--step--1);
+  font-size: min(var(--step--1), 0.85rem);
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--ink-muted);
-  padding: 0.22rem 0.6rem;
+  padding: 0.22rem 0.42rem;
   border: 1px solid transparent;
   border-radius: 2px;
   white-space: nowrap;
@@ -65,7 +70,7 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 }
 .ev-foot a:hover { color: var(--amber); }
 
-@media (max-width: 700px) {
+@media (max-width: 1239px) {
   .ev-switch { display: none; }
 }
 
@@ -94,7 +99,9 @@ body.swiping { user-select: none; -webkit-user-select: none; }
   color: var(--amber);
   border-color: var(--amber);
 }
-@media (min-width: 700px) {
+/* The drawer replaces the strip wherever the strip can't fit (see .ev-switch),
+   not just on phones — a squeezed strip is worse than an honest drawer. */
+@media (min-width: 1240px) {
   .ledger-btn { display: none; }
 }
 .ledger {

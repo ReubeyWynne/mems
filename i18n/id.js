@@ -584,7 +584,19 @@ window.__BH_I18N_DATA["id"] = {
   "sim.foot.note": "Rasio beruang ini untuk perburuan beruang di server kami. Servermu mungkin berbeda — <b>matematikanya tidak.</b>",
   "sim.foot.credit": "Model damage beruang dari <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> oleh [685] Frak — model komunitas yang sudah diuji, bukan resmi · ruang-ruang Mystic Trial dari tabel komunitas Kingshot Mastery · dibuat untuk aliansi [2129]MadNess",
 
+  "ev.switchAria": "Event",
+  "ev.switch.home": "Beranda",
+  "ev.switch.cycle": "Siklus Event",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Simulator",
+
+  "ev.ledger.aria": "ledger — setiap halaman",
+  "ev.ledger.home": "indeks",
+  "ev.ledger.guides": "event",
+  "ev.ledger.tools": "alat",
 
 }
 ;

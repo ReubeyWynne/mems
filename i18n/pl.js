@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["pl"] = {
   "sim.foot.note": "Wskaźnik niedźwiedzia dotyczy polowań na niedźwiedzia na naszym serwerze. Twój serwer może się różnić — <b>wyliczenia się nie różnią.</b>",
   "sim.foot.credit": "Model obrażeń niedźwiedzia z <a href=\"https://frakinator.streamlit.app/\">Frakinatora</a> autorstwa [685] Frak — przetestowany model społeczności, nie oficjalny · komnaty Mystic Trial z tabel społeczności Kingshot Mastery · stworzony dla sojuszu [2129]MadNess",
 
+  "ev.switchAria": "Wydarzenia",
+  "ev.switch.home": "Start",
+  "ev.switch.cycle": "Cykl wydarzeń",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Symulator",
+
+  "ev.ledger.aria": "rejestr — każda strona",
+  "ev.ledger.home": "indeks",
+  "ev.ledger.guides": "wydarzenia",
+  "ev.ledger.tools": "narzędzia",
 }
 ;

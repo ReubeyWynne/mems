@@ -575,6 +575,18 @@ window.__BH_I18N_DATA["fr"] = {
   "sim.foot.note": "Le ratio ours vaut pour les chasses à l'ours de notre serveur. Ton serveur sera différent — <b>les maths ne changent pas.</b>",
   "sim.foot.credit": "Modèle de dégâts de l'ours d'après le <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> de [685] Frak — un modèle communautaire testé, pas officiel · salles du Mystic Trial d'après les tables communautaires de Kingshot Mastery · construit pour l'alliance [2129]MadNess",
 
+  "ev.switchAria": "Événements",
+  "ev.switch.home": "Accueil",
+  "ev.switch.cycle": "Événements",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Simulateur",
+
+  "ev.ledger.aria": "le registre — toutes les pages",
+  "ev.ledger.home": "l'index",
+  "ev.ledger.guides": "les événements",
+  "ev.ledger.tools": "les outils",
 }
 ;

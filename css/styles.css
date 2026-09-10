@@ -158,6 +158,12 @@ strong, b { color: var(--ink); font-weight: 700; }
 .skip-link:hover { color: var(--void); }
 
 /* ─── Topbar — fixed height, no gap ───────────────────── */
+/* Three tracks, two of them equal: the brand sits left, the controls right,
+   and the event strip lands on the bar's true centre rather than wherever
+   space-between happens to leave it. Equal tracks mean the bar's centre is a
+   real constraint — the strip must fit beside the masthead — so the strip's
+   type is sized for it (events.css) and the masthead gives way first (below).
+   Nothing can spill: a track that runs out clips its own item. */
 .topbar {
   position: sticky; top: 0; z-index: 50;
   height: var(--topbar-h);
@@ -165,13 +171,36 @@ strong, b { color: var(--ink); font-weight: 700; }
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   padding: 0 var(--space-s);
-  display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-s); flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-s);
 }
 .brand {
+  grid-column: 1;
   font-family: var(--display); font-size: var(--step-brand); font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink); white-space: nowrap;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis;
+}
+/* Where the strip is up (>=1240px) the masthead's size is capped by the room
+   left beside it: half the bar, less the strip, the controls, the bar's own
+   padding and its two gaps. The constant takes the WIDEST strip any language
+   produces — Turkish's "Ana sayfa · Etkinlik Döngüsü …" at 664px, not English's
+   588px — so a longer translation shrinks the masthead everywhere rather than
+   clipping it in one language. For the longest brand ("KINGSHOT · DEMYSTIFIED",
+   16.04em at 0.08em tracking) that is (100vw - 47.5rem)/32.1. Every page
+   inherits the same size, so the masthead keeps one scale across the site
+   instead of a different one per brand length; above ~1740px the cap stops
+   biting and the brand is its full size. */
+@media (min-width: 1240px) {
+  .topbar .brand { font-size: clamp(0.9rem, min(var(--step-brand), calc((100vw - 47.5rem) / 32.1)), 1.9rem); }
+}
+/* Strip down (events.css), so the bar is two tracks and the masthead owns
+   everything left of the controls. */
+@media (max-width: 1239px) {
+  .topbar { grid-template-columns: minmax(0, 1fr) auto; }
+  .topbar-right { grid-column: 2; }
 }
 .brand b { color: var(--amber); }
 .brand-note { font-size: var(--step--1); color: var(--ink-muted); white-space: nowrap; }
@@ -612,6 +641,8 @@ html { scrollbar-width: thin; scrollbar-color: var(--ink-muted) var(--void); }
 /* ─── Language picker — flag dropdown in the 3rem topbar ─ */
 .topbar-right {
   display: flex; align-items: center;
+  grid-column: 3;
+  justify-self: end;
   gap: var(--space-s);
   min-width: 0;
 }

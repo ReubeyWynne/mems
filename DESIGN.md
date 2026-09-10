@@ -147,12 +147,14 @@ One warm signal hue per event, receding ink-on-night neutrals, and a rubrication
 A single centered measure column on a dark field. Everything runs inside a **46rem** (`--maxw`) prose column, so each event reads like a ruled ledger page. The page is **mobile-first**: fluid type (`--step--1`…`--step-4`), a 3rem sticky topbar with a scroll progress fill, and a TOC scrollspy rail that tracks the active section (amber + ❧).
 
 - **Rhythm:** fluid spacing scale `--space-s/m/l/xl` (clamps that grow gently with the viewport). Sections breathe with `--space-xl` vertical padding.
-- **Topbar:** 3rem, `--chrome` translucent, brand "KINGSHOT · DEMYSTIFIED" + event switcher (`.ev-switch`) + language picker; a 3px amber progress fill along the bottom.
+- **Topbar:** 3rem, `--chrome` translucent, brand "KINGSHOT · DEMYSTIFIED" + event switcher (`.ev-switch`) + language picker; a 3px amber progress fill along the bottom. Laid out as three CSS-grid tracks — `minmax(0, 1fr) auto minmax(0, 1fr)` — with the brand in track 1, the switcher in track 2 and the controls in track 3 (`justify-self: end`), so the switcher sits on the bar's true centre line rather than wherever `space-between` left it. Equal outer tracks mean the bar's centre is a real constraint: a track that runs out clips its own item, so nothing can spill over the controls.
 - **Sections:** each `<section>` carries an `h2::before` marker and alternates accent (`section.front`), so the ledger has visible chapters.
-- **Responsive:** ~700px breakpoint trims the brand note and tightens the rail; everything is fluid down to 320px.
+- **Responsive:** ~700px breakpoint trims the brand note and tightens the rail; the event switcher holds the centre only from **1240px up**, and below that the bar drops to two tracks (masthead + controls) with the ❧ ledger drawer carrying the same links — the drawer is the compact bar's navigation, not just a phone affordance. Everything is fluid down to 320px.
 
 ### Named Rules
 **The Measure Rule.** Prose never exceeds 46rem. If a line would, the layout breaks, not the measure.
+
+**The Strip Budget Rule.** The event switcher has a fixed width budget and the masthead gives way first: seven uppercase labels at the full label step are ~864px, which cannot hold a centre line on any laptop, so the strip's type is capped (`min(--step--1, 0.85rem)`) and the brand's size is capped by the room left beside it — full size above ~1740px, scaling to ~16px at 1280px. The cap is sized for the **widest strip any language produces** (550–664px: Turkish's is the longest, English's the shortest), so a long translation shrinks the masthead in every language rather than clipping it in one. Adding an eighth link, lengthening a label, or raising the strip's type re-breaks the centre line; size the strip first, then the brand.
 
 ## Elevation & Depth
 

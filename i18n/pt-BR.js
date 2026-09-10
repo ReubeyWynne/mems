@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["pt-BR"] = {
   "sim.foot.note": "A razão do urso é para as caçadas de urso do nosso servidor. Seu servidor vai diferir — <b>a matemática não.</b>",
   "sim.foot.credit": "Modelo de dano do urso do <a href=\"https://frakinator.streamlit.app/\">Frakinator</a> de [685] Frak — um modelo da comunidade testado, não oficial · salas do Mystic Trial das tabelas da comunidade do Kingshot Mastery · feito para a aliança [2129]MadNess",
 
+  "ev.switchAria": "Eventos",
+  "ev.switch.home": "Início",
+  "ev.switch.cycle": "Eventos",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "Simulador",
+
+  "ev.ledger.aria": "o índice — todas as páginas",
+  "ev.ledger.home": "o índice",
+  "ev.ledger.guides": "os eventos",
+  "ev.ledger.tools": "as ferramentas",
 }
 ;

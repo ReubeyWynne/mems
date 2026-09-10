@@ -576,6 +576,18 @@ window.__BH_I18N_DATA["zh-Hans"] = {
   "sim.foot.note": "熊配比是针对我们服的猎熊。你们服会不一样——<b>数学不会。</b>",
   "sim.foot.credit": "猎熊伤害模型来自 [685] Frak 的 <a href=\"https://frakinator.streamlit.app/\">Frakinator</a>——经过验证的社区模型，非官方出品 · Mystic Trial 房间来自 Kingshot Mastery 社区表格 · 为 [2129]MadNess 联盟打造",
 
+  "ev.switchAria": "活动",
+  "ev.switch.home": "首页",
+  "ev.switch.cycle": "活动周期",
+  "ev.switch.bear": "Bear Hunt",
+  "ev.switch.vikings": "Vikings",
+  "ev.switch.swordland": "Swordland",
+  "ev.switch.vip": "VIP",
   "ev.switch.sim": "模拟器",
+
+  "ev.ledger.aria": "总目录——每一页",
+  "ev.ledger.home": "索引",
+  "ev.ledger.guides": "活动",
+  "ev.ledger.tools": "工具",
 }
 ;

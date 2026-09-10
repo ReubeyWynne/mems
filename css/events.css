@@ -195,6 +195,59 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 main { will-change: transform; }
 main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 
+/* ─── Paging the ledger — the cross-document view transition ─── */
+/* Moving between pages is a leaf turned in the same ledger: the chrome holds
+   still (`.topbar` is named, so it is cut out of the root snapshot and simply
+   is, on both sides) while the leaf itself moves. Forward through the ring the
+   pages travel left, back they travel right — the same physical motion as the
+   swipe that usually causes it, on the same spring the peek uses, so a
+   committed swipe finishes as one gesture instead of cutting to a fresh page.
+   The direction is the incoming document's to know (it runs the transition):
+   head.html compares the referrer against its own two neighbours and stamps
+   data-nav on <html>; no direction — a link in from outside the ring — gets
+   the quiet dissolve.
+
+   Both documents must opt in, so this rides in the sheet every page loads.
+   The opt-in is a top-level rule on purpose: nested inside a query Chrome
+   parses it but never acts on it (the document simply does the plain
+   navigation). Reduced motion is opted out of by neutralising the
+   transition's own animations below — an instant swap, which is what the
+   site's blanket `transition: none !important` says, and it cannot reach
+   these pseudos (they have no element to match). */
+@view-transition { navigation: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .topbar { view-transition-name: topbar; }
+  /* The bar is the same bar on both sides and is not part of the move: no
+     group animation and no cross-fade inside it, so the chrome never ghosts
+     through itself. The new image sits over the old one unblended. */
+  ::view-transition-group(topbar) { animation: none; }
+  ::view-transition-old(topbar) { animation: none; }
+  ::view-transition-new(topbar) { animation: none; mix-blend-mode: normal; }
+
+  ::view-transition-old(root) { animation: vt-dissolve-out 0.25s ease both; }
+  ::view-transition-new(root) { animation: vt-dissolve-in 0.25s ease both; mix-blend-mode: normal; }
+
+  html[data-nav="next"]::view-transition-old(root) { animation: vt-out-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  html[data-nav="next"]::view-transition-new(root) { animation: vt-in-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  html[data-nav="prev"]::view-transition-old(root) { animation: vt-out-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  html[data-nav="prev"]::view-transition-new(root) { animation: vt-in-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+  @keyframes vt-dissolve-out { to { opacity: 0; } }
+  @keyframes vt-dissolve-in { from { opacity: 0; } }
+  @keyframes vt-out-left { to { transform: translateX(-100%); } }
+  @keyframes vt-in-right { from { transform: translateX(100%); } }
+  @keyframes vt-out-right { to { transform: translateX(100%); } }
+  @keyframes vt-in-left { from { transform: translateX(-100%); } }
+}
+
+/* No motion: the swap is instant — neither the dissolve nor the slide. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
+
 /* ─── Page themes — one signal hue per event ──────────── */
 /* The same manuscript night, parchment ink and oxblood rubrication on
    every page; only the hue of the night, the signal, and the drifting

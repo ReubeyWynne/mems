@@ -100,8 +100,14 @@ window.__BH_I18N_DATA["en"] = {
 
 - **Local files / CORS:** dictionaries are loaded with `<script>` tags rather than
   `fetch`, so opening `index.html` directly from disk works with no server and no CORS
-  errors. The loader appends `?_=` (timestamp) to defeat stale caching, matching the
-  old `fetch(..., { cache: 'no-cache' })` behaviour.
+  errors.
+- **Caching:** the dictionary is the same URL on every page of a language, so it is
+  pinned to the build stamp (`window.__BH_BUILD`, set by the layout from `site.time`):
+  the browser downloads `i18n/<lang>.js?v=<build>` once and every page after that is a
+  cache hit, with a deploy re-fetching it once — the same 10-minute staleness window as
+  the CSS and HTML on GH Pages. On `localhost`/`file://` the stamp is dropped for a
+  per-request `?_=<timestamp>` instead, so an edit while authoring is never hidden by
+  the cache (matching the old `fetch(..., { cache: 'no-cache' })` behaviour).
 - **SEO:** Google indexes the default English page (`https://dey.ci/`). The `?lang=` URLs
   are declared via `hreflang` but are primarily for in-app/in-game sharing. If per-language
   SEO ever matters, generate static `/<code>/index.html` copies at build time instead.

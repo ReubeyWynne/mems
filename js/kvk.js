@@ -84,14 +84,18 @@
   // a KingShot in-game icon render the real game art (img/kingshot/, the icon
   // PUA glyphs as PNGs); the rest keep an emoji stand-in — the game has no
   // icon for them. KS_IMG resolves from this script's own URL (like i18n.js),
-  // so it works from any page depth.
+  // so it works from any page depth. The art is ~11 KB a file and every row
+  // that uses it sits below the first screen, so the icons are deferred (the
+  // static prep-chart table defers its copies the same way): the page's own
+  // copy is what the reader is waiting for, and the icons arrive with the
+  // scroll.
   var KS_IMG = (function () {
     try {
       return new URL('../img/kingshot/', (document.currentScript && document.currentScript.src) || location.href).href;
     } catch (e) { return '../img/kingshot/'; }
   })();
   function ksIco(file) {
-    return '<img class="ks-ico" src="' + KS_IMG + file + '" alt="" decoding="async">';
+    return '<img class="ks-ico" loading="lazy" src="' + KS_IMG + file + '" alt="" decoding="async">';
   }
   var ITEM_GLYPH = {
     'Truegold': ksIco('truegold.png'), 'Tempered TG': ksIco('truegold.png'),

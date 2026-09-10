@@ -17,6 +17,35 @@
 {% for l in site.data.langs %}<link rel="alternate" hreflang="{{ l.h }}" href="{{ site.url }}{{ p.canonicalPath }}{% if l.q %}?lang={{ l.h }}{% endif %}">
 {% endfor %}
 <script>
+/* The build stamp — one jekyll build, one stamp, carried on the cacheable
+   dictionary URL (js/i18n.js) so a deploy reaches readers without every page
+   view re-downloading the dictionary. */
+window.__BH_BUILD = '{{ site.time | date: "%s" }}';
+/* Which way the reader moved to arrive here — the cross-document view
+   transition in css/events.css reads it off <html> to slide the right way.
+   Nothing is stored: this page knows its two swipe neighbours (the data-*
+   attributes the layout just wrote), so a referrer matching our previous
+   neighbour means the reader moved forward through the ledger and one
+   matching our next neighbour means they moved back. Compare stripped URLs
+   (?lang=, #section and all), and say nothing for anything else — a link
+   from outside the ring gets the plain dissolve. */
+(function () {
+  var ref = document.referrer;
+  if (!ref) return;
+  var root = document.documentElement;
+  var here = location.href.split(/[?#]/)[0];
+  var from = ref.split(/[?#]/)[0];
+  if (from === here) return;
+  function neighbour(attr) {
+    var href = root.getAttribute(attr);
+    if (!href) return null;
+    try { return new URL(href, here).href.split(/[?#]/)[0]; } catch (e) { return null; }
+  }
+  if (from === neighbour('data-prev-url')) root.setAttribute('data-nav', 'next');
+  else if (from === neighbour('data-next-url')) root.setAttribute('data-nav', 'prev');
+})();
+</script>
+<script>
 /* ── Language resolution for i18n.js — runs before first paint
    so <html lang> is correct immediately. Order: ?lang= URL param
    → saved choice → browser language → English. No data sent. */

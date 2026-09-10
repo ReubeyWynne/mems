@@ -75,9 +75,25 @@
     document.documentElement.dir = DIRS[lang] || 'ltr';
   }
 
+  // The dictionary is the same URL on every page of a language, so it must be
+  // cacheable: it is the heaviest thing a page pulls (73 KB of English, more
+  // in other languages) and it sits behind i18n.js in the queue, so an
+  // uncached dictionary is most of the wait between two pages. Pinned to the
+  // build stamp (window.__BH_BUILD, set by the layout) the browser downloads
+  // it once per language per deploy, and every page after that is a hit.
+  // Opened locally — localhost or file:// — the stamp is dropped for a
+  // per-request one, so a dictionary edit is never hidden by the cache.
+  function dictURL(code) {
+    var local = location.protocol === 'file:' ||
+      /^(localhost|127\.0\.0\.1|\[::1\]|0\.0\.0\.0)$/.test(location.hostname);
+    var stamp = local ? '_=' + Date.now()
+      : (window.__BH_BUILD ? 'v=' + window.__BH_BUILD : '');
+    return DICT_BASE + 'i18n/' + code + '.js' + (stamp ? '?' + stamp : '');
+  }
+
   function loadDict(code, done) {
     var s = document.createElement('script');
-    s.src = DICT_BASE + 'i18n/' + code + '.js?_=' + Date.now(); // ?_= keeps the old no-cache behaviour
+    s.src = dictURL(code);
     s.onload = function () {
       t = (window.__BH_I18N_DATA && window.__BH_I18N_DATA[code]) || {};
       done(true);

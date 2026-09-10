@@ -3,8 +3,11 @@
    The pages are fully readable without this file; it only adds a scroll progress
    bar, section highlighting, the cracktro depth pull (front layer), the language
    picker, the event switcher, keyboard/swipe navigation between events, and a
-   functional toast for genuine feedback (e.g. copy confirmation). No
-   dependencies, no data collected.
+   functional toast for genuine feedback (e.g. copy confirmation). It also warms
+   the two neighbouring pages once the browser is idle, so a swipe (or an arrow
+   key) lands on a page that is already in cache — the cross-document view
+   transition that carries the move is in css/events.css. No dependencies, no
+   data collected.
    i18n: all user-visible strings come from i18n/<lang>.js via window.I18N;
    numbers format per the active locale. Page-specific toys register through
    window.BH.registerPage(...) and live in the per-page files (bear-hunt.js,
@@ -255,18 +258,93 @@
     // however fast the flick — springs back via resetPeek, so a short swipe
     // can never navigate, and pulling back before lifting always cancels.
     var commit = Math.abs(dx) >= vw * COMMIT_FRAC;
-    var dir = g.dir;
-    resetPeek();
+    var url = commit ? neighbor(g.dir) : '';
+    // A committed swipe hands the frame to the navigation with the cover card
+    // still where the finger left it: the card is the destination's own cover,
+    // and the cross-document transition (css/events.css) carries it out while
+    // the destination slides in from the same side the finger went — the swipe
+    // finishes instead of cutting to a fresh page. The reset below is only the
+    // failure path (a cancelled navigation, a dead link), so a reader is never
+    // left holding a stuck card.
+    if (url) window.setTimeout(resetPeek, 1500);
+    else resetPeek();
     g.startX = null;
     g.active = false;
     g.opened = false;
     g.dir = 0;
-    if (commit && neighbor(dir)) window.location.href = neighbor(dir);
+    if (url) window.location.href = url;
   }
   document.addEventListener('touchend', finishDrag, { passive: true });
   document.addEventListener('touchcancel', function () {
     if (g.active) { resetPeek(); g.startX = null; g.active = false; g.opened = false; g.dir = 0; }
   }, { passive: true });
+
+  // ── Neighbour warm-up — the other half of the swipe ────
+  // The two pages a swipe can reach are known before the finger moves. Once
+  // this page is whole and the browser is idle, each neighbour is fetched and
+  // read the way the browser will read it: what it asks for is what the swipe
+  // will need, so its sheets and toys are prefetched too (this page's own are
+  // already in the cache, and anything off-origin is left alone). Both the
+  // document and its assets then answer the navigation out of cache, and the
+  // cross-document transition has nothing to wait for.
+  //
+  // Idle, and on the far side of boot, on purpose: a speculative download must
+  // never take a byte from the page in front of the reader. Skipped where a
+  // download is unwelcome — an explicit data-saver, or a 2G-class connection.
+  var warmed = false;
+  var prefetched = {};
+  function prefetch(url, as) {
+    if (!url || prefetched[url]) return;
+    prefetched[url] = true;
+    var link = document.createElement('link');
+    link.rel = 'prefetch';
+    if (as) link.as = as;
+    link.href = url;
+    document.head.appendChild(link);
+  }
+  function warmNeighbour(href) {
+    if (!href) return;
+    // The ring's URLs are the page-relative ones the layout wrote, so resolve
+    // once here: the fetch, and every asset path lifted out of the neighbour's
+    // own markup, hang off this absolute URL.
+    var url;
+    try { url = new URL(href, location.href).href; } catch (e) { return; }
+    fetch(url, { priority: 'low' }).then(function (r) {
+      return r.ok ? r.text() : '';
+    }).then(function (html) {
+      if (!html) return;
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var mine = {};
+      [].slice.call(document.querySelectorAll('link[rel="stylesheet"][href], script[src]')).forEach(function (el) {
+        mine[el.href || el.src] = true;   // links expose href, scripts src
+      });
+      [].slice.call(doc.querySelectorAll('link[rel="stylesheet"][href], script[src]')).forEach(function (el) {
+        var abs;
+        try { abs = new URL(el.getAttribute('href') || el.getAttribute('src'), url).href; } catch (e) { return; }
+        if (abs.indexOf(location.origin + '/') !== 0 || mine[abs]) return;
+        prefetch(abs, el.tagName === 'LINK' ? 'style' : 'script');
+      });
+    }).catch(function () { /* a neighbour that will not load is not this page's problem */ });
+  }
+  function warmNeighbours() {
+    if (warmed) return;
+    warmed = true;
+    var c = navigator.connection;
+    if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return;
+    warmNeighbour(prevUrl);
+    warmNeighbour(nextUrl);
+  }
+  function scheduleWarm() {
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(warmNeighbours, { timeout: 2500 });
+    } else if (document.readyState === 'complete') {
+      // boot can run after the load event (a slow dictionary) — a listener
+      // registered now would never fire
+      window.setTimeout(warmNeighbours, 400);
+    } else {
+      window.addEventListener('load', function () { window.setTimeout(warmNeighbours, 400); });
+    }
+  }
 
   // ── Scroll restore — come back to where you were ───────
   var SCROLL_KEY = 'bh_scroll_' + page;
@@ -533,6 +611,10 @@
     pageCfg.boot(BH);
 
     restoreScroll();
+
+    // The page in front of the reader is whole now — only then spend bytes on
+    // the pages the swipe can reach (see "Neighbour warm-up" above).
+    scheduleWarm();
   }
 
   var BH = {

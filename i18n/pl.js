@@ -454,6 +454,7 @@ window.__BH_I18N_DATA["pl"] = {
   "sim.ocr.hint": "czyta panel Bonus Details",
   "sim.ocr.loading": "Czytanie zrzutu…",
   "sim.ocr.done": "Wypełniono z raportu — sprawdź liczby.",
+  "sim.ocr.partial": "Odczytano {n} z 6 wartości — uzupełnij pozostałe poniżej.",
   "sim.ocr.fail": "Nie udało się odczytać tego zrzutu. Spróbuj wyraźniejszego lub wpisz liczby poniżej.",
 
   "sim.nav.ratio": "Twój wskaźnik niedźwiedzia",

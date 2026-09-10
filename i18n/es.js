@@ -454,6 +454,7 @@ window.__BH_I18N_DATA["es"] = {
   "sim.ocr.hint": "lee el panel de Bonus Details",
   "sim.ocr.loading": "Leyendo la captura…",
   "sim.ocr.done": "Rellenado desde tu informe — repasa los números.",
+  "sim.ocr.partial": "Leí {n} de 6 valores — completa el resto abajo.",
   "sim.ocr.fail": "No se pudo leer esa captura. Prueba con una imagen más nítida o escribe los números abajo.",
   "sim.nav.ratio": "Tu proporción de oso",
   "sim.nav.maths": "Las cuentas",

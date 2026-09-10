@@ -454,6 +454,7 @@ window.__BH_I18N_DATA["de"] = {
   "sim.ocr.hint": "liest das Bonus-Details-Panel",
   "sim.ocr.loading": "Screenshot wird gelesen…",
   "sim.ocr.done": "Aus deinem Bericht übernommen — überprüf die Zahlen.",
+  "sim.ocr.partial": "Habe {n} von 6 Werten gelesen — ergänze den Rest unten.",
   "sim.ocr.fail": "Dieser Screenshot konnte nicht gelesen werden. Versuch ein schärferes Bild oder trag die Zahlen unten ein.",
 
   "sim.nav.ratio": "Dein Bären-Verhältnis",

@@ -450,6 +450,7 @@ window.__BH_I18N_DATA["ar"] = {
   "sim.ocr.hint": "يقرأ لوحة Bonus Details",
   "sim.ocr.loading": "جارٍ قراءة اللقطة…",
   "sim.ocr.done": "تم التعبئة من تقريرك — تحقّق من الأرقام.",
+  "sim.ocr.partial": "تمت قراءة {n} من 6 قيم — أكمل الباقي أدناه.",
   "sim.ocr.fail": "تعذّرت قراءة هذه اللقطة. جرّب لقطة أوضح، أو أدخل الأرقام أدناه.",
   "sim.nav.ratio": "نسبة الدب",
   "sim.nav.maths": "الرياضيات",

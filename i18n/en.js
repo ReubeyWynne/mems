@@ -463,6 +463,7 @@ window.__BH_I18N_DATA["en"] = {
   "sim.ocr.hint": "reads the Bonus Details panel",
   "sim.ocr.loading": "Reading the screenshot\u2026",
   "sim.ocr.done": "Filled from your report \u2014 double-check the numbers.",
+  "sim.ocr.partial": "Read {n} of 6 values \u2014 fill in the rest below.",
   "sim.ocr.fail": "Couldn't read that screenshot. Try a clearer shot, or enter the numbers below.",
 
   "sim.nav.ratio": "Your bear ratio",

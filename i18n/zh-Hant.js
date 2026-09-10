@@ -454,6 +454,7 @@ window.__BH_I18N_DATA["zh-Hant"] = {
   "sim.ocr.hint": "讀取 Bonus Details 面板",
   "sim.ocr.loading": "正在讀取截圖…",
   "sim.ocr.done": "已從報告填入 — 請核對數值。",
+  "sim.ocr.partial": "已讀取 6 項中的 {n} 項 — 請在下方補齊其餘數值。",
   "sim.ocr.fail": "無法讀取該截圖。請嘗試更清晰的圖片，或在下方手動輸入數值。",
 
   "sim.nav.ratio": "你的熊比例",

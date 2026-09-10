@@ -462,6 +462,7 @@ window.__BH_I18N_DATA["vi"] = {
   "sim.ocr.hint": "đọc bảng Bonus Details",
   "sim.ocr.loading": "Đang đọc ảnh chụp…",
   "sim.ocr.done": "Đã điền từ báo cáo của bạn — hãy kiểm tra lại các con số.",
+  "sim.ocr.partial": "Đã đọc {n}/6 giá trị — điền phần còn lại bên dưới.",
   "sim.ocr.fail": "Không thể đọc ảnh chụp này. Hãy thử ảnh rõ hơn hoặc nhập các con số bên dưới.",
   "sim.nav.ratio": "Tỷ lệ gấu của bạn",
   "sim.nav.maths": "Toán học",

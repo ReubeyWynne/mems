@@ -5,7 +5,7 @@ self: sim
 
 
 <nav class="toc" id="toc" aria-label="Sections" data-i18n-key="nav.aria" data-i18n-attr="aria-label">
-  <a href="#ratio" data-i18n="sim.nav.ratio">Your bear ratio</a>
+  <a href="#console" data-i18n="sim.nav.console">The console</a>
   <a href="#maths" data-i18n="sim.nav.maths">The maths</a>
 </nav>
 
@@ -13,29 +13,44 @@ self: sim
   <!-- ═══════════ HERO ═══════════ -->
   <section class="section hero" id="top">
     <h1 data-i18n-html="sim.hero.h1">BATTLE SIMULATOR,<br><span class="accent">DEMYSTIFIED</span></h1>
-    <p class="alpha-stamp">first draft</p>
-    <p class="draft-note" data-i18n-html="sim.hero.alpha">an <b>early alpha</b> — a first pass at the maths: the damage model is
-      community-tested, not official, and heroes aren't in it yet. treat the numbers as a starting point.</p>
-    <p class="lede" data-i18n-html="sim.hero.lede">The maths of your battles, in one place. It starts with the
-      <b>bear ratio</b> — the exact troop mix your rally lead should run, worked out from their <b>attack</b> and
-      <b>lethality</b> per troop type.</p>
-    <p class="chips"><span data-i18n="sim.hero.chip1">bear ratio first</span> <span aria-hidden="true">·</span>
-      <span data-i18n="sim.hero.chip2">per-lead optimum</span> <span aria-hidden="true">·</span>
-      <span data-i18n="sim.hero.chip3">from the frakinator</span></p>
+    <p class="alpha-stamp" data-i18n="sim.hero.stamp">first draft</p>
+    <p class="draft-note" data-i18n-html="sim.hero.alpha">an <b>early alpha</b> — the ratio and the march maths are
+      community-tested, not official, and heroes aren't in it yet. one branch is still missing its constant and one
+      mode is running on empty. treat the numbers as a starting point.</p>
+    <p class="lede" data-i18n-html="sim.hero.lede">The maths of your battles, in one place. Read a report once and the
+      same numbers answer every fight: your lead's <b>bear ratio</b>, your own march's <b>bear damage</b>, the
+      <b>Mystic Trial</b> room worth pushing, and — when the tables land — <b>PvE beasts</b>.</p>
+    <p class="chips"><span data-i18n="sim.hero.chip1">bear ratio</span> <span aria-hidden="true">·</span>
+      <span data-i18n="sim.hero.chip2">bear damage</span> <span aria-hidden="true">·</span>
+      <span data-i18n="sim.hero.chip3">mystic trial</span> <span aria-hidden="true">·</span>
+      <span data-i18n="sim.hero.chip4">pve beasts</span></p>
   </section>
 
-  <!-- ═══════════ 1 · THE CALCULATOR ═══════════ -->
-  <section class="section" id="ratio">
-    <h2 data-i18n="sim.calc.title">The calculator</h2>
-    <p class="lede" data-i18n-html="sim.calc.lede">Enter your rally lead's <b>attack</b> and <b>lethality</b> for each
-      troop type — the numbers on the lead's report. The page works out the ideal troop mix and the lead's strength.</p>
+  <!-- ═══════════ 1 · THE CONSOLE ═══════════ -->
+  <section class="section" id="console">
+    <h2 data-i18n="sim.console.title">The console</h2>
+    <p class="lede" data-i18n-html="sim.console.lede">One report, four fights. Import a battle screenshot or type the
+      numbers in — the <b>Bonus Details</b> panel from the mail — then pick the fight. Nothing leaves the page; the
+      read happens in your browser.</p>
 
-    <div class="calc" id="simcalc">
-      <h4 class="calc-title" data-i18n="sim.calc.titleTag">TRY IT — YOUR BEAR RATIO</h4>
+    <nav class="mode-rail" id="mode-rail" aria-label="Pick the fight" data-i18n-key="sim.rail.aria" data-i18n-attr="aria-label">
+      <a href="?mode=bear-ratio" data-mode="bear-ratio"><span data-i18n="sim.rail.ratio">Bear ratio</span></a>
+      <a href="?mode=bear-damage" data-mode="bear-damage"><span data-i18n="sim.rail.damage">Bear damage</span></a>
+      <a href="?mode=mystic" data-mode="mystic"><span data-i18n="sim.rail.mystic">Mystic Trial</span></a>
+      <a href="?mode=pve" data-mode="pve"><span data-i18n="sim.rail.pve">PvE beasts</span>
+        <span class="rail-tag" data-i18n="sim.rail.benchTag">bench</span></a>
+    </nav>
+
+    <!-- ── The loadout: one report, read once ── -->
+    <div class="load" id="sim-load">
+      <h3 class="calc-title" data-i18n="sim.load.title">The report</h3>
+      <p class="lede" data-i18n-html="sim.load.lede">The <b>Bonus Details</b> panel, as read. On a bear report the
+        left column is the <b>rally lead's shared stats</b> — every participant sees that same panel, so those are
+        the lead's numbers, not yours. Every value stays editable.</p>
 
       <div class="sim-ocr">
-        <button type="button" id="sim-ocr-btn" data-i18n="sim.ocr.btn">Autofill from a battle screenshot</button>
-        <span class="sim-ocr-hint" data-i18n="sim.ocr.hint">reads the Bonus Details panel</span>
+        <button type="button" id="sim-ocr-btn" data-i18n="sim.ocr.btn">Read a battle screenshot</button>
+        <span class="sim-ocr-hint" data-i18n="sim.ocr.hint">fills the twelve Bonus Details values</span>
         <input type="file" id="sim-ocr-file" accept="image/*" hidden>
       </div>
       <output id="sim-ocr-status" class="sim-ocr-status" aria-live="polite" hidden></output>
@@ -47,54 +62,263 @@ self: sim
         </a>
       </figure>
 
-      <div class="calc-row">
-        <label data-i18n="sim.calc.inf">Infantry</label>
-        <div class="sim-fields">
-          <span class="sim-field"><label for="sim-atk-inf" data-i18n="sim.calc.atk">Attack %</label>
-            <input id="sim-atk-inf" type="number" min="0" step="0.1" value="250"></span>
-          <span class="sim-field"><label for="sim-let-inf" data-i18n="sim.calc.let">Lethality %</label>
-            <input id="sim-let-inf" type="number" min="0" step="0.1" value="163"></span>
+      <div class="sim-report" id="sim-report" role="table" aria-label="The report's Bonus Details values" data-i18n-key="sim.load.aria" data-i18n-attr="aria-label">
+        <div class="sim-head" role="row">
+          <span role="columnheader" data-i18n="sim.load.thType">Type</span>
+          <span role="columnheader" data-i18n="sim.calc.atk">Attack %</span>
+          <span role="columnheader" data-i18n="sim.calc.let">Lethality %</span>
+          <span role="columnheader" data-i18n="sim.load.def">Defense %</span>
+          <span role="columnheader" data-i18n="sim.load.hea">Health %</span>
+        </div>
+        <div class="sim-row" role="row">
+          <span class="sim-type" role="rowheader" data-i18n="sim.calc.inf">Infantry</span>
+          <span class="sim-field" role="cell">
+            <label for="sim-atk-inf" data-i18n="sim.calc.atk">Attack %</label>
+            <input id="sim-atk-inf" type="number" min="0" step="0.1" inputmode="decimal" value="250">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-let-inf" data-i18n="sim.calc.let">Lethality %</label>
+            <input id="sim-let-inf" type="number" min="0" step="0.1" inputmode="decimal" value="163">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-def-inf" data-i18n="sim.load.def">Defense %</label>
+            <input id="sim-def-inf" type="number" min="0" step="0.1" inputmode="decimal" value="250">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-hea-inf" data-i18n="sim.load.hea">Health %</label>
+            <input id="sim-hea-inf" type="number" min="0" step="0.1" inputmode="decimal" value="163">
+          </span>
+        </div>
+        <div class="sim-row" role="row">
+          <span class="sim-type" role="rowheader" data-i18n="sim.calc.cav">Cavalry</span>
+          <span class="sim-field" role="cell">
+            <label for="sim-atk-cav" data-i18n="sim.calc.atk">Attack %</label>
+            <input id="sim-atk-cav" type="number" min="0" step="0.1" inputmode="decimal" value="250">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-let-cav" data-i18n="sim.calc.let">Lethality %</label>
+            <input id="sim-let-cav" type="number" min="0" step="0.1" inputmode="decimal" value="163">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-def-cav" data-i18n="sim.load.def">Defense %</label>
+            <input id="sim-def-cav" type="number" min="0" step="0.1" inputmode="decimal" value="250">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-hea-cav" data-i18n="sim.load.hea">Health %</label>
+            <input id="sim-hea-cav" type="number" min="0" step="0.1" inputmode="decimal" value="163">
+          </span>
+        </div>
+        <div class="sim-row" role="row">
+          <span class="sim-type" role="rowheader" data-i18n="sim.calc.arc">Archery</span>
+          <span class="sim-field" role="cell">
+            <label for="sim-atk-arc" data-i18n="sim.calc.atk">Attack %</label>
+            <input id="sim-atk-arc" type="number" min="0" step="0.1" inputmode="decimal" value="250">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-let-arc" data-i18n="sim.calc.let">Lethality %</label>
+            <input id="sim-let-arc" type="number" min="0" step="0.1" inputmode="decimal" value="163">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-def-arc" data-i18n="sim.load.def">Defense %</label>
+            <input id="sim-def-arc" type="number" min="0" step="0.1" inputmode="decimal" value="250">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-hea-arc" data-i18n="sim.load.hea">Health %</label>
+            <input id="sim-hea-arc" type="number" min="0" step="0.1" inputmode="decimal" value="163">
+          </span>
         </div>
       </div>
+      <p class="note" data-i18n-html="sim.load.note"><b>Defense</b> and <b>health</b> never move a bear fight — only
+        attack and lethality do. They're on the sheet because the same twelve values decide the other fights.</p>
+    </div>
 
-      <div class="calc-row">
-        <label data-i18n="sim.calc.cav">Cavalry</label>
-        <div class="sim-fields">
-          <span class="sim-field"><label for="sim-atk-cav" data-i18n="sim.calc.atk">Attack %</label>
-            <input id="sim-atk-cav" type="number" min="0" step="0.1" value="250"></span>
-          <span class="sim-field"><label for="sim-let-cav" data-i18n="sim.calc.let">Lethality %</label>
-            <input id="sim-let-cav" type="number" min="0" step="0.1" value="163"></span>
-        </div>
-      </div>
-
-      <div class="calc-row">
-        <label data-i18n="sim.calc.arc">Archery</label>
-        <div class="sim-fields">
-          <span class="sim-field"><label for="sim-atk-arc" data-i18n="sim.calc.atk">Attack %</label>
-            <input id="sim-atk-arc" type="number" min="0" step="0.1" value="250"></span>
-          <span class="sim-field"><label for="sim-let-arc" data-i18n="sim.calc.let">Lethality %</label>
-            <input id="sim-let-arc" type="number" min="0" step="0.1" value="163"></span>
-        </div>
-      </div>
+    <!-- ── Mode panels — only the active one is shown ── -->
+    <div class="sim-panel" data-mode="bear-ratio">
+      <h3 class="calc-title" data-i18n="sim.calc.titleTag">TRY IT — YOUR BEAR RATIO</h3>
+      <p class="lede" data-i18n-html="sim.calc.lede">The lead's attack and lethality make their <b>A factor</b> per
+        troop type. That alone fixes the mix the lead should run, and their strength <b>K</b>.</p>
 
       <p class="calc-out" id="sim-headline">The ideal march lands here.</p>
       <div class="sim-out" id="sim-out" role="table" data-i18n-key="sim.calc.tableAria" data-i18n-attr="aria-label" hidden></div>
       <p class="calc-out" id="sim-k"></p>
+
+      <p class="note" data-i18n-html="sim.calc.note">The mix depends only on the lead's attack factors — not your
+        stats, not the march size. The guide's <b>10 / 10 / 80</b> is close enough for real leads; this is your
+        lead's exact optimum. <b>Heroes are not in it yet.</b></p>
     </div>
 
-    <p class="note" data-i18n-html="sim.calc.note">The mix depends only on the lead's attack factors — not your
-      stats, not the march size. The guide's <b>10 / 10 / 80</b> is close enough for real leads; this is your
-      lead's exact optimum. <b>Heroes are not in this first version.</b></p>
+    <div class="sim-panel" data-mode="bear-damage" hidden>
+      <h3 class="calc-title" data-i18n="sim.dmg.titleTag">TRY IT — YOUR MARCH</h3>
+      <p class="lede" data-i18n-html="sim.dmg.lede">The <b>troops you send</b> — not the rally's. Counts by type, and
+        the tier each one marches at. The console compares your split with the lead's optimum for that same march.</p>
+
+      <div class="march" id="sim-march" role="table" aria-label="Your march" data-i18n-key="sim.dmg.aria" data-i18n-attr="aria-label">
+        <div class="sim-head" role="row">
+          <span role="columnheader" data-i18n="sim.calc.thType">Troop</span>
+          <span role="columnheader" data-i18n="sim.dmg.thCount">troops</span>
+          <span role="columnheader" data-i18n="sim.dmg.thTier">tier</span>
+          <span role="columnheader" data-i18n="sim.dmg.thTg">TG</span>
+        </div>
+        <div class="sim-row" role="row">
+          <span class="sim-type" role="rowheader" data-i18n="sim.calc.inf">Infantry</span>
+          <span class="sim-field" role="cell">
+            <label for="sim-n-inf" data-i18n="sim.dmg.thCount">troops</label>
+            <input id="sim-n-inf" type="number" min="0" step="1000" inputmode="numeric" value="0" placeholder="0">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-tier-inf" data-i18n="sim.dmg.thTier">tier</label>
+            <select id="sim-tier-inf" data-fill="tier"></select>
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-tg-inf" data-i18n="sim.dmg.thTg">TG</label>
+            <select id="sim-tg-inf" data-fill="tg"></select>
+          </span>
+        </div>
+        <div class="sim-row" role="row">
+          <span class="sim-type" role="rowheader" data-i18n="sim.calc.cav">Cavalry</span>
+          <span class="sim-field" role="cell">
+            <label for="sim-n-cav" data-i18n="sim.dmg.thCount">troops</label>
+            <input id="sim-n-cav" type="number" min="0" step="1000" inputmode="numeric" value="0" placeholder="0">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-tier-cav" data-i18n="sim.dmg.thTier">tier</label>
+            <select id="sim-tier-cav" data-fill="tier"></select>
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-tg-cav" data-i18n="sim.dmg.thTg">TG</label>
+            <select id="sim-tg-cav" data-fill="tg"></select>
+          </span>
+        </div>
+        <div class="sim-row" role="row">
+          <span class="sim-type" role="rowheader" data-i18n="sim.calc.arc">Archery</span>
+          <span class="sim-field" role="cell">
+            <label for="sim-n-arc" data-i18n="sim.dmg.thCount">troops</label>
+            <input id="sim-n-arc" type="number" min="0" step="1000" inputmode="numeric" value="0" placeholder="0">
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-tier-arc" data-i18n="sim.dmg.thTier">tier</label>
+            <select id="sim-tier-arc" data-fill="tier"></select>
+          </span>
+          <span class="sim-field" role="cell">
+            <label for="sim-tg-arc" data-i18n="sim.dmg.thTg">TG</label>
+            <select id="sim-tg-arc" data-fill="tg"></select>
+          </span>
+        </div>
+      </div>
+
+      <p class="calc-out" id="sim-dmg-headline"></p>
+      <div class="sim-out march-out" id="sim-dmg-out" role="table" data-i18n-key="sim.dmg.tableAria" data-i18n-attr="aria-label" hidden></div>
+      <p class="calc-out" id="sim-dmg-ideal"></p>
+
+      <p class="note" data-i18n-html="sim.dmg.tier">Tier sets the <b>scale</b>, not the split: the three types' base
+        attacks rise together, so one tier across the march cancels out. Only mixing tiers moves the optimum — and
+        from <b>T7+ / TG3+</b> archers pick up another <b>×1.1</b> against the bear.</p>
+      <p class="note" data-i18n-html="sim.dmg.sqrt">Absolute damage scales with <b>√(troops)</b> of each type — double
+        the march and you get <b>×1.41</b>, not ×2. Every split rule holds at any scale, which is what lets the
+        console answer before the constant is fitted.</p>
+      <p class="note" data-i18n-html="sim.dmg.bench"><b>Damage — and the bracket it lands in — is on the bench.</b>
+        Turning a split into a number needs one constant fitted from real reports: the bear's defence, the troops'
+        base attack and the lead's hero skills all ride in it. The Frakinator's ladder doubles from <b>47M</b> to
+        <b>38.4B</b>; until that constant is fitted, this panel shows the split, not a damage figure.</p>
+    </div>
+
+    <div class="sim-panel" data-mode="mystic" hidden>
+      <h3 class="calc-title" data-i18n="sim.mystic.titleTag">TRY IT — WHICH ROOM</h3>
+      <p class="lede" data-i18n-html="sim.mystic.lede">Six rooms, one event screen, and every room an account check.
+        Today's rooms are marked; the ratios are <b>infantry / cavalry / archers</b> to open with.</p>
+
+      <p class="calc-out" id="sim-mystic-today"></p>
+      <div class="sim-out rooms" id="sim-rooms" role="table" data-i18n-key="sim.mystic.tableAria" data-i18n-attr="aria-label">
+        <div class="sim-head" role="row">
+          <span role="columnheader" data-i18n="sim.mystic.thRoom">Room</span>
+          <span role="columnheader" data-i18n="sim.mystic.thChecks">checks</span>
+          <span role="columnheader" data-i18n="sim.mystic.thStart">start</span>
+          <span role="columnheader" data-i18n="sim.mystic.thAlt">first alt</span>
+        </div>
+        <div class="sim-row" role="row" data-days="1 2">
+          <span class="room-name" role="rowheader"><span data-i18n="sim.mystic.r.coliseum">Coliseum</span>
+            <em class="room-days" data-i18n="sim.mystic.d.monTue">Mon–Tue</em></span>
+          <span class="room-checks" data-i18n="sim.mystic.c.coliseum">Heroes + hero gear</span>
+          <span class="room-ratio">50 / 10 / 40</span>
+          <span class="room-alt">55 / 15 / 30</span>
+        </div>
+        <div class="sim-row" role="row" data-days="3 4">
+          <span class="room-name" role="rowheader"><span data-i18n="sim.mystic.r.forest">Forest of Life</span>
+            <em class="room-days" data-i18n="sim.mystic.d.wedThu">Wed–Thu</em></span>
+          <span class="room-checks" data-i18n="sim.mystic.c.forest">Pets</span>
+          <span class="room-ratio">50 / 15 / 35</span>
+          <span class="room-alt">55 / 10 / 35</span>
+        </div>
+        <div class="sim-row" role="row" data-days="3 4">
+          <span class="room-name" role="rowheader"><span data-i18n="sim.mystic.r.crystal">Crystal Cave</span>
+            <em class="room-days" data-i18n="sim.mystic.d.wedThu">Wed–Thu</em></span>
+          <span class="room-checks" data-i18n="sim.mystic.c.crystal">Governor charms</span>
+          <span class="room-ratio">60 / 20 / 20</span>
+          <span class="room-alt">65 / 15 / 20</span>
+        </div>
+        <div class="sim-row" role="row" data-days="5 6">
+          <span class="room-name" role="rowheader"><span data-i18n="sim.mystic.r.nexus">Knowledge Nexus</span>
+            <em class="room-days" data-i18n="sim.mystic.d.friSat">Fri–Sat</em></span>
+          <span class="room-checks" data-i18n="sim.mystic.c.nexus">Academy + War Academy research</span>
+          <span class="room-ratio">50 / 20 / 30</span>
+          <span class="room-alt">55 / 15 / 30</span>
+        </div>
+        <div class="sim-row" role="row" data-days="5 6">
+          <span class="room-name" role="rowheader"><span data-i18n="sim.mystic.r.molten">Molten Fort</span>
+            <em class="room-days" data-i18n="sim.mystic.d.friSat">Fri–Sat</em></span>
+          <span class="room-checks" data-i18n="sim.mystic.c.molten">Governor gear</span>
+          <span class="room-ratio">60 / 15 / 25</span>
+          <span class="room-alt">65 / 15 / 20</span>
+        </div>
+        <div class="sim-row" role="row" data-days="0">
+          <span class="room-name" role="rowheader"><span data-i18n="sim.mystic.r.spire">Radiant Spire</span>
+            <em class="room-days" data-i18n="sim.mystic.d.sun">Sunday</em></span>
+          <span class="room-checks" data-i18n="sim.mystic.c.spire">the full combat build — your own troops</span>
+          <span class="room-ratio">50 / 15 / 35</span>
+          <span class="room-alt">55 / 10 / 35</span>
+        </div>
+      </div>
+
+      <p class="note" data-i18n-html="sim.mystic.ratioGloss">A ratio is the share of your march per type —
+        <b>infantry / cavalry / archers</b>. The <b>alt</b> is the first fallback when the starting line still
+        doesn't clear.</p>
+      <p class="note" data-i18n-html="sim.mystic.fixed"><b>Five of the six rooms fix your troops at Level 10</b> —
+        training more won't clear them; upgrading the system they check will. Only the <b>Coliseum</b> and the
+        <b>Radiant Spire</b> let you pick your heroes.</p>
+      <p class="note" data-i18n-html="sim.mystic.attempts">Five attempts per room per day, refreshed at
+        <b>00:00 UTC</b> — and an attempt is only spent on a <b>loss</b>. Clear <b>Stages 1–10</b> in a room and its
+        <b>Raid</b> opens: <b>+10 Trial Crystals</b> a stage, every week.</p>
+      <p class="note" data-i18n-html="sim.mystic.shop">Once the Trial Shop shows <b>Truegold Dust</b>, that's the buy
+        — T11 gear wants it in volume.</p>
+      <p class="note" data-i18n-html="sim.mystic.caveat">Community tables put the <b>Crystal Cave</b> in the same
+        Wed–Thu window as the Forest of Life; older notes list the pets alone. The event screen is the tiebreaker.</p>
+      <p class="note" data-i18n-html="sim.mystic.bench"><b>The clear predictor is on the bench.</b> It needs
+        per-stage enemy stats — readable from the right column of a trial report, the same way this page reads the
+        left — before it can call a stage a clear. Until then: the room, the ratio, and what to upgrade.</p>
+    </div>
+
+    <div class="sim-panel" data-mode="pve" hidden>
+      <h3 class="calc-title" data-i18n="sim.pve.titleTag">PVE BEASTS — ON THE BENCH</h3>
+      <p class="lede" data-i18n-html="sim.pve.lede">World-map beasts and monsters, fought with <b>your own army and
+        heroes</b> — no rally, no shared stats. The console is framed and waiting.</p>
+      <p class="note" data-i18n-html="sim.pve.frame">What already holds: your stats above, your march by type and
+        tier, and the same <b>√</b> rules that decide the bear. When the tables land, the answer has the same shape —
+        <b>what to send, and what it gets you</b>.</p>
+      <p class="note" data-i18n-html="sim.pve.bench"><b>What's missing:</b> the enemy tables. Nothing here gets
+        invented, so the panel carries no numbers until they're collected — from the right column of a beast report,
+        the way this page reads a bear one.</p>
+    </div>
   </section>
 
   <!-- ═══════════ 2 · THE MATHS ═══════════ -->
   <section class="section" id="maths">
     <h2 data-i18n="sim.maths.title">The maths</h2>
-    <p class="lede" data-i18n-html="sim.maths.lede">How the ratio is worked out:</p>
+    <p class="lede" data-i18n-html="sim.maths.lede">How the console works it out:</p>
     <p data-i18n-html="sim.maths.p1">Each troop type's <b>A factor</b> is its attack times its lethality:
       <b>(1 + attack%) × (1 + lethality%)</b>. One factor per type, from the lead's report.</p>
-    <p data-i18n-html="sim.maths.p2">The damage weights are <b>infantry ⅓, cavalry 1, archers 4.4/3</b> — the archers'
-      extra ×1.1 because the bear is all infantry. The ideal share is the weight squared, normalised:
+    <p data-i18n-html="sim.maths.p2">The damage weights are the troops' <b>base attacks</b> from the troop table —
+      <b>infantry ⅓, cavalry 1, archers 4.4/3</b> at T6, the archers' <b>×1.1</b> coming from the all-infantry bear.
+      The ideal share is the weighted factor squared, normalised:
       <b>f<sub>t</sub> ∝ (weight<sub>t</sub>·A<sub>t</sub>)²</b>.</p>
     <details>
       <summary data-i18n="sim.maths.details">The formula, in one line</summary>
@@ -102,8 +326,23 @@ self: sim
         <p class="d-formula" data-i18n-html="sim.maths.d">f<sub>t</sub> ∝ (A<sub>inf</sub>/3, A<sub>cav</sub>, 4.4·A<sub>arc</sub>/3)² · K = √(Σ w<sub>t</sub>²)</p>
       </div>
     </details>
+    <p data-i18n-html="sim.maths.p3">A march adds its damage up per type: <b>√(troops) × base attack × A</b>, summed
+      over infantry, cavalry and archers. The absolute figure carries a constant for the bear's defence and army,
+      plus the heroes' skills on top — that constant is the piece still missing.</p>
+    <p data-i18n-html="sim.maths.p4">Which leaves the march verdict a pure ratio: your split converts the
+      <b>cosine</b> of what the same troops could do for this lead. The nearer your shares sit to
+      <b>f<sub>t</sub></b>, the nearer that number gets to 100%.</p>
+    <details>
+      <summary data-i18n="sim.maths.details2">The march, in one line</summary>
+      <div class="d-body">
+        <p class="d-formula" data-i18n-html="sim.maths.d2">D ∝ Σ<sub>t</sub> √N<sub>t</sub>·base<sub>t</sub>·A<sub>t</sub> · split efficiency = Σ(b<sub>t</sub>A<sub>t</sub>√f<sub>t</sub>) / √(Σ(b<sub>t</sub>A<sub>t</sub>)²)</p>
+      </div>
+    </details>
+    <p class="note" data-i18n-html="sim.maths.mystic">The Mystic Trial rooms are <b>community tables</b>
+      (Kingshot Mastery), not extracted formulas — the ratios are a starting line, not a law. The bear maths is the
+      Frakinator's.</p>
     <p class="note" data-i18n-html="sim.maths.note">The bear factor and hero skills multiply absolute damage but
-      cancel out of the ratio — the mix depends only on the lead's attack factors. More sims (heroes, full
-      damage, PvP) are being researched; this is the first.</p>
+      cancel out of every split — which is why the ratio holds at any scale. More sims (heroes, the damage constant,
+      PvP) are being researched; these are the first four.</p>
   </section>
 </main>

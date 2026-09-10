@@ -314,7 +314,7 @@
       "url": "../battle-simulator/",
       "page": "sim",
       "title": "Battle Simulator",
-      "lede": "the maths of your battles — the bear ratio, first."
+      "lede": "the maths of your battles — the bear ratio, your march, and the Mystic Trial rooms."
     },
     "css": [
       "../css/styles.css",
@@ -349,14 +349,14 @@
     "titleKey": "sim.meta.title",
     "titleText": "Battle Simulator, Demystified",
     "metaDescKey": "sim.meta.description",
-    "metaDesc": "The maths of your battles, in one place. Start with the bear ratio — a lead's attack factors and the ideal troop mix, per lead.",
+    "metaDesc": "The maths of your battles, in one place — the bear ratio, your own march against the bear, and the Mystic Trial rooms. One report in, one answer out.",
     "ogTitleKey": "sim.meta.ogTitle",
     "ogTitle": "Battle Simulator, Demystified",
     "ogDescKey": "sim.meta.ogDescription",
-    "ogDesc": "The bear ratio and the maths of your battles — in plain words.",
-    "skipHref": "#ratio",
+    "ogDesc": "Four fights, one console: the bear ratio, your bear march, the Mystic Trial rooms, and the PvE bench.",
+    "skipHref": "#console",
     "skipKey": "sim.skip",
-    "skipText": "Skip to the calculator",
+    "skipText": "Skip to the console",
     "dust": "<i></i><i></i><i></i>",
     "brand": "BATTLE SIMULATOR",
     "brandNoteKey": "sim.brandNote",

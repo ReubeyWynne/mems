@@ -1,8 +1,23 @@
 /* sim.css — the Battle Simulator page only (battle-simulator/). Loaded after
-   styles.css + events.css (the page's theme block lives there). The bear-ratio
-   calculator: the attack/lethality field pairs, and the ruled output table
-   with the lead's A factors, weights and ideal shares. Plus the early-alpha
-   gloss that demarks the page. Nothing else. */
+   styles.css + events.css (the page's theme block lives there).
+   The console: the mode rail that picks the fight, the shared report sheet
+   (the twelve Bonus Details values, editable), the OCR prefill, and one
+   ruled output per mode — the bear ratio, your march against the bear, the
+   Mystic Trial rooms, and the PvE bench. Plus the early-alpha gloss that
+   demarks the page. Nothing else.
+
+   DIRECTION CONTRACT (extension of the existing surface — one page, one
+   world, one signal; no new palette, no new type, no new radii):
+   THESIS      one ledger, four fights — the fight changes, the world doesn't.
+   OWN-WORLD   the war-room night + antique gold already on this page; the
+               rail borrows the .ev-switch recipe, the outputs the ruled
+               .sim-head/.sim-row grammar.
+   REFUSES     per-mode hue swaps, tabbed SaaS chrome, a hero portrait spine,
+               invented brackets, spinners where an honest bench belongs.
+   SIGNATURE   one report read once, then re-answered per fight; the bench
+               modes say what they're missing instead of guessing.
+   STATES      first-run · importing · unreadable · bench · stale import ·
+               language switch · 320px → desktop. */
 
 /* ─── Early-alpha demarcation — this page is a work in progress ─
    A red-ink "FIRST DRAFT" stamp on the proof sheet: rotated a couple of
@@ -95,6 +110,9 @@ html[lang="ar"] .alpha-stamp { letter-spacing: 0; text-indent: 0; }
 .sim-type { font-family: var(--display-2); font-weight: 700; color: var(--ink); }
 .sim-a, .sim-w { text-align: right; color: var(--ink-dim); }
 .sim-share { text-align: right; color: var(--amber); font-weight: 700; }
+/* Every numeric cell is a single figure — never let a locale's grouping mark
+   break it across two lines. */
+.sim-a, .sim-w, .sim-share, .sim-n { white-space: nowrap; font-variant-numeric: tabular-nums; }
 @media (max-width: 640px) {
   .sim-head, .sim-row { grid-template-columns: 1fr 4.6rem 5.4rem; }
   .sim-w { display: none; }
@@ -177,3 +195,176 @@ html[lang="ar"] .alpha-stamp { letter-spacing: 0; text-indent: 0; }
 .sim-ocr-shot a:focus-visible .sim-ocr-shot-open {
   color: var(--amber);
 }
+
+/* ─── The mode rail — one fight at a time ──
+   The .ev-switch recipe, page-scoped: uppercase body-serif chips, inactive
+   recede to ink-muted, the active one takes the signal + a ❧. A bench chip
+   carries the italic marginal gloss ("bench") instead of a badge — the
+   honest roadmap, not a broken tab. The rail wraps rather than scrolls:
+   every fight stays visible, and a horizontal drag on it can't be mistaken
+   for the page-swipe gesture. */
+.mode-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: var(--space-s) 0 var(--space-m);
+}
+.mode-rail a {
+  font-family: var(--body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-muted);
+  padding: 0.3rem 0.55rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mode-rail a:hover { color: var(--ink-dim); }
+.mode-rail a[aria-current="true"] {
+  color: var(--amber);
+  border-color: var(--signal-line);
+}
+.mode-rail a[aria-current="true"]::before { content: "❧ "; color: var(--amber-dim); }
+.rail-tag {
+  font-size: 0.85em;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--ink-muted);
+}
+
+/* ─── The loadout: one report sheet, shared by every fight ──
+   The twelve Bonus Details values as a ruled sheet. On a bear report the
+   left column is the lead's shared stats, so this is the report as read —
+   and it stays a form: every cell is editable, the OCR only prefills. */
+.load { margin-top: var(--space-s); }
+
+/* The shared sheet ends above; each mode's panel opens its own block, so it
+   takes the larger step — more air above the title than below it. */
+.sim-panel { margin-top: var(--space-l); }
+
+.sim-report, .march { margin: var(--space-s) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
+.sim-report .sim-head, .sim-report .sim-row { grid-template-columns: 1fr 6rem 6rem 5.6rem 5.6rem; gap: 0.4rem; }
+.sim-report .sim-head span { font-size: 0.72em; letter-spacing: 0.06em; white-space: nowrap; }
+/* Wide, the header row names the four stats once, so each field's own label
+   stays out of the way. Narrow, the header gives way to those labels. */
+.sim-report .sim-field { display: block; min-width: 0; }
+.sim-report .sim-field label { display: none; }
+.sim-report input,
+.march input,
+.march select {
+  font-size: var(--step-0);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.march .sim-head, .march .sim-row { grid-template-columns: 1fr 6.4rem 4.4rem 4rem; gap: 0.5rem; }
+.march .sim-field { display: block; min-width: 0; }
+.march .sim-field label { display: none; }
+.march select {
+  width: 100%;
+  padding: 0.35rem 0;
+  font-family: var(--body);
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ink-muted);
+  border-radius: 0;
+}
+.march select:focus { border-bottom-color: var(--amber); outline: none; }
+.march option { background: var(--void-2); color: var(--ink); }
+/* The march counts carry a "0" placeholder. The browser's default grey lands
+   under 4.5:1 on this night, so the placeholder takes the sheet's muted ivory. */
+.march input::placeholder { color: var(--ink-muted); opacity: 1; }
+
+/* Narrow: both sheets keep every value editable. The header row gives way to a
+   label on each field — the twelve report stats wrap two-up under their type,
+   the march's count/tier/TG run three-up — because hiding a column would strand
+   a phone reader with numbers they cannot correct. */
+@media (max-width: 660px) {
+  .sim-report .sim-head, .march .sim-head { display: none; }
+  .sim-report .sim-row { grid-template-columns: 1fr 1fr; gap: 0.5rem 0.8rem; padding: 0.6rem 0; }
+  .march .sim-row { grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem 0.6rem; padding: 0.6rem 0; }
+  .sim-report .sim-type, .march .sim-type { grid-column: 1 / -1; }
+  .sim-report .sim-field, .march .sim-field { display: flex; flex-direction: column; gap: 0.15rem; }
+  .sim-report .sim-field label, .march .sim-field label {
+    display: block;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+}
+
+/* ─── The march verdict — your split against the lead's optimum ──
+   Troop | troops | your share | ideal share. The count column drops on
+   narrow screens (you typed it); the two shares never do. */
+.sim-out.march-out .sim-head, .sim-out.march-out .sim-row { grid-template-columns: 1fr 6.4rem 5.4rem 5.4rem; }
+.sim-out.march-out .sim-n { text-align: right; color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+@media (max-width: 660px) {
+  .sim-out.march-out .sim-head, .sim-out.march-out .sim-row { grid-template-columns: 1fr 5rem 5.4rem; }
+  .sim-out.march-out .sim-n,
+  .sim-out.march-out .sim-head span:nth-child(2) { display: none; }
+}
+
+/* ─── The Mystic rooms — one row a room ──
+   Room (+ its weekday gloss) | what it checks | starting ratio | first
+   alternate. Rooms open today take the ❧ and the signal; the rest stay ink.
+   On a phone the checks line drops under the name and spans the row. */
+.sim-out.rooms .sim-head, .sim-out.rooms .sim-row { grid-template-columns: 9.5rem 1fr 5rem 5rem; gap: 0.6rem; }
+.sim-out.rooms .sim-head span:nth-child(2) { text-align: left; }
+.sim-out.rooms .room-name { grid-column: 1; }
+.sim-out.rooms .room-checks { grid-column: 2; }
+.sim-out.rooms .room-ratio { grid-column: 3; }
+.sim-out.rooms .room-alt { grid-column: 4; }
+.room-name { font-family: var(--display-2); font-weight: 700; color: var(--ink); }
+.room-days {
+  display: block;
+  font-family: var(--body);
+  font-size: 0.78em;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0;
+  color: var(--ink-muted);
+}
+.room-checks { color: var(--ink-dim); }
+.room-ratio, .room-alt { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* The ratio cells are the tightest thing in any table here — an unbreakable
+   "55 / 15 / 30" has to clear a phone, so they step down a size below 660px. */
+@media (max-width: 660px) {
+  .room-ratio, .room-alt { font-size: 0.85em; }
+}
+.room-ratio { color: var(--amber); font-weight: 700; }
+.room-alt { color: var(--ink-dim); }
+.sim-out.rooms .sim-row.today .room-name { color: var(--amber); }
+.sim-out.rooms .sim-row.today .room-name::before { content: "❧ "; color: var(--amber-dim); }
+.room-today {
+  display: block;
+  font-family: var(--body);
+  font-size: 0.78em;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+@media (max-width: 660px) {
+  .sim-out.rooms .sim-head { grid-template-columns: 1fr 4.4rem 4.4rem; }
+  .sim-out.rooms .sim-head span:nth-child(2) { display: none; }
+  .sim-out.rooms .sim-row { grid-template-columns: 1fr 4.4rem 4.4rem; row-gap: 0; }
+  .sim-out.rooms .room-name { grid-column: 1; grid-row: 1; }
+  .sim-out.rooms .room-ratio { grid-column: 2; grid-row: 1; }
+  .sim-out.rooms .room-alt { grid-column: 3; grid-row: 1; }
+  .sim-out.rooms .room-checks { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* ─── Bench modes — the missing piece, said plainly ──
+   Not a spinner and not a disabled tab: the rubrication red this page
+   already uses for proof marks, on the one note that names what the mode
+   is waiting for. */
+.note.bench { color: var(--rubric); }
+.note.bench b { color: var(--ink); }

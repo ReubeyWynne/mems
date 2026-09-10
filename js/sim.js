@@ -1,44 +1,114 @@
-/* sim.js — the Battle Simulator page toys.
-   Registers with common.js via window.BH.registerPage: the bear-ratio
-   calculator. Given a rally lead's attack and lethality per troop type (from
-   the lead's report), it works out the ideal troop mix (f_t proportional to
-   the squared weight, MATHS.md §4) and the leader strength K (§5). Strings are
-   read lazily from the active dictionary (sim.* keys, English fallback) and the
-   page re-paints on i18n:change, so a language switch mid-session shows the new
-   language and locale-formatted numbers. Heroes are deliberately out of this
-   first version — only the lead's A factors matter for the ratio. */
+/* sim.js — the Battle Simulator page (battle-simulator/).
+   Registers with common.js via window.BH.registerPage.
+
+   One report read once, four fights answered from it: the lead's bear ratio
+   (MATHS.md §4–5), your own march's split measured against that ratio, the
+   Mystic Trial room roster, and the PvE bench. Strings come from the active
+   dictionary (sim.* keys, English fallback) and the page re-paints on
+   i18n:change, so a language switch mid-session shows the new language and
+   locale-formatted numbers.
+
+   Two deliberate omissions. Heroes: only the lead's attack factors and the
+   troops' base attacks enter a split — a joining hero's skill multiplies the
+   whole march, so it cancels out of every ratio and belongs with the damage
+   constant, not here. And the constant itself: absolute damage carries the
+   bear's defence, the troops' base attack and the lead's hero skills, and it
+   is not fitted yet — so the march panel prints a ratio and never a damage
+   figure or a reward bracket. */
 (function () {
   'use strict';
 
-  // ── The three troop types ─────────────────────────────
-  // key = internal; nameKey/fallback = the type's translated label; pre/ple =
-  // the input ids for that type's attack / lethality.
+  // ── The three troop types, in troop-table order ───────
+  // block = the row label on a battle report (what the OCR reads), key = the
+  // internal id behind every input, nameKey/fallback = the translated label.
   var TYPES = [
-    { key: 'inf', nameKey: 'sim.calc.inf', fallback: 'Infantry', pre: 'sim-atk-inf', ple: 'sim-let-inf' },
-    { key: 'cav', nameKey: 'sim.calc.cav', fallback: 'Cavalry',  pre: 'sim-atk-cav', ple: 'sim-let-cav' },
-    { key: 'arc', nameKey: 'sim.calc.arc', fallback: 'Archery',  pre: 'sim-atk-arc', ple: 'sim-let-arc' }
+    { key: 'inf', block: 'Infantry', nameKey: 'sim.calc.inf', fallback: 'Infantry' },
+    { key: 'cav', block: 'Cavalry', nameKey: 'sim.calc.cav', fallback: 'Cavalry' },
+    { key: 'arc', block: 'Archer', nameKey: 'sim.calc.arc', fallback: 'Archery' }
   ];
 
+  // The report sheet's four stat columns, in Bonus-Details order. ocr = the
+  // row label on the report (what the OCR matches), key = the internal id
+  // behind every input.
+  var STATS = [
+    { key: 'atk', ocr: 'Attack', nameKey: 'sim.calc.atk', fallback: 'Attack %' },
+    { key: 'let', ocr: 'Lethality', nameKey: 'sim.calc.let', fallback: 'Lethality %' },
+    { key: 'def', ocr: 'Defense', nameKey: 'sim.load.def', fallback: 'Defense %' },
+    { key: 'hea', ocr: 'Health', nameKey: 'sim.load.hea', fallback: 'Health %' }
+  ];
+
+  var MODES = ['bear-ratio', 'bear-damage', 'mystic', 'pve'];
+  var DEFAULT_MODE = 'bear-ratio';
+
+  // ── The troop table (KINGSHOT-SOURCES.md §1) ──────────
+  // Base attack per type × tier 1–11 × TG 0–5, in source order: infantry
+  // (tier-major, TG-minor), then cavalry, then archers. The attack ratios are
+  // 1 : 3 : 4 in every row, so one tier across a march is a common factor that
+  // cancels out of every share — tier only bites when a march mixes tiers.
+  var TROOP_ATK = [
+    63, 66, 69, 72, 76, 80, 94, 98, 103, 108, 113, 119,
+    132, 137, 144, 151, 159, 167, 172, 179, 188, 197, 207, 217,
+    206, 214, 225, 236, 248, 260, 243, 253, 265, 279, 293, 307,
+    287, 298, 313, 329, 346, 363, 339, 353, 370, 389, 408, 429,
+    400, 416, 437, 459, 482, 506, 472, 491, 515, 541, 568, 597,
+    566, 589, 618, 649, 681, 716, 189, 197, 206, 217, 228, 239,
+    283, 294, 309, 324, 341, 358, 397, 413, 434, 455, 478, 502,
+    516, 537, 563, 592, 621, 652, 619, 644, 676, 710, 745, 782,
+    730, 759, 797, 837, 879, 923, 862, 896, 941, 988, 1038, 1090,
+    1017, 1058, 1111, 1166, 1224, 1286, 1200, 1248, 1310, 1376, 1445, 1517,
+    1416, 1473, 1546, 1624, 1705, 1790, 1699, 1767, 1855, 1948, 2045, 2148,
+    252, 262, 275, 289, 303, 319, 378, 393, 413, 433, 455, 478,
+    529, 550, 578, 607, 637, 669, 688, 716, 751, 789, 828, 870,
+    825, 858, 901, 946, 993, 1043, 974, 1013, 1064, 1117, 1173, 1231,
+    1149, 1195, 1255, 1317, 1383, 1452, 1356, 1410, 1481, 1555, 1633, 1714,
+    1600, 1664, 1747, 1835, 1926, 2023, 1888, 1964, 2062, 2165, 2273, 2387,
+    2266, 2357, 2474, 2598, 2728, 2865,
+  ];
+  var ROWS = 66; // 11 tiers × 6 TG groups, per type
+
+  function baseAtk(t, tier, tg) {
+    return TROOP_ATK[t * ROWS + (tier - 1) * 6 + tg] || 0;
+  }
+
+  // The published weights (MATHS.md §2) at the table's reference row, T6/TG0 —
+  // which is exactly where ⅓ / 1 / 4.4⁄3 comes from. Tier then enters as ONE
+  // shared scale for the whole march, taken from the table's infantry series —
+  // the base every other type is derived from (attack 1 : 3 : 4, MATHS.md §6.2).
+  // So a uniform tier multiplies all three weights by the same factor and
+  // cancels exactly, and the march panel can never disagree with the ratio
+  // panel about the same lead; only a mixed-tier march moves the optimum.
+  var WEIGHTS = [1 / 3, 1, 4.4 / 3];
+  var REF_TIER = 6, REF_TG = 0;
+
+  function tierScale(tier, tg) {
+    return baseAtk(0, tier, tg) / baseAtk(0, REF_TIER, REF_TG);
+  }
+
+  // The archers' second ×1.1 vs the all-infantry bear, from T7+ / TG3+
+  // (MATHS.md §2); the flat ×1.1 is already inside WEIGHTS[2].
+  function typeWeight(i, tier, tg) {
+    return WEIGHTS[i] * tierScale(tier, tg) * (i === 2 && (tier >= 7 || tg >= 3) ? 1.1 : 1);
+  }
+
+  function el(id) { return document.getElementById(id); }
+
   function num(id) {
-    var el = document.getElementById(id);
-    var v = parseFloat(el ? el.value : '');
+    var e = el(id);
+    var v = parseFloat(e ? e.value : '');
     return isFinite(v) ? v : 0;
+  }
+
+  function pick(id, fallback) {
+    var e = el(id);
+    var v = e ? parseInt(e.value, 10) : NaN;
+    return isFinite(v) ? v : fallback;
   }
 
   function locale() {
     return (window.I18N && window.I18N.locale) || 'en-GB';
   }
 
-  // A percentage with one decimal, in the active locale's digits.
-  function pct(x) {
-    try {
-      return x.toLocaleString(locale(), { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
-    } catch (e) {
-      return x.toFixed(1) + '%';
-    }
-  }
-
-  // A plain number at a fixed precision, locale digits.
+  // A fixed-precision number in the active locale's digits.
   function numFmt(x, digits) {
     try {
       return x.toLocaleString(locale(), { minimumFractionDigits: digits, maximumFractionDigits: digits });
@@ -47,15 +117,22 @@
     }
   }
 
-  // ── The maths (MATHS.md §4–5) ─────────────────────────
-  // A_t = (1 + attack/100)(1 + lethality/100)
-  // w = (A_inf/3, A_cav, 4.4·A_arc/3)
-  // f_t ∝ w_t²   (normalised)     K = √(Σ w_t²)
-  function compute() {
-    var A = {}, w = {}, share = {}, sum = 0;
+  function pct(x) { return numFmt(x, 1) + '%'; }
+
+  // The lead's A factor per type, straight off the report sheet.
+  function leadA() {
+    var A = {};
     TYPES.forEach(function (t) {
-      A[t.key] = (1 + num(t.pre) / 100) * (1 + num(t.ple) / 100);
+      A[t.key] = (1 + num('sim-atk-' + t.key) / 100) * (1 + num('sim-let-' + t.key) / 100);
     });
+    return A;
+  }
+
+  // ── The ratio (MATHS.md §4–5) ─────────────────────────
+  // A_t = (1 + attack/100)(1 + lethality/100)
+  // w = (A_inf/3, A_cav, 4.4·A_arc/3)      f_t ∝ w_t²      K = √(Σ w_t²)
+  function ratioCompute() {
+    var A = leadA(), w = {}, share = {}, sum = 0;
     w.inf = A.inf / 3;
     w.cav = A.cav;
     w.arc = (4.4 * A.arc) / 3;
@@ -70,14 +147,57 @@
     return { A: A, w: w, share: share, k: Math.sqrt(sum), ok: sum > 0 };
   }
 
-  function paint(BH) {
-    var s = compute();
+  // ── The march (MATHS.md §1–3) ─────────────────────────
+  // Damage per type is √N_t · base_t · A_t, summed over the three types, so
+  // the best a march of N troops can do for a given lead is √N · K_b with
+  // K_b = √(Σ (base_t·A_t)²) — and the ratio between the two is the cosine
+  // between (base_t·A_t) and the square roots of your shares. It reads 100%
+  // exactly when your split is the lead's optimum, at any march size, which
+  // is what lets the panel answer without the absolute constant.
+  function marchCompute(A) {
+    var n = [], q = [], total = 0, dot = 0, kk = 0;
+    TYPES.forEach(function (t, i) {
+      var count = Math.max(0, num('sim-n-' + t.key));
+      var tier = pick('sim-tier-' + t.key, 6);
+      var tg = pick('sim-tg-' + t.key, 0);
+      n[i] = count;
+      total += count;
+      q[i] = typeWeight(i, tier, tg) * A[t.key];
+      dot += q[i] * Math.sqrt(count);
+      kk += q[i] * q[i];
+    });
+    var K = Math.sqrt(kk);
+    var share = [];
+    TYPES.forEach(function (t, i) {
+      share[i] = kk > 0 ? (q[i] * q[i]) / kk : 0;
+    });
+    return { n: n, share: share, total: total, eff: (total > 0 && K > 0) ? dot / (Math.sqrt(total) * K) : 0, ok: total > 0 && K > 0 };
+  }
 
-    var headline = document.getElementById('sim-headline');
+  // ── Painting ──────────────────────────────────────────
+  // The visible labels live in the markup; this only keeps the composed
+  // accessible names (type + stat) in the active language.
+  function paintNames(BH) {
+    TYPES.forEach(function (t) {
+      STATS.forEach(function (s) {
+        var e = el('sim-' + s.key + '-' + t.key);
+        if (e) e.setAttribute('aria-label', BH.tr(t.nameKey, t.fallback) + ' — ' + BH.tr(s.nameKey, s.fallback));
+      });
+      var count = el('sim-n-' + t.key), tier = el('sim-tier-' + t.key), tg = el('sim-tg-' + t.key);
+      if (count) count.setAttribute('aria-label', BH.tr(t.nameKey, t.fallback) + ' — ' + BH.tr('sim.dmg.thCount', 'troops'));
+      if (tier) tier.setAttribute('aria-label', BH.tr(t.nameKey, t.fallback) + ' — ' + BH.tr('sim.dmg.thTier', 'tier'));
+      if (tg) tg.setAttribute('aria-label', BH.tr(t.nameKey, t.fallback) + ' — ' + BH.tr('sim.dmg.thTg', 'TG'));
+    });
+  }
+
+  function paintRatio(BH) {
+    var s = ratioCompute();
+
+    var headline = el('sim-headline');
     if (headline) {
       if (!s.ok) {
         headline.innerHTML = BH.tr('sim.calc.noStats',
-          'Enter the lead\u2019s <b>attack</b> and <b>lethality</b> — the ratio comes from their stats.');
+          'Fill in the lead\u2019s <b>attack</b> and <b>lethality</b> above — the ratio comes from their stats.');
       } else {
         headline.innerHTML = BH.tr('sim.calc.headline',
           'With this lead, the ideal march is <b>{inf}</b> infantry, <b>{cav}</b> cavalry, <b>{arc}</b> archers.')
@@ -87,7 +207,7 @@
       }
     }
 
-    var out = document.getElementById('sim-out');
+    var out = el('sim-out');
     if (out) {
       var html = '';
       if (s.ok) {
@@ -108,7 +228,7 @@
       out.hidden = html === '';
     }
 
-    var kEl = document.getElementById('sim-k');
+    var kEl = el('sim-k');
     if (kEl) {
       kEl.innerHTML = s.ok
         ? BH.tr('sim.calc.k', 'Leader strength K = <b>{k}</b>').replace(/\{k\}/g, numFmt(s.k, 2))
@@ -116,13 +236,175 @@
     }
   }
 
-  function boot(BH) {
-    TYPES.forEach(function (t) {
-      [t.pre, t.ple].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener('input', function () { paint(BH); });
+  function paintMarch(BH) {
+    var m = marchCompute(leadA());
+
+    var headline = el('sim-dmg-headline');
+    if (headline) {
+      headline.innerHTML = m.ok
+        ? BH.tr('sim.dmg.headline',
+          'Your split converts <b>{eff}</b> of what these troops could do for this lead.')
+          .replace(/\{eff\}/g, pct(m.eff * 100))
+        : BH.tr('sim.dmg.noStats',
+          'Fill in the lead\u2019s stats above and your troop counts — the split needs both.');
+    }
+
+    var out = el('sim-dmg-out');
+    if (out) {
+      var html = '';
+      if (m.ok) {
+        html = '<div class="sim-head">' +
+          '<span>' + BH.tr('sim.calc.thType', 'Troop') + '</span>' +
+          '<span>' + BH.tr('sim.dmg.thCount', 'troops') + '</span>' +
+          '<span>' + BH.tr('sim.dmg.thYours', 'your share') + '</span>' +
+          '<span>' + BH.tr('sim.dmg.thIdeal', 'ideal share') + '</span></div>';
+        TYPES.forEach(function (t, i) {
+          html += '<div class="sim-row">' +
+            '<span class="sim-type">' + BH.tr(t.nameKey, t.fallback) + '</span>' +
+            '<span class="sim-n">' + numFmt(m.n[i], 0) + '</span>' +
+            '<span class="sim-a">' + pct(m.total ? (m.n[i] / m.total) * 100 : 0) + '</span>' +
+            '<span class="sim-share">' + pct(m.share[i] * 100) + '</span></div>';
+        });
+      }
+      out.innerHTML = html;
+      out.hidden = html === '';
+    }
+
+    var ideal = el('sim-dmg-ideal');
+    if (ideal) {
+      ideal.innerHTML = m.ok
+        ? BH.tr('sim.dmg.ideal',
+          'Split the lead\u2019s way, that same march is <b>\u2248{inf}</b> infantry, <b>\u2248{cav}</b> cavalry, <b>\u2248{arc}</b> archers.')
+          .replace(/\{inf\}/g, numFmt(Math.round(m.total * m.share[0]), 0))
+          .replace(/\{cav\}/g, numFmt(Math.round(m.total * m.share[1]), 0))
+          .replace(/\{arc\}/g, numFmt(Math.round(m.total * m.share[2]), 0))
+        : '';
+    }
+  }
+
+  // ── The rooms (Mystic Trial) ──────────────────────────
+  // Rooms open on a weekday roster; the reset is 00:00 UTC, so "today" is
+  // UTC, not the reader's midnight. The roster itself is markup + i18n; this
+  // only marks today's rows and names them in the line above.
+  function paintMystic(BH) {
+    var day = new Date().getUTCDay();
+    var rows = document.querySelectorAll('#sim-rooms .sim-row');
+    var open = [];
+    Array.prototype.forEach.call(rows, function (row) {
+      var days = (row.getAttribute('data-days') || '').split(/\s+/);
+      var on = days.indexOf(String(day)) !== -1;
+      row.classList.toggle('today', on);
+      var holder = row.querySelector('.room-name');
+      var old = holder && holder.querySelector('.room-today');
+      if (old) holder.removeChild(old);
+      if (!on || !holder) return;
+      var label = holder.querySelector('span');
+      if (label && label.textContent) open.push(label.textContent);
+      var tag = document.createElement('span');
+      tag.className = 'room-today';
+      tag.textContent = BH.tr('sim.mystic.today', 'open today');
+      holder.appendChild(tag);
+    });
+
+    var line = el('sim-mystic-today');
+    if (!line) return;
+    line.textContent = '';
+    if (!open.length) return;
+    // Keep the template's markup and put the names in as text: the labels come
+    // from the dictionary, so they must never be parsed as HTML.
+    var tpl = BH.tr('sim.mystic.todayLine', 'Open today: <b>{rooms}</b>.');
+    line.innerHTML = tpl.replace('{rooms}', '<span class="room-slot"></span>');
+    var slot = line.querySelector('.room-slot');
+    if (slot) slot.textContent = open.join(' \u00B7 ');
+  }
+
+  function paint(BH) {
+    paintNames(BH);
+    paintRatio(BH);
+    paintMarch(BH);
+    paintMystic(BH);
+  }
+
+  // ── Modes — the rail, the panels, the URL ─────────────
+  // The URL is the state: ?mode=… opens a fight, and every other param
+  // (?lang=…) survives a switch. Applied synchronously when this file runs,
+  // so a deep link never flashes the default panel.
+  function readMode() {
+    var m = (location.search.match(/[?&]mode=([^&]+)/) || [])[1];
+    m = m ? decodeURIComponent(m) : '';
+    return MODES.indexOf(m) !== -1 ? m : DEFAULT_MODE;
+  }
+
+  function modeUrl(m) {
+    var keep = [];
+    location.search.replace(/^\?/, '').split('&').forEach(function (kv) {
+      if (kv && !/^mode=/.test(kv)) keep.push(kv);
+    });
+    keep.push('mode=' + m);
+    return location.pathname + '?' + keep.join('&') + location.hash;
+  }
+
+  function setMode(m, push) {
+    MODES.forEach(function (k) {
+      var panel = document.querySelector('.sim-panel[data-mode="' + k + '"]');
+      if (panel) panel.hidden = k !== m;
+      var link = document.querySelector('.mode-rail a[data-mode="' + k + '"]');
+      if (!link) return;
+      if (k === m) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
+    if (!push) return;
+    try {
+      history.pushState({ mode: m }, '', modeUrl(m));
+    } catch (e) { /* file:// or a blocked history — the panel still switched */ }
+  }
+
+  function wireRail() {
+    var links = document.querySelectorAll('.mode-rail a');
+    Array.prototype.forEach.call(links, function (a) {
+      a.addEventListener('click', function (e) {
+        // Leave modified clicks alone — those open a new tab.
+        if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        setMode(a.getAttribute('data-mode'), true);
       });
     });
+    window.addEventListener('popstate', function () { setMode(readMode(), false); });
+  }
+
+  // ── The march controls (tier + TG, built from the table) ──
+  function buildMarch(BH) {
+    TYPES.forEach(function (t) {
+      var tier = el('sim-tier-' + t.key), tg = el('sim-tg-' + t.key);
+      var i;
+      if (tier && !tier.options.length) {
+        for (i = 1; i <= 11; i++) tier.appendChild(new Option('T' + i, String(i)));
+        tier.value = '6';
+      }
+      if (tg && !tg.options.length) {
+        for (i = 0; i <= 5; i++) tg.appendChild(new Option('TG' + i, String(i)));
+        tg.value = '0';
+      }
+      [tier, tg].forEach(function (s) {
+        if (s) s.addEventListener('change', function () { paint(BH); });
+      });
+    });
+  }
+
+  function wireInputs(BH) {
+    TYPES.forEach(function (t) {
+      STATS.forEach(function (s) {
+        var e = el('sim-' + s.key + '-' + t.key);
+        if (e) e.addEventListener('input', function () { paint(BH); });
+      });
+      var n = el('sim-n-' + t.key);
+      if (n) n.addEventListener('input', function () { paint(BH); });
+    });
+  }
+
+  function boot(BH) {
+    buildMarch(BH);
+    wireInputs(BH);
     wireOcr(BH);
     paint(BH);
     warmOcr();
@@ -146,7 +428,7 @@
     }
   }
 
-  // ── OCR prefill — read a battle-report screenshot, fill the form ──
+  // ── OCR prefill — read a battle-report screenshot, fill the sheet ──
   // The whole pipeline runs client-side (static site, no server). The engine
   // itself lives in js/ocr-worker.js: PaddleOCR.js (PP-OCRv6 tiny) plus ONNX
   // Runtime and OpenCV are megabytes of JS and a wasm session compile, and
@@ -155,7 +437,7 @@
   // carries a box, so the 12 Bonus Details values are mapped by their row label
   // (block + stat) and column (left = your green value). boot() warms the
   // engine once the page is idle (warmOcr) so the first click doesn't also pay
-  // the download. The form stays the source of truth — this is a prefill, and
+  // the download. The sheet stays the source of truth — this is a prefill, and
   // every value is editable.
 
   // Site root from this file's own URL (same trick as i18n.js), so the worker
@@ -242,23 +524,23 @@
   }
 
   function ocrStatus(BH, key, fb, cls, vars) {
-    var el = document.getElementById('sim-ocr-status');
-    if (!el) return;
-    if (!key) { el.hidden = true; el.textContent = ''; return; }
+    var el2 = el('sim-ocr-status');
+    if (!el2) return;
+    if (!key) { el2.hidden = true; el2.textContent = ''; return; }
     var text = BH.tr(key, fb);
     if (vars) {
       Object.keys(vars).forEach(function (k) {
         text = text.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
       });
     }
-    el.hidden = false;
-    el.textContent = text;
-    el.className = 'sim-ocr-status' + (cls ? ' ' + cls : '');
+    el2.hidden = false;
+    el2.textContent = text;
+    el2.className = 'sim-ocr-status' + (cls ? ' ' + cls : '');
   }
 
-  // ── Reading the panel ─────────────────────────────────
-  var BLOCKS = ['Infantry', 'Cavalry', 'Archer'];
-  var STATS = ['Attack', 'Defense', 'Lethality', 'Health'];
+  // ── Reading the sheet ─────────────────────────────────
+  var BLOCKS = TYPES.map(function (t) { return t.block; });
+  var STATS_EN = STATS.map(function (s) { return s.ocr; });
 
   // OCR misreads a letter here and there ("lnfantry", "Letha1ity"), and often
   // returns a whole row label as one box ("Infantry Attack") rather than two.
@@ -341,7 +623,7 @@
       var joined = r.items.map(function (b) { return b.text; }).join(' ');
       var folded = fold(joined);
       var block = wordIn(folded, BLOCKS);
-      var stat = wordIn(folded, STATS);
+      var stat = wordIn(folded, STATS_EN);
       if (!block || !stat) return;
       var label = block + '|' + stat;
       if (label in out) return; // first (topmost) row wins
@@ -354,8 +636,8 @@
       if (at === -1) {
         m = joined.match(/[+\-]?\d+(?:\.\d+)?\s*%/);
       } else {
-        var pct = /[+\-]?\d+(?:\.\d+)?\s*%/g, hit;
-        while ((hit = pct.exec(joined)) !== null) {
+        var pctRe = /[+\-]?\d+(?:\.\d+)?\s*%/g, hit;
+        while ((hit = pctRe.exec(joined)) !== null) {
           if (hit.index >= at) break;
           m = hit;
         }
@@ -368,27 +650,28 @@
     return out;
   }
 
-  // The ratio needs only attack and lethality; the panel's Defense/Health rows
-  // are parsed (future modes want them) but not filled.
-  var FIELDS = [
-    ['Infantry|Attack', 'sim-atk-inf'],
-    ['Infantry|Lethality', 'sim-let-inf'],
-    ['Cavalry|Attack', 'sim-atk-cav'],
-    ['Cavalry|Lethality', 'sim-let-cav'],
-    ['Archer|Attack', 'sim-atk-arc'],
-    ['Archer|Lethality', 'sim-let-arc']
-  ];
+  // All twelve sheet cells are fillable; the modes each read their own slice
+  // (bear fights want attack + lethality, and nothing reads defense or health
+  // against a bear — they are on the sheet for the fights that do). One entry
+  // per cell, keyed by the report's own row label.
+  var FIELDS = [];
+  TYPES.forEach(function (t) {
+    STATS.forEach(function (s) {
+      FIELDS.push({ label: t.block + '|' + s.ocr, id: 'sim-' + s.key + '-' + t.key });
+    });
+  });
 
   // Set every value we read and let the caller repaint once. Dispatching an
-  // `input` event per field repainted the whole panel six times for one import
-  // (six style/layout invalidations for ~1.5 ms of work that costs ~0.25 ms).
+  // `input` event per field repainted the whole console twelve times for one
+  // import (twelve style/layout invalidations for ~2 ms of work that costs
+  // ~0.3 ms).
   function fill(vals) {
     var filled = 0;
     FIELDS.forEach(function (f) {
-      var el = document.getElementById(f[1]);
-      var v = vals[f[0]];
-      if (el && v !== undefined && isFinite(v)) {
-        el.value = String(Math.round(v * 10) / 10);
+      var e = el(f.id);
+      var v = vals[f.label];
+      if (e && v !== undefined && isFinite(v)) {
+        e.value = String(Math.round(v * 10) / 10);
         filled++;
       }
     });
@@ -397,8 +680,8 @@
 
   var ocrBusy = false;
   function wireOcr(BH) {
-    var btn = document.getElementById('sim-ocr-btn');
-    var file = document.getElementById('sim-ocr-file');
+    var btn = el('sim-ocr-btn');
+    var file = el('sim-ocr-file');
     if (!btn || !file) return;
 
     // The shot we just read, so the filled numbers can be checked against it.
@@ -406,9 +689,9 @@
     // (transferred, so nothing is copied or re-encoded); the link opens the
     // original full size in a new tab, where its decode can't land on this
     // page's thread.
-    var shotEl = document.getElementById('sim-ocr-shot');
-    var shotCanvas = document.getElementById('sim-ocr-preview');
-    var shotLink = document.getElementById('sim-ocr-shot-link');
+    var shotEl = el('sim-ocr-shot');
+    var shotCanvas = el('sim-ocr-preview');
+    var shotLink = el('sim-ocr-shot-link');
     var shotUrl = null;
 
     function showShot(f, preview) {
@@ -467,9 +750,9 @@
             // rather than discarding it behind a flat "couldn't read that".
             // Amber like a full read — values landed; the count is the caveat.
             ocrStatus(BH, 'sim.ocr.partial',
-              'Read {n} of 6 values \u2014 fill in the rest below.', 'ok', { n: out.filled });
+              'Read {n} of 12 values \u2014 fill in the rest above.', 'ok', { n: out.filled });
           } else {
-            ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers below.', 'bad');
+            ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers above.', 'bad');
           }
         })
         .catch(function (err) {
@@ -477,11 +760,17 @@
           // what we were looking at.
           if (window.console && console.error) console.error('[sim-ocr]', (err && err.message) || err);
           showShot(f, err && err.preview);
-          ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers below.', 'bad');
+          ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers above.', 'bad');
         })
         .then(function () { ocrBusy = false; });
     });
   }
+
+  // ── Boot ──────────────────────────────────────────────
+  // The rail is live before the dictionary lands: a deep link applies to the
+  // DOM at parse time, so the right panel is the one that first paints.
+  wireRail();
+  setMode(readMode(), false);
 
   BH.registerPage({
     boot: boot,

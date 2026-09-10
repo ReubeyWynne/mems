@@ -463,6 +463,7 @@ window.__BH_I18N_DATA["id"] = {
   "sim.ocr.loading": "Membaca tangkapan layar…",
   "sim.ocr.done": "Terisi dari laporan Anda — periksa kembali angkanya.",
   "sim.ocr.partial": "Terbaca {n} dari 6 nilai — isi sisanya di bawah.",
+  "sim.ocr.shot": "tangkapan layarmu — buka ukuran penuh",
   "sim.ocr.fail": "Tangkapan layar ini tidak dapat dibaca. Coba gambar yang lebih jelas, atau masukkan angkanya di bawah.",
 
   "sim.nav.ratio": "Rasio beruangmu",

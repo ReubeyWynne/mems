@@ -455,6 +455,7 @@ window.__BH_I18N_DATA["ko"] = {
   "sim.ocr.loading": "스크린샷 읽는 중…",
   "sim.ocr.done": "보고서에서 입력했습니다 — 숫자를 다시 확인하세요.",
   "sim.ocr.partial": "6개 중 {n}개를 읽었습니다 — 나머지는 아래에 입력하세요.",
+  "sim.ocr.shot": "내 스크린샷 — 원본 크기로 열기",
   "sim.ocr.fail": "스크린샷을 읽을 수 없습니다. 더 선명한 이미지를 사용하거나 아래에 숫자를 직접 입력하세요.",
 
   "sim.nav.ratio": "네 곰 비율",

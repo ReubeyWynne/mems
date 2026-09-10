@@ -455,6 +455,7 @@ window.__BH_I18N_DATA["pt-BR"] = {
   "sim.ocr.loading": "Lendo a captura…",
   "sim.ocr.done": "Preenchido a partir do seu relatório — confira os números.",
   "sim.ocr.partial": "Li {n} de 6 valores — preencha o resto abaixo.",
+  "sim.ocr.shot": "sua captura — abra em tamanho real",
   "sim.ocr.fail": "Não foi possível ler essa captura. Tente uma imagem mais nítida ou digite os números abaixo.",
 
   "sim.nav.ratio": "Sua razão do urso",

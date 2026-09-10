@@ -174,10 +174,17 @@
 
   var worker = null, seq = 0, pending = {};
 
-  function failPending(err) {
+  // Drop the worker and fail everything in flight. A worker that a phone kills
+  // for memory never replies and never fires an error, so this is the only way
+  // the page learns it is gone.
+  function killWorker(err) {
     var p = pending;
     pending = {};
     Object.keys(p).forEach(function (id) { p[id].reject(err); });
+    if (worker) {
+      try { worker.terminate(); } catch (e) { /* already gone */ }
+      worker = null;
+    }
   }
 
   function ocrWorker() {
@@ -187,31 +194,44 @@
       var m = e.data || {}, p = pending[m.id];
       if (!p) return;
       delete pending[m.id];
-      if (m.ok) p.resolve(m); else p.reject(new Error(m.error || 'ocr failed'));
+      if (m.ok) {
+        p.resolve(m);
+      } else {
+        var err = new Error(m.error || 'ocr failed');
+        err.preview = m.preview;
+        p.reject(err);
+      }
     };
-    // A crashed or unloadable worker would otherwise leave every click waiting
-    // forever; reject what's in flight, drop it, and rebuild on the next try.
-    var dead = function (err) {
-      failPending(err);
-      try { worker.terminate(); } catch (e) { /* already gone */ }
-      worker = null;
-    };
-    worker.onerror = function (e) { dead(new Error((e && e.message) || 'ocr worker error')); };
-    worker.onmessageerror = function () { dead(new Error('ocr worker message error')); };
+    worker.onerror = function (e) { killWorker(new Error((e && e.message) || 'ocr worker error')); };
+    worker.onmessageerror = function () { killWorker(new Error('ocr worker message error')); };
     return worker;
   }
+
+  // Long enough that a slow phone on a cold model download is never cut off —
+  // this is a hang-breaker, not a deadline. Without it a worker that dies
+  // mid-read leaves the status and the button stuck for good.
+  var ASK_TIMEOUT_MS = 120000;
 
   // One request, one reply, matched by id. 'warm' builds the engine; 'predict'
   // implies it.
   function askWorker(type, blob) {
     return new Promise(function (resolve, reject) {
       var id = ++seq;
-      pending[id] = { resolve: resolve, reject: reject };
+      var timer = setTimeout(function () {
+        delete pending[id];
+        killWorker(new Error('ocr worker timed out'));
+        reject(new Error('ocr worker timed out'));
+      }, ASK_TIMEOUT_MS);
+      pending[id] = {
+        resolve: function (v) { clearTimeout(timer); resolve(v); },
+        reject: function (e) { clearTimeout(timer); reject(e); }
+      };
       try {
         ocrWorker().postMessage({ id: id, type: type, blob: blob });
       } catch (e) {
+        clearTimeout(timer);
         delete pending[id];
-        worker = null;
+        killWorker(e);
         reject(e);
       }
     });
@@ -380,6 +400,31 @@
     var btn = document.getElementById('sim-ocr-btn');
     var file = document.getElementById('sim-ocr-file');
     if (!btn || !file) return;
+
+    // The shot we just read, so the filled numbers can be checked against it.
+    // The inline preview is painted from the bitmap the worker already decoded
+    // (transferred, so nothing is copied or re-encoded); the link opens the
+    // original full size in a new tab, where its decode can't land on this
+    // page's thread.
+    var shotEl = document.getElementById('sim-ocr-shot');
+    var shotCanvas = document.getElementById('sim-ocr-preview');
+    var shotLink = document.getElementById('sim-ocr-shot-link');
+    var shotUrl = null;
+
+    function showShot(f, preview) {
+      if (!shotEl || !shotCanvas || !shotLink) return;
+      if (shotUrl) URL.revokeObjectURL(shotUrl);
+      shotUrl = URL.createObjectURL(f);
+      shotLink.href = shotUrl;
+      if (preview) {
+        shotCanvas.width = preview.width;
+        shotCanvas.height = preview.height;
+        shotCanvas.getContext('2d').drawImage(preview, 0, 0);
+        preview.close();
+      }
+      shotEl.hidden = false;
+    }
+
     btn.addEventListener('click', function () { file.click(); });
     file.addEventListener('change', function () {
       var f = file.files && file.files[0];
@@ -393,6 +438,7 @@
         .then(function (res) {
           var filled = fill(parseItems(res.items));
           if (filled) paint(BH);
+          showShot(f, res.preview);
           if (filled === FIELDS.length) {
             ocrStatus(BH, 'sim.ocr.done', 'Filled from your report \u2014 double-check the numbers.', 'ok');
           } else if (filled > 0) {
@@ -405,7 +451,10 @@
             ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers below.', 'bad');
           }
         })
-        .catch(function () {
+        .catch(function (err) {
+          // A failed read still hands back the shot it saw, so the user can see
+          // what we were looking at.
+          showShot(f, err && err.preview);
           ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers below.', 'bad');
         })
         .then(function () { ocrBusy = false; });

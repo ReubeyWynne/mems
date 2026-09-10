@@ -454,6 +454,7 @@ window.__BH_I18N_DATA["tr"] = {
   "sim.ocr.loading": "Ekran görüntüsü okunuyor…",
   "sim.ocr.done": "Raporundan dolduruldu — sayıları kontrol et.",
   "sim.ocr.partial": "6 değerden {n} tanesi okundu — kalanını aşağıya gir.",
+  "sim.ocr.shot": "ekran görüntün — tam boyutta aç",
   "sim.ocr.fail": "Bu ekran görüntüsü okunamadı. Daha net bir görsel dene veya sayıları aşağıya yaz.",
   "sim.nav.ratio": "Ayı oranın",
   "sim.nav.maths": "Matematik",

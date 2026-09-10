@@ -40,6 +40,13 @@ self: sim
       </div>
       <output id="sim-ocr-status" class="sim-ocr-status" aria-live="polite" hidden></output>
 
+      <figure class="sim-ocr-shot" id="sim-ocr-shot" hidden>
+        <a id="sim-ocr-shot-link" href="#" target="_blank" rel="noopener">
+          <canvas class="sim-ocr-preview" id="sim-ocr-preview" aria-hidden="true"></canvas>
+          <span class="sim-ocr-shot-open" data-i18n="sim.ocr.shot">your screenshot — open it full size</span>
+        </a>
+      </figure>
+
       <div class="calc-row">
         <label data-i18n="sim.calc.inf">Infantry</label>
         <div class="sim-fields">

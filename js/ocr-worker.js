@@ -109,31 +109,6 @@ function warmPipelines(ocr) {
 var enginePromise = null;
 var engineKind = 'auto';
 
-// TEMPORARY: what the engine actually resolved to, sent back with every reply so
-// a phone read can be compared against a desktop one on the page itself. Remove
-// with showDebug() in js/sim.js once the mobile failure is understood.
-var diag = { backend: null, webgpu: null, provider: null, engineMs: null, adapter: null };
-
-function describeEngine(ocr) {
-  try {
-    var s = ocr.getInitializationSummary && ocr.getInitializationSummary();
-    if (s) {
-      diag.backend = s.backend;
-      diag.webgpu = s.webgpuAvailable;
-      diag.provider = s.detProvider;
-      diag.engineMs = Math.round(s.elapsedMs);
-    }
-  } catch (e) { /* diagnostics must never break a read */ }
-  if (navigator.gpu && navigator.gpu.requestAdapter) {
-    navigator.gpu.requestAdapter().then(function (a) {
-      diag.adapter = a ? (a.info ? a.info.vendor + '/' + a.info.architecture : 'adapter, no .info') : 'no adapter';
-    }, function (e) { diag.adapter = 'requestAdapter threw: ' + e.message; });
-  } else {
-    diag.adapter = 'no navigator.gpu';
-  }
-  return ocr;
-}
-
 // Import + session build happen once, inside this worker. `worker: false` is
 // deliberate: this file *is* the worker, so the pipeline runs directly here
 // rather than the library spawning a second one.
@@ -148,7 +123,7 @@ function createEngine(backend) {
       textDetLimitSideLen: DET_SIDE,
       textDetLimitType: 'max',
       ortOptions: { backend: backend }
-    }).then(describeEngine);
+    });
   });
 }
 
@@ -191,8 +166,7 @@ function runPredict(ocr, blob) {
             ok: true,
             preview: preview,
             items: (first && first.items) || [],
-            metrics: (first && first.metrics) || null,
-            provider: first && first.runtime ? first.runtime.detProvider : null
+            metrics: (first && first.metrics) || null
           };
         },
         function (err) {
@@ -213,10 +187,6 @@ self.onmessage = function (e) {
   // is one, and still answers if it can't.
   var reply = function (out) {
     out.id = id;
-    // The engine that produced this answer, so a failure on a device we can't
-    // debug says whether it was the GPU or the wasm path.
-    if (out.engine === undefined) out.engine = engineKind;
-    out.diag = diag;
     try {
       self.postMessage(out, out.preview ? [out.preview] : []);
     } catch (err) {

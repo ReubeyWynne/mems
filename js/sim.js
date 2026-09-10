@@ -199,9 +199,6 @@
       } else {
         var err = new Error(m.error || 'ocr failed');
         err.preview = m.preview;
-        err.engine = m.engine;
-        err.provider = m.provider;
-        err.diag = m.diag;
         p.reject(err);
       }
     };
@@ -428,65 +425,10 @@
       shotEl.hidden = false;
     }
 
-    // A diagnostic the next read's failure can be read back from: which engines
-    // ran, and how much text each found. Small, but it is the difference
-    // between knowing and guessing on a device we can't attach a debugger to.
-    function trace(note, attempts, elapsedMs) {
-      if (!window.console || !console.error) return;
-      var detail = attempts.map(function (a) {
-        return (a.engine || '?') + '(' + (a.items === undefined ? '?' : a.items) + ' items/' + a.filled + ' filled)';
-      }).join(' -> ');
-      console.error('[sim-ocr] ' + note + ' attempts=' + detail +
-        ' provider=' + ((attempts[attempts.length - 1] || {}).provider || '?') +
-        ' after=' + Math.round(elapsedMs) + 'ms');
-    }
-
-    // TEMPORARY: the mobile-OCR diagnosis scratchpad. A phone has no console we
-    // can read, so while we work out why it fails where a desktop doesn't, the
-    // facts go into the page where they can be read and screenshotted from the
-    // device itself. Remove this, the markup and the CSS once it's understood.
-    var debugEl = document.getElementById('sim-ocr-debug');
-
-    function showDebug(headline, attempts, elapsedMs) {
-      if (!debugEl) return;
-      var lines = ['sim-ocr debug — TEMPORARY'];
-      lines.push(headline);
-      lines.push('attempts: ' + attempts.map(function (a) {
-        return (a.engine || '?') + ' (' + (a.items === undefined ? '?' : a.items) + ' items, ' + a.filled + ' filled)';
-      }).join(' -> '));
-      var d = null;
-      for (var i = attempts.length - 1; i >= 0 && !d; i--) d = attempts[i].diag;
-      if (d) {
-        lines.push('ort: backend=' + d.backend + ' provider=' + d.provider +
-          ' webgpuAvailable=' + d.webgpu + ' engineMs=' + d.engineMs);
-        lines.push('gpu adapter: ' + (d.adapter === null || d.adapter === undefined ? '(pending)' : d.adapter));
-      }
-      lines.push('took: ' + Math.round(elapsedMs) + 'ms');
-      lines.push('ua: ' + navigator.userAgent);
-      lines.push('cores: ' + navigator.hardwareConcurrency +
-        '  deviceMemory: ' + (navigator.deviceMemory === undefined ? '?' : navigator.deviceMemory) +
-        '  crossOriginIsolated: ' + ((typeof crossOriginIsolated !== 'undefined' && crossOriginIsolated) ? 'yes' : 'no') +
-        '  webgpu in page: ' + (navigator.gpu ? 'yes' : 'no'));
-      if (navigator.connection) {
-        lines.push('connection: type=' + navigator.connection.type +
-          ' effective=' + navigator.connection.effectiveType +
-          ' saveData=' + navigator.connection.saveData);
-      }
-      debugEl.textContent = lines.join('\n');
-      debugEl.hidden = false;
-    }
-
     // One read: ask the worker, then fill whatever labels we recognise.
     function readOnce(f) {
       return askWorker('predict', f).then(function (res) {
-        return {
-          filled: fill(parseItems(res.items)),
-          preview: res.preview,
-          engine: res.engine,
-          provider: res.provider,
-          diag: res.diag,
-          items: (res.items || []).length
-        };
+        return { filled: fill(parseItems(res.items)), preview: res.preview };
       });
     }
 
@@ -494,17 +436,15 @@
     // nothing usable — a failure mode a desktop's GPU driver doesn't show, and
     // one the worker can't detect because it doesn't know which words matter.
     // So if a read yields no values at all, drop the GPU for the session and
-    // read the shot once more on wasm before reporting failure.
+    // read the shot once more on wasm before reporting failure. That second
+    // read is what made the phone work.
     function readShot(f) {
       return readOnce(f).then(function (first) {
-        if (first.filled > 0) return { best: first, attempts: [first] };
+        if (first.filled > 0) return first;
         return askWorker('useWasm')
           .then(function () { return readOnce(f); })
-          .then(function (second) {
-            return { best: second.filled > 0 ? second : first, attempts: [first, second] };
-          }, function () {
-            return { best: first, attempts: [first] };
-          });
+          .then(function (second) { return second.filled > 0 ? second : first; },
+            function () { return first; });
       });
     }
 
@@ -515,35 +455,27 @@
       file.value = '';
       if (!f || ocrBusy) return;
       ocrBusy = true;
-      var startedAt = performance.now();
       ocrStatus(BH, 'sim.ocr.loading', 'Reading the screenshot\u2026');
       readShot(f)
         .then(function (out) {
-          var filled = out.best.filled;
-          if (filled) paint(BH);
-          showShot(f, out.best.preview);
-          showDebug(filled === FIELDS.length ? 'result: read everything'
-            : filled > 0 ? 'result: partial read' : 'result: NOTHING USABLE',
-            out.attempts, performance.now() - startedAt);
-          if (filled === FIELDS.length) {
+          if (out.filled) paint(BH);
+          showShot(f, out.preview);
+          if (out.filled === FIELDS.length) {
             ocrStatus(BH, 'sim.ocr.done', 'Filled from your report \u2014 double-check the numbers.', 'ok');
-          } else if (filled > 0) {
+          } else if (out.filled > 0) {
             // A partial read is still useful: keep what we got and say so,
             // rather than discarding it behind a flat "couldn't read that".
             // Amber like a full read — values landed; the count is the caveat.
             ocrStatus(BH, 'sim.ocr.partial',
-              'Read {n} of 6 values \u2014 fill in the rest below.', 'ok', { n: filled });
+              'Read {n} of 6 values \u2014 fill in the rest below.', 'ok', { n: out.filled });
           } else {
-            trace('read nothing usable', out.attempts, performance.now() - startedAt);
             ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers below.', 'bad');
           }
         })
         .catch(function (err) {
           // A failed read still hands back the shot it saw, so the user can see
           // what we were looking at.
-          var attempt = { engine: err && err.engine, provider: err && err.provider, diag: err && err.diag, filled: 0 };
-          trace('error=' + ((err && err.message) || err), [attempt], performance.now() - startedAt);
-          showDebug('result: ERROR — ' + ((err && err.message) || err), [attempt], performance.now() - startedAt);
+          if (window.console && console.error) console.error('[sim-ocr]', (err && err.message) || err);
           showShot(f, err && err.preview);
           ocrStatus(BH, 'sim.ocr.fail', 'Couldn\u2019t read that screenshot. Try a clearer shot, or enter the numbers below.', 'bad');
         })

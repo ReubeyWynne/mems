@@ -140,6 +140,24 @@ html[lang="ar"] .alpha-stamp { letter-spacing: 0; text-indent: 0; }
 .sim-ocr-status.ok { color: var(--amber); }
 .sim-ocr-status.bad { color: var(--ink-dim); }
 
+/* ─── TEMPORARY: mobile-OCR diagnosis scratchpad ─────────
+   Raw read-back so a failing phone can be compared against a working desktop
+   without a console. Dashed oxblood so it never reads as part of the page.
+   Delete with the markup and the showDebug() block in js/sim.js. */
+.sim-ocr-debug {
+  margin: 0 0 var(--space-s);
+  padding: 0.5rem 0.6rem;
+  border: 1px dashed var(--oxblood);
+  border-radius: 2px;
+  background: var(--void-2);
+  color: var(--ink-dim);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 /* ─── The shot we read — so the numbers can be checked against it ──
    Painted from the bitmap the detector saw (transferred out of the worker), so
    the page never decodes the 4.6MP original. A canvas is a replaced element, so

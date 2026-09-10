@@ -65,20 +65,45 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   ruled rows and checklist); per-page sheets are `css/home.css`, `css/vikings.css`,
   `css/swordland.css` (bear-hunt has none — its components are the shared base).
   JS lives in `js/` — shared `js/i18n.js` (dictionary loader — resolves `/i18n/`
-  from its own URL, so it works from any page depth) + `js/common.js` (chrome,
-  easter eggs, egg bit registry, shared gossip pool); per-page toys live in
-  `js/bear-hunt.js`, `js/vikings.js`, `js/swordland.js` and register via
+  from its own URL, so it works from any page depth) + `js/common.js` (chrome:
+  topbar, ledger, language menu, scrollspy, progress, swipe/keyboard paging, the
+  parchment toast helper `BH.showNote`); per-page toys live in
+  `js/bear-hunt.js`, `js/vikings.js`, `js/swordland.js`, `js/kvk.js`, `js/sim.js`
+  and register via
   `window.BH.registerPage(...)`. `_data/pages.json` references these as
   `css/…`/`js/…` (root-relative from the page's depth: `../css/…` from subdirs).
 - The TOC scrollspy and front-layer observer in `js/common.js` pick up new sections
   (`<section class="section" id="…">` + matching `.toc a[href="#…"]`) automatically.
+- **Paging between pages (prefetch + view transition):** after boot, once the
+  browser is idle, `js/common.js` fetches each of the two neighbour pages a swipe
+  can reach, reads the markup the browser will read, and prefetches the sheets and
+  toys that neighbour asks for (this page's own, and anything off-origin, are
+  dropped) — skipped under data-saver / 2G, and deliberately after the page is
+  whole so a speculative download never competes with the dictionary. The
+  neighbours are the layout's `data-prev-url`/`data-next-url`, so it is still one
+  `_data/pages.json` edit. The move itself is a cross-document view transition in
+  `css/events.css`: `@view-transition { navigation: auto; }` **must stay a
+  top-level rule** (nested inside a media query Chrome parses it and then ignores
+  it, silently dropping the whole transition), it names `.topbar` so the chrome
+  holds still while the leaf moves, and the direction is the incoming document's
+  to know — the script in `head.html` compares `document.referrer` against
+  `data-prev-url`/`data-next-url` and stamps `data-nav="next|prev"` on `<html>`.
+  No direction (a link from outside the ring) = plain dissolve; reduced motion =
+  the transition's animations are neutralised, so the swap is instant. A committed
+  swipe keeps its cover card on screen (the old frame the transition carries out);
+  `js/common.js` springs it away after 1.5s only if the navigation never lands.
+  The dictionary URL is build-stamped (`window.__BH_BUILD` = `site.time`, read by
+  `js/i18n.js`): cacheable on the live site, still no-cache on localhost/`file://`.
 - A new event page = one directory with a front-matter `index.html` (its TOC +
   `<main>` body only), a `data-page` theme block + dust rules in `css/events.css`,
-  a per-page CSS file for bespoke components, a per-page JS file registering
-  whispers/toys (see the egg bit registry in `js/common.js` before allocating
-  whisper ids), and one row each in `_data/nav.json` + `_data/pages.json` so
-  the navs, ledger, footer and swipe ring pick it up (no per-page nav edits).
-  Then `jekyll build` and re-run `.dsh/kvk-check.js` against `_site/`.
+  a per-page CSS file for bespoke components, a per-page JS file registering its
+  toys (one `window.BH.registerPage({ boot, onChange })` call), and one row each
+  in `_data/nav.json` + `_data/pages.json` so
+  the navs, ledger, footer, swipe ring and neighbour prefetch pick it up (no
+  per-page nav edits).
+  Then `jekyll build` and re-run `.dsh/kvk-check.js` and `.dsh/i18n-check.js`
+  against `_site/` (the second one catches a plain `data-i18n` whose dictionary
+  value carries markup, and any `.md` that reached the build).
 - Docs: `MATHS.md` is the formula source of truth; `KINGSHOT-SOURCES.md` is the
   mined KingShot reference (the Frakinator's acknowledged sources: engine canon,
   unit stats, buffs, OCR decision) — read it before claiming new gameplay facts;

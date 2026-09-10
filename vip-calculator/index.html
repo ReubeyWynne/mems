@@ -40,14 +40,14 @@ self: vip
       <div class="calc-row">
         <label for="vip-xp" data-i18n="vip.calc.xpLabel">VIP XP toward the next level</label>
         <div class="vip-input-wrap">
-          <input id="vip-xp" type="number" min="0" step="100" value="12000">
+          <input id="vip-xp" type="number" inputmode="numeric" min="0" step="100" value="12000">
           <output id="vip-xp-out" class="vip-chip">12,000 / 40,000</output>
         </div>
       </div>
       <div class="calc-row">
         <label for="vip-days" data-i18n="vip.calc.daysLabel">Days played</label>
         <div class="vip-input-wrap">
-          <input id="vip-days" type="number" min="1" step="1" value="120">
+          <input id="vip-days" type="number" inputmode="numeric" min="1" step="1" value="120">
         </div>
       </div>
       <p class="calc-out" id="vip-headline">Your dates land here.</p>
@@ -70,7 +70,7 @@ self: vip
     <details>
       <summary data-i18n="vip.maths.details">The formula, in one line</summary>
       <div class="d-body">
-        <p class="d-formula" data-i18n="vip.maths.d">rate = earned ÷ days · date = today + still-needed ÷ rate</p>
+        <p class="d-formula" data-i18n-html="vip.maths.d">rate = earned ÷ days · date = today + still-needed ÷ rate</p>
       </div>
     </details>
     <p class="note" data-i18n-html="vip.maths.note">Nothing here is estimated. The costs are the game's fixed table,

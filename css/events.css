@@ -545,7 +545,11 @@ html[data-page="kvksg"] .dust i:nth-child(3) { background-size: 260px 260px; ani
 .wavetable { margin: var(--space-m) 0; border-top: 1px solid rgba(157, 149, 127, 0.25); }
 .wt-row {
   display: grid;
-  grid-template-columns: 5rem 6.8rem 1fr;
+  /* The type track sizes to its content: a fixed 6.8rem cut "GOVERNOR" (102px
+     at the label step) and "MOBILIZE" to 83px, and with `overflow: visible`
+     they painted over the note beside them. `auto` gives the widest label in
+     the table the room it needs and the note takes what is left. */
+  grid-template-columns: 5rem auto 1fr;
   gap: 0.7rem;
   align-items: baseline;
   padding: 0.5rem 0;
@@ -559,7 +563,7 @@ html[data-page="kvksg"] .dust i:nth-child(3) { background-size: 260px 260px; ani
 .wt-type.hq { color: var(--ink); }
 .wt-note { color: var(--ink-dim); }
 @media (max-width: 640px) {
-  .wt-row { grid-template-columns: 3.6rem 5.2rem 1fr; gap: 0.5rem; }
+  .wt-row { grid-template-columns: 3.6rem auto 1fr; gap: 0.5rem; }
 }
 
 /* ─── The practical checklist (Swordland, Vikings) ─────── */

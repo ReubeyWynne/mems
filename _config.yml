@@ -18,6 +18,7 @@ exclude:
   - "MATHS.md"
   - "NAV-PROPOSAL.md"
   - "PRODUCT.md"
+  - "*.md"
   - "**/*.md"
   - "fly.toml"
   - "Dockerfile"

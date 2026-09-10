@@ -35,7 +35,16 @@
   --step-0: clamp(1.2rem, 1.12rem + 0.4vw, 1.38rem);
   --step-1: clamp(1.55rem, 1.44rem + 0.55vw, 1.9rem);
   --step-2: clamp(2rem, 1.85rem + 0.75vw, 2.55rem);
-  --step-3: clamp(2.6rem, 2.4rem + 1vw, 3.5rem);
+  /* Section display step. The old floor (2.6rem/41.6px) was calibrated like
+     --step-4 was not: the 1vw term only moves it ~4px across 280-430px, so the
+     floor dominated every phone and the longest section word overflowed the
+     measure and was cut by the html/body clip — "composition" 65px past the
+     edge at 320, and far worse in German ("Zusammensetzung" 195px past at 320,
+     99px past even at 430). The min() is the fix: below ~446px the step is
+     purely viewport-relative, so it can no longer exceed the column, and above
+     that the clamp governs exactly as before. Long compounds that still cannot
+     fit one line wrap (see the heading overflow-wrap/hyphens rules). */
+  --step-3: min(clamp(2.6rem, 2.4rem + 1vw, 3.5rem), 9.6vw);
   /* Hero display step, calibrated to fit: "DEMYSTIFIED" measures 7.889em
      in Cinzel Decorative 700 at the h1's 0.03em tracking, so the old
      3.4rem floor (429px wide) spilled off phones under ~460px. The 2.25rem
@@ -134,6 +143,16 @@ html, body { overflow-x: clip; }
 ::selection { background: var(--amber); color: var(--void); }
 h1, h2 { font-family: var(--display); font-weight: 700; line-height: 1.04; }
 h3, h4 { font-family: var(--display-2); font-weight: 700; line-height: 1.04; }
+/* A heading can never be cut at the glass: the backstop the hero h1 already
+   carries, now on every display heading. The html/body clip that guards the
+   dust field would otherwise hide the overhang instead of showing it. */
+h1, h2, h3 { overflow-wrap: break-word; }
+/* Below the width where even the widest common display word fits (see
+   --step-3), break long compounds with a hyphen rather than mid-word: German
+   is the language that proves it ("Zusammensetzung", "Truppenmischung"). */
+@media (max-width: 620px) {
+  h1, h2, h3 { hyphens: auto; }
+}
 h1 { font-size: var(--step-4); letter-spacing: 0.03em; text-transform: uppercase; }
 h2 { font-size: var(--step-3); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-dim); transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
 h3 { font-size: var(--step-1); letter-spacing: 0.02em; text-transform: uppercase; }

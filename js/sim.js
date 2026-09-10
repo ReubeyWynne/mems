@@ -119,13 +119,33 @@
 
   function pct(x) { return numFmt(x, 1) + '%'; }
 
-  // The lead's A factor per type, straight off the report sheet.
+  // The lead's A factor per type, straight off the report sheet. A negative
+  // percentage is not a stat — a report never carries one, and letting it
+  // through produced "A factor −23.64×" with a negative weight and a nonsense
+  // share. Floored at zero.
   function leadA() {
     var A = {};
     TYPES.forEach(function (t) {
-      A[t.key] = (1 + num('sim-atk-' + t.key) / 100) * (1 + num('sim-let-' + t.key) / 100);
+      A[t.key] = (1 + Math.max(0, num('sim-atk-' + t.key)) / 100) * (1 + Math.max(0, num('sim-let-' + t.key)) / 100);
     });
     return A;
+  }
+
+  // Has the reader entered any Bonus Details value at all? An empty sheet is
+  // not a lead with zeroes — it is no answer yet, and the headline already
+  // carries the sentence for that ("Fill in the lead's attack and lethality
+  // above"). Without this the ratio table printed a confident 8/25/67% split
+  // from an empty form, because A = 1 for every type.
+  function anyStatEntered() {
+    var found = false;
+    STATS.forEach(function (s) {
+      TYPES.forEach(function (t) {
+        var e = el('sim-' + s.key + '-' + t.key);
+        var v = e ? parseFloat(e.value) : NaN;
+        if (isFinite(v) && v > 0) found = true;
+      });
+    });
+    return found;
   }
 
   // ── The ratio (MATHS.md §4–5) ─────────────────────────
@@ -144,7 +164,7 @@
     } else {
       share.inf = share.cav = share.arc = 0;
     }
-    return { A: A, w: w, share: share, k: Math.sqrt(sum), ok: sum > 0 };
+    return { A: A, w: w, share: share, k: Math.sqrt(sum), ok: sum > 0 && anyStatEntered() };
   }
 
   // ── The march (MATHS.md §1–3) ─────────────────────────
@@ -171,7 +191,7 @@
     TYPES.forEach(function (t, i) {
       share[i] = kk > 0 ? (q[i] * q[i]) / kk : 0;
     });
-    return { n: n, share: share, total: total, eff: (total > 0 && K > 0) ? dot / (Math.sqrt(total) * K) : 0, ok: total > 0 && K > 0 };
+    return { n: n, share: share, total: total, eff: (total > 0 && K > 0) ? dot / (Math.sqrt(total) * K) : 0, ok: total > 0 && K > 0 && anyStatEntered() };
   }
 
   // ── Painting ──────────────────────────────────────────
@@ -211,17 +231,17 @@
     if (out) {
       var html = '';
       if (s.ok) {
-        html = '<div class="sim-head">' +
-          '<span>' + BH.tr('sim.calc.thType', 'Troop') + '</span>' +
-          '<span>' + BH.tr('sim.calc.thA', 'A factor') + '</span>' +
-          '<span>' + BH.tr('sim.calc.thWeight', 'weight') + '</span>' +
-          '<span>' + BH.tr('sim.calc.thShare', 'ideal share') + '</span></div>';
+        html = '<div class="sim-head" role="row">' +
+          '<span role="columnheader">' + BH.tr('sim.calc.thType', 'Troop') + '</span>' +
+          '<span role="columnheader">' + BH.tr('sim.calc.thA', 'A factor') + '</span>' +
+          '<span role="columnheader">' + BH.tr('sim.calc.thWeight', 'weight') + '</span>' +
+          '<span role="columnheader">' + BH.tr('sim.calc.thShare', 'ideal share') + '</span></div>';
         TYPES.forEach(function (t) {
-          html += '<div class="sim-row">' +
-            '<span class="sim-type">' + BH.tr(t.nameKey, t.fallback) + '</span>' +
-            '<span class="sim-a">' + numFmt(s.A[t.key], 2) + '\u00D7</span>' +
-            '<span class="sim-w">' + numFmt(s.w[t.key], 2) + '</span>' +
-            '<span class="sim-share">' + pct(s.share[t.key] * 100) + '</span></div>';
+          html += '<div class="sim-row" role="row">' +
+            '<span class="sim-type" role="cell">' + BH.tr(t.nameKey, t.fallback) + '</span>' +
+            '<span class="sim-a" role="cell">' + numFmt(s.A[t.key], 2) + '\u00D7</span>' +
+            '<span class="sim-w" role="cell">' + numFmt(s.w[t.key], 2) + '</span>' +
+            '<span class="sim-share" role="cell">' + pct(s.share[t.key] * 100) + '</span></div>';
         });
       }
       out.innerHTML = html;
@@ -253,17 +273,17 @@
     if (out) {
       var html = '';
       if (m.ok) {
-        html = '<div class="sim-head">' +
-          '<span>' + BH.tr('sim.calc.thType', 'Troop') + '</span>' +
-          '<span>' + BH.tr('sim.dmg.thCount', 'troops') + '</span>' +
-          '<span>' + BH.tr('sim.dmg.thYours', 'your share') + '</span>' +
-          '<span>' + BH.tr('sim.dmg.thIdeal', 'ideal share') + '</span></div>';
+        html = '<div class="sim-head" role="row">' +
+          '<span role="columnheader">' + BH.tr('sim.calc.thType', 'Troop') + '</span>' +
+          '<span role="columnheader">' + BH.tr('sim.dmg.thCount', 'troops') + '</span>' +
+          '<span role="columnheader">' + BH.tr('sim.dmg.thYours', 'your share') + '</span>' +
+          '<span role="columnheader">' + BH.tr('sim.dmg.thIdeal', 'ideal share') + '</span></div>';
         TYPES.forEach(function (t, i) {
-          html += '<div class="sim-row">' +
-            '<span class="sim-type">' + BH.tr(t.nameKey, t.fallback) + '</span>' +
-            '<span class="sim-n">' + numFmt(m.n[i], 0) + '</span>' +
-            '<span class="sim-a">' + pct(m.total ? (m.n[i] / m.total) * 100 : 0) + '</span>' +
-            '<span class="sim-share">' + pct(m.share[i] * 100) + '</span></div>';
+          html += '<div class="sim-row" role="row">' +
+            '<span class="sim-type" role="cell">' + BH.tr(t.nameKey, t.fallback) + '</span>' +
+            '<span class="sim-n" role="cell">' + numFmt(m.n[i], 0) + '</span>' +
+            '<span class="sim-a" role="cell">' + pct(m.total ? (m.n[i] / m.total) * 100 : 0) + '</span>' +
+            '<span class="sim-share" role="cell">' + pct(m.share[i] * 100) + '</span></div>';
         });
       }
       out.innerHTML = html;
@@ -407,25 +427,44 @@
     wireInputs(BH);
     wireOcr(BH);
     paint(BH);
-    warmOcr();
   }
 
-  // Start the engine download and session build once the page is idle, so the
-  // first OCR click doesn't stall on ~6 MB of models + the wasm session. All of
-  // that happens in the worker, so warming costs the page thread nothing; the
-  // worker keeps the engine, so a click during warm-up waits on the same one
-  // (no double download) and a click after it runs predict only. Skipped on
-  // data-saver / 2G connections — those readers still get OCR, it just pays
-  // the download on the click instead of up front.
-  function warmOcr() {
+  // ── The engine, on intent ─────────────────────────────
+  // Warming costs ~14 MB (models + wasm + OpenCV) and used to start on
+  // page-idle, so every reader of this page paid it — the ones who came for the
+  // ratio included, and on a phone on cellular data that is the heaviest thing
+  // the site does. It now waits for the reader's own first move towards the
+  // feature — a tap or a key focus on the button — and says so on the status
+  // line while it runs, so the wait is visible rather than the button seeming
+  // to hang. The worker keeps the engine, so a warm and a click race to the
+  // same download, not two. All of it runs in the worker: warming costs the
+  // page thread nothing. Skipped on data-saver / 2G — those readers still get
+  // OCR, it just pays the download on the click.
+  var warmState = 'idle'; // idle | warming | ready
+  function warmOcr(BH) {
+    if (warmState !== 'idle') return;
     var conn = navigator.connection;
     if (conn && (conn.saveData || /2g/i.test(conn.effectiveType || ''))) return;
-    var warm = function () { loadPaddle().catch(function () {}); };
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(warm, { timeout: 4000 });
-    } else {
-      setTimeout(warm, 2000);
+    warmState = 'warming';
+    if (!ocrBusy) {
+      ocrStatus(BH, 'sim.ocr.warm',
+        'Warming the reader \u2014 the first read downloads about 14 MB of models, once per device.', 'busy');
     }
+    loadPaddle().then(function () {
+      warmState = 'ready';
+      if (ocrBusy) return; // a read is driving the status line; it owns it now
+      ocrStatus(BH, 'sim.ocr.ready', 'The reader is ready.', 'ok');
+      // The line has done its job — put the page back to rest.
+      setTimeout(function () {
+        if (!ocrBusy && warmState === 'ready') ocrStatus(BH, null);
+      }, 6000);
+    }, function () {
+      // A failed warm gets no line of its own: the click reports its own
+      // failure, and the worker cleared its engine cache, so the next attempt
+      // is a real retry either way.
+      warmState = 'idle';
+      if (!ocrBusy) ocrStatus(BH, null);
+    });
   }
 
   // ── OCR prefill — read a battle-report screenshot, fill the sheet ──
@@ -730,6 +769,13 @@
             function () { return first; });
       });
     }
+
+    // The reader's first move towards the feature starts the engine (see
+    // warmOcr): a tap, a hover, or arriving by keyboard. Never on page-idle —
+    // the engine is far too heavy to hand to someone who never asked for it.
+    ['pointerdown', 'mouseenter', 'focus'].forEach(function (ev) {
+      btn.addEventListener(ev, function () { warmOcr(BH); });
+    });
 
     btn.addEventListener('click', function () { file.click(); });
     file.addEventListener('change', function () {

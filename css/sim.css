@@ -116,6 +116,12 @@ html[lang="ar"] .alpha-stamp { letter-spacing: 0; text-indent: 0; }
 @media (max-width: 640px) {
   .sim-head, .sim-row { grid-template-columns: 1fr 4.6rem 5.4rem; }
   .sim-w { display: none; }
+  /* The bare ratio table drops the weight CELL but still emits its header
+     span, so the phone read "TROOP | A FACTOR | WEIGHT" with "ideal share"
+     orphaned on a second line and the amber shares sitting under WEIGHT. The
+     march and rooms tables already drop the matching header; this is the one
+     that was missed. */
+  .sim-out:not(.march-out):not(.rooms) .sim-head span:nth-child(3) { display: none; }
 }
 
 /* ─── OCR prefill — button + status ───────────────────── */
@@ -156,6 +162,7 @@ html[lang="ar"] .alpha-stamp { letter-spacing: 0; text-indent: 0; }
   color: var(--ink-dim);
 }
 .sim-ocr-status.ok { color: var(--amber); }
+.sim-ocr-status.busy { color: var(--amber-dim); }
 .sim-ocr-status.bad { color: var(--ink-dim); }
 
 /* ─── The shot we read — a small thumbnail back to the original ──

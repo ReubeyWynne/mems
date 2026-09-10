@@ -22,6 +22,17 @@
     return (window.I18N && window.I18N.tr) ? window.I18N.tr(key, fallback) : fallback;
   }
 
+  // A count inside a sentence needs a form for none and one as well as many —
+  // "1 days from today" and "0 days from today" are both wrong. Dictionaries
+  // carry `<key>Today` and `<key>One` beside the plural `<key>`; fallbacks are
+  // given in the same order (none, one, many) so an English default is always
+  // right even before a translation adds the two branches. Missing keys fall
+  // back to the plural, so calling this is never worse than calling tr().
+  function trCount(key, n, fallbacks) {
+    var i = n < 1 ? 0 : n === 1 ? 1 : 2;
+    return tr(key + (i === 0 ? 'Today' : i === 1 ? 'One' : ''), fallbacks[i]);
+  }
+
   var nf = new Intl.NumberFormat(getLocale());
 
   function fmt(n) {
@@ -622,6 +633,7 @@
     fmt: fmt,
     mult: mult,
     tr: tr,
+    trCount: trCount,
     showNote: showNote,
     registerPage: function (cfg) {
       if (!cfg) return;

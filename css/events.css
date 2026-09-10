@@ -172,7 +172,10 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 }
 /* The paper, under the type (z-index -1 in the panel's own stacking context)
    and spread from the edge the panel is anchored to — the reader's side, so
-   the cover grows away from the chrome rather than through it. */
+   the cover grows away from the chrome rather than through it. It starts on
+   the card's field tone (--void-2) and ends on the destination page's ground
+   (--void, § .commit): same colour the reader will be standing on, so the
+   arrival has nothing to reconcile but its content. */
 .swipe-peek::before {
   content: "";
   position: absolute;
@@ -183,8 +186,9 @@ body.swiping { user-select: none; -webkit-user-select: none; }
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.55);
   transform-origin: 100% 50%;
   transition:
-    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.22s linear;
+    transform 0.14s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.14s linear,
+    border-color 0.14s linear;
 }
 .swipe-peek.prev { left: 0; transform: translateX(-100%); }
 .swipe-peek.prev::before { transform-origin: 0% 50%; }
@@ -192,29 +196,32 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 .swipe-peek.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 /* The fold lands. The cover the finger was holding stops being a card and
    becomes the frame the destination arrives on: the paper spreads from the
-   anchored edge to the whole viewport (--fold is the frame plus the card's
-   remaining travel, measured in common.js), and the panel drops under the
+   anchored edge over the whole viewport (--fold is the frame plus the card's
+   remaining travel, measured in common.js) and settles onto the destination
+   page's own ground colour while it goes, and the panel drops under the
    topbar (50) so the chrome holds still over the spreading paper — which is
    exactly how it will sit through the view transition that follows, so
-   nothing flickers at the hand-off. The shadow and the edge line go at once:
-   the animated work stays one flat fill on the compositor. The type goes too,
-   a little ahead of the paper: the arriving page brings its own title, and
-   the cover it lands on is blank on purpose.
+   nothing flickers at the hand-off. The shadow, the edge line and the
+   "release to open" hint go at once; the type stays, because a blank frame
+   is not a page — the cover keeps its own title while it spreads, and the
+   arriving page dissolves it away (data-entry="fold" below). By the time the
+   destination fades in, the frame underneath it is already that page's own
+   background, so what the reader watches arrive is content, not a new world.
 
-   The page turn is deliberately longer than the release spring it lands in
-   the middle of, which is why the spread is driven by one transition here
-   while the card underneath finishes its own — the paper's anchored edge
-   sweeps past the far side of the frame either way (see commitPeek). The
-   navigation leaves when this transition reports done, so the arriving page
-   never slides in over a cover still crawling open (FOLD_MS in common.js). */
+   The spread is short on purpose: long enough to see the card become a page,
+   short enough to keep the destination waiting no longer than one beat. The
+   card's own release spring is still running when the paper is already whole,
+   which is why the paper is measured against where the card *is* (see
+   commitPeek) and why the navigation leaves on this transition's own end
+   rather than on a clock (FOLD_MS in common.js). */
 .swipe-peek.commit { z-index: 45; }
 .swipe-peek.commit::before {
   transform: scaleX(var(--fold, 1));
+  background-color: var(--void);
   border-color: transparent;
   box-shadow: none;
 }
-.swipe-peek > * { transition: opacity 0.16s linear; }
-.swipe-peek.commit > * { opacity: 0; }
+.swipe-peek.commit .peek-hint { opacity: 0; }
 .swipe-peek .peek-kicker {
   font-family: var(--body);
   font-size: var(--step--1);
@@ -226,13 +233,19 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 .swipe-peek .peek-title {
   font-family: var(--display-2);
   font-weight: 700;
-  font-size: var(--step-3);
+  /* The cover's title is the one line that can outgrow the card. At --step-3
+     (9.6vw on a phone) "SWORDLAND" measures ~7.2em, wider than the card's
+     inside, so the inherited `overflow-wrap: break-word` and `hyphens: auto`
+     split it mid-word and "Swordland Showdown" fell over four lines. --step-2
+     under an 8vw cap fits the longest title on two lines at every width, and
+     still reads as a cover rather than a caption. */
+  font-size: min(var(--step-2), 8vw);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--amber);
 }
 .swipe-peek .peek-lede { color: var(--ink-dim); font-size: var(--step--1); }
-.swipe-peek .peek-hint { color: var(--amber); font-style: italic; font-size: var(--step--1); }
+.swipe-peek .peek-hint { color: var(--amber); font-style: italic; font-size: var(--step--1); transition: opacity 0.12s linear; }
 .swipe-peek.prev .peek-kicker::before { content: "\276E "; color: var(--amber-dim); }
 .swipe-peek.next .peek-kicker::after  { content: " \276F"; color: var(--amber-dim); }
 main { will-change: transform; }
@@ -276,14 +289,25 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
   html[data-nav="prev"]::view-transition-old(root) { animation: vt-out-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
   html[data-nav="prev"]::view-transition-new(root) { animation: vt-in-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-  /* A committed swipe arrives as a fold, not a move: the outgoing page had
+  /* A committed swipe arrives as a fold, not a move. The outgoing page had
      already spread the destination's cover over its whole frame (common.js
-     commitPeek), so that cover is the ground and the page lands on top of it.
-     Holding the old root still is the whole of it — the arriving page keeps
-     the slide it already has, from the side the finger went, but it now
-     crosses the cover instead of a page sliding the other way. Same rule
-     either direction: the destination's own side is not the point here. */
+     commitPeek), so the old image is that cover — title and all — and the
+     destination dissolves in over it. Holding the old root still is the whole
+     of the old side; the new page fades, so there is no sideways travel to
+     read as a jump and no flash of nothing while the cover's title dissolves
+     into the page's own.
+
+     Only the root fades. The chrome is a named group with no animation of its
+     own (above), so its content is swapped the instant the new frame exists —
+     fading it too would print the old brand and the new one on top of each
+     other for the length of the dissolve, which is the one part of the page
+     that should never look like it is mid-move.
+
+     A fold arrival carries data-entry and *no* data-nav (head.html), so these
+     rules never compete with the directional ones above and which side of the
+     ring the reader came from needs no deciding here. */
   html[data-entry="fold"]::view-transition-old(root) { animation: none; }
+  html[data-entry="fold"]::view-transition-new(root) { animation: vt-dissolve-in 0.3s ease both; }
 
   @keyframes vt-dissolve-out { to { opacity: 0; } }
   @keyframes vt-dissolve-in { from { opacity: 0; } }
@@ -314,8 +338,11 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
    mobile swipe preview wears the destination page's theme (common.js
    stamps data-page from data-prev-page / data-next-page), not the
    theme of the page you're on. Home has no theme block, so its peek
-   rule sits below as a small three-token copy. */
+   rule sits below as a small copy — the ground (--void) as well as the
+   field tone, since a committed swipe spreads the paper onto the
+   destination's ground and home's is the canonical navy-black. */
 .swipe-peek[data-page="home"] {
+  --void: #0B0E16;        /* ground — the same night home lands on */
   --void-2: #121726;      /* one step up (fields)            */
   --amber: #F5C851;       /* the one signal — active         */
   --amber-dim: #D3A33E;   /* antique gold — secondary signal */

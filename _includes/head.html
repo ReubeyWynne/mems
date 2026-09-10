@@ -31,7 +31,13 @@ window.__BH_BUILD = '{{ site.time | date: "%s" }}';
    dissolve. A swipe says the same thing by itself: common.js leaves this
    page's own address in sessionStorage for exactly one navigation, which
    makes it the referrer for a document that was fetched before the referrer
-   was written. It is read once and deleted here; nothing else is kept. */
+   was written. It is read once and deleted here; nothing else is kept.
+
+   The two are exclusive on purpose. A fold arrival has no direction — the
+   cover it lands on is already spread, so there is nothing to slide — and
+   because the fold and direction rules would otherwise tie on specificity,
+   the fold is told by *not* stamping data-nav rather than by out-ordering it
+   in the sheet. */
 (function () {
   var root = document.documentElement;
   var here = location.href.split(/[?#]/)[0];
@@ -50,13 +56,15 @@ window.__BH_BUILD = '{{ site.time | date: "%s" }}';
   var next = neighbour('data-next-url');
   var ref = document.referrer.split(/[?#]/)[0];
   if (ref === here) ref = '';                    // a reload is not a move
+  // Only a committed swipe leaves the flag, and only the cover it spread is
+  // there to be landed on: that arrival is the fold, and it alone.
+  var folded = !!from && (from === prev || from === next);
+  if (folded) root.setAttribute('data-entry', 'fold');
   var cameFromPrev = (!!ref && ref === prev) || (!!from && from === prev);
   var cameFromNext = (!!ref && ref === next) || (!!from && from === next);
   if (cameFromPrev) root.setAttribute('data-nav', 'next');
   else if (cameFromNext) root.setAttribute('data-nav', 'prev');
-  // Only a committed swipe leaves the flag, and only the cover it spread can
-  // be landed on: that arrival gets the fold instead of the push.
-  if (from && (from === prev || from === next)) root.setAttribute('data-entry', 'fold');
+  if (folded) root.removeAttribute('data-nav');
 })();
 </script>
 <script>

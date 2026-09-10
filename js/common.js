@@ -7,10 +7,10 @@
    two neighbouring pages once the browser is idle, so a swipe (or an arrow
    key) lands on a page that is already in cache — the cross-document view
    transition that carries the move is in css/events.css. A committed swipe
-   spreads the destination's cover to the whole frame first and leaves the
-   navigation until it has landed, so the transition carries that cover out
-   under the arriving page instead of cutting to it. No dependencies, no data
-   collected.
+   spreads the destination's cover (title and all) to the whole frame first and
+   leaves the navigation until it has landed, and the arriving page then
+   dissolves in over that cover rather than sliding in beside it. No
+   dependencies, no data collected.
    i18n: all user-visible strings come from i18n/<lang>.js via window.I18N;
    numbers format per the active locale. Page-specific toys register through
    window.BH.registerPage(...) and live in the per-page files (bear-hunt.js,
@@ -129,7 +129,7 @@
   // that spread reports it is done (transitionend), with FOLD_MS under it as
   // the floor; FOLD_LIMIT is the failure path, so a dead link or a load the
   // reader stopped can never leave them holding a full-screen cover.
-  var FOLD_MS = 220;
+  var FOLD_MS = 140;
   var FOLD_LIMIT = 1800;
   var committing = false;
   // g.opened is a live view of "the finger is at/past OPEN_FRAC right now",

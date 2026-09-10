@@ -20,7 +20,12 @@
     "brand": "KINGSHOT <b>·</b> DEMYSTIFIED",
     "brandNoteKey": "home.brandNote",
     "brandNote": "just the guides",
-    "swipePrev": null,
+    "swipePrev": {
+      "url": "battle-simulator/",
+      "page": "sim",
+      "title": "Battle Simulator",
+      "lede": "the maths of your battles — the bear ratio, your march, and the Mystic Trial rooms."
+    },
     "swipeNext": {
       "url": "events/",
       "page": "kvksg",
@@ -254,10 +259,10 @@
       "lede": "kills are points, and every city your troops stand in is a kill surface."
     },
     "swipeNext": {
-      "url": "../events/",
-      "page": "kvksg",
-      "title": "Event Cycle",
-      "lede": "the recurring events on one 28-day clock — what's on today, what to save, and what to copy into KingShot."
+      "url": "../vip-calculator/",
+      "page": "vip",
+      "title": "VIP Calculator",
+      "lede": "your VIP XP is a straight line at your rate — here's the date for every remaining level."
     },
     "css": [
       "../css/styles.css",

@@ -90,11 +90,16 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   `data-prev-url`/`data-next-url` and stamps `data-nav="next|prev"` on `<html>`.
   No direction (a link from outside the ring) = plain dissolve; reduced motion =
   the transition's animations are neutralised, so the swap is instant. A committed
-  swipe is a fold, not a cut: `js/common.js` spreads the cover card to the whole
-  frame, leaves this page's own address in `sessionStorage` (`bh:fold`, read once
-  and deleted by `head.html`, which stamps `data-entry="fold"` on `<html>`) and
-  only then navigates — the old root holds still and the destination slides in
-  over the spread cover. A navigation that never lands springs the cover away.
+  swipe is a fold, not a cut: `js/common.js` spreads the cover card — title and
+  all — to the whole frame, leaves this page's own address in `sessionStorage`
+  (`bh:fold`, read once and deleted by `head.html`, which stamps
+  `data-entry="fold"` on `<html>`) and only then navigates. The fold arrival holds
+  the old (covered) frame still and **dissolves** the destination in over it —
+  no sideways travel, and the cover's title fading into the page's own. A
+  navigation that never lands springs the cover away. The swipe ring is the
+  `_data/nav.json` order read as a cycle (home → Event Cycle → the four events →
+  VIP → Simulator → home): both `swipePrev`/`swipeNext` on every page, so no page
+  is unreachable from either side.
   The dictionary URL is build-stamped (`window.__BH_BUILD` = `site.time`, read by
   `js/i18n.js`): cacheable on the live site, still no-cache on localhost/`file://`.
 - A new event page = one directory with a front-matter `index.html` (its TOC +

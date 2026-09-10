@@ -110,18 +110,18 @@ self: bear
     <p class="note" data-i18n-html="rally.note">And you <em>can't</em> carry the rally yourself anyway: your march is capped
       (~100–150k on our server), so stuffing one rally just wastes its slots.</p>
 
-    <div class="calc" id="rallycalc">
+    <div class="calc" id="rallycalc" data-group="rally">
       <h4 class="calc-title" data-i18n="rally.calcTitle">TRY IT — FILL THE RALLY</h4>
       <div class="calc-row">
         <label for="rally-cap" data-i18n="rally.capLabel">Rally troop capacity</label>
-        <input id="rally-cap" type="number" inputmode="numeric" min="1000" step="1000" value="900000">
+        <input id="rally-cap" data-in="cap" type="number" inputmode="numeric" min="1000" step="1000" value="900000">
       </div>
       <div class="calc-row">
-        <label for="rally-players" data-i18n-html="rally.playersLabel">Players in it (incl. lead) <output id="rally-p-out">15</output>/15</label>
-        <input id="rally-players" type="range" min="1" max="15" step="1" value="15">
+        <label for="rally-players" data-i18n-html="rally.playersLabel" data-i18n-vars="rally">Players in it (incl. lead) <output>15</output>/15</label>
+        <input id="rally-players" data-in="players" type="range" min="1" max="15" step="1" value="15">
       </div>
-      <p class="calc-out" data-i18n-html="rally.out">Fair share: <b id="rally-share">60,000</b> per player ·
-        rally hits <b id="rally-mult">3.9×</b> harder than one player carrying it all.</p>
+      <p class="calc-out" data-i18n-html="rally.out" data-i18n-vars="rally">Fair share: <b>60,000</b> per player ·
+        rally hits <b>3.9×</b> harder than one player carrying it all.</p>
     </div>
 
     <details>
@@ -139,18 +139,18 @@ self: bear
     <p class="lede" data-i18n-html="marches.lede">You can field <strong>5–6 marches</strong>. Put them in <strong>5–6 different
       rallies</strong>. That's rule one and two doing their job at the same time.</p>
 
-    <div class="calc" id="marchcalc">
+    <div class="calc" id="marchcalc" data-group="march">
       <h4 class="calc-title" data-i18n="marches.calcTitle">TRY IT — YOUR TROOPS, YOUR MARCHES</h4>
       <div class="calc-row">
         <label for="march-pool" data-i18n="marches.poolLabel">Your total troops</label>
-        <input id="march-pool" type="number" inputmode="numeric" min="1000" step="1000" value="400000">
+        <input id="march-pool" data-in="pool" type="number" inputmode="numeric" min="1000" step="1000" value="400000">
       </div>
       <div class="calc-row">
-        <label for="march-q" data-i18n-html="marches.qLabel">Marches (Q) <output id="march-q-out">6</output>/6</label>
-        <input id="march-q" type="range" min="1" max="6" step="1" value="6">
+        <label for="march-q" data-i18n-html="marches.qLabel" data-i18n-vars="march">Marches (Q) <output>6</output>/6</label>
+        <input id="march-q" data-in="q" type="range" min="1" max="6" step="1" value="6">
       </div>
-      <p class="calc-out" data-i18n-html="marches.out"><b id="march-share">66,667</b> per march ·
-        <b id="march-mult">2.4×</b> the damage of one big march. Same troops, nothing spent.</p>
+      <p class="calc-out" data-i18n-html="marches.out" data-i18n-vars="march"><b>66,667</b> per march ·
+        <b>2.4×</b> the damage of one big march. Same troops, nothing spent.</p>
     </div>
 
     <p class="note" data-i18n="marches.note">400k in one march isn't even an option on most servers (march cap ~100–150k).

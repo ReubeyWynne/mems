@@ -44,10 +44,35 @@
     return (t && t[key] != null) ? t[key] : fallback;
   }
 
-  // {n} substitution for template keys (e.g. rewards.forgeAria).
+  // Substitution for template keys. `{n}` comes from the element's own
+  // data-i18n-n (rewards.forgeAria and friends). Every other token comes from
+  // the value provider named by data-i18n-vars (js/bind.js), which is read at
+  // paint time and never cached — so a live figure can sit inside a translated
+  // sentence while the dictionary carries neither its value nor an id.
+  function varsFor(name) {
+    var reg = window.__BH_VARS;
+    return (reg && typeof reg[name] === 'function') ? reg[name]() : null;
+  }
+
   function substitute(str, el) {
-    if (str.indexOf('{n}') === -1) return str;
-    return str.replace(/\{n\}/g, el.getAttribute('data-i18n-n') || '');
+    if (str.indexOf('{') === -1) return str;
+    var vals = { n: el.getAttribute('data-i18n-n') || '' };
+    var group = el.getAttribute('data-i18n-vars');
+    if (group) {
+      var provided = varsFor(group);
+      if (provided) {
+        for (var k in provided) {
+          if (Object.prototype.hasOwnProperty.call(provided, k)) vals[k] = provided[k];
+        }
+      }
+    }
+    var out = str;
+    for (var key in vals) {
+      if (!Object.prototype.hasOwnProperty.call(vals, key)) continue;
+      if (out.indexOf('{' + key + '}') === -1) continue;
+      out = out.replace(new RegExp('\\{' + key + '\\}', 'g'), vals[key]);
+    }
+    return out;
   }
 
   // Two strings are the same if they differ only in the whitespace the source
@@ -64,29 +89,43 @@
     return norm(a) === norm(b);
   }
 
-  function apply() {
-    var nodes = document.querySelectorAll('[data-i18n], [data-i18n-html], [data-i18n-key]');
-    for (var i = 0; i < nodes.length; i++) {
-      var el = nodes[i];
-      var key = el.getAttribute('data-i18n-html') || el.getAttribute('data-i18n') || el.getAttribute('data-i18n-key');
-      if (!key || t[key] == null) continue;
-      var val = substitute(t[key], el);
-      var attrList = el.getAttribute('data-i18n-attr');
-      if (attrList) {
-        var attrs = attrList.split(/\s+/);
-        for (var a = 0; a < attrs.length; a++) {
-          if (attrs[a] && el.getAttribute(attrs[a]) !== val) el.setAttribute(attrs[a], val);
-        }
-        continue; // attribute-only elements keep their own text (options, ❦, svg…)
+  var KEYSEL = '[data-i18n], [data-i18n-html], [data-i18n-key]';
+
+  function applyNode(el) {
+    var key = el.getAttribute('data-i18n-html') || el.getAttribute('data-i18n') || el.getAttribute('data-i18n-key');
+    if (!key || t[key] == null) return;
+    var val = substitute(t[key], el);
+    var attrList = el.getAttribute('data-i18n-attr');
+    if (attrList) {
+      var attrs = attrList.split(/\s+/);
+      for (var a = 0; a < attrs.length; a++) {
+        if (attrs[a] && el.getAttribute(attrs[a]) !== val) el.setAttribute(attrs[a], val);
       }
-      if (el.hasAttribute('data-i18n-html')) {
-        if (!same(el.innerHTML, val)) el.innerHTML = val;
-      } else if (el.hasAttribute('data-i18n')) {
-        if (!same(el.textContent, val)) el.textContent = val;
-      }
+      return; // attribute-only elements keep their own text (options, ❦, svg…)
     }
+    if (el.hasAttribute('data-i18n-html')) {
+      if (!same(el.innerHTML, val)) el.innerHTML = val;
+    } else if (el.hasAttribute('data-i18n')) {
+      if (!same(el.textContent, val)) el.textContent = val;
+    }
+  }
+
+  function apply() {
+    var nodes = document.querySelectorAll(KEYSEL);
+    for (var i = 0; i < nodes.length; i++) applyNode(nodes[i]);
     document.documentElement.lang = lang;
     document.documentElement.dir = DIRS[lang] || 'ltr';
+  }
+
+  // Repaint the region a group owns (js/bind.js) after its inputs moved: the
+  // tokens are re-read from the provider, so the figures follow the inputs
+  // without re-walking the document — and without any code holding a reference
+  // to a node a repaint is about to replace.
+  function refresh(root) {
+    if (!root || root === document) { apply(); return; }
+    if (root.nodeType === 1 && root.matches && root.matches(KEYSEL)) applyNode(root);
+    var nodes = root.querySelectorAll ? root.querySelectorAll(KEYSEL) : [];
+    for (var i = 0; i < nodes.length; i++) applyNode(nodes[i]);
   }
 
   // The dictionary is the same URL on every page of a language, so it must be
@@ -113,7 +152,8 @@
       done(true);
     };
     s.onerror = function () {
-      t = {};
+      // Leave `t` alone: the caller decides what a missing dictionary means,
+      // and the page must never be left holding an empty one.
       done(false);
     };
     document.head.appendChild(s);
@@ -136,16 +176,24 @@
 
   function switchTo(code) {
     if (!code || (code === lang && ready)) return;
+    var wasLang = lang;
+    var wasDict = t;
     lang = code;
     document.documentElement.lang = lang;
     document.documentElement.dir = DIRS[lang] || 'ltr';
-    try { localStorage.setItem(KEY, lang); } catch (e) { /* private mode */ }
     loadDict(lang, function (ok) {
-      if (!ok && lang !== 'en') {
-        // dictionary missing or corrupt — fall back to English
-        lang = 'en';
-        try { localStorage.setItem(KEY, 'en'); } catch (e) { /* private mode */ }
+      if (!ok) {
+        // The dictionary never arrived. A page whose copy is in one language
+        // while <html lang> and the number formatter claim another is worse
+        // than not switching: put everything back and leave the reader's saved
+        // choice untouched, so the next page load can try again.
+        lang = wasLang;
+        t = wasDict;
+        apply();
+        dispatch('i18n:change');
+        return;
       }
+      try { localStorage.setItem(KEY, lang); } catch (e) { /* private mode */ }
       apply();
       dispatch('i18n:change');
     });
@@ -158,14 +206,16 @@
     get t() { return t; },
     tr: tr,
     switchTo: switchTo,
+    refresh: refresh,
     onReady: function (cb) { if (ready) cb(); else pending.push(cb); }
   };
 
   loadDict(lang, function (ok) {
     if (!ok && lang !== 'en') {
-      // dictionary missing or corrupt — fall back to English
+      // This page falls back to English — the HTML fallback IS the English
+      // copy — but the reader's saved language stays as they chose it, so the
+      // next page load tries again instead of silently changing their mind.
       lang = 'en';
-      try { localStorage.setItem(KEY, 'en'); } catch (e) { /* private mode */ }
     }
     apply();
     finish();

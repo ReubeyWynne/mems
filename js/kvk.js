@@ -532,7 +532,7 @@
       var uw = (day - 1) % 7;
       var weekday = (Array.isArray(dows) ? dows[uw] : '') ||
         ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][uw];
-      out.textContent = weekday + ' \u00B7 ' + BH.tr('ks.today.dayOut', 'day {n} of 28').replace('{n}', day) +
+      out.textContent = weekday + ' \u00B7 ' + BH.tpl('ks.today.dayOut', 'day {n} of 28', { n: day }) +
         (day === todayDay() ? ' ' + BH.tr('ks.today.isToday', '\u00B7 today') : '');
     }
     paintCycle(BH);
@@ -784,9 +784,9 @@
       out.value = parts[idx];
       var len = parts[idx].length;
       var fits = len <= LIMIT;
-      meta.innerHTML = BH.tr('ks.today.chars', '<b>{n}</b> / 512 characters').replace('{n}', BH.fmt(len)) +
-        (fits ? ' \u2014 ' + BH.tr('ks.today.fits', 'fits one message') : ' \u2014 <span class="over">' + BH.tr('ks.today.over', 'split into {n} messages').replace('{n}', parts.length) + '</span>');
-      btn.textContent = (parts.length > 1 ? BH.tr('ks.today.part', 'part {n}').replace('{n}', idx + 1) + ' \u00B7 ' : '') + BH.tr('ks.today.copyBtn', 'copy');
+      meta.innerHTML = BH.tpl('ks.today.chars', '<b>{n}</b> / 512 characters', { n: BH.fmt(len) }) +
+        (fits ? ' \u2014 ' + BH.tr('ks.today.fits', 'fits one message') : ' \u2014 <span class="over">' + BH.tpl('ks.today.over', 'split into {n} messages', { n: parts.length }) + '</span>');
+      btn.textContent = (parts.length > 1 ? BH.tpl('ks.today.part', 'part {n}', { n: idx + 1 }) + ' \u00B7 ' : '') + BH.tr('ks.today.copyBtn', 'copy');
       if (partsWrap) {
         partsWrap.innerHTML = '';
         for (var i = 0; i < parts.length; i++) {
@@ -794,7 +794,7 @@
             var b = document.createElement('button');
             b.type = 'button';
             b.className = 'kb' + (pi === idx ? ' on' : '');
-            b.textContent = BH.tr('ks.today.part', 'part {n}').replace('{n}', pi + 1);
+            b.textContent = BH.tpl('ks.today.part', 'part {n}', { n: pi + 1 });
             b.addEventListener('click', function () { idx = pi; paint(); });
             partsWrap.appendChild(b);
           })(i);

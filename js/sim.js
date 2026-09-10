@@ -9,12 +9,15 @@
    locale-formatted numbers.
 
    Two deliberate omissions. Heroes: only the lead's attack factors and the
-   troops' base attacks enter a split — a joining hero's skill multiplies the
-   whole march, so it cancels out of every ratio and belongs with the damage
-   constant, not here. And the constant itself: absolute damage carries the
-   bear's defence, the troops' base attack and the lead's hero skills, and it
-   is not fitted yet — so the march panel prints a ratio and never a damage
-   figure or a reward bracket. */
+   troops' base attacks enter a split — an ALL-TROOP hero skill multiplies the
+   whole march and cancels out of every ratio, so it belongs with the damage
+   constant rather than here. A TYPE-SPECIFIC skill is the exception: it lifts
+   one troop type only, so it does not cancel and it moves the mix. That, plus
+   the star/skill/gear model now mined in KINGSHOT-SOURCES.md §6, is why heroes
+   get their own module (SIM-PROPOSAL.md §10) instead of a factor here. And the
+   constant itself: absolute damage carries the bear's defence, the troops' base
+   attack and the lead's hero skills, and it is not fitted yet — so the march
+   panel prints a ratio and never a damage figure or a reward bracket. */
 (function () {
   'use strict';
 
@@ -219,11 +222,9 @@
         headline.innerHTML = BH.tr('sim.calc.noStats',
           'Fill in the lead\u2019s <b>attack</b> and <b>lethality</b> above — the ratio comes from their stats.');
       } else {
-        headline.innerHTML = BH.tr('sim.calc.headline',
-          'With this lead, the ideal march is <b>{inf}</b> infantry, <b>{cav}</b> cavalry, <b>{arc}</b> archers.')
-          .replace(/\{inf\}/g, pct(s.share.inf * 100))
-          .replace(/\{cav\}/g, pct(s.share.cav * 100))
-          .replace(/\{arc\}/g, pct(s.share.arc * 100));
+        headline.innerHTML = BH.tpl('sim.calc.headline',
+          'With this lead, the ideal march is <b>{inf}</b> infantry, <b>{cav}</b> cavalry, <b>{arc}</b> archers.',
+          { inf: pct(s.share.inf * 100), cav: pct(s.share.cav * 100), arc: pct(s.share.arc * 100) });
       }
     }
 
@@ -251,7 +252,7 @@
     var kEl = el('sim-k');
     if (kEl) {
       kEl.innerHTML = s.ok
-        ? BH.tr('sim.calc.k', 'Leader strength K = <b>{k}</b>').replace(/\{k\}/g, numFmt(s.k, 2))
+        ? BH.tpl('sim.calc.k', 'Leader strength K = <b>{k}</b>', { k: numFmt(s.k, 2) })
         : '';
     }
   }
@@ -262,9 +263,9 @@
     var headline = el('sim-dmg-headline');
     if (headline) {
       headline.innerHTML = m.ok
-        ? BH.tr('sim.dmg.headline',
-          'Your split converts <b>{eff}</b> of what these troops could do for this lead.')
-          .replace(/\{eff\}/g, pct(m.eff * 100))
+        ? BH.tpl('sim.dmg.headline',
+          'Your split converts <b>{eff}</b> of what these troops could do for this lead.',
+          { eff: pct(m.eff * 100) })
         : BH.tr('sim.dmg.noStats',
           'Fill in the lead\u2019s stats above and your troop counts — the split needs both.');
     }
@@ -293,11 +294,13 @@
     var ideal = el('sim-dmg-ideal');
     if (ideal) {
       ideal.innerHTML = m.ok
-        ? BH.tr('sim.dmg.ideal',
-          'Split the lead\u2019s way, that same march is <b>\u2248{inf}</b> infantry, <b>\u2248{cav}</b> cavalry, <b>\u2248{arc}</b> archers.')
-          .replace(/\{inf\}/g, numFmt(Math.round(m.total * m.share[0]), 0))
-          .replace(/\{cav\}/g, numFmt(Math.round(m.total * m.share[1]), 0))
-          .replace(/\{arc\}/g, numFmt(Math.round(m.total * m.share[2]), 0))
+        ? BH.tpl('sim.dmg.ideal',
+          'Split the lead\u2019s way, that same march is <b>\u2248{inf}</b> infantry, <b>\u2248{cav}</b> cavalry, <b>\u2248{arc}</b> archers.',
+          {
+            inf: numFmt(Math.round(m.total * m.share[0]), 0),
+            cav: numFmt(Math.round(m.total * m.share[1]), 0),
+            arc: numFmt(Math.round(m.total * m.share[2]), 0)
+          })
         : '';
     }
   }
@@ -332,8 +335,8 @@
     if (!open.length) return;
     // Keep the template's markup and put the names in as text: the labels come
     // from the dictionary, so they must never be parsed as HTML.
-    var tpl = BH.tr('sim.mystic.todayLine', 'Open today: <b>{rooms}</b>.');
-    line.innerHTML = tpl.replace('{rooms}', '<span class="room-slot"></span>');
+    line.innerHTML = BH.fill(BH.tr('sim.mystic.todayLine', 'Open today: <b>{rooms}</b>.'),
+      { rooms: '<span class="room-slot"></span>' });
     var slot = line.querySelector('.room-slot');
     if (slot) slot.textContent = open.join(' \u00B7 ');
   }
@@ -566,14 +569,8 @@
     var el2 = el('sim-ocr-status');
     if (!el2) return;
     if (!key) { el2.hidden = true; el2.textContent = ''; return; }
-    var text = BH.tr(key, fb);
-    if (vars) {
-      Object.keys(vars).forEach(function (k) {
-        text = text.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
-      });
-    }
     el2.hidden = false;
-    el2.textContent = text;
+    el2.textContent = BH.fill(BH.tr(key, fb), vars);
     el2.className = 'sim-ocr-status' + (cls ? ' ' + cls : '');
   }
 

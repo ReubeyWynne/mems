@@ -35,14 +35,40 @@
     return tr(key + (i === 0 ? 'Today' : i === 1 ? 'One' : ''), fallbacks[i]);
   }
 
-  var nf = new Intl.NumberFormat(getLocale());
+  var nf = null;
+  var nfLocale = '';
 
   function fmt(n) {
     if (!isFinite(n)) return '\u2014';
+    // Built on first use for the active locale rather than on i18n:change:
+    // anything painting during the switch — a group's `{tokens}`, resolved by
+    // i18n.js before that event fires — must already format in the new locale.
+    var loc = getLocale();
+    if (loc !== nfLocale) { nf = new Intl.NumberFormat(loc); nfLocale = loc; }
     return nf.format(Math.round(n));
   }
   function mult(n) {
     return n.toLocaleString(getLocale(), { maximumFractionDigits: 1, minimumFractionDigits: 0 }) + '\u00D7';
+  }
+
+  // A translated sentence with live figures in it: `{token}` in the dictionary
+  // value, the values here. One helper rather than a `.replace(/\{…\}/g, …)`
+  // chain at each call site — several had dropped the /g or disagreed on
+  // whether `{n}` should be locale-formatted, and the same helper is what
+  // js/bind.js uses to paint a declared group.
+  function fill(str, vars) {
+    if (!vars || str.indexOf('{') === -1) return str;
+    var out = str;
+    for (var k in vars) {
+      if (!Object.prototype.hasOwnProperty.call(vars, k)) continue;
+      if (out.indexOf('{' + k + '}') === -1) continue;
+      out = out.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
+    }
+    return out;
+  }
+
+  function tpl(key, fallback, vars) {
+    return fill(tr(key, fallback), vars);
   }
 
   // ── Page registration ──────────────────────────────────
@@ -430,23 +456,29 @@
   // position here is part of the page's first paint instead of a correction.
   restoreScroll();
 
-  // ── Boot — everything above is inert until the active dictionary is
-  //    applied (i18n.js loads first), or the DOM is ready without i18n. ──
-  function boot() {
-    // Scroll progress bar
+  // ── Chrome wiring ──────────────────────────────────────
+  // One function per thing that happens to every page. Each runs once, on
+  // boot, and touches only its own part of the document — so boot() reads as
+  // the list of what runs, not as the place it all lives.
+
+  // Scroll progress bar.
+  function wireProgress() {
     var fill = document.getElementById('progress');
     var doc = document.documentElement;
-    function paintProgress() {
+    function paint() {
       if (!fill) return;
       var max = doc.scrollHeight - doc.clientHeight;
       // scaleX, not width: a percentage width dirties layout on every scroll
       // event, while a transform only moves an already-painted layer.
       fill.style.transform = 'scaleX(' + (max > 0 ? doc.scrollTop / max : 0) + ')';
     }
-    window.addEventListener('scroll', paintProgress, { passive: true });
-    paintProgress();
+    window.addEventListener('scroll', paint, { passive: true });
+    paint();
+  }
 
-    // TOC active section
+  // TOC: mark the section at the read position, keep its chip in view, and let
+  // the rail scroll sideways with the wheel.
+  function wireToc() {
     var toc = document.getElementById('toc');
     var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
     var sections = tocLinks
@@ -490,69 +522,122 @@
       }, { rootMargin: '-20% 0px -70% 0px' });
       sections.forEach(function (s) { io.observe(s); });
     }
+  }
 
-    // Cracktro depth pull — the section at the read position is the FRONT
-    // layer: it alone gets the caret and full brightness. Same observer
-    // geometry as the TOC, so the front layer is always the active section.
+  // Cracktro depth pull — the section at the read position is the FRONT
+  // layer: it alone gets the caret and full brightness. Same observer
+  // geometry as the TOC, so the front layer is always the active section.
+  function wireFrontLayer() {
     var contentSections = Array.prototype.slice.call(document.querySelectorAll('main .section'));
-    if ('IntersectionObserver' in window && contentSections.length) {
-      var front = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            contentSections.forEach(function (s) { s.classList.remove('front'); });
-            entry.target.classList.add('front');
-          }
-        });
-      }, { rootMargin: '-30% 0px -60% 0px' });
-      contentSections.forEach(function (s) { front.observe(s); });
-      var hero = document.querySelector('main .hero');
-      if (hero) hero.classList.add('front');
+    if (!('IntersectionObserver' in window) || !contentSections.length) return;
+    var front = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          contentSections.forEach(function (s) { s.classList.remove('front'); });
+          entry.target.classList.add('front');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    contentSections.forEach(function (s) { front.observe(s); });
+    var hero = document.querySelector('main .hero');
+    if (hero) hero.classList.add('front');
+  }
+
+  // Home — hover (or focus) an event card and the page previews that event's
+  // world: events.css animates every themed token into the destination palette
+  // and the dust dissolves into its motes. The ghost card carries no
+  // data-hover-page, so it never shifts anything.
+  function wireHomePreview() {
+    var rootEl = document.documentElement;
+    Array.prototype.slice.call(document.querySelectorAll('.event-card[data-hover-page]'))
+      .forEach(function (card) {
+        var hoverPage = card.getAttribute('data-hover-page');
+        function on() { rootEl.setAttribute('data-hover', hoverPage); }
+        function off() { rootEl.removeAttribute('data-hover'); }
+        card.addEventListener('mouseenter', on);
+        card.addEventListener('mouseleave', off);
+        card.addEventListener('focusin', on);
+        card.addEventListener('focusout', off);
+      });
+  }
+
+  // ── The two topbar disclosures ─────────────────────────
+  // The language dropdown and the ledger drawer are one widget: a trigger
+  // that opens a panel, aria-expanded on the trigger, hidden on the panel,
+  // focus into the list and back to the trigger, arrows within it, Esc and
+  // outside-click to close. Only what a row *means* differs — the picker
+  // chooses a language, the ledger follows a link — so that is the one thing
+  // each caller supplies.
+  function disclosure(btn, panel, opts) {
+    var items = Array.prototype.slice.call(panel.querySelectorAll(opts.items));
+    var open = false;
+
+    function set(now, focusList) {
+      open = now;
+      btn.setAttribute('aria-expanded', now ? 'true' : 'false');
+      panel.hidden = !now;
+      btn.classList.toggle('open', now);
+      if (now && focusList && items.length) {
+        (opts.initial() || items[0]).focus();
+      }
     }
 
-    // Event chrome — the preview panel and swipe handles are created lazily
-    // on the first drag; no persistent affordances.
-
-    // Home — hover (or focus) an event card and the page previews that
-    // event's world: events.css animates every themed token into the
-    // destination palette and the dust dissolves into its motes. The
-    // ghost card carries no data-hover-page, so it never shifts anything.
-    var homeCards = Array.prototype.slice.call(document.querySelectorAll('.event-card[data-hover-page]'));
-    if (homeCards.length) {
-      var rootEl = document.documentElement;
-      homeCards.forEach(function (card) {
-        var hoverPage = card.getAttribute('data-hover-page');
-        function previewOn() { rootEl.setAttribute('data-hover', hoverPage); }
-        function previewOff() { rootEl.removeAttribute('data-hover'); }
-        card.addEventListener('mouseenter', previewOn);
-        card.addEventListener('mouseleave', previewOff);
-        card.addEventListener('focusin', previewOn);
-        card.addEventListener('focusout', previewOff);
+    btn.addEventListener('click', function () { set(!open, true); });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        set(true, true);
+      }
+    });
+    panel.addEventListener('keydown', function (e) {
+      var i = items.indexOf(document.activeElement);
+      if (i === -1) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        items[(i + 1) % items.length].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        items[(i + items.length - 1) % items.length].focus();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        set(false);
+        btn.focus();
+      } else if (opts.activate && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        opts.activate(items[i]);
+      }
+    });
+    if (opts.activate) {
+      panel.addEventListener('click', function (e) {
+        var item = e.target.closest(opts.items);
+        if (item) opts.activate(item);
       });
     }
+    document.addEventListener('click', function (e) {
+      if (open && !btn.contains(e.target) && !panel.contains(e.target)) set(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && open) {
+        set(false);
+        btn.focus();
+      }
+    });
 
-    // Language picker — flag dropdown (custom listbox so real flags render
-    // everywhere; Windows shows letter-pairs instead of flag emojis).
+    return { close: function () { set(false); }, items: items };
+  }
+
+  // The topbar's own two: the language picker (a flag dropdown, so real flags
+  // render everywhere — Windows shows letter-pairs instead of flag emojis) and
+  // the ledger (the ❧ directory drawer; its rows are links, so they navigate
+  // on their own).
+  function wireTopbar() {
     var langBtn = document.getElementById('lang-btn');
     var langMenu = document.getElementById('lang-menu');
     if (langBtn && langMenu) {
-      var langOptions = Array.prototype.slice.call(langMenu.querySelectorAll('[role="option"]'));
-      var pickerOpen = false;
-
-      function setPickerOpen(open, focusList) {
-        pickerOpen = open;
-        langBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        langMenu.hidden = !open;
-        langBtn.classList.toggle('open', open);
-        if (open && focusList) {
-          var current = langMenu.querySelector('[aria-selected="true"]') || langOptions[0];
-          current.focus();
-        }
-      }
-
       function syncPicker() {
         var current = (window.I18N && window.I18N.lang) || 'en';
         var active = null;
-        langOptions.forEach(function (opt) {
+        picker.items.forEach(function (opt) {
           var isSel = opt.getAttribute('data-lang') === current;
           opt.setAttribute('aria-selected', isSel ? 'true' : 'false');
           if (isSel) active = opt;
@@ -565,7 +650,7 @@
       }
 
       function pick(code) {
-        setPickerOpen(false);
+        picker.close();
         langBtn.focus();
         if (window.I18N && typeof window.I18N.switchTo === 'function') {
           window.I18N.switchTo(code);
@@ -574,107 +659,38 @@
         }
       }
 
-      langBtn.addEventListener('click', function () { setPickerOpen(!pickerOpen, true); });
-      langBtn.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          setPickerOpen(true, true);
-        }
-      });
-      langMenu.addEventListener('click', function (e) {
-        var opt = e.target.closest('[role="option"]');
-        if (opt) pick(opt.getAttribute('data-lang'));
-      });
-      langMenu.addEventListener('keydown', function (e) {
-        var idx = langOptions.indexOf(document.activeElement);
-        if (idx === -1) return;
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          langOptions[(idx + 1) % langOptions.length].focus();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          langOptions[(idx + langOptions.length - 1) % langOptions.length].focus();
-        } else if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          pick(langOptions[idx].getAttribute('data-lang'));
-        } else if (e.key === 'Escape') {
-          e.preventDefault();
-          setPickerOpen(false);
-          langBtn.focus();
-        }
-      });
-      document.addEventListener('click', function (e) {
-        if (pickerOpen && !langBtn.contains(e.target) && !langMenu.contains(e.target)) {
-          setPickerOpen(false);
-        }
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && pickerOpen) {
-          setPickerOpen(false);
-          langBtn.focus();
-        }
+      var picker = disclosure(langBtn, langMenu, {
+        items: '[role="option"]',
+        initial: function () { return langMenu.querySelector('[aria-selected="true"]'); },
+        activate: function (opt) { pick(opt.getAttribute('data-lang')); }
       });
       document.addEventListener('i18n:change', syncPicker);
       syncPicker();
     }
 
-    // Ledger — the ❧ directory drawer (mobile topbar): a fleuron button
-    // opens the grouped page list under the bar. Same open/close contract
-    // as the language menu: aria-expanded, hidden, Esc + outside-click
-    // close, focus moves to the first row and returns to the trigger.
     var ledgerBtn = document.getElementById('ledger-btn');
     var ledger = document.getElementById('ledger');
     if (ledgerBtn && ledger) {
-      var ledgerLinks = Array.prototype.slice.call(ledger.querySelectorAll('a'));
-      var ledgerOpen = false;
-      function setLedgerOpen(open, focusList) {
-        ledgerOpen = open;
-        ledgerBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        ledger.hidden = !open;
-        ledgerBtn.classList.toggle('open', open);
-        if (open && focusList && ledgerLinks.length) {
-          var current = ledger.querySelector('a.active') || ledgerLinks[0];
-          current.focus();
-        }
-      }
-      ledgerBtn.addEventListener('click', function () { setLedgerOpen(!ledgerOpen, true); });
-      ledgerBtn.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          setLedgerOpen(true, true);
-        }
-      });
-      ledger.addEventListener('keydown', function (e) {
-        var idx = ledgerLinks.indexOf(document.activeElement);
-        if (idx === -1) return;
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          ledgerLinks[(idx + 1) % ledgerLinks.length].focus();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          ledgerLinks[(idx + ledgerLinks.length - 1) % ledgerLinks.length].focus();
-        } else if (e.key === 'Escape') {
-          e.preventDefault();
-          setLedgerOpen(false);
-          ledgerBtn.focus();
-        }
-      });
-      document.addEventListener('click', function (e) {
-        if (ledgerOpen && !ledgerBtn.contains(e.target) && !ledger.contains(e.target)) {
-          setLedgerOpen(false);
-        }
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && ledgerOpen) {
-          setLedgerOpen(false);
-          ledgerBtn.focus();
-        }
+      disclosure(ledgerBtn, ledger, {
+        items: 'a',
+        initial: function () { return ledger.querySelector('a.active'); }
       });
     }
+  }
 
-    // Language change: re-format, let the page repaint
+  // ── Boot — everything above is inert until the active dictionary is
+  //    applied (i18n.js loads first), or the DOM is ready without i18n. ──
+  function boot() {
+    wireProgress();
+    wireToc();
+    wireFrontLayer();
+    wireHomePreview();
+    wireTopbar();
+    // Event chrome — the preview panel and swipe handles are created lazily
+    // on the first drag; no persistent affordances, so nothing to wire.
+
+    // Language change: let the page repaint (BH.fmt reformats itself)
     document.addEventListener('i18n:change', function () {
-      nf = new Intl.NumberFormat(getLocale());
       pageCfg.onChange();
     });
 
@@ -692,6 +708,8 @@
     mult: mult,
     tr: tr,
     trCount: trCount,
+    tpl: tpl,
+    fill: fill,
     showNote: showNote,
     registerPage: function (cfg) {
       if (!cfg) return;

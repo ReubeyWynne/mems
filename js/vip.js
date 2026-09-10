@@ -86,14 +86,11 @@
       var nDays = Math.ceil((CUM[s.L + 1] - s.earned) / s.rate);
       var dateTxt = fmtDate(addDays(new Date(), nDays));
       if (headline) {
-        headline.innerHTML = BH.trCount('vip.calc.rateLine', nDays, [
+        headline.innerHTML = BH.fill(BH.trCount('vip.calc.rateLine', nDays, [
           'At <b>{rate}</b> VIP XP a day, you already have the XP for your next level \u2014 <b>today</b>.',
           'At <b>{rate}</b> VIP XP a day, your next level lands <b>{date}</b>, <b>tomorrow</b>.',
           'At <b>{rate}</b> VIP XP a day, your next level lands <b>{date}</b>, <b>{n} days</b> from today.'
-        ])
-          .replace(/\{rate\}/g, BH.fmt(s.rate))
-          .replace(/\{date\}/g, dateTxt)
-          .replace(/\{n\}/g, BH.fmt(nDays));
+        ]), { rate: BH.fmt(s.rate), date: dateTxt, n: BH.fmt(nDays) });
       }
     }
 
@@ -140,13 +137,11 @@
         var days = Math.ceil((CUM[m] - s.earned) / s.rate);
         var date = fmtDate(addDays(new Date(), days));
         slot.className = 'vip-target-date';
-        slot.innerHTML = BH.trCount('vip.targets.out', days, [
+        slot.innerHTML = BH.fill(BH.trCount('vip.targets.out', days, [
           'your date: <b>{date}</b> \u00B7 <b>today</b>',
           'your date: <b>{date}</b> \u00B7 <b>tomorrow</b>',
           'your date: <b>{date}</b> \u00B7 <b>{n} days</b>'
-        ])
-          .replace(/\{date\}/g, date)
-          .replace(/\{n\}/g, BH.fmt(days));
+        ]), { date: date, n: BH.fmt(days) });
       }
     });
   }

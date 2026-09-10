@@ -29,7 +29,7 @@
     if (n === 0) {
       outline.innerHTML = BH.tr('vv.stand.outZero', '<b>0</b> garrisons \u2014 just the fixed home wave reward. troops at home earn nothing.');
     } else {
-      outline.innerHTML = BH.tr('vv.stand.out', '<b>{n}</b> garrisons score for you at once \u2014 <b>{n}\u00D7</b> the kill surface of staying home.').replace(/\{n\}/g, n);
+      outline.innerHTML = BH.tpl('vv.stand.out', '<b>{n}</b> garrisons score for you at once \u2014 <b>{n}\u00D7</b> the kill surface of staying home.', { n: n });
     }
   }
 

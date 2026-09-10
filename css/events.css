@@ -152,7 +152,11 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 /* ─── The swipe preview — the neighbour event's cover ─── */
 /* Parked off-screen at ±100% (its own width); the finger pulls it in with
    resistance; release past the commit bar navigates, short drags snap back
-   (the .snap class supplies the spring, added and removed in common.js). */
+   (the .snap class supplies the spring, added and removed in common.js).
+   The panel is only the type; the paper it is printed on is the ::before,
+   so a committed swipe can spread the cover to the whole frame with one
+   transform on an empty box — the title never reflows and the phone never
+   lays anything out (§ .commit below). */
 .swipe-peek {
   position: fixed;
   top: 0; bottom: 0;
@@ -163,15 +167,54 @@ body.swiping { user-select: none; -webkit-user-select: none; }
   justify-content: center;
   gap: var(--space-s);
   padding: var(--space-l) var(--space-m);
-  background: var(--void-2);
-  border-inline: 1px solid var(--amber-dim);
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.55);
   pointer-events: none;
   will-change: transform;
 }
+/* The paper, under the type (z-index -1 in the panel's own stacking context)
+   and spread from the edge the panel is anchored to — the reader's side, so
+   the cover grows away from the chrome rather than through it. */
+.swipe-peek::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--void-2);
+  border-inline: 1px solid var(--amber-dim);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.55);
+  transform-origin: 100% 50%;
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.22s linear;
+}
 .swipe-peek.prev { left: 0; transform: translateX(-100%); }
+.swipe-peek.prev::before { transform-origin: 0% 50%; }
 .swipe-peek.next { right: 0; transform: translateX(100%); }
 .swipe-peek.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+/* The fold lands. The cover the finger was holding stops being a card and
+   becomes the frame the destination arrives on: the paper spreads from the
+   anchored edge to the whole viewport (--fold is the frame plus the card's
+   remaining travel, measured in common.js), and the panel drops under the
+   topbar (50) so the chrome holds still over the spreading paper — which is
+   exactly how it will sit through the view transition that follows, so
+   nothing flickers at the hand-off. The shadow and the edge line go at once:
+   the animated work stays one flat fill on the compositor. The type goes too,
+   a little ahead of the paper: the arriving page brings its own title, and
+   the cover it lands on is blank on purpose.
+
+   The page turn is deliberately longer than the release spring it lands in
+   the middle of, which is why the spread is driven by one transition here
+   while the card underneath finishes its own — the paper's anchored edge
+   sweeps past the far side of the frame either way (see commitPeek). The
+   navigation leaves when this transition reports done, so the arriving page
+   never slides in over a cover still crawling open (FOLD_MS in common.js). */
+.swipe-peek.commit { z-index: 45; }
+.swipe-peek.commit::before {
+  transform: scaleX(var(--fold, 1));
+  border-color: transparent;
+  box-shadow: none;
+}
+.swipe-peek > * { transition: opacity 0.16s linear; }
+.swipe-peek.commit > * { opacity: 0; }
 .swipe-peek .peek-kicker {
   font-family: var(--body);
   font-size: var(--step--1);
@@ -232,6 +275,15 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
   html[data-nav="next"]::view-transition-new(root) { animation: vt-in-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
   html[data-nav="prev"]::view-transition-old(root) { animation: vt-out-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
   html[data-nav="prev"]::view-transition-new(root) { animation: vt-in-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+  /* A committed swipe arrives as a fold, not a move: the outgoing page had
+     already spread the destination's cover over its whole frame (common.js
+     commitPeek), so that cover is the ground and the page lands on top of it.
+     Holding the old root still is the whole of it — the arriving page keeps
+     the slide it already has, from the side the finger went, but it now
+     crosses the cover instead of a page sliding the other way. Same rule
+     either direction: the destination's own side is not the point here. */
+  html[data-entry="fold"]::view-transition-old(root) { animation: none; }
 
   @keyframes vt-dissolve-out { to { opacity: 0; } }
   @keyframes vt-dissolve-in { from { opacity: 0; } }

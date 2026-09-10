@@ -90,8 +90,11 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   `data-prev-url`/`data-next-url` and stamps `data-nav="next|prev"` on `<html>`.
   No direction (a link from outside the ring) = plain dissolve; reduced motion =
   the transition's animations are neutralised, so the swap is instant. A committed
-  swipe keeps its cover card on screen (the old frame the transition carries out);
-  `js/common.js` springs it away after 1.5s only if the navigation never lands.
+  swipe is a fold, not a cut: `js/common.js` spreads the cover card to the whole
+  frame, leaves this page's own address in `sessionStorage` (`bh:fold`, read once
+  and deleted by `head.html`, which stamps `data-entry="fold"` on `<html>`) and
+  only then navigates — the old root holds still and the destination slides in
+  over the spread cover. A navigation that never lands springs the cover away.
   The dictionary URL is build-stamped (`window.__BH_BUILD` = `site.time`, read by
   `js/i18n.js`): cacheable on the live site, still no-cache on localhost/`file://`.
 - A new event page = one directory with a front-matter `index.html` (its TOC +

@@ -21,28 +21,42 @@
    dictionary URL (js/i18n.js) so a deploy reaches readers without every page
    view re-downloading the dictionary. */
 window.__BH_BUILD = '{{ site.time | date: "%s" }}';
-/* Which way the reader moved to arrive here — the cross-document view
-   transition in css/events.css reads it off <html> to slide the right way.
-   Nothing is stored: this page knows its two swipe neighbours (the data-*
-   attributes the layout just wrote), so a referrer matching our previous
-   neighbour means the reader moved forward through the ledger and one
-   matching our next neighbour means they moved back. Compare stripped URLs
-   (?lang=, #section and all), and say nothing for anything else — a link
-   from outside the ring gets the plain dissolve. */
+/* Which way the reader moved to arrive here, and whether they arrived on a
+   swipe rather than a click — the cross-document view transition in
+   css/events.css reads both off <html>. Direction: this page knows its two
+   swipe neighbours (the data-* attributes the layout just wrote), so a
+   referrer matching our previous neighbour means the reader moved forward
+   through the ledger and one matching our next neighbour means they moved
+   back; anything else — a link in from outside the ring — gets the quiet
+   dissolve. A swipe says the same thing by itself: common.js leaves this
+   page's own address in sessionStorage for exactly one navigation, which
+   makes it the referrer for a document that was fetched before the referrer
+   was written. It is read once and deleted here; nothing else is kept. */
 (function () {
-  var ref = document.referrer;
-  if (!ref) return;
   var root = document.documentElement;
   var here = location.href.split(/[?#]/)[0];
-  var from = ref.split(/[?#]/)[0];
-  if (from === here) return;
+  var from = '';
+  try {
+    from = sessionStorage.getItem('bh:fold') || '';
+    sessionStorage.removeItem('bh:fold');
+  } catch (e) { /* private mode: the move falls back to the plain one */ }
+  from = from.split(/[?#]/)[0];
   function neighbour(attr) {
     var href = root.getAttribute(attr);
-    if (!href) return null;
-    try { return new URL(href, here).href.split(/[?#]/)[0]; } catch (e) { return null; }
+    if (!href) return '';
+    try { return new URL(href, here).href.split(/[?#]/)[0]; } catch (e) { return ''; }
   }
-  if (from === neighbour('data-prev-url')) root.setAttribute('data-nav', 'next');
-  else if (from === neighbour('data-next-url')) root.setAttribute('data-nav', 'prev');
+  var prev = neighbour('data-prev-url');
+  var next = neighbour('data-next-url');
+  var ref = document.referrer.split(/[?#]/)[0];
+  if (ref === here) ref = '';                    // a reload is not a move
+  var cameFromPrev = (!!ref && ref === prev) || (!!from && from === prev);
+  var cameFromNext = (!!ref && ref === next) || (!!from && from === next);
+  if (cameFromPrev) root.setAttribute('data-nav', 'next');
+  else if (cameFromNext) root.setAttribute('data-nav', 'prev');
+  // Only a committed swipe leaves the flag, and only the cover it spread can
+  // be landed on: that arrival gets the fold instead of the push.
+  if (from && (from === prev || from === next)) root.setAttribute('data-entry', 'fold');
 })();
 </script>
 <script>

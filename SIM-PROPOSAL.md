@@ -239,3 +239,113 @@ extended; `jekyll build` + page checks against `_site/` before done.
    the answer. Crossing the archers' own **T7+ / TG3+** line still moves the optimum: that ×1.1
    is a rule about archers, not about the tier scale, and the panel's copy names it as such.
 
+---
+
+## 10 · Hero layer — the input module (planned, gate D)
+
+**Status:** OPEN — no code. This section records the model, which is now *mined*
+rather than guessed (`KINGSHOT-SOURCES.md` §2, *Hero layer*), and the input shape
+confirmed with the owner on 2026-09-11.
+
+### The four layers a hero contributes
+
+1. **Rank / star stat line** — attack and defence, always equal, on the hero's own
+   troop type only: `ceiling × curve[6·stars + tiers]`.
+2. **Exclusive gear (widget)** — a flat lethality+health pair for the hero's type,
+   live in *both* roles, **plus** a role-gated skill (`rally | defender`). Both
+   scale with the widget's level.
+3. **Expedition skills** — passives and procs, at skill level `min(5, stars + 1)`,
+   so **4★ is what unlocks Lv5**.
+4. **Gear / charms / research** — the account "common" every hero sits on.
+
+Fed in that order the module reproduces a real Bonus-Details panel; the three
+independent checks are recorded in `KINGSHOT-SOURCES.md` §2.
+
+### What the reader types — and what they don't
+
+**Roster (per hero).** Hero, stars (`N★` + tier, i.e. the ladder index), widget
+level or "no widget". Skill levels are **derived, not typed** — `min(5, stars + 1)`
+— with an optional *lower* pin, because a hero can lag its cap (2★ Amadeus may
+never have been fed skill books to Lv3). Never a higher one.
+
+**Gear sets — per troop type, not per hero.** This is the owner's key constraint:
+**hero gear is transferable, and a player realistically owns one levelled set per
+troop type.** So the module stores three sets — infantry, cavalry, archer — each a
+list of pieces with quality + level, and applies the set matching the equipped
+hero's type. Swapping two heroes of the same type must not ask the reader to
+re-enter gear. **Widgets are the opposite: hero-bound and never transferable**, so
+the widget level lives on the roster entry, not on the set.
+
+**March.** Three hero slots, the counts/tier/TG the march panel already takes, and
+the **role — rally (attacking) or garrison (defending)**. Role is not cosmetic: it
+decides which widget skills apply and which heroes are eligible at all. Zoe and
+Hilde are defender-widget heroes; Amadeus and Marlin are rally-widget ones; the
+same hero ranks differently by role.
+
+### What it computes, and why it is its own module
+
+`panel_type = common_type + curve[index] × ceiling` for the hero's own type, then
+the widget's stat pair and its role-gated skill through the special-bonus form
+`(100 + entered) × (1 + g/100) − 100`, then the skills as their own multiplier
+layer. The output is **the same twelve values the report sheet takes**, so the hero
+module *feeds* the existing ratio and march panels rather than replacing them.
+
+It cannot be a factor inside the ratio panel: an all-troop skill cancels out of a
+split, but a **type-specific** one does not (Rosa archers only, Thrud
+infantry+archers, Alcar infantry). Only a module that knows *which hero* is in the
+march can say whether the mix moved. The ratio panel's note now says exactly this.
+
+### Data — all mined, nothing to invent
+
+- **34 heroes** with full 31-point ladders and their `attackPct`/`defensePct`
+  ceilings, in `kingshot.net/hero-stat-comparison`'s JS payload as `stats:[…]`
+  arrays. The curve is shared, so per hero the module needs only the ceiling plus
+  the skill values — the ladder itself is one 31-value constant.
+- Skill values and per-hero widget definitions (`{troop_type, widget_type,
+  widget_effect}` + the 0/5/7.5/10/12.5/15 ladder) — already in
+  `KINGSHOT-SOURCES.md` §2, from the sim bundle's `dn`/`xi` tables and the
+  optimizer's hero pages.
+- Hero-gear stats: that site's quality ladder is the **base only**. In game the shown
+  troop-stat is `base × (1 + 0.10 × mastery level)` — **Mastery Forging** is a second,
+  multiplicative axis, and **Epic gear cannot be mastery forged**, so a built set is
+  Mythic or Red. Four in-game screenshots fit exactly (`KINGSHOT-SOURCES.md` §2,
+  *Hero gear*). Still missing `⚠`: the slot table — how many pieces a hero wears and
+  which troop stat each carries.
+
+### Gate D
+
+**OPEN — gate D.** The module may print the twelve values, the resulting mix and
+the split efficiency, but **no absolute damage and no bracket** until gate A's
+constant is fitted: the hero layer changes the *stats*, not the missing constant.
+Also OPEN: confirm skill levels are readable from a screenshot (they are on the
+hero's Skills tab) before promising any import path — the roster is otherwise
+manual. And the skill-level *derivation* both gates above assume should be
+re-checked against a 5★ hero's panel.
+
+### Build order
+
+1. **Data first — landed 2026-09-11.** `_data/heroes.json` carries all **34** heroes:
+   their 31-point ladders, ceilings, published `attackPct`/`defensePct`, expedition
+   skill values and widget specs. `.dsh/verify-heroes.mjs` checks ladder length (31),
+   monotonicity, ceiling parity, and the shared-curve claim — every normalised ladder
+   reproduces `curve` within source rounding, and the only deviations beyond that are
+   the three recorded gen-2 anomalies, asserted so a source fix shows up as a test
+   change rather than silent drift. **Deferred to step 2:** the trimmed runtime subset.
+   The file is the audit table and is deliberately not served. Two gaps it records
+   rather than fills: 12 heroes have an empty widget row in the mined bundle
+   (Chenko, Amane, Yeonwoo and the other early heroes — their exclusive gear exists
+   in game, the spec was never in the bundle), and the four heroes marked
+   `skillsSource: "kingshotoptimizer"` take their skill labels from their descriptions.
+2. **Roster input** — hero picker, star, widget level, three slots, role toggle.
+3. **Gear sets** — three per-type sets. A set is a list of pieces each carrying an
+   **enhancement level and a mastery level**; a piece contributes
+   `base(quality, level) × (1 + 0.10 × mastery)` on the troop stat it holds, matched to
+   the equipped hero's type. **Epic is skipped** — it cannot be mastery forged, so the
+   input only needs Mythic/Red. Blocked on `⚠` the slot table.
+4. **Output** — the twelve-value panel feeding the existing ratio and march panels.
+5. **Then** the roster becomes the collection grid for gate A: every rally report
+   pins one hero × star × gear state, which is how the damage constant gets fitted.
+
+Each step ships with its `sim.*` keys across all 17 dictionaries and the `.dsh`
+harness extended; `jekyll build` + page checks against `_site/` before done.
+

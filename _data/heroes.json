@@ -1,0 +1,3286 @@
+{
+ "_note": "Hero layer data for the battle simulator. Mined 2026-09-11 — see KINGSHOT-SOURCES.md §2 \"Hero layer\". Ladders, ceilings and the published attackPct/defensePct come from kingshot.net/hero-stat-comparison's JS payload; the four heroes whose skillsSource is \"kingshotoptimizer\" take their skill values from that site's hero pages. This is the audit table, not a runtime asset — a trimmed subset is generated in build-order step 2.",
+ "_units": {
+  "type": {
+   "inf": "infantry",
+   "cav": "cavalry",
+   "arc": "archer"
+  },
+  "index": "index = 6*stars + tiers, so 2-star = 12, 4.3-star = 27, 5-star = 30",
+  "ladder": "the hero's own troop type, attack AND defence (always equal), expedition percentages",
+  "widget": "role is rally|defender; a defender widget's SKILL is dead in an attacking rally, but its flat lethality+health is not"
+ },
+ "_checks": [
+  "34 heroes, every ladder 31 long",
+  "every ladder non-decreasing",
+  "ladder[30] == ceiling, and == the published attackPct/defensePct where published",
+  "normalising a ladder by its ceiling reproduces curve within source rounding, except anomalies"
+ ],
+ "_anomalies": "The gen-2 family (Zoe, Hilde, Marlin) carries one bad value at index 27: 192.02 where the curve wants 199.06 — a +3.84 step among ~+10.84 neighbours. Read as a typo in the source, not a real curve break. ⚠ verify",
+ "curve": [
+  12.61,
+  13.79,
+  14.96,
+  16.14,
+  17.31,
+  18.49,
+  20.6,
+  22.24,
+  23.89,
+  25.53,
+  27.17,
+  28.82,
+  31.78,
+  34.07,
+  36.38,
+  38.68,
+  40.98,
+  43.28,
+  47.42,
+  50.65,
+  53.86,
+  57.08,
+  60.31,
+  63.53,
+  69.33,
+  73.84,
+  78.35,
+  82.86,
+  87.37,
+  91.88,
+  100.0
+ ],
+ "anomalies": [
+  {
+   "hero": "Hilde",
+   "type": "cav",
+   "index": 27,
+   "value": 192.02,
+   "pct": 79.95,
+   "curve": 82.86,
+   "delta": -2.91
+  },
+  {
+   "hero": "Marlin",
+   "type": "arc",
+   "index": 27,
+   "value": 192.02,
+   "pct": 79.95,
+   "curve": 82.86,
+   "delta": -2.91
+  },
+  {
+   "hero": "Zoe",
+   "type": "inf",
+   "index": 27,
+   "value": 192.02,
+   "pct": 79.95,
+   "curve": 82.86,
+   "delta": -2.91
+  }
+ ],
+ "heroes": [
+  {
+   "name": "Amadeus",
+   "key": "amadeus",
+   "type": "inf",
+   "rarity": "legendary",
+   "generation": 1,
+   "ceiling": 260.2,
+   "published": {
+    "attackPct": 260.2,
+    "defensePct": 260.2
+   },
+   "ladder": [
+    32.82,
+    35.88,
+    38.93,
+    41.99,
+    45.04,
+    48.1,
+    53.59,
+    57.87,
+    62.15,
+    66.43,
+    70.7,
+    74.98,
+    82.68,
+    88.66,
+    94.65,
+    100.64,
+    106.62,
+    112.61,
+    123.39,
+    131.78,
+    140.15,
+    148.53,
+    156.92,
+    165.3,
+    180.4,
+    192.12,
+    203.86,
+    215.6,
+    227.34,
+    239.08,
+    260.2
+   ],
+   "skills": [
+    {
+     "name": "Battle Ready",
+     "scales": [
+      {
+       "label": "Lethality Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Way of the Blade",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Unrighteous Strike",
+     "scales": [
+      {
+       "label": "Damage Dealt Chance Up",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "inf",
+    "role": "rally",
+    "effect": "attack"
+   }
+  },
+  {
+   "name": "Amane",
+   "key": "amane",
+   "type": "arc",
+   "rarity": "epic",
+   "generation": 1,
+   "ceiling": 140.11,
+   "published": {
+    "attackPct": 140.11,
+    "defensePct": 140.11
+   },
+   "ladder": [
+    17.76,
+    19.32,
+    20.96,
+    22.61,
+    24.25,
+    25.9,
+    28.86,
+    31.16,
+    33.46,
+    35.77,
+    38.07,
+    40.37,
+    44.52,
+    47.74,
+    50.96,
+    54.19,
+    57.41,
+    60.64,
+    66.44,
+    70.95,
+    75.46,
+    79.98,
+    84.49,
+    89.01,
+    97.13,
+    103.45,
+    109.77,
+    116.09,
+    122.41,
+    128.73,
+    140.11
+   ],
+   "skills": [
+    {
+     "name": "Tri-Phalanx",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Exorcism",
+     "scales": [
+      {
+       "label": "Healing Speed Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Chenko",
+   "key": "chenko",
+   "type": "cav",
+   "rarity": "epic",
+   "generation": 1,
+   "ceiling": 140.11,
+   "published": {
+    "attackPct": 140.11,
+    "defensePct": 140.11
+   },
+   "ladder": [
+    17.76,
+    19.32,
+    20.96,
+    22.61,
+    24.25,
+    25.9,
+    28.86,
+    31.16,
+    33.46,
+    35.77,
+    38.07,
+    40.37,
+    44.52,
+    47.74,
+    50.96,
+    54.19,
+    57.41,
+    60.64,
+    66.44,
+    70.95,
+    75.46,
+    79.98,
+    84.49,
+    89.01,
+    97.13,
+    103.45,
+    109.77,
+    116.09,
+    122.41,
+    128.73,
+    140.11
+   ],
+   "skills": [
+    {
+     "name": "Stand of Arms",
+     "scales": [
+      {
+       "label": "Lethality Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Shield Wall",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Diana",
+   "key": "diana",
+   "type": "arc",
+   "rarity": "epic",
+   "generation": 1,
+   "ceiling": 110.08,
+   "published": {
+    "attackPct": 110.08,
+    "defensePct": 110.08
+   },
+   "ladder": [
+    13.88,
+    15.18,
+    16.47,
+    17.76,
+    19.05,
+    20.35,
+    22.67,
+    24.48,
+    26.29,
+    28.1,
+    29.91,
+    31.72,
+    34.98,
+    37.51,
+    40.04,
+    42.58,
+    45.11,
+    47.64,
+    52.5,
+    55.75,
+    59.29,
+    62.84,
+    66.39,
+    69.93,
+    76.32,
+    81.28,
+    86.25,
+    91.21,
+    96.18,
+    101.15,
+    110.08
+   ],
+   "skills": [
+    {
+     "name": "Iron Constitution",
+     "scales": [
+      {
+       "label": "Stamina Cost Down",
+       "levels": [
+        "10%",
+        "12%",
+        "15%",
+        "18%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Quick Paced",
+     "scales": [
+      {
+       "label": "Wilderness March Speed",
+       "levels": [
+        "20%",
+        "40%",
+        "60%",
+        "80%",
+        "100%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Edwin",
+   "key": "edwin",
+   "type": "cav",
+   "rarity": "rare",
+   "generation": 1,
+   "ceiling": 90.07,
+   "published": {
+    "attackPct": 90.07,
+    "defensePct": 90.07
+   },
+   "ladder": [
+    11.36,
+    12.42,
+    13.47,
+    14.53,
+    15.59,
+    16.65,
+    18.55,
+    20.03,
+    21.51,
+    22.99,
+    24.47,
+    25.95,
+    28.62,
+    30.69,
+    32.76,
+    34.83,
+    36.9,
+    38.98,
+    42.71,
+    45.61,
+    48.51,
+    51.41,
+    54.31,
+    57.22,
+    62.44,
+    66.5,
+    70.56,
+    74.63,
+    78.69,
+    82.75,
+    90.07
+   ],
+   "skills": [
+    {
+     "name": "Demolitions Expert",
+     "scales": [
+      {
+       "label": "Quarry Income",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Stone Mining",
+     "scales": [
+      {
+       "label": "Stone Gathering Speed",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Fahd",
+   "key": "fahd",
+   "type": "cav",
+   "rarity": "epic",
+   "generation": 1,
+   "ceiling": 140.11,
+   "published": {
+    "attackPct": 140.11,
+    "defensePct": 140.11
+   },
+   "ladder": [
+    17.76,
+    19.32,
+    20.96,
+    22.61,
+    24.25,
+    25.9,
+    28.86,
+    31.16,
+    33.46,
+    35.77,
+    38.07,
+    40.37,
+    44.52,
+    47.74,
+    50.96,
+    54.19,
+    57.41,
+    60.64,
+    66.44,
+    70.95,
+    75.46,
+    79.98,
+    84.49,
+    89.01,
+    97.13,
+    103.45,
+    109.77,
+    116.09,
+    122.41,
+    128.73,
+    140.11
+   ],
+   "skills": [
+    {
+     "name": "Desert Eclipse",
+     "scales": [
+      {
+       "label": "Enemy Damage Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Pathfinder",
+     "scales": [
+      {
+       "label": "Hunting March Speed",
+       "levels": [
+        "20%",
+        "40%",
+        "60%",
+        "80%",
+        "100%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Forrest",
+   "key": "forrest",
+   "type": "inf",
+   "rarity": "rare",
+   "generation": 1,
+   "ceiling": 90.07,
+   "published": null,
+   "ladder": [
+    11.36,
+    12.42,
+    13.47,
+    14.53,
+    15.59,
+    16.65,
+    18.55,
+    20.03,
+    21.51,
+    22.99,
+    24.47,
+    25.95,
+    28.62,
+    30.69,
+    32.76,
+    34.83,
+    36.9,
+    38.98,
+    42.71,
+    45.61,
+    48.51,
+    51.41,
+    54.31,
+    57.22,
+    62.44,
+    66.5,
+    70.56,
+    74.63,
+    78.69,
+    82.75,
+    90.07
+   ],
+   "skills": [
+    {
+     "name": "Woodland Inheritor",
+     "scales": [
+      {
+       "label": "Sawmill Output",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Master Woodcutter",
+     "scales": [
+      {
+       "label": "Wood Gathering Speed",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshotoptimizer",
+   "widget": null
+  },
+  {
+   "name": "Gordon",
+   "key": "gordon",
+   "type": "cav",
+   "rarity": "epic",
+   "generation": 1,
+   "ceiling": 140.11,
+   "published": {
+    "attackPct": 140.11,
+    "defensePct": 140.11
+   },
+   "ladder": [
+    17.76,
+    19.32,
+    20.96,
+    22.61,
+    24.25,
+    25.9,
+    28.86,
+    31.16,
+    33.46,
+    35.77,
+    38.07,
+    40.37,
+    44.52,
+    47.74,
+    50.96,
+    54.19,
+    57.41,
+    60.64,
+    66.44,
+    70.95,
+    75.46,
+    79.98,
+    84.49,
+    89.01,
+    97.13,
+    103.45,
+    109.77,
+    116.09,
+    122.41,
+    128.73,
+    140.11
+   ],
+   "skills": [
+    {
+     "name": "Super Nutrients",
+     "scales": [
+      {
+       "label": "Health Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Trash Talk",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Helga",
+   "key": "helga",
+   "type": "inf",
+   "rarity": "legendary",
+   "generation": 1,
+   "ceiling": 200.16,
+   "published": {
+    "attackPct": 200.16,
+    "defensePct": 200.16
+   },
+   "ladder": [
+    25.25,
+    27.6,
+    29.95,
+    32.3,
+    34.65,
+    37,
+    41.23,
+    44.52,
+    47.81,
+    51.1,
+    54.39,
+    57.68,
+    63.6,
+    68.2,
+    72.81,
+    77.42,
+    82.02,
+    86.63,
+    94.92,
+    101.37,
+    107.81,
+    114.26,
+    120.71,
+    127.16,
+    138.77,
+    147.79,
+    156.82,
+    165.85,
+    174.88,
+    183.91,
+    200.16
+   ],
+   "skills": [
+    {
+     "name": "Oath of Guardian",
+     "scales": [
+      {
+       "label": "Damage Taken Chance Down",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Echoes of Valhalla",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Nature's Balance",
+     "scales": [
+      {
+       "label": "Lethality Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "inf",
+    "role": "rally",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Howard",
+   "key": "howard",
+   "type": "inf",
+   "rarity": "epic",
+   "generation": 1,
+   "ceiling": 140.11,
+   "published": {
+    "attackPct": 140.11,
+    "defensePct": 140.11
+   },
+   "ladder": [
+    17.76,
+    19.32,
+    20.96,
+    22.61,
+    24.25,
+    25.9,
+    28.86,
+    31.16,
+    33.46,
+    35.77,
+    38.07,
+    40.37,
+    44.52,
+    47.74,
+    50.96,
+    54.19,
+    57.41,
+    60.64,
+    66.44,
+    70.95,
+    75.46,
+    79.98,
+    84.49,
+    89.01,
+    97.13,
+    103.45,
+    109.77,
+    116.09,
+    122.41,
+    128.73,
+    140.11
+   ],
+   "skills": [
+    {
+     "name": "Defenders' Edge",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Weaken",
+     "scales": [
+      {
+       "label": "Enemy Troops Attack Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Jabel",
+   "key": "jabel",
+   "type": "cav",
+   "rarity": "legendary",
+   "generation": 1,
+   "ceiling": 200.16,
+   "published": {
+    "attackPct": 200.16,
+    "defensePct": 200.16
+   },
+   "ladder": [
+    25.25,
+    27.6,
+    29.95,
+    32.3,
+    34.65,
+    37,
+    41.23,
+    44.52,
+    47.81,
+    51.1,
+    54.39,
+    57.68,
+    63.6,
+    68.2,
+    72.81,
+    77.42,
+    82.02,
+    86.63,
+    94.92,
+    101.37,
+    107.81,
+    114.26,
+    120.71,
+    127.16,
+    138.77,
+    147.79,
+    156.82,
+    165.85,
+    174.88,
+    183.91,
+    200.16
+   ],
+   "skills": [
+    {
+     "name": "Rally Flag",
+     "scales": [
+      {
+       "label": "Damage Taken Chance Down",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Hero's Domain",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Youthful Rage",
+     "scales": [
+      {
+       "label": "Lethality Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "cav",
+    "role": "defender",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Olive",
+   "key": "olive",
+   "type": "arc",
+   "rarity": "rare",
+   "generation": 1,
+   "ceiling": 90.07,
+   "published": {
+    "attackPct": 90.07,
+    "defensePct": 90.07
+   },
+   "ladder": [
+    11.36,
+    12.42,
+    13.47,
+    14.53,
+    15.59,
+    16.65,
+    18.55,
+    20.03,
+    21.51,
+    22.99,
+    24.47,
+    25.95,
+    28.62,
+    30.69,
+    32.76,
+    34.83,
+    36.9,
+    38.98,
+    42.71,
+    45.61,
+    48.51,
+    51.41,
+    54.31,
+    57.22,
+    62.44,
+    66.5,
+    70.56,
+    74.63,
+    78.69,
+    82.75,
+    90.07
+   ],
+   "skills": [
+    {
+     "name": "Green Thumb",
+     "scales": [
+      {
+       "label": "Mill Income",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Forager's Luck",
+     "scales": [
+      {
+       "label": "Bread Gathering Speed",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Quinn",
+   "key": "quinn",
+   "type": "arc",
+   "rarity": "epic",
+   "generation": 1,
+   "ceiling": 140.11,
+   "published": {
+    "attackPct": 140.11,
+    "defensePct": 140.11
+   },
+   "ladder": [
+    17.76,
+    19.32,
+    20.96,
+    22.61,
+    24.25,
+    25.9,
+    28.86,
+    31.16,
+    33.46,
+    35.77,
+    38.07,
+    40.37,
+    44.52,
+    47.74,
+    50.96,
+    54.19,
+    57.41,
+    60.64,
+    66.44,
+    70.95,
+    75.46,
+    79.98,
+    84.49,
+    89.01,
+    97.13,
+    103.45,
+    109.77,
+    116.09,
+    122.41,
+    128.73,
+    140.11
+   ],
+   "skills": [
+    {
+     "name": "Sixth Sense",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Precision Shot",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Saul",
+   "key": "saul",
+   "type": "arc",
+   "rarity": "legendary",
+   "generation": 1,
+   "ceiling": 200.16,
+   "published": {
+    "attackPct": 200.16,
+    "defensePct": 200.16
+   },
+   "ladder": [
+    25.25,
+    27.6,
+    29.95,
+    32.3,
+    34.65,
+    37,
+    41.23,
+    44.52,
+    47.81,
+    51.1,
+    54.39,
+    57.68,
+    63.6,
+    68.2,
+    72.81,
+    77.42,
+    82.02,
+    86.63,
+    94.92,
+    101.37,
+    107.81,
+    114.26,
+    120.71,
+    127.16,
+    138.77,
+    147.79,
+    156.82,
+    165.85,
+    174.88,
+    183.91,
+    200.16
+   ],
+   "skills": [
+    {
+     "name": "Taskforce Training",
+     "scales": [
+      {
+       "label": "Defense Up",
+       "levels": [
+        "2%",
+        "4%",
+        "6%",
+        "8%",
+        "10%"
+       ]
+      },
+      {
+       "label": "Health Up",
+       "levels": [
+        "3%",
+        "6%",
+        "9%",
+        "12%",
+        "15%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Resourceful",
+     "scales": [
+      {
+       "label": "Construction Speed Up",
+       "levels": [
+        "3%",
+        "6%",
+        "9%",
+        "12%",
+        "15%"
+       ]
+      },
+      {
+       "label": "Construction Cost Down",
+       "levels": [
+        "3%",
+        "6%",
+        "9%",
+        "12%",
+        "15%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Positional Battler",
+     "scales": [
+      {
+       "label": "Lethality Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "arc",
+    "role": "defender",
+    "effect": "attack"
+   }
+  },
+  {
+   "name": "Seth",
+   "key": "seth",
+   "type": "inf",
+   "rarity": "rare",
+   "generation": 1,
+   "ceiling": 90.07,
+   "published": {
+    "attackPct": 90.07,
+    "defensePct": 90.07
+   },
+   "ladder": [
+    11.36,
+    12.42,
+    13.47,
+    14.53,
+    15.59,
+    16.65,
+    18.55,
+    20.03,
+    21.51,
+    22.99,
+    24.47,
+    25.95,
+    28.62,
+    30.69,
+    32.76,
+    34.83,
+    36.9,
+    38.98,
+    42.71,
+    45.61,
+    48.51,
+    51.41,
+    54.31,
+    57.22,
+    62.44,
+    66.5,
+    70.56,
+    74.63,
+    78.69,
+    82.75,
+    90.07
+   ],
+   "skills": [
+    {
+     "name": "Burnished Iron",
+     "scales": [
+      {
+       "label": "Iron Mine Income",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Craftsmanship",
+     "scales": [
+      {
+       "label": "Iron Mining Speed",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Yeonwoo",
+   "key": "yeonwoo",
+   "type": "arc",
+   "rarity": "epic",
+   "generation": 1,
+   "ceiling": 140.11,
+   "published": {
+    "attackPct": 140.11,
+    "defensePct": 140.11
+   },
+   "ladder": [
+    17.76,
+    19.32,
+    20.96,
+    22.61,
+    24.25,
+    25.9,
+    28.86,
+    31.16,
+    33.46,
+    35.77,
+    38.07,
+    40.37,
+    44.52,
+    47.74,
+    50.96,
+    54.19,
+    57.41,
+    60.64,
+    66.44,
+    70.95,
+    75.46,
+    79.98,
+    84.49,
+    89.01,
+    97.13,
+    103.45,
+    109.77,
+    116.09,
+    122.41,
+    128.73,
+    140.11
+   ],
+   "skills": [
+    {
+     "name": "On Guard",
+     "scales": [
+      {
+       "label": "Lethality Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Well-Traveled",
+     "scales": [
+      {
+       "label": "Increases Research Speed",
+       "levels": [
+        "3%",
+        "6%",
+        "9%",
+        "12%",
+        "15%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": null
+  },
+  {
+   "name": "Hilde",
+   "key": "hilde",
+   "type": "cav",
+   "rarity": "legendary",
+   "generation": 2,
+   "ceiling": 240.19,
+   "published": {
+    "attackPct": 240.19,
+    "defensePct": 240.19
+   },
+   "ladder": [
+    30.3,
+    33.12,
+    35.94,
+    38.76,
+    41.58,
+    44.4,
+    49.47,
+    53.42,
+    57.37,
+    61.32,
+    65.26,
+    69.21,
+    76.32,
+    81.84,
+    87.37,
+    92.9,
+    98.42,
+    103.95,
+    113.9,
+    121.64,
+    129.37,
+    137.11,
+    144.85,
+    152.59,
+    166.52,
+    177.34,
+    188.18,
+    192.02,
+    209.85,
+    220.69,
+    240.19
+   ],
+   "skills": [
+    {
+     "name": "Noble Path",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "3%",
+        "6%",
+        "9%",
+        "12%",
+        "15%"
+       ]
+      },
+      {
+       "label": "Defense Up",
+       "levels": [
+        "2%",
+        "4%",
+        "6%",
+        "8%",
+        "10%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Elixir of Strength",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "120%",
+        "140%",
+        "160%",
+        "180%",
+        "200%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Trial by Fire",
+     "scales": [
+      {
+       "label": "Damage Taken Chance Down",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "cav",
+    "role": "defender",
+    "effect": "health"
+   }
+  },
+  {
+   "name": "Marlin",
+   "key": "marlin",
+   "type": "arc",
+   "rarity": "legendary",
+   "generation": 2,
+   "ceiling": 240.19,
+   "published": {
+    "attackPct": 240.19,
+    "defensePct": 240.19
+   },
+   "ladder": [
+    30.3,
+    33.12,
+    35.94,
+    38.76,
+    41.58,
+    44.4,
+    49.47,
+    53.42,
+    57.37,
+    61.32,
+    65.26,
+    69.21,
+    76.32,
+    81.84,
+    87.37,
+    92.9,
+    98.42,
+    103.95,
+    113.9,
+    121.64,
+    129.37,
+    137.11,
+    144.85,
+    152.59,
+    166.52,
+    177.34,
+    188.18,
+    192.02,
+    209.85,
+    220.69,
+    240.19
+   ],
+   "skills": [
+    {
+     "name": "Wild Card",
+     "scales": [
+      {
+       "label": "Damage Dealt Chance Up",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Rumhead",
+     "scales": [
+      {
+       "label": "Enemy Lethality Down",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Dynamo",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "arc",
+    "role": "rally",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Zoe",
+   "key": "zoe",
+   "type": "inf",
+   "rarity": "legendary",
+   "generation": 2,
+   "ceiling": 240.19,
+   "published": {
+    "attackPct": 240.19,
+    "defensePct": 240.19
+   },
+   "ladder": [
+    30.3,
+    33.12,
+    35.94,
+    38.76,
+    41.58,
+    44.4,
+    49.47,
+    53.42,
+    57.37,
+    61.32,
+    65.26,
+    69.21,
+    76.32,
+    81.84,
+    87.37,
+    92.9,
+    98.42,
+    103.95,
+    113.9,
+    121.64,
+    129.37,
+    137.11,
+    144.85,
+    152.59,
+    166.52,
+    177.34,
+    188.18,
+    192.02,
+    209.85,
+    220.69,
+    240.19
+   ],
+   "skills": [
+    {
+     "name": "Sundering Wound",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Charisma",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Infinite Arsenal",
+     "scales": [
+      {
+       "label": "Enemy Damage Taken Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "inf",
+    "role": "defender",
+    "effect": "attack"
+   }
+  },
+  {
+   "name": "Eric",
+   "key": "eric",
+   "type": "inf",
+   "rarity": "legendary",
+   "generation": 3,
+   "ceiling": 290.23,
+   "published": {
+    "attackPct": 290.23,
+    "defensePct": 290.23
+   },
+   "ladder": [
+    36.61,
+    40.02,
+    43.42,
+    46.83,
+    50.24,
+    53.65,
+    59.78,
+    64.55,
+    69.32,
+    74.09,
+    78.86,
+    83.63,
+    92.22,
+    98.89,
+    105.57,
+    112.25,
+    118.92,
+    125.61,
+    137.63,
+    146.98,
+    156.32,
+    165.67,
+    175.02,
+    184.38,
+    201.21,
+    214.29,
+    227.38,
+    240.48,
+    253.57,
+    266.66,
+    290.23
+   ],
+   "skills": [
+    {
+     "name": "Holy Warrior",
+     "scales": [
+      {
+       "label": "Enemy Troop Attack Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Conviction",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Exhortation",
+     "scales": [
+      {
+       "label": "Health Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "inf",
+    "role": "defender",
+    "effect": "defense"
+   }
+  },
+  {
+   "name": "Jaeger",
+   "key": "jaeger",
+   "type": "arc",
+   "rarity": "legendary",
+   "generation": 3,
+   "ceiling": 290.23,
+   "published": {
+    "attackPct": 290.23,
+    "defensePct": 290.23
+   },
+   "ladder": [
+    36.61,
+    40.02,
+    43.42,
+    46.83,
+    50.24,
+    53.65,
+    59.78,
+    64.55,
+    69.32,
+    74.09,
+    78.86,
+    83.63,
+    92.22,
+    98.89,
+    105.57,
+    112.25,
+    118.92,
+    125.61,
+    137.63,
+    146.98,
+    156.32,
+    165.67,
+    175.02,
+    184.38,
+    201.21,
+    214.29,
+    227.38,
+    240.48,
+    253.57,
+    266.66,
+    290.23
+   ],
+   "skills": [
+    {
+     "name": "The Tempest",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "The Resistance",
+     "scales": [
+      {
+       "label": "Enemy Lethality Down",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "The Celebration",
+     "scales": [
+      {
+       "label": "Health Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "arc",
+    "role": "defender",
+    "effect": "health"
+   }
+  },
+  {
+   "name": "Petra",
+   "key": "petra",
+   "type": "cav",
+   "rarity": "legendary",
+   "generation": 3,
+   "ceiling": 290.23,
+   "published": {
+    "attackPct": 290.23,
+    "defensePct": 290.23
+   },
+   "ladder": [
+    36.61,
+    40.02,
+    43.42,
+    46.83,
+    50.24,
+    53.65,
+    59.78,
+    64.55,
+    69.32,
+    74.09,
+    78.86,
+    83.63,
+    92.22,
+    98.89,
+    105.57,
+    112.25,
+    118.92,
+    125.61,
+    137.63,
+    146.98,
+    156.32,
+    165.67,
+    175.02,
+    184.38,
+    201.21,
+    214.29,
+    227.38,
+    240.48,
+    253.57,
+    266.66,
+    290.23
+   ],
+   "skills": [
+    {
+     "name": "Evil Eye",
+     "scales": [
+      {
+       "label": "Enemy Damage Taken Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "The Favor",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "The Shield",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "cav",
+    "role": "rally",
+    "effect": "attack"
+   }
+  },
+  {
+   "name": "Alcar",
+   "key": "alcar",
+   "type": "inf",
+   "rarity": "legendary",
+   "generation": 4,
+   "ceiling": 370.29,
+   "published": {
+    "attackPct": 370.29,
+    "defensePct": 370.29
+   },
+   "ladder": [
+    46.71,
+    51.06,
+    55.4,
+    59.75,
+    64.1,
+    68.45,
+    76.27,
+    82.36,
+    88.44,
+    94.53,
+    100.62,
+    106.7,
+    117.66,
+    126.17,
+    134.69,
+    143.22,
+    151.73,
+    160.26,
+    175.6,
+    187.53,
+    199.44,
+    211.38,
+    223.31,
+    235.24,
+    256.72,
+    273.41,
+    290.11,
+    306.82,
+    323.52,
+    340.23,
+    370.29
+   ],
+   "skills": [
+    {
+     "name": "Rescuing Hands",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "14%",
+        "28%",
+        "42%",
+        "56%",
+        "70%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Praetorian Will",
+     "scales": [
+      {
+       "label": "Infantry Damage Up",
+       "levels": [
+        "20%",
+        "40%",
+        "60%",
+        "80%",
+        "100%"
+       ]
+      },
+      {
+       "label": "Cavalry & Archer Damage Up",
+       "levels": [
+        "2%",
+        "4%",
+        "6%",
+        "8%",
+        "10%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Carpe Diem",
+     "scales": [
+      {
+       "label": "Extra Damage Up",
+       "levels": [
+        "12%",
+        "24%",
+        "36%",
+        "48%",
+        "60%"
+       ]
+      },
+      {
+       "label": "Enemy Damage Taken Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "inf",
+    "role": "defender",
+    "effect": "health"
+   }
+  },
+  {
+   "name": "Margot",
+   "key": "margot",
+   "type": "cav",
+   "rarity": "legendary",
+   "generation": 4,
+   "ceiling": 370.29,
+   "published": {
+    "attackPct": 370.29,
+    "defensePct": 370.29
+   },
+   "ladder": [
+    46.71,
+    51.06,
+    55.4,
+    59.75,
+    64.1,
+    68.45,
+    76.27,
+    82.36,
+    88.44,
+    94.53,
+    100.62,
+    106.7,
+    117.66,
+    126.17,
+    134.69,
+    143.22,
+    151.73,
+    160.26,
+    175.6,
+    187.53,
+    199.44,
+    211.38,
+    223.31,
+    235.24,
+    256.72,
+    273.41,
+    290.11,
+    306.82,
+    323.52,
+    340.23,
+    370.29
+   ],
+   "skills": [
+    {
+     "name": "Warbringer",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Subterfuge",
+     "scales": [
+      {
+       "label": "Dodge Probability Up",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Sleight Hand",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "120%",
+        "140%",
+        "160%",
+        "180%",
+        "200%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "cav",
+    "role": "defender",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Rosa",
+   "key": "rosa",
+   "type": "arc",
+   "rarity": "legendary",
+   "generation": 4,
+   "ceiling": 370.29,
+   "published": {
+    "attackPct": 370.29,
+    "defensePct": 370.29
+   },
+   "ladder": [
+    46.71,
+    51.06,
+    55.4,
+    59.75,
+    64.1,
+    68.45,
+    76.27,
+    82.36,
+    88.44,
+    94.53,
+    100.62,
+    106.7,
+    117.66,
+    126.17,
+    134.69,
+    143.22,
+    151.73,
+    160.26,
+    175.6,
+    187.53,
+    199.44,
+    211.38,
+    223.31,
+    235.24,
+    256.72,
+    273.41,
+    290.11,
+    306.82,
+    323.52,
+    340.23,
+    370.29
+   ],
+   "skills": [
+    {
+     "name": "Chaos Gambit",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Rose of War",
+     "scales": [
+      {
+       "label": "Enemy Damage Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Golden Rhythm",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "6%",
+        "12%",
+        "18%",
+        "24%",
+        "30%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "arc",
+    "role": "rally",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Long Fei",
+   "key": "longfei",
+   "type": "inf",
+   "rarity": "legendary",
+   "generation": 5,
+   "ceiling": 444.35,
+   "published": {
+    "attackPct": 444.35,
+    "defensePct": 444.35
+   },
+   "ladder": [
+    56.05,
+    61.27,
+    66.48,
+    71.7,
+    76.92,
+    82.14,
+    91.53,
+    98.83,
+    106.13,
+    113.44,
+    120.74,
+    128.04,
+    141.19,
+    151.4,
+    161.63,
+    171.87,
+    182.08,
+    192.31,
+    210.72,
+    225.04,
+    239.33,
+    253.65,
+    267.97,
+    282.29,
+    308.06,
+    328.09,
+    348.14,
+    368.18,
+    388.23,
+    408.28,
+    444.35
+   ],
+   "skills": [
+    {
+     "name": "Mighty Paragon",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Celestial Sustenance",
+     "scales": [
+      {
+       "label": "Defense Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Art of War",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "120%",
+        "140%",
+        "160%",
+        "180%",
+        "200%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "inf",
+    "role": "defender",
+    "effect": "attack"
+   }
+  },
+  {
+   "name": "Thrud",
+   "key": "thrud",
+   "type": "cav",
+   "rarity": "legendary",
+   "generation": 5,
+   "ceiling": 444.35,
+   "published": {
+    "attackPct": 444.35,
+    "defensePct": 444.35
+   },
+   "ladder": [
+    56.05,
+    61.27,
+    66.48,
+    71.7,
+    76.92,
+    82.14,
+    91.53,
+    98.83,
+    106.13,
+    113.44,
+    120.74,
+    128.04,
+    141.19,
+    151.4,
+    161.63,
+    171.87,
+    182.08,
+    192.31,
+    210.72,
+    225.04,
+    239.33,
+    253.65,
+    267.97,
+    282.29,
+    308.06,
+    328.09,
+    348.14,
+    368.18,
+    388.23,
+    408.28,
+    444.35
+   ],
+   "skills": [
+    {
+     "name": "Battle Hunger",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "3%",
+        "6%",
+        "9%",
+        "12%",
+        "15%"
+       ]
+      },
+      {
+       "label": "Damage Up",
+       "levels": [
+        "3%",
+        "6%",
+        "9%",
+        "12%",
+        "15%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Reckless Charge",
+     "scales": [
+      {
+       "label": "Extra Damage Up",
+       "levels": [
+        "20%",
+        "40%",
+        "60%",
+        "80%",
+        "100%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Ancestral Guidance",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      },
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "cav",
+    "role": "rally",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Vivian",
+   "key": "vivian",
+   "type": "arc",
+   "rarity": "legendary",
+   "generation": 5,
+   "ceiling": 444.35,
+   "published": {
+    "attackPct": 444.35,
+    "defensePct": 444.35
+   },
+   "ladder": [
+    56.05,
+    61.27,
+    66.48,
+    71.7,
+    76.92,
+    82.14,
+    91.53,
+    98.83,
+    106.13,
+    113.44,
+    120.74,
+    128.04,
+    141.19,
+    151.4,
+    161.63,
+    171.87,
+    182.08,
+    192.31,
+    210.72,
+    225.04,
+    239.33,
+    253.65,
+    267.97,
+    282.29,
+    308.06,
+    328.09,
+    348.14,
+    368.18,
+    388.23,
+    408.28,
+    444.35
+   ],
+   "skills": [
+    {
+     "name": "Crouching Tiger",
+     "scales": [
+      {
+       "label": "Enemy Damage Taken Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Focus Fire",
+     "scales": [
+      {
+       "label": "Extra Damage Up",
+       "levels": [
+        "20%",
+        "40%",
+        "60%",
+        "80%",
+        "100%"
+       ]
+      },
+      {
+       "label": "Enemy Damage Taken Up",
+       "levels": [
+        "5%",
+        "7.5%",
+        "10%",
+        "12.5%",
+        "15%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Trap of Greed",
+     "scales": [
+      {
+       "label": "Extra Damage Up",
+       "levels": [
+        "12%",
+        "24%",
+        "36%",
+        "48%",
+        "60%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "arc",
+    "role": "defender",
+    "effect": "defense"
+   }
+  },
+  {
+   "name": "Sophia",
+   "key": "sophia",
+   "type": "cav",
+   "rarity": "legendary",
+   "generation": 6,
+   "ceiling": 540.43,
+   "published": {
+    "attackPct": 540.43,
+    "defensePct": 540.43
+   },
+   "ladder": [
+    68.17,
+    74.52,
+    80.85,
+    87.2,
+    93.55,
+    99.9,
+    111.32,
+    120.2,
+    129.08,
+    137.97,
+    146.85,
+    155.73,
+    171.72,
+    184.14,
+    196.58,
+    209.03,
+    221.45,
+    233.89,
+    256.28,
+    273.7,
+    291.08,
+    308.5,
+    325.91,
+    343.33,
+    374.67,
+    399.03,
+    423.42,
+    447.79,
+    472.18,
+    496.56,
+    540.43
+   ],
+   "skills": [
+    {
+     "name": "Arcane Pact",
+     "scales": [
+      {
+       "label": "Probability Up",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Terror – Deathblow",
+     "scales": [
+      {
+       "label": "Extra Damage Up",
+       "levels": [
+        "40%",
+        "80%",
+        "120%",
+        "160%",
+        "200%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Terror – Annihilation",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "15%",
+        "30%",
+        "45%",
+        "60%",
+        "75%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "cav",
+    "role": "defender",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Triton",
+   "key": "triton",
+   "type": "inf",
+   "rarity": "legendary",
+   "generation": 6,
+   "ceiling": 540.43,
+   "published": {
+    "attackPct": 540.43,
+    "defensePct": 540.43
+   },
+   "ladder": [
+    68.17,
+    74.52,
+    80.85,
+    87.2,
+    93.55,
+    99.9,
+    111.32,
+    120.2,
+    129.08,
+    137.97,
+    146.85,
+    155.73,
+    171.72,
+    184.14,
+    196.58,
+    209.03,
+    221.45,
+    233.89,
+    256.28,
+    273.7,
+    291.08,
+    308.5,
+    325.91,
+    343.33,
+    374.67,
+    399.03,
+    423.42,
+    447.79,
+    472.18,
+    496.56,
+    540.43
+   ],
+   "skills": [
+    {
+     "name": "Command of Power",
+     "scales": [
+      {
+       "label": "Defense Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Warfare of Power",
+     "scales": [
+      {
+       "label": "Skill Damage Up",
+       "levels": [
+        "6%",
+        "12%",
+        "18%",
+        "24%",
+        "30%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Oath of Power",
+     "scales": [
+      {
+       "label": "Infantry Health Up",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      },
+      {
+       "label": "Cavalry & Archer Health Up",
+       "levels": [
+        "6%",
+        "12%",
+        "18%",
+        "24%",
+        "30%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "inf",
+    "role": "defender",
+    "effect": "defense"
+   }
+  },
+  {
+   "name": "Yang",
+   "key": "yang",
+   "type": "arc",
+   "rarity": "legendary",
+   "generation": 6,
+   "ceiling": 540.43,
+   "published": {
+    "attackPct": 540.43,
+    "defensePct": 540.43
+   },
+   "ladder": [
+    68.17,
+    74.52,
+    80.85,
+    87.2,
+    93.55,
+    99.9,
+    111.32,
+    120.2,
+    129.08,
+    137.97,
+    146.85,
+    155.73,
+    171.72,
+    184.14,
+    196.58,
+    209.03,
+    221.45,
+    233.89,
+    256.28,
+    273.7,
+    291.08,
+    308.5,
+    325.91,
+    343.33,
+    374.67,
+    399.03,
+    423.42,
+    447.79,
+    472.18,
+    496.56,
+    540.43
+   ],
+   "skills": [
+    {
+     "name": "Avalanche",
+     "scales": [
+      {
+       "label": "Damage Up",
+       "levels": [
+        "20%",
+        "40%",
+        "60%",
+        "80%",
+        "100%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Ice Zone",
+     "scales": [
+      {
+       "label": "Extra Damage Up",
+       "levels": [
+        "20%",
+        "40%",
+        "60%",
+        "80%",
+        "100%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Ambush",
+     "scales": [
+      {
+       "label": "Probability Up",
+       "levels": [
+        "8%",
+        "16%",
+        "24%",
+        "32%",
+        "40%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshot.net",
+   "widget": {
+    "type": "arc",
+    "role": "rally",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Ava",
+   "key": "ava",
+   "type": "cav",
+   "rarity": "legendary",
+   "generation": 7,
+   "ceiling": 650.52,
+   "published": null,
+   "ladder": [
+    82.06,
+    89.7,
+    97.34,
+    104.98,
+    112.61,
+    120.25,
+    134,
+    144.69,
+    155.38,
+    166.08,
+    176.77,
+    187.46,
+    206.7,
+    221.65,
+    236.63,
+    251.62,
+    266.57,
+    281.55,
+    308.49,
+    329.45,
+    350.38,
+    371.35,
+    392.31,
+    413.27,
+    451,
+    480.32,
+    509.67,
+    539.01,
+    568.36,
+    597.71,
+    650.52
+   ],
+   "skills": [
+    {
+     "name": "Dissolution",
+     "scales": [
+      {
+       "label": "Enemy Defense Down",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Chiaroscuro",
+     "scales": [
+      {
+       "label": "Enemy Damage Taken Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Light and Cold",
+     "scales": [
+      {
+       "label": "Lethality Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshotoptimizer",
+   "widget": {
+    "type": "cav",
+    "role": "rally",
+    "effect": "lethality"
+   }
+  },
+  {
+   "name": "Charles",
+   "key": "charles",
+   "type": "inf",
+   "rarity": "legendary",
+   "generation": 7,
+   "ceiling": 650.52,
+   "published": null,
+   "ladder": [
+    82.06,
+    89.7,
+    97.34,
+    104.98,
+    112.61,
+    120.25,
+    134,
+    144.69,
+    155.38,
+    166.08,
+    176.77,
+    187.46,
+    206.7,
+    221.65,
+    236.63,
+    251.62,
+    266.57,
+    281.55,
+    308.49,
+    329.45,
+    350.38,
+    371.35,
+    392.31,
+    413.27,
+    451,
+    480.32,
+    509.67,
+    539.01,
+    568.36,
+    597.71,
+    650.52
+   ],
+   "skills": [
+    {
+     "name": "Intimidation",
+     "scales": [
+      {
+       "label": "Enemy Lethality Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Iron Bodies",
+     "scales": [
+      {
+       "label": "Damage Taken Down",
+       "levels": [
+        "4%",
+        "8%",
+        "12%",
+        "16%",
+        "20%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Great Justice",
+     "scales": [
+      {
+       "label": "Health Up",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshotoptimizer",
+   "widget": {
+    "type": "inf",
+    "role": "defender",
+    "effect": "health"
+   }
+  },
+  {
+   "name": "Wee & Woo",
+   "key": "weewoo",
+   "type": "arc",
+   "rarity": "legendary",
+   "generation": 7,
+   "ceiling": 650.52,
+   "published": null,
+   "ladder": [
+    82.06,
+    89.7,
+    97.34,
+    104.98,
+    112.61,
+    120.25,
+    134,
+    144.69,
+    155.38,
+    166.08,
+    176.77,
+    187.46,
+    206.7,
+    221.65,
+    236.63,
+    251.62,
+    266.57,
+    281.55,
+    308.49,
+    329.45,
+    350.38,
+    371.35,
+    392.31,
+    413.27,
+    451,
+    480.32,
+    509.67,
+    539.01,
+    568.36,
+    597.71,
+    650.52
+   ],
+   "skills": [
+    {
+     "name": "Artillerymen",
+     "scales": [
+      {
+       "label": "Attack Up",
+       "levels": [
+        "3%",
+        "6%",
+        "9%",
+        "12%",
+        "15%"
+       ]
+      },
+      {
+       "label": "Lethality Up",
+       "levels": [
+        "2%",
+        "4%",
+        "6%",
+        "8%",
+        "10%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Chain Shelling",
+     "scales": [
+      {
+       "label": "Damage to Archer",
+       "levels": [
+        "6%",
+        "12%",
+        "18%",
+        "24%",
+        "30%"
+       ]
+      },
+      {
+       "label": "Damage to Infantry",
+       "levels": [
+        "5%",
+        "10%",
+        "15%",
+        "20%",
+        "25%"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Boom Boom",
+     "scales": [
+      {
+       "label": "Damage Dealt Chance Up",
+       "levels": [
+        "10%",
+        "20%",
+        "30%",
+        "40%",
+        "50%"
+       ]
+      }
+     ]
+    }
+   ],
+   "skillsSource": "kingshotoptimizer",
+   "widget": {
+    "type": "arc",
+    "role": "defender",
+    "effect": "attack"
+   }
+  }
+ ]
+}

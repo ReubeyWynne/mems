@@ -148,9 +148,16 @@ Verbatim rule the game uses (also blog "how-special-bonuses-work"):
 
 ### Buff ladders (exact, from the bundle)
 
-- **Widgets** (hero exclusive gear): % by level L0–5 → `0 5 7.5 10 12.5 15`;
-  hero-widget level maps `level ≤ 1 ? 0 : min(5, floor(level/2))`. Roles: **Rally**
-  (attacker) and **Defender**; a hero widget applies only in its role.
+- **Widgets** (hero exclusive gear) carry **two** components, both scaled by the
+  widget's level, and only one of them is role-gated:
+  1. a **flat stat pair** for the hero's own troop type — **lethality + health**
+     — which is live in *both* roles. A defender widget still contributes these
+     in an attacking rally (see *Hero layer*, below);
+  2. a **skill**, typed `{rally | defender}`, applied as a special bonus to one
+     stat (attack / lethality / health / defence) — this is the half that applies
+     only in its role.
+  Skill % by level L0–5 → `0 5 7.5 10 12.5 15`; hero-widget level maps
+  `level ≤ 1 ? 0 : min(5, floor(level/2))` (the game's Lv2/4/6/8/10 steps).
 - **Appointments**: King +5% all stats · Marshal +5% attack · Field Commander +10%
   lethality; Kingdom-of-Power offices: High King +7.5% all · Field Commander +15%
   lethality · Marshal +8% attack. (KvK-prep copy currently names Chief Minister —
@@ -173,6 +180,137 @@ Verbatim rule the game uses (also blog "how-special-bonuses-work"):
   widget_effect: attack|defense|lethality|health}`.
 - The sim's accuracy claims (~98% battles; Gen-6 ~95%) are community claims,
   consistent in spirit with the Frakinator's "tested = confident" posture.
+
+### Hero layer — stars, exclusive gear, skills (mined 2026-09-11)
+
+Everything a hero contributes to a march, in four layers. All figures below are
+**expedition** (the mode that feeds marches and rallies); conquest is separate.
+
+**1 · Star ladder — one shared curve, scaled by each hero's own ceiling.**
+
+- **5 stars × 6 tiers = 30 upgrade steps.** Index = `6·stars + tiers`, so `2★`
+  = 12, `4.3★` = 27, `5★` = 30. (Fandom's shard table gives 6 tiers per star;
+  Kingshot Mastery's calculator: "heroes progress through 30 upgrade steps".)
+- A hero grants **attack and defence — always equal — on its own troop type**,
+  worth `ceiling × curve[index]`. The curve is **identical for every hero**:
+  normalising five heroes' full 31-point ladders (Amadeus, Zoe, Jabel, Hilde,
+  Marlin) agrees to two decimals.
+
+  ```
+  12.61 13.79 14.96 16.14 17.31 18.49 20.60 22.24 23.89 25.53 27.17 28.82
+  31.78 34.07 36.38 38.68 40.98 43.28 47.42 50.65 53.86 57.08 60.31 63.53
+  69.33 73.84 78.35 82.86 87.37 91.88 100.0
+  ```
+  (% of the hero's own 5★ value; index 0 → 30.) Structure: 5 steps a star at a
+  constant increment, each star band ×1.4 the last, the 6th (promotion) step ×1.8.
+  Star checkpoints: **1★ 20.60% · 2★ 31.78% · 3★ 47.42% · 4★ 69.33% · 5★ 100%**.
+- The **ceiling** is per hero ("Stats at 5-Star Max → Expedition") and moves with
+  the generation: **200.2 / 240.2 / 290.2 / 370.3 / 444.4 / 540.4 / 650.5** for
+  gens 1–7 (Epic 40.1). Premium heroes sit above their generation's norm —
+  **Amadeus is 260.20 at gen 1**. Named ceilings: Amadeus 260.20 · Zoe 240.19 ·
+  Hilde 240.19 · Marlin 240.19 · Jabel 200.16.
+- So it is **percentage-based on the hero's own base**, not a flat step: two
+  heroes at the same star are the same *fraction* of two different ceilings.
+
+**2 · Exclusive gear (widget) — a stat pair plus a role-gated skill.** Both
+halves scale with widget level (see the widget bullet above). Per hero:
+Amadeus *Aegis of Fate* (+62.5% Infantry Lethality/Health, **Discernment**
+Rally-Attack) · Marlin *Mistweaver* (+60% Archer, **Admiral of the Line**
+Rally-Lethality) · Zoe *The Unrighteous* (+60% Infantry, **Dark Lady**
+Defender-Attack) · Jabel *Greaves of Faith* (+50% Cavalry, **Divine Strength**
+Defender-Lethality) · Hilde *Revelation* (+60% Cavalry, **Fortitude**
+Defender-Health). Only Amadeus's and Marlin's widget *skills* are live in an
+attacking rally; every widget's stat pair is live in both roles.
+
+**3 · Expedition skills — level = star + 1, capped at 5.** So **4★ is the
+threshold that unlocks Lv5**, which is why the community rule is "4★ minimum for
+joiners". Verified in-game 2026-09-11: a 2★ Amadeus sits at Lv3 and reads
+"To upgrade: ascend to 3-Star"; a 3★ Hilde sits at Lv4 and reads "ascend to
+4-Star". Published ladders (chance scales, effect fixed — expected value is
+chance × effect): Amadeus *Way of the Blade* +5→25% attack, *Battle Ready*
++5→25% lethality, *Unrighteous Strike* 8→40% chance of +50% damage · Zoe
+*Charisma* +5→25% attack, *Infinite Arsenal* 10→50% chance of +50% enemy
+damage-taken, *Sundering Wound* 8→40% (dead on the bear, live elsewhere) · Jabel
+*Youthful Rage* +5→25% lethality, *Hero's Domain* 10→50% chance of +50% damage ·
+Hilde *Noble Path* +3→15% attack / +2→10% defence, *Elixir of Strength* 25%
+chance of 120→200% damage, *Trial by Fire* 8→40% chance of −50% damage taken ·
+Marlin *Dynamo* 50% chance of +50% damage.
+
+**4 · Gear, charms, research** — the "common" every hero sits on. Fitted from
+real panels: `panel_type = common_type + curve[index] × ceiling` holds exactly,
+and exclusive-gear stats enter through the special-bonus form
+`(100 + entered) × (1 + g/100) − 100`.
+
+**Validation (2026-09-11).** Three independent checks against one account's real
+Bonus-Details panels: (a) Amadeus 2★ → `260.20 × 31.78%` = 82.7 vs 82.6 derived
+from the panel, on attack *and* defence; (b) Jabel 4.3★ → 165.85, leaving a
+cavalry common of 235.2; (c) Hilde 3★ → 113.86, and 235.2 + 113.86 = **349.1**
+against 349.2 measured. Widget level reads straight off the same panels
+(Amadeus's Discernment at widget-3 = ×1.05, exactly).
+
+**Caveat the sim must respect.** An all-troop hero skill multiplies the whole
+march and cancels out of any split — but a **type-specific** one does not (Rosa
+archers only, Thrud infantry+archers, Alcar infantry). Those move the optimal
+mix, so no copy may claim hero skills cancel out of every split.
+
+### Hero gear — enhancement × mastery (verified in-game 2026-09-11)
+
+Hero gear has **two** progression axes, and both scale the same troop stat:
+
+```
+displayed troop-stat % = base(quality, enhancement level) × (1 + 0.10 × mastery level)
+```
+
+**Enhancement** sets the `base`, from the quality ladder
+(`kingshotoptimizer.com/hero-gear/references/stat-bonuses/`):
+
+| quality | base | range |
+|---|---|---|
+| Epic | `0.09 + level × 0.0021` | 9.0% at Lv0 → 25.8% at Lv80 |
+| Mythic | `0.15 + level × 0.0035` | 15.0% at Lv0 → 50.0% at Lv100 |
+| Red (ascends *from* Mythic 100) | `0.50 + (level − 100) × 0.005` | 50.5% at Lv101 → 100% at Lv200 |
+
+**Mastery Forging** is a second, multiplicative layer. `Gear Stats Up` (and the
+matching `Gear Strength Up`) is worth **+10 percentage points per Mastery Level** —
+Lv2 = 20%, Lv3 = 30%, Lv11 = 110%, Lv12 = 120%. **Epic gear cannot be mastery
+forged**, so a built set is Mythic or Red and Epic is a stepping stone only.
+
+Four fits from real screenshots, all exact:
+
+| piece | quality / level | mastery | base | displayed |
+|---|---|---|---|---|
+| Champion's Helm | Mythic Lv66 | Lv2 = 20% | 38.10% | **45.72%** ✓ |
+| Champion's Helm, +1 level | Mythic Lv67 | Lv2 = 20% | 38.45% | **46.14%** ✓ |
+| red piece, +1 level | Red Lv101 / Lv102 | Lv11 = 110% | 50.5 / 51.0% | **106.05% / 107.10%** ✓ |
+| purple piece | Epic Lv0 / Lv1 | none (cannot forge) | 9.00 / 9.21% | **9.00% / 9.21%** ✓ |
+
+Each piece carries **one** troop stat for **one** troop type — the Helm above gives
+Infantry Lethality, the red piece Infantry Health, the purple one Archer Lethality —
+so a set's contribution is the sum over its pieces, matched to the equipped hero's
+type. The Hero/Escort Attack, Defence and Health numbers on the same screen are
+**conquest** stats (arena, escorts) and do not enter a march.
+
+**OPEN ⚠ verify:** how many pieces a hero wears and which stat each slot carries;
+the Mastery Level cap; and whether mastery reforging is Champion-set-only or open to
+any Mythic/Red. No mined source gives the slot table yet.
+
+**Sources** — `kingshotoptimizer.com/heroes/<name>/` (per-hero ceiling + skill
+ladders), `kingshot.net/hero-stat-comparison` (full 31-point ladders, in the
+page's JS payload as `stats:[…]`),
+`kingshotmastery.com/tools/hero-ascension-calculator` (generation ceilings),
+`kingshot.fandom.com/wiki/Hero_Star_Upgrade_Requirements` (5 × 6 = 30 steps),
+`kingshotguide.com/guides/hero-progression-investment-guide` (4★ unlocks Lv5).
+
+**Landed as data (2026-09-11).** All 34 heroes — their 31-point ladders, ceilings,
+published `attackPct`/`defensePct`, expedition skill values and widget specs — sit in
+`_data/heroes.json`, with `.dsh/verify-heroes.mjs` holding the §10 checks: ladder
+length, monotonicity, ceiling parity, and the shared-curve claim (every normalised
+ladder reproduces `curve` within source rounding, and the only deviations beyond that
+are the three recorded gen-2 anomalies — asserted, so a source fix surfaces as a test
+change rather than silent drift). It is the **audit table, not a runtime asset**; it is
+deliberately not served to browsers. Two gaps it records rather than fills: 12 heroes
+have an empty widget row in the mined bundle, and the four heroes with
+`skillsSource: "kingshotoptimizer"` take their skill labels from their descriptions.
 
 ### Private endpoints (informational — not ours, do not build on)
 

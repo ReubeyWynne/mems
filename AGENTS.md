@@ -90,12 +90,17 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   `data-prev-url`/`data-next-url` and stamps `data-nav="next|prev"` on `<html>`.
   No direction (a link from outside the ring) = plain dissolve; reduced motion =
   the transition's animations are neutralised, so the swap is instant. A committed
-  swipe is a fold, not a cut: `js/common.js` spreads the cover card — title and
-  all — to the whole frame, leaves this page's own address in `sessionStorage`
-  (`bh:fold`, read once and deleted by `head.html`, which stamps
-  `data-entry="fold"` on `<html>`) and only then navigates. The fold arrival holds
-  the old (covered) frame still and **dissolves** the destination in over it —
-  no sideways travel, and the cover's title fading into the page's own. A
+  swipe is a **dissolve, not a turn**: the card under the finger *is* the
+  destination's cover, so `js/common.js` hands the frame straight to the move and
+  the two documents cross-fade through each other, the card riding along in the
+  outgoing one — nothing is ever drawn between the pages. That is deliberate and
+  measured: a cover spread to the whole frame is a flat field ~40% darker than
+  either page, so the screen dimmed and came back (a flash); the two pages
+  themselves are within a point of each other's brightness. Both root images are
+  forced to `mix-blend-mode: normal` (the UA's `plus-lighter` *adds* them, so a
+  fade brightens as it goes). `sessionStorage['bh:fold']` (this page's own
+  address, read once and deleted by `head.html`, which stamps `data-entry="fold"`
+  and withholds `data-nav`) tells the arriving page which move it is. A
   navigation that never lands springs the cover away. The swipe ring is the
   `_data/nav.json` order read as a cycle (home → Event Cycle → the four events →
   VIP → Simulator → home): both `swipePrev`/`swipeNext` on every page, so no page

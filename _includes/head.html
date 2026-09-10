@@ -56,8 +56,11 @@ window.__BH_BUILD = '{{ site.time | date: "%s" }}';
   var next = neighbour('data-next-url');
   var ref = document.referrer.split(/[?#]/)[0];
   if (ref === here) ref = '';                    // a reload is not a move
-  // Only a committed swipe leaves the flag, and only the cover it spread is
-  // there to be landed on: that arrival is the fold, and it alone.
+  // A committed swipe says the move is a dissolve rather than a push: the card
+  // the finger was holding was the destination's cover, so the pages cross-fade
+  // through each other with nothing drawn in between (css/events.css). It is
+  // told rather than inferred because the card may have covered the page it
+  // came from, which is the same page the push rules would have recognised.
   var folded = !!from && (from === prev || from === next);
   if (folded) root.setAttribute('data-entry', 'fold');
   var cameFromPrev = (!!ref && ref === prev) || (!!from && from === prev);

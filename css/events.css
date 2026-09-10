@@ -151,12 +151,13 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 
 /* ─── The swipe preview — the neighbour event's cover ─── */
 /* Parked off-screen at ±100% (its own width); the finger pulls it in with
-   resistance; release past the commit bar navigates, short drags snap back
-   (the .snap class supplies the spring, added and removed in common.js).
-   The panel is only the type; the paper it is printed on is the ::before,
-   so a committed swipe can spread the cover to the whole frame with one
-   transform on an empty box — the title never reflows and the phone never
-   lays anything out (§ .commit below). */
+   resistance; past ~14% of the viewport it springs fully open so its content
+   is readable, and a release past the commit bar navigates (short drags snap
+   back — the .snap class supplies the spring, added and removed in
+   common.js). A committed swipe animates the card nowhere: it hands the frame
+   straight to the page move, which cross-fades the two documents through each
+   other with the card riding along in the outgoing one (see the fold rules
+   below). Nothing is painted between the two pages. */
 .swipe-peek {
   position: fixed;
   top: 0; bottom: 0;
@@ -167,61 +168,15 @@ body.swiping { user-select: none; -webkit-user-select: none; }
   justify-content: center;
   gap: var(--space-s);
   padding: var(--space-l) var(--space-m);
-  pointer-events: none;
-  will-change: transform;
-}
-/* The paper, under the type (z-index -1 in the panel's own stacking context)
-   and spread from the edge the panel is anchored to — the reader's side, so
-   the cover grows away from the chrome rather than through it. It starts on
-   the card's field tone (--void-2) and ends on the destination page's ground
-   (--void, § .commit): same colour the reader will be standing on, so the
-   arrival has nothing to reconcile but its content. */
-.swipe-peek::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
   background: var(--void-2);
   border-inline: 1px solid var(--amber-dim);
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.55);
-  transform-origin: 100% 50%;
-  transition:
-    transform 0.14s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.14s linear,
-    border-color 0.14s linear;
+  pointer-events: none;
+  will-change: transform;
 }
 .swipe-peek.prev { left: 0; transform: translateX(-100%); }
-.swipe-peek.prev::before { transform-origin: 0% 50%; }
 .swipe-peek.next { right: 0; transform: translateX(100%); }
 .swipe-peek.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-/* The fold lands. The cover the finger was holding stops being a card and
-   becomes the frame the destination arrives on: the paper spreads from the
-   anchored edge over the whole viewport (--fold is the frame plus the card's
-   remaining travel, measured in common.js) and settles onto the destination
-   page's own ground colour while it goes, and the panel drops under the
-   topbar (50) so the chrome holds still over the spreading paper — which is
-   exactly how it will sit through the view transition that follows, so
-   nothing flickers at the hand-off. The shadow, the edge line and the
-   "release to open" hint go at once; the type stays, because a blank frame
-   is not a page — the cover keeps its own title while it spreads, and the
-   arriving page dissolves it away (data-entry="fold" below). By the time the
-   destination fades in, the frame underneath it is already that page's own
-   background, so what the reader watches arrive is content, not a new world.
-
-   The spread is short on purpose: long enough to see the card become a page,
-   short enough to keep the destination waiting no longer than one beat. The
-   card's own release spring is still running when the paper is already whole,
-   which is why the paper is measured against where the card *is* (see
-   commitPeek) and why the navigation leaves on this transition's own end
-   rather than on a clock (FOLD_MS in common.js). */
-.swipe-peek.commit { z-index: 45; }
-.swipe-peek.commit::before {
-  transform: scaleX(var(--fold, 1));
-  background-color: var(--void);
-  border-color: transparent;
-  box-shadow: none;
-}
-.swipe-peek.commit .peek-hint { opacity: 0; }
 .swipe-peek .peek-kicker {
   font-family: var(--body);
   font-size: var(--step--1);
@@ -274,6 +229,13 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 
 @media (prefers-reduced-motion: no-preference) {
   .topbar { view-transition-name: topbar; }
+  /* Both sides of every move composite normally. The UA gives the root's old
+     and new images `plus-lighter`, which *adds* them together — so a fade
+     brightens as it goes and a slide picks up a glow along its seam. Nothing
+     here wants that: these are two opaque pages, and one should simply be
+     replaced by the other. */
+  ::view-transition-old(root) { mix-blend-mode: normal; }
+  ::view-transition-new(root) { mix-blend-mode: normal; }
   /* The bar is the same bar on both sides and is not part of the move: no
      group animation and no cross-fade inside it, so the chrome never ghosts
      through itself. The new image sits over the old one unblended. */
@@ -289,25 +251,24 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
   html[data-nav="prev"]::view-transition-old(root) { animation: vt-out-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
   html[data-nav="prev"]::view-transition-new(root) { animation: vt-in-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-  /* A committed swipe arrives as a fold, not a move. The outgoing page had
-     already spread the destination's cover over its whole frame (common.js
-     commitPeek), so the old image is that cover — title and all — and the
-     destination dissolves in over it. Holding the old root still is the whole
-     of the old side; the new page fades, so there is no sideways travel to
-     read as a jump and no flash of nothing while the cover's title dissolves
-     into the page's own.
+  /* A committed swipe is a dissolve, not a move. The card the finger was
+     holding is the destination's own cover and it is already on screen, so the
+     two documents cross-fade through each other: the cover keeps its title for
+     as long as the old page is visible, and the destination arrives beneath
+     it.
 
-     Only the root fades. The chrome is a named group with no animation of its
-     own (above), so its content is swapped the instant the new frame exists —
-     fading it too would print the old brand and the new one on top of each
-     other for the length of the dissolve, which is the one part of the page
-     that should never look like it is mid-move.
+     Fading rather than turning is the whole point, and it is a measured one.
+     Both pages are the same manuscript night, within a point of each other's
+     brightness, so a cross-fade between them barely registers. Anything drawn
+     in between does: a cover spread to the whole frame (or any blank frame) is
+     about 40% darker than either page, and the reader sees the screen dim and
+     come back — a flash. So nothing is drawn between them; the fold is the
+     card the reader was already holding, handing over to the page behind it.
 
-     A fold arrival carries data-entry and *no* data-nav (head.html), so these
-     rules never compete with the directional ones above and which side of the
-     ring the reader came from needs no deciding here. */
+     A fold arrival carries data-entry and *no* data-nav (head.html), so it
+     never competes with the directional rules above. */
   html[data-entry="fold"]::view-transition-old(root) { animation: none; }
-  html[data-entry="fold"]::view-transition-new(root) { animation: vt-dissolve-in 0.3s ease both; }
+  html[data-entry="fold"]::view-transition-new(root) { animation: vt-dissolve-in 0.18s ease both; }
 
   @keyframes vt-dissolve-out { to { opacity: 0; } }
   @keyframes vt-dissolve-in { from { opacity: 0; } }

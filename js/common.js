@@ -7,10 +7,9 @@
    two neighbouring pages once the browser is idle, so a swipe (or an arrow
    key) lands on a page that is already in cache — the cross-document view
    transition that carries the move is in css/events.css. A committed swipe
-   spreads the destination's cover (title and all) to the whole frame first and
-   leaves the navigation until it has landed, and the arriving page then
-   dissolves in over that cover rather than sliding in beside it. No
-   dependencies, no data collected.
+   hands the frame straight to that move: the card under the finger is the
+   destination's cover, the two documents cross-fade through each other, and
+   nothing is drawn in between. No dependencies, no data collected.
    i18n: all user-visible strings come from i18n/<lang>.js via window.I18N;
    numbers format per the active locale. Page-specific toys register through
    window.BH.registerPage(...) and live in the per-page files (bear-hunt.js,
@@ -107,14 +106,13 @@
   // still holding at/past ~38% navigates; every other release springs
   // back, so short or fast drags never navigate on their own.
   //
-  // What a commit does is a page turn, not a cut. The card the finger was
-  // holding is the destination's own cover; the finger lifts and that cover
-  // spreads to the whole frame (commitPeek), the chrome comes back over it,
-  // and only then does the navigation leave. The arriving page therefore has
-  // a full frame to land on instead of a card to slide past: the view
-  // transition in css/events.css holds the cover still and brings the
-  // destination in over it (html[data-entry="fold"], stamped by head.html
-  // from the one flag common.js leaves behind).
+  // What a commit does is a dissolve, not a turn. The card the finger was
+  // holding is the destination's own cover and it is already on screen; the
+  // release hands the frame to the page move, which cross-fades this document
+  // into the next with the card riding along inside it, and the arriving page
+  // is told so by one flag (bh:fold → data-entry="fold", stamped by
+  // head.html). Nothing is drawn in between — see the fold rules in
+  // css/events.css for why a drawn frame is exactly what flashed.
   var peek = null;
   var peekMain = null;
   var peekHint = null;
@@ -124,13 +122,9 @@
   // at/past this navigates; any release below it springs back.
   var OPEN_FRAC = 0.14;
   var COMMIT_FRAC = 0.38;
-  // FOLD_MS: how long the cover takes to spread to the frame — kept in step
-  // with .swipe-peek.commit::before in events.css. The navigation leaves when
-  // that spread reports it is done (transitionend), with FOLD_MS under it as
-  // the floor; FOLD_LIMIT is the failure path, so a dead link or a load the
-  // reader stopped can never leave them holding a full-screen cover.
-  var FOLD_MS = 140;
-  var FOLD_LIMIT = 1800;
+  // FAILSAFE: a committed swipe must never leave the reader holding a card
+  // over a page that did not move (a dead link, a load they stopped).
+  var FAILSAFE = 1500;
   var committing = false;
   // g.opened is a live view of "the finger is at/past OPEN_FRAC right now",
   // recomputed on every move — never a one-way latch.
@@ -212,36 +206,10 @@
     if (peekMain) peekMain.style.transform = 'translateX(' + (dx * 0.12) + 'px)';
   }
 
-  function commitPeek() {
-    // The finger lifted past the commit bar: the cover stops being a card and
-    // becomes the frame the destination arrives on. --fold is the paper
-    // measured against the card, so one transform on the empty paper layer
-    // covers the frame exactly and the type never reflows.
-    committing = true;
-    if (!peek) return;
-    var vw = document.documentElement.clientWidth || window.innerWidth;
-    // The card may still be springing in when the finger lifts, so the cover
-    // is measured from where it is now, not from where it is going: T is how
-    // far the parked card still has to travel, and the paper is scaled to
-    // cover the frame *plus* that remainder. Whichever way the spring then
-    // finishes — and however far the navigation is behind the fold — the
-    // paper's anchored edge sweeps past the frame's far side, so no sliver of
-    // the page underneath can ever show through at the hand-off.
-    var r = peek.getBoundingClientRect();
-    var t = Math.max(0, g.dir === 1 ? r.right - vw : -r.left);
-    peek.style.setProperty('--fold', (vw + t) / peek.offsetWidth);
-    peek.classList.add('snap', 'commit');
-    peek.style.transform = 'translateX(0)';
-    // The page behind springs home, unseen: a navigation that never lands
-    // must leave it where a reader expects it.
-    if (peekMain) { peekMain.classList.add('snap'); peekMain.style.transform = ''; }
-  }
-
   function resetPeek() {
     // Add the spring (events.css .snap transition), clear the drag transform,
-    // then drop the class once the spring has settled. Dropping .commit too
-    // retracts the paper, so the only way back to a card is a whole one.
-    if (peek) { peek.classList.add('snap'); peek.classList.remove('commit'); peek.style.transform = ''; }
+    // then drop the class once the spring has settled.
+    if (peek) { peek.classList.add('snap'); peek.style.transform = ''; }
     if (peekMain) { peekMain.classList.add('snap'); peekMain.style.transform = ''; }
     document.body.classList.remove('swiping');
     setTimeout(function () {
@@ -320,44 +288,34 @@
     // can never navigate, and pulling back before lifting always cancels.
     var url = Math.abs(dx) >= vw * COMMIT_FRAC ? neighbor(g.dir) : '';
     if (url) {
-      // The cover spreads to the frame, then the navigation leaves: the
-      // transition (css/events.css) can only carry out what the old document
-      // looks like when it goes, so the turn has to finish here first. The
-      // flag is this page's own address, left for the arriving page to read
-      // and delete — the one thing the move needs to say, and the only thing
-      // common.js ever stores for it.
+      // The card has done its work: it is the destination's cover, it is
+      // already on screen, and the reader has just told us to take it. So
+      // nothing else is drawn — the page move cross-fades this document into
+      // the next one with the card riding along inside it (css/events.css,
+      // data-entry="fold"), and the reader watches the cover they were holding
+      // dissolve into the page it was promising.
+      //
+      // The earlier version spread that cover to the whole frame first, and
+      // that is what made the move flash: a full-frame cover is a flat field
+      // about 40% darker than either page, so the screen dimmed and came back
+      // over ~660ms of layered motion. Both pages are the same night; fading
+      // one into the other is nearly invisible by comparison.
+      //
+      // The flag is this page's own address, left for the arriving page to
+      // read once and delete — the one thing the move needs to say.
+      committing = true;
       try { sessionStorage.setItem('bh:fold', location.href.split(/[?#]/)[0]); } catch (err) { /* private mode: the move falls back to the plain one */ }
-      commitPeek();
-      var gone = false;
-      var leave = function () {
-        if (gone) return;
-        gone = true;
-        window.location.href = url;
-      };
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        // No fold to wait for: the same reachable page, without the turn.
-        leave();
-      } else {
-        // Leave when the cover has actually finished spreading, not on a
-        // clock: a phone that renders the fold late must still hand over a
-        // whole one, or the arriving page would slide in over a cover still
-        // crawling open. The timer is the floor under that — a paint with no
-        // transition to report (and only that) makes good on the move itself.
-        var onFold = function (ev) {
-          if (ev.target !== peek || (ev.pseudoElement || '').indexOf('before') === -1) return;
-          peek.removeEventListener('transitionend', onFold);
-          leave();
-        };
-        peek.addEventListener('transitionend', onFold);
-        window.setTimeout(function () {
-          peek.removeEventListener('transitionend', onFold);
-          leave();
-        }, FOLD_MS + 120);
-      }
+      // The page behind the card was pulled off its rest position by the drag
+      // (parallaxMain), and this document is about to become the outgoing half
+      // of a cross-fade: left where the finger put it, its text would sit a
+      // dozen-odd pixels off the incoming page's for the whole dissolve, which
+      // reads as a smear rather than a dissolve. So it settles on the same
+      // spring the card does, under cover of the fade.
+      if (peekMain) { peekMain.classList.add('snap'); peekMain.style.transform = ''; }
+      window.location.href = url;
       // Only the failure path reaches this: the reader keeps the page they
-      // were on (and the flag, which the next document discards) rather than
-      // a full frame of cover with nothing behind it.
-      window.setTimeout(function () { committing = false; resetPeek(); }, FOLD_MS + FOLD_LIMIT);
+      // were on rather than a card held over a page that never moved.
+      window.setTimeout(function () { committing = false; resetPeek(); }, FAILSAFE);
     } else {
       resetPeek();
     }
@@ -457,8 +415,20 @@
     if (location.hash) return;
     var s = null;
     try { s = sessionStorage.getItem(SCROLL_KEY); } catch (e) { /* private mode */ }
-    if (s) window.scrollTo(0, parseInt(s, 10) || 0);
+    // 'instant', not a plain scrollTo: html carries scroll-behavior: smooth, and
+    // that applies to scripted scrolls too. With it, arriving at a page the
+    // reader had scrolled painted the top and then glided ~500ms down to where
+    // they had been — motion on top of the page move, which is exactly the kind
+    // of thing that reads as a jolt. The destination should simply *be* at that
+    // position when it appears.
+    if (s) window.scrollTo({ top: parseInt(s, 10) || 0, left: 0, behavior: 'instant' });
   }
+  // Here, at parse time — not in boot(). boot() waits for the dictionary, which
+  // arrives asynchronously, so restoring from there put the reader at the top
+  // of the page, painted it, and then moved them down. This file is the last
+  // thing in the body, so the document already has its height and setting the
+  // position here is part of the page's first paint instead of a correction.
+  restoreScroll();
 
   // ── Boot — everything above is inert until the active dictionary is
   //    applied (i18n.js loads first), or the DOM is ready without i18n. ──
@@ -710,8 +680,6 @@
 
     // Page toys (calculators)
     pageCfg.boot(BH);
-
-    restoreScroll();
 
     // The page in front of the reader is whole now — only then spend bytes on
     // the pages the swipe can reach (see "Neighbour warm-up" above).

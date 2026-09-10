@@ -50,6 +50,20 @@
     return str.replace(/\{n\}/g, el.getAttribute('data-i18n-n') || '');
   }
 
+  // Two strings are the same if they differ only in the whitespace the source
+  // file needed and the dictionary string did not. Comparing this way lets the
+  // common case do nothing at all: the HTML fallback is the English copy, so
+  // for an English reader every assignment below would be a no-op rewrite —
+  // except that rewriting a node is never free. The dictionary arrives after
+  // the page has painted, so each assignment is a post-paint mutation that
+  // reflows the reader's screen; measured on the arrivals, that was 174
+  // mutations and two layout shifts happening after first paint, which is
+  // visible as the text twitching just as the page appears.
+  function same(a, b) {
+    function norm(s) { return String(s).replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim(); }
+    return norm(a) === norm(b);
+  }
+
   function apply() {
     var nodes = document.querySelectorAll('[data-i18n], [data-i18n-html], [data-i18n-key]');
     for (var i = 0; i < nodes.length; i++) {
@@ -61,14 +75,14 @@
       if (attrList) {
         var attrs = attrList.split(/\s+/);
         for (var a = 0; a < attrs.length; a++) {
-          if (attrs[a]) el.setAttribute(attrs[a], val);
+          if (attrs[a] && el.getAttribute(attrs[a]) !== val) el.setAttribute(attrs[a], val);
         }
         continue; // attribute-only elements keep their own text (options, ❦, svg…)
       }
       if (el.hasAttribute('data-i18n-html')) {
-        el.innerHTML = val;
+        if (!same(el.innerHTML, val)) el.innerHTML = val;
       } else if (el.hasAttribute('data-i18n')) {
-        el.textContent = val;
+        if (!same(el.textContent, val)) el.textContent = val;
       }
     }
     document.documentElement.lang = lang;

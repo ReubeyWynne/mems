@@ -9,7 +9,8 @@
    transition that carries the move is in css/events.css. A committed swipe
    hands the frame straight to that move: the card under the finger is the
    destination's cover, the two documents cross-fade through each other, and
-   nothing is drawn in between. No dependencies, no data collected.
+   nothing is drawn in between. The arriving page then writes its own words in,
+   line by line. No dependencies, no data collected.
    i18n: all user-visible strings come from i18n/<lang>.js via window.I18N;
    numbers format per the active locale. Page-specific toys register through
    window.BH.registerPage(...) and live in the per-page files (bear-hunt.js,
@@ -363,6 +364,207 @@
     if (peek) peek.style.removeProperty('--fold');
     resetPeek();
   });
+
+  // ── The write-in — a fold arrival's words are written onto the page ──
+  // The fold (css/events.css) hands the reader the destination's own ground,
+  // already the same night they were standing on. This lays the words on it:
+  // every block clipped to a staircase of its own line boxes, the ink edge
+  // walking down the paragraph, block after block, in reading order.
+  //
+  // The line boxes are the browser's own (Range.getClientRects), because
+  // nothing else knows where a line breaks in sixteen dictionaries — Arabic
+  // reads right to left, Thai and Chinese have no spaces to break at, German
+  // compounds hyphenate. Measuring is therefore one layout read per block,
+  // once, and only of what the reader can actually see.
+  //
+  // Only ever on that arrival: a cold load, a link and a back button are the
+  // reader asking for a page, not watching one be made. Reads the same
+  // data-entry="fold" flag the transition does, and is a no-op without it.
+  var WRITE_SPEED = 3.4;      // px of ink per ms — a hand crossing the line
+  var WRITE_STAGGER = 28;     // ms before the next block starts
+  var WRITE_CAP = 420;        // ms — the stagger's ceiling down the page
+  var WRITE_WAIT = 350;       // ms — a slow font must not hold the words
+  var WRITE_LINE_MAX = 420;   // ms — one very long block still gets on with it
+
+  // The lines of `el`'s text, in the element's own coordinates, top to bottom.
+  // Rects from separate text nodes on one visual line are merged, so a line
+  // holding a <strong> or a <span> is one band, not three.
+  function lineBands(el, box) {
+    if (!document.createTreeWalker || !document.createRange) return null;
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+    var bands = [];
+    var node;
+    while ((node = walker.nextNode())) {
+      if (!node.nodeValue || !node.nodeValue.trim()) continue;
+      var range = document.createRange();
+      range.selectNodeContents(node);
+      var rects = range.getClientRects();
+      for (var i = 0; i < rects.length; i++) {
+        var r = rects[i];
+        if (r.width < 1 || r.height < 1) continue;
+        var mid = r.top + r.height / 2;
+        var last = bands[bands.length - 1];
+        // Same line if the middles are within half a line's height: leading
+        // larger than the glyph box would otherwise split one line in two.
+        if (last && Math.abs(mid - last.mid) < r.height * 0.6) {
+          last.mid = mid;
+          last.top = Math.min(last.top, r.top);
+          last.bottom = Math.max(last.bottom, r.bottom);
+          last.left = Math.min(last.left, r.left);
+          last.right = Math.max(last.right, r.right);
+        } else {
+          bands.push({ mid: mid, top: r.top, bottom: r.bottom, left: r.left, right: r.right });
+        }
+      }
+    }
+    if (!bands.length) return null;
+    // The staircase is only a staircase if the lines stack down the page. A
+    // two-column block (a card grid on a wide screen) interleaves its lines in
+    // DOM order, and a polygon drawn through those crosses itself. Such a block
+    // is not one piece of prose being written; it is told so, and arrives
+    // whole instead (see the caller's fallback).
+    for (var s = 1; s < bands.length; s++) {
+      if (bands[s].top < bands[s - 1].top - 0.5) return null;
+    }
+    // Into the element's own box, and never outside it: a line can overhang
+    // the padding box (an italic f, a hanging glyph) and the clip cannot.
+    var out = [];
+    for (var k = 0; k < bands.length; k++) {
+      var b = bands[k];
+      out.push({
+        top: Math.max(0, b.top - box.top),
+        bottom: Math.min(box.height, b.bottom - box.top),
+        // A line is revealed between these two x positions; which one is
+        // "written" depends on the reading direction.
+        from: Math.max(0, b.left - box.left),
+        to: Math.min(box.width, b.right - box.left)
+      });
+    }
+    return out;
+  }
+
+  // The revealed region as a staircase, one step per line: the ink is solid
+  // behind the edge and absent ahead of it. Points are in element coordinates,
+  // and every keyframe has the same number of them, so the browser can
+  // interpolate the staircase itself — the edge is a polygon, not a script
+  // redrawing on every frame.
+  function inkPath(bands, ink) {
+    var pts = ['0px ' + bands[0].top.toFixed(1) + 'px'];
+    for (var i = 0; i < bands.length; i++) {
+      var x = ink[i].toFixed(1);
+      pts.push(x + 'px ' + bands[i].top.toFixed(1) + 'px');
+      pts.push(x + 'px ' + bands[i].bottom.toFixed(1) + 'px');
+      if (i < bands.length - 1) pts.push(ink[i + 1].toFixed(1) + 'px ' + bands[i].bottom.toFixed(1) + 'px');
+    }
+    pts.push('0px ' + bands[bands.length - 1].bottom.toFixed(1) + 'px');
+    return 'polygon(' + pts.join(', ') + ')';
+  }
+
+  function writeIn() {
+    var root = document.documentElement;
+    if (root.getAttribute('data-entry') !== 'fold') return;
+    var rtl = root.dir === 'rtl';
+    var vh = root.clientHeight || window.innerHeight;
+    var blocks = document.querySelectorAll('main .section > *');
+    var queue = [];
+    for (var i = 0; i < blocks.length; i++) {
+      var el = blocks[i];
+      // Below the fold nobody is watching, so there is nothing to write: it is
+      // simply already there. (It stayed clipped until now, which costs
+      // nothing — it is off-screen either way.)
+      if (el.getBoundingClientRect().top > vh) { el.style.clipPath = 'none'; continue; }
+      queue.push(el);
+    }
+    var last = null;
+    var at = 0;
+    for (var j = 0; j < queue.length; j++) {
+      el = queue[j];
+      var box = el.getBoundingClientRect();
+      var bands = lineBands(el, box);
+      var delay = Math.min(at, WRITE_CAP);
+      if (!bands) {
+        // Nothing to write — a table, a figure, a row of swatches. It arrives
+        // rather than being written, on the same stagger.
+        last = el.animate([{ opacity: 0 }, { opacity: 1 }], {
+          duration: 200, delay: delay, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'both'
+        });
+        at = delay + 60 + WRITE_STAGGER;
+        (function (a, e) { a.finished.then(function () { a.cancel(); e.style.clipPath = 'none'; }).catch(function () {}); })(last, el);
+        continue;
+      }
+      var ink = 0;
+      for (var m = 0; m < bands.length; m++) ink += Math.max(0, bands[m].to - bands[m].from);
+      // One keyframe per line, each advancing the ink exactly one line. The
+      // staircase's shape is what carries the reading order, so the delay
+      // between blocks can stay short: inside a block the lines already take
+      // their turn.
+      var frames = [];
+      for (var key = 0; key <= bands.length; key++) {
+        var xs = [];
+        for (var b = 0; b < bands.length; b++) {
+          var done = rtl ? bands[b].from : bands[b].to;
+          var todo = rtl ? bands[b].to : bands[b].from;
+          xs.push(b < key ? done : todo);
+        }
+        frames.push({ clipPath: inkPath(bands, xs) });
+      }
+      var dur = Math.max(110, Math.min(WRITE_LINE_MAX, ink / WRITE_SPEED));
+      last = el.animate(frames, { duration: dur, delay: delay, easing: 'linear', fill: 'both' });
+      at = delay + dur * 0.25 + WRITE_STAGGER;
+      (function (a, e) {
+        a.finished.then(function () {
+          // Hand the element back to the stylesheet, unclipped: the animation
+          // is holding the final staircase, and an animation outranks an
+          // inline style, so it has to be cancelled before the inline wins.
+          a.cancel();
+          e.style.clipPath = 'none';
+        }).catch(function () { /* cancelled with the page */ });
+      })(last, el);
+    }
+    // Every block is unclipped the moment its own writing ends, so the flag's
+    // only remaining job is the failsafe — but clear it now the work is done.
+    if (last && last.finished) {
+      last.finished.then(function () { root.removeAttribute('data-entry'); }).catch(function () {});
+    } else {
+      root.removeAttribute('data-entry');
+    }
+  }
+
+  // The words wait for the dictionary and the webfonts: the dictionary
+  // rewrites a few nodes after it lands, and a webfont changes where every
+  // line breaks, so measuring before either would lay ink along lines that are
+  // about to move. On a fold arrival both are already in cache — the reader
+  // just came from a neighbouring page that used the same two files — so this
+  // is normally no wait at all. WRITE_WAIT is the ceiling on it either way.
+  function writeWhenReady() {
+    var root = document.documentElement;
+    if (root.getAttribute('data-entry') !== 'fold') return;
+    // Reduced motion: no writing at all. The clip that hides the words is
+    // inside the same media query (events.css), so there is nothing to undo —
+    // but the animation would still run, and its first frame is the words
+    // clipped away, so skipping this is the difference between "no motion" and
+    // "the page flashes empty and writes itself anyway".
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.removeAttribute('data-entry');
+      return;
+    }
+    // Arrived mid-page (the reader's position was restored): they are not
+    // watching a page arrive, they are back where they were. No writing.
+    if ((window.scrollY || root.scrollTop || 0) > 0) { root.removeAttribute('data-entry'); return; }
+    var done = false;
+    function go() {
+      if (done) return;
+      done = true;
+      writeIn();
+    }
+    var timer = setTimeout(go, WRITE_WAIT);
+    var waits = [];
+    if (window.I18N && window.I18N.onReady) waits.push(new Promise(function (res) { window.I18N.onReady(res); }));
+    if (document.fonts && document.fonts.ready) waits.push(document.fonts.ready);
+    if (!waits.length) { clearTimeout(timer); return go(); }
+    Promise.all(waits).then(function () { clearTimeout(timer); go(); }).catch(function () { clearTimeout(timer); go(); });
+  }
+  writeWhenReady();
 
   // ── Neighbour warm-up — the other half of the swipe ────
   // The two pages a swipe can reach are known before the finger moves. Once

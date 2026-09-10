@@ -68,6 +68,12 @@ window.__BH_BUILD = '{{ site.time | date: "%s" }}';
   if (cameFromPrev) root.setAttribute('data-nav', 'next');
   else if (cameFromNext) root.setAttribute('data-nav', 'prev');
   if (folded) root.removeAttribute('data-nav');
+  // A fold arrival's words are hidden until common.js writes them on
+  // (css/events.css). If that script never gets there — an error, a browser
+  // without the APIs it wants, data saver and a very slow connection — the
+  // reader must not be left looking at a page with no text on it. This is the
+  // promise that they are not: whatever else happens, the words come back.
+  if (folded) window.setTimeout(function () { root.removeAttribute('data-entry'); }, 1800);
 })();
 </script>
 <script>

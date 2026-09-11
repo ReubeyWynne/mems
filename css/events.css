@@ -243,34 +243,34 @@ main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
   ::view-transition-old(topbar) { animation: none; }
   ::view-transition-new(topbar) { animation: none; mix-blend-mode: normal; }
 
-  ::view-transition-old(root) { animation: vt-dissolve-out 0.25s ease both; }
-  ::view-transition-new(root) { animation: vt-dissolve-in 0.25s ease both; mix-blend-mode: normal; }
+  /* A page arriving from outside the ring: the old one is held and the new one
+     fades in on top. Holding a layer is what keeps this smooth — see the fold
+     note below. */
+  ::view-transition-old(root) { animation: none; }
+  ::view-transition-new(root) { animation: vt-dissolve-in 0.3s ease both; }
 
   html[data-nav="next"]::view-transition-old(root) { animation: vt-out-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
   html[data-nav="next"]::view-transition-new(root) { animation: vt-in-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
   html[data-nav="prev"]::view-transition-old(root) { animation: vt-out-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
   html[data-nav="prev"]::view-transition-new(root) { animation: vt-in-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
-  /* A committed swipe is a dissolve, not a move. The card the finger was
-     holding is the destination's own cover and it is already on screen, so the
-     two documents cross-fade through each other: the cover keeps its title for
-     as long as the old page is visible, and the destination arrives beneath
-     it.
+  /* A committed swipe is a dissolve, and the text is what the reader watches
+     arrive. The new page fades in over the old one, which is held: a swipe is
+     a gesture the reader made, so the move gets a longer beat than a link does.
 
-     Fading rather than turning is the whole point, and it is a measured one.
-     Both pages are the same manuscript night, within a point of each other's
-     brightness, so a cross-fade between them barely registers. Anything drawn
-     in between does: a cover spread to the whole frame (or any blank frame) is
-     about 40% darker than either page, and the reader sees the screen dim and
-     come back — a flash. So nothing is drawn between them; the fold is the
-     card the reader was already holding, handing over to the page behind it.
+     One layer stays opaque, and that is the whole trick — fading *both* roots
+     leaves the backdrop showing through the middle of the move. At the halfway
+     point the composite is 0.5·new + 0.25·old + 0.25·backdrop, so a quarter of
+     the ink is simply missing and the frame dims: measured, that was a 13% drop
+     (28.7 to 25.0 mean luminance) — visible as the screen going grey and coming
+     back. Holding the old root and fading only the new one keeps the frame
+     opaque throughout, so the ink goes out exactly as the new ink comes in.
 
      A fold arrival carries data-entry and *no* data-nav (head.html), so it
      never competes with the directional rules above. */
   html[data-entry="fold"]::view-transition-old(root) { animation: none; }
-  html[data-entry="fold"]::view-transition-new(root) { animation: vt-dissolve-in 0.18s ease both; }
+  html[data-entry="fold"]::view-transition-new(root) { animation: vt-dissolve-in 0.4s ease both; }
 
-  @keyframes vt-dissolve-out { to { opacity: 0; } }
   @keyframes vt-dissolve-in { from { opacity: 0; } }
   @keyframes vt-out-left { to { transform: translateX(-100%); } }
   @keyframes vt-in-right { from { transform: translateX(100%); } }

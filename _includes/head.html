@@ -33,11 +33,11 @@ window.__BH_BUILD = '{{ site.time | date: "%s" }}';
    makes it the referrer for a document that was fetched before the referrer
    was written. It is read once and deleted here; nothing else is kept.
 
-   The two are exclusive on purpose. A fold arrival has no direction — the
-   cover it lands on is already spread, so there is nothing to slide — and
-   because the fold and direction rules would otherwise tie on specificity,
-   the fold is told by *not* stamping data-nav rather than by out-ordering it
-   in the sheet. */
+   The two are exclusive on purpose. A swipe and a link are the same dissolve
+   at different lengths — a swipe is a gesture the reader made, so it answers
+   over a longer beat — and because the fold and direction rules would otherwise
+   tie on specificity, the fold is told by *not* stamping data-nav rather than
+   by out-ordering it in the sheet. */
 (function () {
   var root = document.documentElement;
   var here = location.href.split(/[?#]/)[0];

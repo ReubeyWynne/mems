@@ -90,21 +90,22 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   `data-prev-url`/`data-next-url` and stamps `data-nav="next|prev"` on `<html>`.
   No direction (a link from outside the ring) = plain dissolve; reduced motion =
   the transition's animations are neutralised, so the swap is instant. A committed
-  swipe is a **dissolve, not a turn**: the card under the finger *is* the
-  destination's cover, so `js/common.js` hands the frame straight to the move and
-  the two documents cross-fade through each other, the card riding along in the
-  outgoing one — nothing is ever drawn between the pages. That is deliberate and
-  measured: a cover spread to the whole frame is a flat field ~40% darker than
-  either page, so the screen dimmed and came back (a flash); the two pages
-  themselves are within a point of each other's brightness. Both root images are
-  forced to `mix-blend-mode: normal` (the UA's `plus-lighter` *adds* them, so a
-  fade brightens as it goes). `sessionStorage['bh:fold']` (this page's own
-  address, read once and deleted by `head.html`, which stamps `data-entry="fold"`
-  and withholds `data-nav`) tells the arriving page which move it is. A
-  navigation that never lands springs the cover away. The swipe ring is the
-  `_data/nav.json` order read as a cycle (home → Event Cycle → the four events →
-  VIP → Simulator → home): both `swipePrev`/`swipeNext` on every page, so no page
-  is unreachable from either side.
+  swipe gets the same dissolve over a longer beat (0.4s vs 0.3s) — it is a gesture
+  the reader made, so the move answers rather than simply being over. The old root
+  is **held** and only the new one fades: fading both leaves the backdrop showing
+  through the middle of the move, where the composite is
+  `0.5·new + 0.25·old + 0.25·backdrop` and a quarter of the ink is missing — a
+  measured 13% luminance dip, which is the flash this move was rebuilt to remove.
+  One opaque layer keeps the frame flat (fold: 27.9–29.2, link: 27.5–28.5). Both
+  root images are forced to `mix-blend-mode: normal` (the UA's `plus-lighter`
+  *adds* them, so a fade brightens as it goes).
+  `sessionStorage['bh:fold']` (this page's own address, read once and deleted by
+  `head.html`, which stamps `data-entry="fold"` and withholds `data-nav`) tells
+  the arriving page which move it is. A navigation that never lands springs the
+  cover away. The swipe ring is the `_data/nav.json` order read as a cycle
+  (home → Event Cycle → the four events → VIP → Simulator → home): both
+  `swipePrev`/`swipeNext` on every page, so no page is unreachable from either
+  side.
   The dictionary URL is build-stamped (`window.__BH_BUILD` = `site.time`, read by
   `js/i18n.js`): cacheable on the live site, still no-cache on localhost/`file://`.
 - A new event page = one directory with a front-matter `index.html` (its TOC +

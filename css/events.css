@@ -206,23 +206,6 @@ body.swiping { user-select: none; -webkit-user-select: none; }
 main { will-change: transform; }
 main.snap { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 
-/* ─── The write-in — a fold arrival's words, written on ──── */
-/* The fold above hands the reader the destination's own ground, already the
-   same night they were standing on; this puts the words back on it. Until
-   common.js writes them the content is clipped away entirely (not faded, so
-   nothing is half-visible and nothing moves), and the ink is laid down a line
-   at a time by the script, which is the only thing that knows where the lines
-   actually broke.
-
-   Clipped, never `opacity: 0`: an unclipped box keeps its height, so the page
-   is fully laid out and nothing shifts when the words arrive — and a reader
-   with scripting off, or a script that fell over, sees everything the instant
-   the attribute clears (head.html clears it on a timer, whatever happens). */
-@media (prefers-reduced-motion: no-preference) {
-  html[data-entry="fold"] main .section > * { clip-path: inset(0 100% 0 0); }
-  html[dir="rtl"][data-entry="fold"] main .section > * { clip-path: inset(0 0 0 100%); }
-}
-
 /* ─── Paging the ledger — the cross-document view transition ─── */
 /* Moving between pages is a leaf turned in the same ledger: the chrome holds
    still (`.topbar` is named, so it is cut out of the root snapshot and simply

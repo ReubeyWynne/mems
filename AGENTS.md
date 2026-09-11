@@ -105,24 +105,6 @@ and never alter numbers, math symbols (`√ × ÷ ≈ Σ ∝ ≤ →`), `{n}`, o
   `_data/nav.json` order read as a cycle (home → Event Cycle → the four events →
   VIP → Simulator → home): both `swipePrev`/`swipeNext` on every page, so no page
   is unreachable from either side.
-- **The write-in (fold arrivals only):** the fold hands over a *ground*, so the
-  words are then written onto it — `js/common.js` clips each `main .section > *`
-  to a **staircase polygon of its own line boxes** and animates that polygon, one
-  keyframe per line, so the ink edge walks down the block in reading order.
-  Line boxes come from `Range.getClientRects()` (the renderer's own), not from a
-  text-measurement library: only the browser knows where a line breaks in all 16
-  dictionaries, and Arabic runs the other way (the ink starts at the right edge
-  when `dir="rtl"`). Timing lives in `WRITE_SPEED`/`WRITE_STAGGER`/`WRITE_CAP`/
-  `WRITE_WAIT`; only the first viewport is written (below-fold blocks are
-  unclipped immediately), and a block whose lines do not stack down the page (a
-  two-column card grid on a wide screen) arrives whole instead, because a
-  staircase through interleaved lines crosses itself. The hidden start state is
-  `clip-path` (never `opacity`) inside the reduced-motion `no-preference` query,
-  so the page keeps its height and a reader with reduced motion — or with the
-  script broken — gets the words immediately; `head.html` clears `data-entry`
-  on a 1.8 s timer as the belt to that braces, and the script clears it when the
-  last block is written. Never on a cold load, a link click or a bfcache
-  restore, and never when the arrival restored a scroll position.
   The dictionary URL is build-stamped (`window.__BH_BUILD` = `site.time`, read by
   `js/i18n.js`): cacheable on the live site, still no-cache on localhost/`file://`.
 - A new event page = one directory with a front-matter `index.html` (its TOC +
